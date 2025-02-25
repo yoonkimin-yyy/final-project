@@ -1,28 +1,57 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.4.2'
-	id 'io.spring.dependency-management' version '1.1.7'
+   id 'java'
+   id 'org.springframework.boot' version '3.4.2'
+   id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.example'
+group = 'kr.co'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+   toolchain {
+      languageVersion = JavaLanguageVersion.of(17)
+   }
 }
 
 repositories {
-	mavenCentral()
+   mavenCentral()
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+dependencies {   
+   implementation 'org.springframework.boot:spring-boot-starter-web:3.4.1'
+   implementation 'org.springframework.boot:spring-boot-devtools:3.4.1'
+   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.4.1'
+   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+   implementation 'com.oracle.database.jdbc:ojdbc11:23.3.0.23.09'
+   implementation 'org.springframework.boot:spring-boot-starter-security:3.4.1'
+   
+   // jog4j 그래들
+   implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.4.2'
+   
+   // validation 그래들
+   implementation 'org.springframework.boot:spring-boot-starter-validation:3.4.2'
+   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+   
+   
+   
+
+   implementation 'org.springframework.boot:spring-boot-starter'
+   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+   
+   // hamcrest
+   testImplementation 'org.hamcrest:hamcrest:3.0'
+   
+   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+   
+   implementation 'org.projectlombok:lombok:1.18.30'
+   compileOnly 'org.projectlombok:lombok:1.18.30'
+
+}
+
+configurations {
+   all*.exclude module: 'spring-boot-starter-logging'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+   useJUnitPlatform()
 }

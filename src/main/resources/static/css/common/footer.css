@@ -1,0 +1,41 @@
+/* 푸터 스타일 */
+footer {
+    background-color: #a18267;
+    color: white;
+    margin-top: 50px;
+    bottom: 0;
+}
+
+.footer-content {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+}
+
+.footer-info {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.bbangllogo-class {
+    margin-top: 10px;
+}
