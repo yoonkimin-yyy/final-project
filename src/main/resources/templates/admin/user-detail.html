@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유저 상세정보</title>
+    <link rel="stylesheet" th:href="@{/css/admin/user-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+</head>
+<header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+<body>
+    <div class="containers">
+        <h2>유저 상세 정보</h2>
+        <table>
+            <tr>
+                <th>유저 ID</th>
+                <td>asdf213</td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td >길동이</td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td >woasdjf@namk.ekw</td>
+            </tr>
+            <tr>
+                <th>생년월일</th>
+                <td >2025-01-01</td>
+            </tr>
+            <tr>
+                <th>핸드폰번호</th>
+                <td>010-0000-0000</td>
+            </tr>
+            <tr>
+                <th>타입</th>
+                <td>유저</td>
+            </tr>
+            <tr>
+                <th>계정 생성일</th>
+                <td>2025-02-01</td>
+            </tr>
+            <tr>
+                <th>사업자번호</th>
+                <td>000-00-00000</td>
+            </tr>
+        </table>
+    
+        <div class="btn-container">
+            <button class="btn edit-btn" onclick="editUser()">수정</button>
+            <button class="btn delete-btn" onclick="deleteUser()">삭제</button>
+        </div>
+    </div>
+</body>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+<script>
+    function editUser() {
+        alert("수정 기능 구현 예정!");
+    }
+
+    function deleteUser() {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            alert("삭제 기능 구현 예정!");
+        }
+    }
+</script>
+
+</html>
