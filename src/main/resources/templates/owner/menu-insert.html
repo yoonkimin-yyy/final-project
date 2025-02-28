@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            margin: 10px;
+            height: 30px;
+            width: 300px;
+        }
+        textarea {
+            margin: 10px;
+            width: 560px;
+            height: 60px;
+        }
+        .menu-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .add-to-menu {
+            margin: 10px;
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            height: fit-content;
+        }
+        .menu-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #c6872f;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 560px;
+            height: 180px;
+            font-size: 45px;
+            margin: 10px;
+        }
+        .menu-populity{
+            margin: 10px;
+            height: 30px;
+            width: 300px;
+        }
+    
+    </style>
+</head>
+<body>
+    <form action="">
+        <label for="menu-image" class="menu-image">+</label>
+        <input type="file" id="menu-image" style="display: none;" multiple>
+        <div class="menu-info">
+            <input type="text" id="menu-name"  placeholder="메뉴명">
+            <input type="text" id="menu-price" placeholder="가격">
+            <select name="populity" id="menu-populity" class="menu-populity">
+                <option value="일반">일반</option>
+                <option value="인기">인기</option>
+            </select>
+        </div>
+        <button class="add-to-menu" type="submit">메뉴추가</button>
+    </form>
+</body>
+</html>
