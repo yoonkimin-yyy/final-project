@@ -195,4 +195,10 @@
     .footer-column {
         flex: 0 0 100%;
     }
+    .footer-logo{
+    
+    	width: 220px;
+     	height: 110px;
+    
+    }
 }
