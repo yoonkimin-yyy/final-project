@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    
-	// ===== 탭 전환 기능 =====
+
+    // ===== 탭 전환 기능 =====
     const tabButtons = document.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-			
+
             tabButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             const tab = button.dataset.tab;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const daySelect = document.getElementById('choose-day');
     const dateSelect = document.getElementById('choose-date');
     let isExpanded = false;
-    
+
 
     // 오늘의 영업시간 표시
     const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     todayHours.textContent = `영업시간 선택(더보기 클릭)`;
 
     hoursToggle.addEventListener('click', () => {
-        console.log("왜시발안됨");
+
         isExpanded = !isExpanded;
         hoursDetail.style.display = isExpanded ? 'block' : 'none';
         hoursToggle.textContent = isExpanded ? '접기' : '더보기';
@@ -55,12 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
             daysTable.style.display = 'none';
         }
     });
-    
+
 });
 
-    function openUpdateMenu(){
-        window.open("/bakery/menu/insert/form","_blank","width=600, height=400, top=100, left=100");
-    }
+function openUpdateMenu() {
+    window.open("/bakery/menu/insert/form", "_blank", "width=600, height=400, top=100, left=100");
+}
 
 
 

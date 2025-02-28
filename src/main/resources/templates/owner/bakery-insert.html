@@ -1,166 +1,171 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <title>대전 성심당</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/bakery/insert/insert.css}">
+    <link rel="stylesheet" th:href="@{/css/owner/bakery/insert/insert.css}">
     <script src="/js/bakery/insert/insert.js"></script>
 </head>
+
 <body>
     <div class="container">
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
-            <div >
-                <label for="imageInput" class="main-photo-upload" >+</label>
-                        <input type="file" id="imageInput" multiple style="display: none">
-                
+            <div>
+                <label for="imageInput" class="main-photo-upload">+</label>
+                <input type="file" id="imageInput" multiple style="display: none">
+
             </div>
         </div>
 
         <!-- 헤더 섹션 -->
-<div class="header">
-    <div class="header-container"> <!--flex 컨테이너 추가-->
+        <div class="header">
+            <div class="header-container"> <!--flex 컨테이너 추가-->
 
-        <div class="bakery-info">
-            <input type="text" class="bakery-name" placeholder="빵집 이름">
-        <div class="rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-            <span>4.5</span>
-        </div>
-        <div class="info-item">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" placeholder="주소">
-        </div>
-        <div class="info-item">
-            <i class="fas fa-clock"></i>
-            <span id="today-hours">영업시간 선택</span>
-            <button class="hours-toggle">더보기</button>
-            <div class="hours-detail" style="display: none;">
-                <input type="radio" id="choose-date">
-                <label for="choose-date">날짜별</label>
-                <input type="radio" id="choose-day" >
-                <label for="choose-day">평일,주말</label>
-                <div id="days-table" style="display: none;">
-                    <div class="hours-item" >
-                        <span class="day">평일</span>
-                        <input type="text"class="time" placeholder="영업시간">
+                <div class="bakery-info">
+                    <input type="text" class="bakery-name" placeholder="빵집 이름">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.5</span>
                     </div>
-                    <div class="hours-item">
-                        <span class="day">주말</span>
-                        <input type="text"class="time" placeholder="영업시간">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" placeholder="주소">
                     </div>
-                </div>
-                <div id="date-table" style="display:none;">
-                    <div class="hours-item">
-                        <span class="day">월요일</span>
-                        <input type="text"class="time" placeholder="영업시간">
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="today-hours">영업시간 선택</span>
+                        <button class="hours-toggle">더보기</button>
+                        <div class="hours-detail" style="display: none;">
+                            <input type="radio" id="choose-date">
+                            <label for="choose-date">날짜별</label>
+                            <input type="radio" id="choose-day">
+                            <label for="choose-day">평일,주말</label>
+                            <div id="days-table" style="display: none;">
+                                <div class="hours-item">
+                                    <span class="day">평일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">주말</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                            </div>
+                            <div id="date-table" style="display:none;">
+                                <div class="hours-item">
+                                    <span class="day">월요일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">화요일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">수요일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">목요일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">금요일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">토요일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">일요일</span>
+                                    <input type="text" class="time" placeholder="영업시간">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="hours-item">
-                        <span class="day">화요일</span>
-                        <input type="text"class="time" placeholder="영업시간">
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <input type="text" placeholder="전화번호">
                     </div>
-                    <div class="hours-item">
-                        <span class="day">수요일</span>
-                        <input type="text"class="time" placeholder="영업시간">
-                    </div>
-                    <div class="hours-item">
-                        <span class="day">목요일</span>
-                        <input type="text"class="time" placeholder="영업시간">
-                    </div>
-                    <div class="hours-item">
-                        <span class="day">금요일</span>
-                        <input type="text"class="time" placeholder="영업시간">
-                    </div>
-                    <div class="hours-item">
-                        <span class="day">토요일</span>
-                        <input type="text"class="time" placeholder="영업시간">
-                    </div>
-                    <div class="hours-item">
-                        <span class="day">일요일</span>
-                        <input type="text"class="time" placeholder="영업시간">
+                    <div class="info-item">
+                        <i class="fas fa-calendar"></i>
+                        <input type="text" placeholder="창립일or오픈일(선택)">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="info-item">
-            <i class="fas fa-phone"></i>
-            <input type="text" placeholder="전화번호">
-        </div>
-        <div class="info-item">
-            <i class="fas fa-calendar"></i>
-            <input type="text" placeholder="창립일or오픈일(선택)">
-        </div>
-    </div>
-</div>
-</div>
 
         <!-- 메인 콘텐츠 -->
         <div class="main-content">
             <!-- 왼쪽 섹션 (메뉴/리뷰 탭) -->
-            <div class="tabs">                <div class="tab-buttons">
+            <div class="tabs">
+                <div class="tab-buttons">
                     <button class="tab-button active" data-tab="menu">메뉴</button>
                     <button class="tab-button" data-tab="reviews">리뷰</button>
                     <button class="tab-button" data-tab="interior">실내</button>
                     <button class="tab-button" data-tab="exterior">실외</button>
                     <button class="tab-button" data-tab="parking">주차</button>
-                </div>                
+                </div>
                 <!-- 메뉴 리스트 -->
-    <div class="menu-list active" id="menu">
-        <div class="menu-item">
-            <img src="https://api.a0.dev/assets/image?text=fresh%20croissant%20with%20butter" alt="크로아상" class="menu-image">
-            <div class="menu-info">
-                <div class="menu-name">크로아상</div>
-                <div class="menu-description">바삭한 정통 프랑스 크로아상</div>
-                <div class="menu-price">4,500원</div>
-            </div>
-            <button class="add-to-cart">담기</button>
-        </div>
-        <div class="menu-item" onclick="openUpdateMenu()">
-            <div></div>
-            <div  class="update-menu">+</div>
-        </div>
-    </div>
-    <!-- 실내 사진 섹션 -->
-    <div class="interior-photos" id="interior" style="display: none;">
-        <h3>실내 전경</h3>
-            <label for="insideImage" class="photo-upload" >사진 추가</label>
-            <input type="file" id="insideImage" accept="image/*" multiple style="display: none">
-            <div class="photo-description">
-                <textarea class="description" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
-                </ul>
-            </div>
-    </div>
-        <!-- 실외 사진 섹션 -->
-        <div class="exterior-photos" id="exterior" style="display: none;">
-            <h3>실외 전경</h3>
-            <label for="outsideImage" class="photo-upload" >사진 추가</label>
-                <input type="file" id="outsideImage" accept="image/*" multiple style="display: none">
-                <div class="photo-description">
-                    <textarea class="description" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
-                    </ul>
+                <div class="menu-list active" id="menu">
+                    <div class="menu-item">
+                        <img src="https://api.a0.dev/assets/image?text=fresh%20croissant%20with%20butter" alt="크로아상"
+                            class="menu-image">
+                        <div class="menu-info">
+                            <div class="menu-name">크로아상</div>
+                            <div class="menu-description">바삭한 정통 프랑스 크로아상</div>
+                            <div class="menu-price">4,500원</div>
+                        </div>
+                        <button class="add-to-cart">담기</button>
+                    </div>
+                    <div class="menu-item" onclick="openUpdateMenu()">
+                        <div></div>
+                        <div class="update-menu">+</div>
+                    </div>
                 </div>
-        </div>
-        <!-- 주차 정보 섹션 -->
-        <div class="parking-info" id="parking" style="display: none;">
-            <h3>주차 안내</h3>
-            <div class="parking-content">
-                <label for="parking-image" class="parking-photo-upload" >사진 추가</label>
-                <input type="file" id="parking-image" accept="image/*" multiple style="display: none">
-                <div class="parking-details">
-                    <textarea class="parking-text" placeholder="주차장 정보를 입력해주세요";></textarea>
+                <!-- 실내 사진 섹션 -->
+                <div class="interior-photos" id="interior" style="display: none;">
+                    <h3>실내 전경</h3>
+                    <label for="insideImage" class="photo-upload">사진 추가</label>
+                    <input type="file" id="insideImage" accept="image/*" multiple style="display: none">
+                    <div class="photo-description">
+                        <textarea class="description" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
+                        </ul>
+                    </div>
                 </div>
+                <!-- 실외 사진 섹션 -->
+                <div class="exterior-photos" id="exterior" style="display: none;">
+                    <h3>실외 전경</h3>
+                    <label for="outsideImage" class="photo-upload">사진 추가</label>
+                    <input type="file" id="outsideImage" accept="image/*" multiple style="display: none">
+                    <div class="photo-description">
+                        <textarea class="description" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 주차 정보 섹션 -->
+                <div class="parking-info" id="parking" style="display: none;">
+                    <h3>주차 안내</h3>
+                    <div class="parking-content">
+                        <label for="parking-image" class="parking-photo-upload">사진 추가</label>
+                        <input type="file" id="parking-image" accept="image/*" multiple style="display: none">
+                        <div class="parking-details">
+                            <textarea class="parking-text" placeholder="주차장 정보를 입력해주세요" ;></textarea>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        
-    </div>
-    <div>
-        <button class="submit-btn edit-btn">제출</button>
-        <button class="cancel-btn edit-btn">취소</button>
-    </div>
+            <div>
+                <button class="submit-btn edit-btn">제출</button>
+                <button class="cancel-btn edit-btn">취소</button>
+            </div>
 </body>
+
 </html>
