@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{fragments/head :: HeadFragment}"></head>
+
 <head>
     <meta charset="UTF-8">
     <title>빵집 상세 정보</title>
@@ -9,46 +11,46 @@
 </head>
 
 <body>
-<header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
-<div class="containers">
-    <h2>빵집 상세 정보</h2>
-    <div style="display: flex; justify-content: space-around;">
-        <div class="box">
-            <h1>주문량</h1>
-            <div class="text-size">345</div>
+    <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+    <div class="containers">
+        <h2>빵집 상세 정보</h2>
+        <div class="detail">
+            <div class="box">
+                <h1>주문량</h1>
+                <div class="text-size">345</div>
+            </div>
+            <div class="box">
+                <h1>매출순위</h1>
+                <div class="text-size">3</div>
+            </div>
         </div>
-        <div class="box">
-            <h1>매출순위</h1>
-            <div class="text-size">3</div>
-        </div>
+        <table>
+            <tr>
+                <th>상호명</th>
+                <td>20205</td>
+            </tr>
+            <tr>
+                <th>사용자 ID</th>
+                <td>20255503</td>
+            </tr>
+            <tr>
+                <th>연락처</th>
+                <td>010-0000-0000</td>
+            </tr>
+            <tr>
+                <th>가게 설명</th>
+                <td>우리가게 정상영업 합니다</td>
+            </tr>
+            <tr>
+                <th>편의 정보</th>
+                <td>잘 찾아보면 뭔가있음</td>
+            </tr>
+        </table>
+
+
     </div>
-    <table>
-        <tr>
-            <th>상호명</th>
-            <td>20205</td>
-        </tr>
-        <tr>
-            <th>사용자 ID</th>
-            <td >20255503</td>
-        </tr>
-        <tr>
-            <th>연락처</th>
-            <td >010-0000-0000</td>
-        </tr>
-        <tr>
-            <th>가게 설명</th>
-            <td >우리가게 정상영업 합니다</td>
-        </tr>
-        <tr>
-            <th>편의 정보</th>
-            <td >잘 찾아보면 뭔가있음</td>
-        </tr>
-    </table>
-    
-    
-</div>
-<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
-<!--
+    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+    <!--
 
 <script>
     // 주문량 & 매출 순위 데이터
@@ -87,4 +89,5 @@
 -->
 
 </body>
+
 </html>

@@ -45,3 +45,7 @@ body {
         .text-size{
             font-size: 70px;
         }
+        .detail{
+        	display: flex;
+        	justify-content: space-around;
+        }
