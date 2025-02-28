@@ -15,7 +15,7 @@ function displayCurrentLocation(locPosition) {
     var mapContainer = document.getElementById('map'); // 지도를 표시할 div
     var mapOption = { 
         center: locPosition, // 현재 위치를 중심으로 지도 설정
-        level: 5 // 확대 레벨
+        level: 7 // 확대 레벨
     };
     
     // 지도 생성
@@ -47,7 +47,7 @@ function searchNearbyBakeries(map, locPosition) {
     
     var searchOption = {
         location: locPosition, // 내 위치 기준
-        radius: 4000 // 검색 반경 (미터 단위)
+        radius: 20000 // 검색 반경 (미터 단위)
     };
 
     // 키워드로 장소를 검색

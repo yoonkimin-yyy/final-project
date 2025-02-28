@@ -2,7 +2,10 @@
 <html>
     <head th:replace="~{fragments/head :: HeadFragment}"></head>
     <head>
+    	<title>리스트</title>
     	<link rel="stylesheet" th:href="@{/css/bakery/list/list.css}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    	<script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
     	<script src="/js/bakery/list/list.js"></script>
 		<script src="/js/bakery/list/listMap.js"></script>	
    	</head>
@@ -36,7 +39,9 @@
         </div>
     </div>
 
+<section class="post-section">
     <div class="list-box">
+
         <div class="list-item" th:each ="post,iterStat : ${posts}">
             <div class="slider" th:id="slider+${iterStat.index+1}">
                 <div class="slides">
@@ -63,65 +68,27 @@
                     </div>
                 </div>
                 <div class="navigation">
-                    <button class="prev" data-slider="1">&lt;</button>
-                    <button class="next" data-slider="1">&gt;</button>
+                    <button class="prev" th:data-slider="${iterStat.index+1}">&lt;</button>
+                    <button class="next" th:data-slider="${iterStat.index+1}">&gt;</button>
                 </div>
-                <div class="slide-indicators" id="indicators1"></div>
+                <div class="slide-indicators" th:id="indicators + ${iterStat.index+1}"></div>
             </div>
             <div class="list-item-info">
                 <a href="">
-                    <h2 class="list-item-title">달콤한 빵집</h2>
+                    <h2 class="list-item-title" th:text="${post.bakeryName}"></h2>
                 </a>
-                <p class="list-item-address">📍<span>서울시 강남구 테헤란로 123</span></p>
-                <p class="list-item-score">⭐️평점: <span>4.8</span></p>
-                <p class="list-item-time">🕒영업시간: <span>07:00~22:00</span></p>
-                <p class="list-item-review">📝리뷰: <span>250</span></p>
-                <p class="list-item-parking">🚗주차가능</p>
+                <p class="list-item-address">📍<span th:text="${post.bakeryAddress}"></span></p>
+                <p class="list-item-score">⭐️평점: <span th:text="${post.bakeryReviewDTO.reviewRating}"></span></p>
+                <p class="list-item-time">🕒영업시간: <span th:text="${post.bakeryScheduleDTO.bakeryOpenTime}"></span><span>~</span><span th:text="${post.bakeryScheduleDTO.bakeryCloseTime}"></span></p>
+                <p class="list-item-review">📝리뷰: <span></span></p>
+                <p class="list-item-parking">🚗: <span th:text="${post.bakeryAmenity}"></span></p>
             </div>
         </div>
+     </div>
+  </section>
 
         <!-- 두 번째 리스트 아이템 -->
-        <div class="list-item">
-            <div class="slider" id="slider2">
-                <div class="slides">
-                    <div class="hotel-slide">
-                        <div class="image-container">
-                            <img src="https://api.a0.dev/assets/image?text=bakery%20shop%201&aspect=16:9" alt="빵 이미지 4" class="reserve-img">
-                            <p class="hotel-info2">치아바타</p>
-                            <p class="bread-price">3,200원</p>
-                        </div>
-                    </div>
-                    <div class="hotel-slide">
-                        <div class="image-container">
-                            <img src="https://api.a0.dev/assets/image?text=bakery%20shop%202&aspect=16:9" alt="빵 이미지 5" class="reserve-img">
-                            <p class="hotel-info2">소금빵</p>
-                            <p class="bread-price">2,500원</p>
-                        </div>
-                    </div>
-                    <div class="hotel-slide">
-                        <div class="image-container">
-                            <img src="https://api.a0.dev/assets/image?text=bakery%20shop%203&aspect=16:9" alt="빵 이미지 6" class="reserve-img">
-                            <p class="hotel-info2">단팥빵</p>
-                            <p class="bread-price">2,800원</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="navigation">
-                    <button class="prev" data-slider="2">&lt;</button>
-                    <button class="next" data-slider="2">&gt;</button>
-                </div>
-                <div class="slide-indicators" id="indicators2"></div>
-            </div>
-            <div class="list-item-info">
-                <h2 class="list-item-title">행복한 베이커리</h2>
-                <p class="list-item-address">📍<span>서울시 서초구 반포대로 456</span></p>
-                <p class="list-item-score">⭐️평점: <span>4.5</span></p>
-                <p class="list-item-time">🕒영업시간: <span>08:00~21:00</span></p>
-                <p class="list-item-review">📝리뷰: <span>180</span></p>
-                <p class="list-item-parking">🚗주차가능</p>
-            </div>
-        </div>
-    </div>
+        
 
 
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
