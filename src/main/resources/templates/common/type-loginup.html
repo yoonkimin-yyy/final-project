@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <head>
+    	<link rel="stylesheet" th:href="@{/css/register/type-loginup.css}">
+    	<script src="/js/register/type-loginup.js"></script>
+   	</head>
+<body>
+     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+    <main>
+    <div class="type-container">
+        <h2>회원가입</h2>
+        <div class="type-loginup">
+            <div class="type-user">
+                <button class="type-btn" type="button">일반 회원가입</button>
+            </div>
+            <div class="type-business">
+                <button class="type-btn" type="button">사업자 회원가입</button>
+            </div>
+        </div>
+        <div>
+            <p>이미 회원이신가요? <a href="./loginin.html">로그인</a></p>
+        </div>
+    </div>
+    </main>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</body>
+</html>

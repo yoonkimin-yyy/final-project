@@ -1,0 +1,431 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    background-color: #f8f6f3;
+    min-width: 1024px;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 헤더 스타일 */
+.header {
+    background-color: #a18267;
+    color: white;
+}
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 110px;
+}
+
+.header-left {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.header-menu {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.menu-item {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #a18267;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+}
+
+.dropdown-item {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-item:first-child {
+    border-radius: 4px 4px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 4px 4px;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* ==================================================================================================== */ 
+
+/* 회원가입 스타일 */
+.loginup-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #a18267;
+}
+.loginup-container {
+    width: 100%;
+    max-width: 30%;
+    margin: 80px auto;
+    margin-bottom: 20px;
+    padding: 40px 70px;
+    background-color: white;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.loginup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: #a18267;
+}
+
+.loginup-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+    /* border-bottom: 0px; */
+    border-top: 0px;
+}
+
+.loginup-id {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.id-check-btn {
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    width: 25%;
+    /* position: absolute; */
+    /* right: 0;
+    top: 0;
+    bottom: 0; */
+    margin-left: 15px;
+    height: 52px;
+    margin-bottom: 5px;
+}
+
+input::placeholder {
+    color: #a18267;
+}
+
+.loginup-input-first {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+}
+
+.loginup-input-id {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.loginup-input-last {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+}
+
+.loginup-input-first:first-of-type {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.loginup-input-last:last-of-type {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.loginup-input+.loginup-input {
+    margin-top: -1px;
+}
+
+/* 사업자번호 */
+.business-number {
+    margin-bottom: 5px;
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+/* 생년월일  */
+input:focus {
+    border-color: #7d6651;
+    outline: none;
+    background-color: white;
+}
+
+input[type='date'] {
+    color: #a18267;
+}
+
+input[type="date"]::-webkit-clear-button,
+input[type="date"]::-webkit-inner-spin-button { 
+    display: none;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    width: 20%;
+    height: 8%;
+    cursor: pointer;
+    background: transparent; 
+    color: transparent; 
+}
+
+.loginup-btn-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+/* 번호 */
+.phone-auth {
+    border: 1px solid #a18267;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 40%;
+    padding: 10px 16px;
+    background-color: #fff;
+    color: #a18267;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 30%;
+    display: none;
+}
+.phone-auth-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: none;
+}
+
+.phone-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    
+}
+.loginup-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    display : none;
+}
+
+button:hover {
+    background-color: #7d6651;
+}
+
+.phone-btn {
+    background-color: #a18267;
+    color: white;
+    font-weight: 500;
+}
+
+.phone-btn:hover {
+    background-color: #7d6651;
+}
+
+.loginup-find {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #a18267;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.error-text {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.loginup-link {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    font-size: 14px;
+    color: #a18267;
+    text-decoration: none;
+    margin-bottom: 10px;
+    align-items: baseline;
+}
+
+.loginup-link a {
+    color: #a18267;
+    text-decoration: none;
+}
+
+.loginup-link a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* ==================================================================================================== */
+
+
+/* 푸터 스타일 */
+footer {
+    background-color: #a18267;
+    color: white;
+    margin-top: 50px;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+}
+
+.footer-info {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.bbangllogo-class {
+    margin-top: 10px;
+}
+
+/* 인풋 내용 수정 불가능 */
+
+input[readonly] {
+    background-color:rgb(232, 240, 254);
+}
