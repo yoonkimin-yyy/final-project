@@ -1,4 +1,4 @@
-package kr.kro.bbangil.register.api;
+package kr.kro.bbanggil.register.api;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
