@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <head>
+    	<link rel="stylesheet" th:href="@{/css/register/checkbox.css}">
+    	<script src="/js/register/checkbox.js"></script>
+   	</head>
+<body>
+     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+    <main>
+        <div class="check-main-div">
+            <form class="check-form">
+                <div class="form-check-input">
+                    <h3> ✔ 이용약관</h3>
+                    <div class="check-all-div">
+                        <label class="checkbox-label">
+                            <input class="check-input" type="checkbox">
+                            <span class="checkbox-icon"></span>
+                            <span class="checkbox-text"></span>
+                            <label class="check-label">
+                                <span class="span-text">전체 동의하기</span>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="all-text-div">
+                        실명 인증 된 아이디로 가입, 위치기반서비스 이용약관(선택),
+                        <br>
+                        이벤트・해택 정보 수신(선택) 동의를 포함합니다.
+                    </div>
+                    <ul class="list-ul">
+                        <li class="list-li">
+                            <div class="check-div">
+                                <div class="essential-div">
+                                    <label class="checkbox-label">
+                                        <input class="check-input" type="checkbox">
+                                        <span class="checkbox-icon"></span>
+                                        <span class="checkbox-text"></span>
+                                    <label class="check-label">
+                                        <em class="essential-em">[필수]</em>
+                                        <div class="span-div">
+                                            <span class="span-text">이빵이오 이용약관</span>
+                                        </div>
+                                    </label>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="check-div-scroll">
+                                <p>    
+                                    이빵이오 서비스를 이용해 주셔서 감사합니다. 
+                                    본 약관은 서비스의 이용과 관련하여 
+                                    <br>
+                                    이빵이오 서비스를 제공하는 
+                                    이빵이오와 이를 이용하는 이빵이오 서비스 회원 (이하 ‘회원’) 
+                                    <br>
+                                    또는 비회원과의 관계를 설명하며, 
+                                    <br>
+                                    아울러 여러분의 이빵이오 서비스 이용에 
+                                    도움이 될 수 있는 유익한 정보를 포함하고 있습니다.	
+                                </p>
+                                <br>
+                                <p>                                   
+                                    이빵이오 서비스를 이용하시거나,
+                                    서비스 회원으로 가입하실 경우 
+                                    <br>
+                                    여러분은 본 약관 및 관련 운영 정책을
+                                    확인하거나 동의하게 되므로, 
+                                    <br>
+                                    잠시 시간을 내시어 주의 깊게 살펴봐 주시기 바랍니다.	
+                                </p>
+                            </div>
+                        </li>
+                        <li class="list-li">
+                            <div class="check-div">
+                                <div class="essential-div">
+                                    <label class="checkbox-label">
+                                        <input class="check-input" type="checkbox">
+                                        <span class="checkbox-icon"></span>
+                                        <span class="checkbox-text"></span>
+                                    <label class="check-label">
+                                        <em class="essential-em">[필수]</em>
+                                        <div class="span-div">
+                                            <span class="span-text">개인정보 수집 및 이용</span>
+                                        </div>
+                                    </label>
+                                    </label>
+                                </div>
+                            </div>    
+                            <div class="check-div-scroll">
+                                <div class="text-div">
+                                    <p>                                        
+                                        개인정보 보호법에 따라 이빵이오에 회원가입 신청하시는 분께 
+                                        <br>
+                                        수집하는 개인정보의 항목, 개인정보의 수집 및
+                                        <br>
+                                        이용목적, 개인정보의 보유 및 이용기간, 
+                                        <br>
+                                        동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니
+                                        <br>
+                                        자세히 읽은 후 동의하여 주시기 바랍니다.
+                                    </p>
+                                </div>
+                                <div class="text-div">
+                                    <br>
+                                    <h4>수집하는 개인정보</h4>
+                                    <p>                                       
+                                        이용자는 회원가입을 하지 않아도 
+                                        <br>
+                                        빵집 검색, 찾기 등 이빵이오 서비스를 회원과 동일하게 이용 할 수 있습니다. 
+                                        <br>
+                                        이용자가 장바구니, 픽업, 리뷰 작성 등 담기 등 
+                                        <br>
+                                        이빵이오 서비스 이용을 위해 필요한 최소한의 개인정보를 수집합니다.    
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-li">
+                            <div class="check-div">
+                                <div class="select-div">
+                                    <input class="check-input" type="checkbox">
+                                    <label class="checkbox-label">
+                                        <input class="check-input" type="checkbox">
+                                        <span class="checkbox-icon"></span>
+                                        <span class="checkbox-text"></span>
+                                        <em class="select-em">[선택]</em>
+                                        <div class="span-div">
+                                            <span class="span-text">위치기반서비스 이용약관</span>
+                                        </div>
+                                    </label>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="check-text-div">
+                                <div class="text-div">
+                                    <p>
+                                        위치기반서비스 이용약관에 동의하시면, 위치를 활용한 정보 제공 및 맞춤형 서비스를 이용하실 수 있습니다.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-li">
+                            <div class="check-div">
+                                <div class="select-div">
+                                    <input class="check-input" type="checkbox">
+                                    <label class="checkbox-label">
+                                        <input class="check-input" type="checkbox">
+                                        <span class="checkbox-icon"></span>
+                                        <span class="checkbox-text"></span>
+                                    <label class="check-label">
+                                        <em class="select-em">[선택]</em>
+                                        <div class="span-div">
+                                            <span class="span-text">마케팅 정보 수신 동의</span>
+                                        </div>
+                                    </label>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="check-text-div">
+                                <div class="check-input-div">
+                                    <div class="check-email-box">
+                                        <input class="check-input" type="checkbox">
+                                    <label class="checkbox-label">
+                                        <input class="check-input" type="checkbox">
+                                        <span class="checkbox-icon"></span>
+                                        <span class="checkbox-text"></span>
+                                        <p>이메일</p>
+                                    </div>
+                                    </label>
+                                    <div class="check-sms-box">
+                                        <input class="check-input" type="checkbox">
+                                    <label class="checkbox-label">
+                                        <input class="check-input" type="checkbox">
+                                        <span class="checkbox-icon"></span>
+                                        <span class="checkbox-text"></span>
+                                        <p>SMS</p>
+                                    </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <button class="check-btn" type="button">다음</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</html>

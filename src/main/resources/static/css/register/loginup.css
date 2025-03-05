@@ -1,0 +1,305 @@
+
+
+/* ==================================================================================================== */ 
+
+/* 회원가입 스타일 */
+.loginup-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #a18267;
+}
+.loginup-container {
+    width: 100%;
+    max-width: 30%;
+    margin: 80px auto;
+    margin-bottom: 20px;
+    padding: 40px 70px;
+    background-color: white;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.loginup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: #a18267;
+}
+
+.loginup-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+    /* border-bottom: 0px; */
+    border-top: 0px;
+}
+
+.loginup-id {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.id-check-btn {
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    width: 25%;
+    /* position: absolute; */
+    /* right: 0;
+    top: 0;
+    bottom: 0; */
+    margin-left: 15px;
+    height: 52px;
+    margin-bottom: 5px;
+}
+
+input::placeholder {
+    color: #a18267;
+}
+
+.loginup-input-first {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+}
+
+.loginup-input-id {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.loginup-input-last {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #a18267;
+    font-size: 16px;
+    background-color: #fff;
+    color: #a18267;
+}
+
+.loginup-input-first:first-of-type {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.loginup-input-last:last-of-type {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.loginup-input+.loginup-input {
+    margin-top: -1px;
+}
+
+/* 주소 */
+.address-input-div {
+    margin-bottom: 5px;
+}
+
+.postcode-btn {
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    height: 46px;
+    width: 25%;
+    margin-left: 15px;
+}
+
+.postcode-btn:hover {
+    background-color: #7d6651;
+}
+.postcode-div {
+    display: flex;
+    align-items: center;
+}
+
+.postcode-input {
+    border: 1px solid #a18267;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 40%;
+    padding: 10px 16px;
+    background-color: #fff;
+    color: #a18267;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+input:focus {
+    border-color: #7d6651;
+    outline: none;
+    background-color: white;
+}
+
+input[type='date'] {
+    color: #a18267;
+}
+
+input[type="date"]::-webkit-clear-button,
+input[type="date"]::-webkit-inner-spin-button { 
+    display: none;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    width: 20%;
+    height: 8%;
+    cursor: pointer;
+    background: transparent; 
+    color: transparent;
+}
+
+.loginup-btn-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+/* 번호 */
+.phone-auth {
+    border: 1px solid #a18267;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 40%;
+    padding: 10px 16px;
+    background-color: #fff;
+    color: #a18267;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 30%;
+    display: none;
+}
+.phone-auth-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: none;
+}
+
+.phone-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    
+}
+.loginup-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a18267;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    display : none;
+}
+
+button:hover {
+    background-color: #7d6651;
+}
+
+.phone-btn {
+    background-color: #a18267;
+    color: white;
+    font-weight: 500;
+}
+
+.phone-btn:hover {
+    background-color: #7d6651;
+}
+
+.loginup-find {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #a18267;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.error-text {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.loginup-link {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    font-size: 14px;
+    color: #a18267;
+    text-decoration: none;
+    margin-bottom: 10px;
+    align-items: baseline;
+}
+
+.loginup-link a {
+    color: #a18267;
+    text-decoration: none;
+}
+
+.loginup-link a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* ==================================================================================================== */
+
+
+/* 인풋 내용 수정 불가능 */
+
+input[readonly] {
+    background-color:rgb(232, 240, 254);
+}

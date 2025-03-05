@@ -1,0 +1,122 @@
+
+
+/* 로그인 스타일 */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f8f6f3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 70vh;
+}
+
+.login-h2 {
+    display: flex;
+    align-items: flex-end;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #a18267;
+    letter-spacing :2px;
+    border-bottom: 1px solid #a18267;
+    padding-bottom: 10px;
+    /* margin-left: 5px; */
+}
+
+.form-group {
+    margin-bottom: 30px;
+    color: #a18267;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #a18267;
+    background-color: #f8f6f3;
+}
+
+input:focus {
+    border-color: #a18267;
+    outline: none;
+    background-color: f8f6f3;
+}
+
+.login-btn-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-btn-div p{
+    margin-bottom: 10px;
+    color: #a18267;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a18267;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.login-snsbtn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a7c1f9;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #7d6651;
+}
+
+.login-link {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    font-size: 14px;
+    color: #a18267;
+    text-decoration: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: baseline;
+}
+.login-find {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #a18267;
+    text-decoration: none
+}
+
+.loginup {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #a18267;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+
