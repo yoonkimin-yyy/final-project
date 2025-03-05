@@ -6,10 +6,12 @@
     <title>대전 성심당</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/owner/bakery/insert/insert.css}">
-    <script src="/js/bakery/insert/insert.js"></script>
+    <script src="/js/owner/bakery/insert/insert.js"></script>
 </head>
 
 <body>
+	<form th:action="@{/bakery/insert}" method="Post">
+	
     <div class="container">
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
@@ -25,7 +27,7 @@
             <div class="header-container"> <!--flex 컨테이너 추가-->
 
                 <div class="bakery-info">
-                    <input type="text" class="bakery-name" placeholder="빵집 이름">
+                    <input type="text" class="bakery-name" name="bakeryName" placeholder="빵집 이름">
                     <div class="rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -36,12 +38,12 @@
                     </div>
                     <div class="info-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <input type="text" placeholder="주소">
+                        <input type="text" name="bakeryAddress" placeholder="주소">
                     </div>
                     <div class="info-item">
                         <i class="fas fa-clock"></i>
                         <span id="today-hours">영업시간 선택</span>
-                        <button class="hours-toggle">더보기</button>
+                        <button class="hours-toggle" type="button">더보기</button>
                         <div class="hours-detail" style="display: none;">
                             <input type="radio" id="choose-date">
                             <label for="choose-date">날짜별</label>
@@ -50,17 +52,17 @@
                             <div id="days-table" style="display: none;">
                                 <div class="hours-item">
                                     <span class="day">평일</span>
-                                    <input type="text" class="time" placeholder="영업시간">
+                                    <input type="text" class="time" name="weekday" id="weekday" placeholder="영업시간">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">주말</span>
-                                    <input type="text" class="time" placeholder="영업시간">
+                                    <input type="text" class="time" id="weekend" placeholder="영업시간">
                                 </div>
                             </div>
                             <div id="date-table" style="display:none;">
                                 <div class="hours-item">
                                     <span class="day">월요일</span>
-                                    <input type="text" class="time" placeholder="영업시간">
+                                    <input type="text" class="time" name="monday" placeholder="영업시간">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">화요일</span>
@@ -91,11 +93,11 @@
                     </div>
                     <div class="info-item">
                         <i class="fas fa-phone"></i>
-                        <input type="text" placeholder="전화번호">
+                        <input type="text" name="bakeryPhone" placeholder="전화번호">
                     </div>
                     <div class="info-item">
                         <i class="fas fa-calendar"></i>
-                        <input type="text" placeholder="창립일or오픈일(선택)">
+                        <input type="text" name="createdDate" placeholder="창립일or오픈일(선택)">
                     </div>
                 </div>
             </div>
@@ -135,7 +137,7 @@
                     <label for="insideImage" class="photo-upload">사진 추가</label>
                     <input type="file" id="insideImage" accept="image/*" multiple style="display: none">
                     <div class="photo-description">
-                        <textarea class="description" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
+                        <textarea class="description" name="insideInfo" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
                         </ul>
                     </div>
                 </div>
@@ -145,7 +147,7 @@
                     <label for="outsideImage" class="photo-upload">사진 추가</label>
                     <input type="file" id="outsideImage" accept="image/*" multiple style="display: none">
                     <div class="photo-description">
-                        <textarea class="description" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
+                        <textarea class="description" name="outsideInfo" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
                         </ul>
                     </div>
                 </div>
@@ -156,16 +158,20 @@
                         <label for="parking-image" class="parking-photo-upload">사진 추가</label>
                         <input type="file" id="parking-image" accept="image/*" multiple style="display: none">
                         <div class="parking-details">
-                            <textarea class="parking-text" placeholder="주차장 정보를 입력해주세요" ;></textarea>
+                            <textarea class="parking-text" name="parkingInfo" placeholder="주차장 정보를 입력해주세요" ;></textarea>
                         </div>
                     </div>
                 </div>
 
             </div>
+        </div>
+            
             <div>
                 <button class="submit-btn edit-btn">제출</button>
                 <button class="cancel-btn edit-btn">취소</button>
             </div>
+    </div>
+	</form>
 </body>
 
 </html>

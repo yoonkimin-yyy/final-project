@@ -5,23 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/owner/menu/insert/insert.css}">
-    <title>Document</title>
+    <title>메뉴 추가</title>
 </head>
 
 <body>
-    <form action="">
-        <label for="menu-image" class="menu-image">+</label>
-        <input type="file" id="menu-image" style="display: none;" multiple>
+    <form id="insertForm" th:action="@{/bakery/menu/insert}" method="post" enctype="multipart/form-data">
+        <label for="menuImage" class="menu-image">+</label>
+        <input type="file" id="menuImage" name="menuImage" style="display: none;" multiple>
         <div class="menu-info">
-            <input type="text" id="menu-name" placeholder="메뉴명">
-            <input type="text" id="menu-price" placeholder="가격">
-            <select name="populity" id="menu-populity" class="menu-populity">
+            <input type="text" id="menuName" name="menuName" placeholder="메뉴명">
+            <input type="text" id="menuPrice" name="menuPrice" placeholder="가격">
+            <select name="menuPopulity" id="menuPopulity" class="menu-populity">
                 <option value="일반">일반</option>
                 <option value="인기">인기</option>
+            </select>
+            <select name="menuCategory" id="menuCategory" class="menu-populity">
+            	<option th:each="category : ${category}" th:value="${category.category}" th:text="${category.category}"></option>
             </select>
         </div>
         <button class="add-to-menu" type="submit">메뉴추가</button>
     </form>
+    <script src="/js/owner/menu/insert/insert.js"></script>
 </body>
 
 </html>
