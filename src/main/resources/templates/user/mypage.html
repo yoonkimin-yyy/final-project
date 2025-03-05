@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <head>
+    	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+    	<script src="/js/mypage/mypage.js"></script>
+   	</head>
+<body>
+     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+<main>
+    <div class="mypage-container">
+        <div class="mypage-title">
+            <h1>마이페이지</h1>
+            <p>안녕하세요, 회원님!🥖</p>
+        </div>
+        <div class="mypage-content">
+            <div class="mypage-info">
+                <h3>내 정보🥖</h3>
+                <p>이름 <br> &nbsp; 🥐 &nbsp;이빵이</p>
+                <p>이메일 <br> &nbsp; 🥐 &nbsp;asd123@naver.com</p>
+                <p>핸드폰 <br> &nbsp; 🥐 &nbsp;010.1234.5678</p>
+            <div class="mypage-menu">
+                <a href="./edit.html">회원정보 수정 ✎</a>
+                <!-- <a href="#">내가 쓴 리뷰 ✎</a> -->
+            </div>
+        </div>
+            <div class="mypage-order">
+                <p>🍞 구매내역 🍞</p>
+                <table class="mypage-table">
+                    <thead class="mypage-table-head">
+                        <tr>
+                            <td style="width: 5%;">번호</td>
+                            <td style="width: 30%;">가게이름</td>
+                            <!-- <td style="width: 30%;">메뉴</td> -->
+                            <td style="width: 15%;">주문금액</td>
+                            <!-- <td style="width: 10%;">리뷰✎</td> -->
+                            <td style="width: 10%;">주문상태</td>
+                        </tr>
+                    </thead>
+                    <tbody class="mypage-table-body">
+                        <tr class="tbody-tr" onclick="toggleDetail(this);">
+                            <td>1</td>
+                            <td>이빵이오</td>
+                            <td>36,000원</td>
+                            <td>대기</td>
+                        </tr>
+                        <tr class="detail-row">
+                            <td colspan="4">
+                                <div id="detail-info" class="detail-info">
+                                    <div class="menu-div">
+                                        <p>🥯 구매한 빵 : 우유식빵 1개, 소금빵 2개, 단팥빵 1개</p>
+                                    </div>
+                                    <div class="review-info-div">
+                                        <p>내 리뷰 ✎</p>
+                                        <div class="stars">
+                                            <p>평점 : </p>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div> 
+                                        <div class="review-text">
+                                            <p>
+                                                사장님이 맛있고 빵이 친절해요
+                                            </p>
+                                            <div class="tag-container">
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">🍞</span>
+                                                            <span class="text">빵이 맛있어요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">💖</span>
+                                                            <span class="text">친절해요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">✨</span>
+                                                            <span class="text">매장이 청결해요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">🌟</span>
+                                                            <span class="text">특별한 메뉴가 있어요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">👶</span>
+                                                            <span class="text">아이와 가기 좋아요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="delete-btn" type="button">삭제</button>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="tbody-tr" onclick="toggleDetail(this);">
+                            <td>2</td>
+                            <td>이빵이오</td>
+                            <td>12,000원</td>
+                            <td>확인</td>
+                        </tr>
+                        <tr class="detail-row">
+                            <td colspan="4">
+                                <div id="detail-info" class="detail-info">
+                                    <div class="menu-div">
+                                        <p>🥯 구매한 빵 : 우유식빵 1개, 소금빵 2개, 단팥빵 1개</p>
+                                    </div>
+                                     <div class="review-div">
+                                        <div class="review-write-div">
+                                            <button class="review-write-btn" id="review-write-btn" 
+                                                    type="button" onclick="writeBtn()">리뷰 작성 하기 ✎</button>
+                                        </div>
+                                        <div class="review-text-div" id="review-text-div">
+                                            <div class="stars" style="color: yellow;">
+                                                <p>평점 : </p>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                            <textarea class="review-text-textarea" maxlength="100" type="text"></textarea>
+                                            <p class="char-count">0/100</p>
+                                            <div class="tag-container">
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">🍞</span>
+                                                            <span class="text">빵이 맛있어요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">💖</span>
+                                                            <span class="text">친절해요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">✨</span>
+                                                            <span class="text">매장이 청결해요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">🌟</span>
+                                                            <span class="text">특별한 메뉴가 있어요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tag">
+                                                    <div class="tag-header">
+                                                        <div class="tag-left">
+                                                            <span class="emoji">👶</span>
+                                                            <span class="text">아이와 가기 좋아요</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gauge-container">
+                                                        <div class="gauge"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <button class="text-btn" type="button">등록</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</html>

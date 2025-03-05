@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <head>
+    	<link rel="stylesheet" th:href="@{/css/register/loginin.css}">
+    	<script src="/js/register/loginin.js"></script>
+   	</head>
+<header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+<body>
+    <main>
+        <div class="login-container">
+            <div class="login-h2">
+                <!-- <h2>로그인</h2> -->
+                <img src="/img/common/이빵이.png" style="width: 100px" alt="" >
+            </div>
+            <form action="/loginin" method="post">
+                <div class="form-group">
+                    <label for="userid"></label>
+                    <input class="login-input" type="text" placeholder="ID"
+                           id="userid" name="userid" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"></label>
+                    <input class="login-input" type="password" placeholder="Password"
+                           id="password" name="password" required>
+                </div>
+            <div class="login-btn-div">
+                <button class="login-btn" type="submit">로그인</button>
+                <p>- 간편 로그인 -</p>
+                <button class="login-snsbtn">카카오 로그인</button>
+                <button class="login-snsbtn">네이버 로그인</button>
+                <button class="login-snsbtn">구글 로그인</button>
+            </div>
+            <div class="login-link">
+                <a href="/register/findidpw" class="login-find">아이디/비밀번호 찾기</a>
+                <p>|</p>
+                <a href="/register/typeloginup" class="loginup">회원가입</a>
+            </div>
+            </form>
+        </div>
+    </main>
+</body>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+    </html>

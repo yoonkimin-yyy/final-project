@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <head>
+    	<link rel="stylesheet" th:href="@{/css/mypage/edit.css}">
+    	<script src="/js/mypage/edit.js"></script>
+   	</head>
+ <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+<body>
+<main>
+<div class="info-div">   
+    <form class="info-form">
+        <div class="mypageInfo">
+            <div class="info-correction">
+                <div class="info-title">
+                    <h3>기본정보 수정</h3>
+                </div>
+                <div class="info-edit">
+                    <input class="info-input" type="text" value="이빵이"
+                            id="info-name" name="name">
+
+                    <input class="info-input" type="email" value="asd123@naver.com"
+                            id="info-email" name="email">
+
+                    <input class="info-input" type="tel" value="01012345678"
+                            id="info-phone" name="phone">
+                </div>
+                    <div class="error-text" id="name-msg"></div>
+                    <div class="error-text" id="email-msg"></div>
+                    <div class="error-text" id="phone-msg"></div>
+                <div class="info-btn-div">
+                    <button class="edit-btn" type="button">수정</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form class="info-form">
+        <div class="mypageInfo">
+            <div class="info-change">
+                <div class="info-title">
+                    <h3>개인정보 변경</h3>
+                </div>
+                    <div class="info-edit">
+
+                        <div class="info-pw-btn-div">
+                            <button class="change-pw-btn" type="button" onclick="pwBtn()">비밀번호 변경</button>
+
+                            <div class="pass-div" id="pass-div">
+                                <input class="change-password" type="password" id="password-now" 
+                                        placeholder="현재 비밀번호">
+                                        <div class="error-text" id="passwordNow-msg"></div>
+
+                                <input class="change-password" type="password" id="password-new"
+                                        placeholder="새 비밀번호">
+                                        <div class="error-text" id="passwordNew-msg"></div>   
+
+                                <input class="change-password" type="password" id="password-new-confirm"
+                                        placeholder="새 비밀번호 확인">
+                                        <div class="error-text" id="password-confirm-msg"></div>
+
+                                <button class="pass-btn" id="pass-btn" type="button">변경하기</button>
+                            </div>
+                        </div>
+
+                        <div class="info-address-btn-div">
+                            <button class="change-ar-btn" type="button">주소 변경</button>
+
+                            <div class="postcode-div" id="postcode-div">
+                                <input class="change-postcode" type="text" id="postcode" name="postcode" placeholder="우편번호">
+                                <button class="change-address-btn" type="button" onclick="addrBtn()">우편번호 검색</button>
+                            </div>
+
+                            <div class="addr-div" id="addr-div">
+                                <input class="change-address" type="text" id="address" name="address" placeholder="주소">
+                                <input class="change-address" type="text" id="detailAddress" 
+                                        name="detailAddress" placeholder="상세주소 (선택)">
+                                <button class="addr-btn" id="addr-btn" type="button">변경하기</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div> 
+</main>
+</body>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</html>

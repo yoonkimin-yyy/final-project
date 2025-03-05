@@ -35,6 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
+=======
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,visualstudiocode
@@ -155,3 +157,4 @@ replay_pid*
 
 
 *.properties
+>>>>>>> branch 'master' of https://github.com/minu1313/final-project.git

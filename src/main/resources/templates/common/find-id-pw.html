@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <head>
+    	<link rel="stylesheet" th:href="@{/css/register/find-id-pw.css}">
+    	<script src="/js/register/find-id-pw.js"></script>
+   	</head>
+<body>
+     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+    <main>
+        <div class="find-id-pw-container">
+            <h2>아이디/비밀번호 찾기</h2>
+            <form autocomplete="off" class="find-id-form" action="/find-id-pw" method="post">
+                <div class="form-group">
+                    <div class="find-id-pw-input-div">
+                        <p>아이디 찾기</p>
+                        <label for="username"></label>
+                        <input class="find-id-pw-input" type="text" placeholder="이름"
+                               id="username" name="username" required>
+                        <div class="error-text" id="name-msg"></div>
+                    </div>
+                    <div class="find-id-pw-input-div">
+                        <label for="email"></label>
+                        <input class="find-id-pw-input" type="email" placeholder="이메일"
+                               id="id-email" name="id-email" required>
+                        <div class="error-text" id="id-email-msg"></div>
+                    </div>
+                    <div class="find-id-pw-btn-div">
+                        <button class="find-id-btn" type="button">찾기</button>
+                    </div>
+                </div>
+            </form>
+            <form autocomplete="off" class="find-pw-form" action="/find-id-pw" method="post">
+                <div class="form-group">
+                    <div class="find-id-pw-input-div">
+                        <p>비밀번호 찾기</p>
+                        <label for="userid"></label>
+                        <input class="find-id-pw-input" type="text" placeholder="아이디"
+                               id="userid" name="userid" required>
+                        <div class="error-text" id="id-msg"></div>
+                    </div>
+                    <div class="find-id-pw-input-div">
+                        <label for="email"></label>
+                        <input class="find-id-pw-input" type="email" placeholder="이메일"
+                               id="pw-email" name="pw-email" required>
+                        <div class="error-text" id="pw-email-msg"></div> 
+                    </div>
+                    <div class="find-id-pw-btn-div">
+                        <button class="find-pw-btn" type="button">찾기</button>
+                    </div>
+                </div>
+            </form>
+            <div class="login-link">
+                <a href="/register/loginin">로그인하러 가기</a>
+            </div> 
+        </div>
+    </main>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</body>
+</html>
