@@ -1,16 +1,41 @@
-<footer th:fragment = "FooterFragment">
-        <div class="footer-content">
-            <div class="footer-info">
-                <img class="bbangllogo-class" src="/img/common/이빵이.png" style="width: 100px" alt="" >
-                <p>BBANGL © 2024</p>
-                <p>문의: sked456@naver.com</p>
-                <p>경기도 안양시 만안구  303, S210, S213,215, S802-S804호(안양동, 메쎄포스빌)</p>
+<footer class="footer" th:fragment = "FooterFragment">
+	
+        <div class="footer-top">
+            <div class="footer-column">
+                <img src="/img/common/이빵이오 캐릭터로고.png" id="footer-logo"  alt="">
+                <p class="footer-description">
+                    전국의 맛있는 빵집을 소개하는<br>
+                    대한민국 No.1 베이커리 정보 플랫폼
+                </p>
             </div>
-            <div class="footer-links">
-                <a href="#">이용약관</a>
-                <a href="#">개인정보처리방침</a>
-                <a href="#">제휴문의</a>
-                <a href="#">고객센터</a>
+            
+            <div class="footer-column">
+                <h4 class="footer-subtitle">서비스</h4>
+                <a href="#" class="footer-link">빵집 등록하기</a>
+                <a href="#" class="footer-link">빵집 광고 문의</a>
+                <a href="#" class="footer-link">제휴 문의</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-subtitle">정보</h4>
+                <a href="#" class="footer-link">이용약관</a>
+                <a href="#" class="footer-link">개인정보처리방침</a>
+                <a href="#" class="footer-link">FAQ</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-subtitle">소셜 미디어</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
         </div>
-</footer>
+        
+        <div class="footer-bottom">
+            <p class="copyright">
+                © 2025 이빵이오 All Rights Reserved.
+            </p>
+        </div>
+    </footer>

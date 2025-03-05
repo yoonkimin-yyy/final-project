@@ -12,4 +12,13 @@ public class BakeryController {
 	public String list() {
 		return "user/bakery-list";
 	}
+	
+	@GetMapping("/insert/form")
+	public String bakeryInsertForm() {
+		return "owner/bakery-insert";
+	}
+	@GetMapping("/menu/insert/form")
+	public String menuInsertForm() {
+		return "owner/menu-insert";
+	}
 }

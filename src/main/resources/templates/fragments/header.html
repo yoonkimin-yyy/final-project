@@ -1,21 +1,10 @@
-<header class="header" th:fragment = "HeaderFragment">
-        <div class="container">
-            <div class="header-left">
-                <img src="/img/common/이빵이오 캐릭터로고.png" style="width: 130px; height: 50px;" alt="">
-                <a href="./type-loginup.html"><img src="/img/common/이빵이오 로고.png" style="width: 110px; height: 40px;" alt=""></a>
-            </div>
-            <div class="header-menu">
-            <a href="#" class="menu-item">빵집 리스트</a>
-            <div class="dropdown">
-                <a href="#" class="menu-item">새소식</a>
-                <div class="dropdown-content">
-                    <a href="#" class="dropdown-item">공지사항</a>
-                    <a href="#" class="dropdown-item">이벤트</a>
-                </div>
-            </div>
-            <a href="#" class="menu-item">1:1 문의</a>
-            <a href="/register/loginin" class="menu-item">로그인</a>
-            <a href="/register/typeloginup" class="menu-item">회원가입</a>
+<header class="header" th:fragment= "HeaderFragment">
+        <div class="logo-container">
+            <h1 class="logo-text">이빵 이오</h1>
+            <p class="logo-subtext">전국 빵집 탐방 가이드</p>
         </div>
+        <div class="nav-buttons">
+            <button class="login-button">로그인</button>
+            <button class="register-button">회원가입</button>
         </div>
-</header>
+    </header>

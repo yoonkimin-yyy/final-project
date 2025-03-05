@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 대시보드</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+    <script src="/js/admin/admin.js"></script>
+</head>
+
+<body>
+    <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+
+    <div class="dashboard wrapper">
+        <div class="tabs">
+            <button class="tab active" href="#" onclick="showTab('traffic')">트래픽 모니터링</button>
+            <button class="tab" href="#" onclick="showTab('bakery')">베이커리 관리</button>
+            <button class="tab" href="#" onclick="showTab('user')">사용자 관리</button>
+            <button class="tab" href="#" onclick="showTab('accept')">등록 관리</button>
+        </div>
+
+        <div id="traffic" class="tab-content bg-brown active-content">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-title">일일 방문자</div>
+                    <div class="stat-value">2,345</div>
+                    <div class="stat-increase">+12%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">총 주문</div>
+                    <div class="stat-value">1,234</div>
+                    <div class="stat-increase">+23%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">신규 회원</div>
+                    <div class="stat-value">432</div>
+                    <div class="stat-increase">+8%</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="section-title">월별 주문량</div>
+                <canvas id="orderChart" class="chart"></canvas>
+            </div>
+
+            <div class="lists-container">
+                <div class="list-section">
+                    <div class="section-title">최근 주문<div class="inline" onclick="showTab('bakery')">more</div>
+                    </div>
+
+                    <div class="list-item">
+                        <div class="list-item-title">김철수</div>
+                        <div class="list-item-subtitle">상품A</div>
+                        <span class="status-badge status-pending">배송중</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">이영희</div>
+                        <div class="list-item-subtitle">상품B</div>
+                        <span class="status-badge status-pending">주문확인</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">박지성</div>
+                        <div class="list-item-subtitle">상품C</div>
+                        <span class="status-badge status-completed">결제완료</span>
+                    </div>
+                </div>
+
+                <div class="list-section">
+                    <div class="section-title">신고 내역<div class="inline" onclick="showTab('user')">more</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">상품하자</div>
+                        <div class="list-item-subtitle">신고 ID: 1</div>
+                        <span class="status-badge status-pending">처리중</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">배송지연</div>
+                        <div class="list-item-subtitle">신고 ID: 2</div>
+                        <span class="status-badge status-completed">완료</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">환불요청</div>
+                        <div class="list-item-subtitle">신고 ID: 3</div>
+                        <span class="status-badge status-pending">검토중</span>
+                    </div>
+                </div>
+
+                <div class="list-section">
+                    <div class="section-title">1:1 문의<div class="inline">more</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">배송문의</div>
+                        <div class="list-item-subtitle">문의 ID: 1</div>
+                        <span class="status-badge status-pending">답변대기</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">결제문의</div>
+                        <div class="list-item-subtitle">문의 ID: 2</div>
+                        <span class="status-badge status-completed">답변완료</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">상품문의</div>
+                        <div class="list-item-subtitle">문의 ID: 3</div>
+                        <span class="status-badge status-pending">답변대기</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bakery" class="tab-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>상호명</th>
+                        <th>사용자ID</th>
+                        <th>연락처</th>
+                        <th>주소</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="bakeryDetail()">
+                        <td>베이커리A</td>
+                        <td>user01</td>
+                        <td>010-1234-5678</td>
+                        <td>서울시 강남구</td>
+                    </tr>
+                    <tr onclick="bakeryDetail()">
+                        <td>베이커리B</td>
+                        <td>user02</td>
+                        <td>010-2134-5678</td>
+                        <td>서울시 강남구</td>
+                    </tr>
+                    <tr onclick="bakeryDetail()">
+                        <td>베이커리C</td>
+                        <td>user01</td>
+                        <td>010-1234-5678</td>
+                        <td>서울시 강남구</td>
+                    </tr>
+                    <!-- 추가 행들 -->
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="user" class="tab-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>ID</th>
+                        <th>이메일</th>
+                        <th>핸드폰번호</th>
+                        <th>타입</th>
+                        <th>경고/정지</th>
+                        <th>신고된 리뷰</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="user1" onclick="userDetail()">
+                        <td>1</td>
+                        <td>user01</td>
+                        <td>user01@example.com</td>
+                        <td>010-1234-5678</td>
+                        <td>관리자</td>
+                        <td class="status"></td>
+                        <td></td>
+                    </tr>
+                    <tr id="user2" onclick="userDetail()">
+                        <td>2</td>
+                        <td>user02</td>
+                        <td>user02@example.com</td>
+                        <td>010-1234-5678</td>
+                        <td>유저</td>
+                        <td class="status">안됨?</td>
+                        <td>맛이 있을까요 없을까요</td>
+                        <td class="popup-btn" onclick="openPopup()">더보기</td>
+                    </tr>
+                    <tr id="user3" onclick="userDetail()">
+                        <td>3</td>
+                        <td>user03</td>
+                        <td>user03@example.com</td>
+                        <td>010-2451-5678</td>
+                        <td>관리자</td>
+                        <td class="status"></td>
+                        <td></td>
+                    </tr>
+                    <!-- 추가 행들 -->
+                </tbody>
+            </table>
+        </div>
+        <div id="accept" class="tab-content">
+            <div class="accept-container">
+                <table class="normal-info">
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>신청자 ID</th>
+                            <th>핸드폰번호</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="user1">
+                            <td>1</td>
+                            <td>user01</td>
+                            <td>010-1234-5678</td>
+                        </tr>
+                        <tr id="user2">
+                            <td>2</td>
+                            <td>user02</td>
+                            <td>010-1234-5678</td>
+                        </tr>
+                        <tr id="user3">
+                            <td>3</td>
+                            <td>user03</td>
+                            <td>010-2451-5678</td>
+                        </tr>
+                        <!-- 추가 행들 -->
+                    </tbody>
+                </table>
+
+                <table class="detail-info">
+                    <tr>
+                        <th>번호</th>
+                        <td>1</td>
+
+                    </tr>
+                    <tr>
+                        <th>신청자ID</th>
+                        <td>user01</td>
+                    </tr>
+                    <tr>
+                        <th>이메일</th>
+                        <td>user01@example.com</td>
+
+                    </tr>
+                    <tr>
+                        <th>핸드폰번호</th>
+                        <td>010-1234-5678</td>
+
+                    </tr>
+                    <tr>
+                        <th>주소</th>
+                        <td>대한민국 어딘가</td>
+                    </tr>
+                    <tr>
+                        <th>설명</th>
+                        <td>빵집입니다빵집입니다빵집입니다빵집입니다빵집입니다빵집입니다</td>
+                    </tr>
+                    <tr>
+                        <th>편의정보</th>
+                        <td>뭔가 있겠지</td>
+                    </tr>
+                    <tr>
+                        <th>실내정보</th>
+                        <td>실내가 이쁘대</td>
+                    </tr>
+                    <tr>
+                        <th>실외정보</th>
+                        <td>밖이 잘보인대</td>
+                    </tr>
+                </table>
+
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>메뉴</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>식빵</td>
+                    </tr>
+                    <tr>
+                        <td>케이크</td>
+                    </tr>
+                    <tr>
+                        <td>크림빵</td>
+                    </tr>
+                    <tr>
+                        <td>피자빵</td>
+                    </tr>
+                    <tr>
+                        <td>죽빵</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="accept-btns">
+                <button class="confirm-btn">승인</button>
+                <button class="reject-btn">거절</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
+    <script src="js/scripts.js"></script>
+
+</body>
+
+</html>
