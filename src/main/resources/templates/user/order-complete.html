@@ -4,34 +4,15 @@
 <head>
     <title>주문완료</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/order-complete.css">
+    <link rel="stylesheet" th:href="@{/css/order/order-complete.css}">
 </head>
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
 
-<header class="header">
-    <div class="container">
-        <div class="header-left">
-            <img src="../img/header.webp" style="width: 80px;" alt="">
-            <h1 class="header-title">BBANGL</h1>
-        </div>
-        <div class="header-menu">
-        <a href="#" class="menu-item">빵집 리스트</a>
-        <div class="dropdown">
-            <a href="#" class="menu-item">새소식</a>
-            <div class="dropdown-content">
-                <a href="#" class="dropdown-item">공지사항</a>
-                <a href="#" class="dropdown-item">이벤트</a>
-            </div>
-        </div>
-        <a href="#" class="menu-item">1:1 문의</a>
-        <a href="#" class="menu-item">로그인</a>
-        <a href="#" class="menu-item">회원가입</a>
-    </div>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
 
 <body>
     <div class="container">
-        <div class="order-complete-header" style="position: relative;">
+        <div class="order-complete-header" style="position: relative; margin-top: 46px;">
             <!-- 임시 관리자 버튼 추가 -->
             <div class="admin-buttons">
                 <span>임시버튼</span>
@@ -95,23 +76,8 @@
     </div>
 </body>
 
-<footer>
-    <div class="footer-content">
-        <div class="footer-info">
-            <img class="bbangllogo-class" src="../img/footer.webp" style="width: 100px" alt="" >
-            <p>BBANGL © 2024</p>
-            <p>문의: sked456@naver.com</p>
-            <p>경기도 안양시 만안구  303, S210, S213,215, S802-S804호(안양동, 메쎄포스빌)</p>
-        </div>
-        <div class="footer-links">
-            <a href="#">이용약관</a>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">제휴문의</a>
-            <a href="#">고객센터</a>
-        </div>
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
 
-<script src="../js/order-complete.js"></script> 
+<script src="/js/order/order-complete.js"></script> 
 
 </html>
