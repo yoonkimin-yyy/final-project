@@ -46,6 +46,8 @@ dependencies {
    
    implementation 'org.projectlombok:lombok:1.18.30'
    compileOnly 'org.projectlombok:lombok:1.18.30'
+   
+    implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일 인증
 
 }
 
@@ -56,3 +58,8 @@ configurations {
 tasks.named('test') {
    useJUnitPlatform()
 }
+
+
+compileJava {
+	options.compilerArgs << '-parameters'
+	}

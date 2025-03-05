@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="/css/common/nav.css">
     <link rel="stylesheet" href="/css/home/home.css">
     <link rel="stylesheet" href="/css/common/footer.css">
-    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
+    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
@@ -189,28 +190,28 @@
     
         
          <!-- ✅ 카카오맵 표시 -->
-        <div id="map"></div>   
+        <div id="map" style="width: 100%; height: 500px;"></div>   
 
     
         <!-- ✅ 지역 선택 버튼 -->
         <div class="region-container">
-            <button class="region-button" data-region="seoul">서울 (235)</button>
-            <button class="region-button" data-region="gyeonggi">경기 (182)</button>
-            <button class="region-button" data-region="incheon">인천 (78)</button>
-            <button class="region-button" data-region="busan">부산 (95)</button>
-            <button class="region-button" data-region="daegu">대구 (63)</button>
-            <button class="region-button" data-region="gwangju">광주 (48)</button>
-            <button class="region-button" data-region="daejeon">대전 (52)</button>
-            <button class="region-button" data-region="ulsan">울산 (35)</button>
-            <button class="region-button" data-region="sejong">세종 (15)</button>
-            <button class="region-button" data-region="gangwon">강원 (43)</button>
-            <button class="region-button" data-region="chungbuk">충북 (38)</button>
-            <button class="region-button" data-region="chungnam">충남 (42)</button>
-            <button class="region-button" data-region="jeonbuk">전북 (36)</button>
-            <button class="region-button" data-region="jeonnam">전남 (44)</button>
-            <button class="region-button" data-region="gyeongbuk">경북 (55)</button>
-            <button class="region-button" data-region="gyeongnam">경남 (68)</button>
-            <button class="region-button" data-region="jeju">제주 (29)</button>
+            <button class="region-button" data-region="서울">서울</button>
+            <button class="region-button" data-region="경기">경기</button>
+            <button class="region-button" data-region="인천">인천</button>
+            <button class="region-button" data-region="부산">부산</button>
+            <button class="region-button" data-region="대구">대구</button>
+            <button class="region-button" data-region="광주">광주</button>
+            <button class="region-button" data-region="대전">대전</button>
+            <button class="region-button" data-region="울산">울산</button>
+            <button class="region-button" data-region="세종">세종</button>
+            <button class="region-button" data-region="강원">강원</button>
+            <button class="region-button" data-region="충북">충북</button>
+            <button class="region-button" data-region="충남">충남</button>
+            <button class="region-button" data-region="전북">전북</button>
+            <button class="region-button" data-region="전남">전남</button>
+            <button class="region-button" data-region="경북">경북</button>
+            <button class="region-button" data-region="경남">경남</button>
+            <button class="region-button" data-region="제주">제주</button>
         </div>
     </section>
 
@@ -265,7 +266,7 @@
                         </div>
                     </div>
                 </div>
-    
+  
                 <div class="swiper-slide bakery-card">
                     <div class="new-badge">NEW</div>
                     <img src="./밀도 베이커리.jpeg" alt="달콤 베이커리" class="bakery-image">
@@ -419,13 +420,13 @@
             <p class="newsletter-description">
                 매주 새로운 빵집 정보와 할인 소식, 베이킹 팁을 이메일로 받아보세요.
             </p>
+            <form th:action="@{/bbanggil/subscribe}" method="post">
             <div class="subscribe-container">
-                <input type="email" class="email-input" placeholder="이메일 주소 입력">
-                <button class="subscribe-button">구독하기</button>
+                <input type="email" name="email" class="email-input" placeholder="이메일 주소 입력" required>
+                <button type="submit" class="subscribe-button">구독하기</button>
             </div>
-            <p class="subscribed-text" id="subscribed-message" style="display: none;">
-                구독해주셔서 감사합니다! 확인 이메일을 발송했습니다.
-            </p>
+            </form>
+            <p class="subscribed-text" id="subscribed-message" style="display: none;" th:if="${message}" th:text="${message}"></p>
         </div>
     </section>
 
@@ -437,4 +438,6 @@
     
 </body>
 <script src="/js/home/home.js"></script>
+<script src="/js/home/kakaoMap.js"></script>
+<script src="/js/home/subscribe.js"></script>
 </html>

@@ -12,6 +12,7 @@ public class BakeryController {
 	public String list() {
 		return "user/bakery-list";
 	}
+
 	
 	@GetMapping("/insert/form")
 	public String bakeryInsertForm() {
@@ -20,5 +21,12 @@ public class BakeryController {
 	@GetMapping("/menu/insert/form")
 	public String menuInsertForm() {
 		return "owner/menu-insert";
+		
+	}
+
+	@GetMapping("/detail")
+	public String detail() {
+		return "user/bakery-detail";
+
 	}
 }
