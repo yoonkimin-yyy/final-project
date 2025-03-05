@@ -12,4 +12,8 @@ public class BakeryController {
 	public String list() {
 		return "user/bakery-list";
 	}
+	@GetMapping("/detail")
+	public String detail() {
+		return "user/bakery-detail";
+	}
 }

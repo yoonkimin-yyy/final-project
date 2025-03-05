@@ -13,10 +13,15 @@ document.querySelector('.subscribe-button').addEventListener('click', function()
 
 // 지역 버튼 클릭 시 활성화
 const regionButtons = document.querySelectorAll('.region-button');
+
 regionButtons.forEach(button => {
     button.addEventListener('click', function() {
         regionButtons.forEach(btn => btn.classList.remove('region-button-active'));
         this.classList.toggle('region-button-active');
+		
+		var region= this.getAttribute("data-region");
+		
+		fetchBakeries(region);
     });
 });
 
@@ -36,7 +41,7 @@ const maps = document.querySelectorAll(".korea-map");
 buttons.forEach(button => {
     button.addEventListener("click", () => {
         const region = button.getAttribute("data-region");
-
+		console.log(region);
         buttons.forEach(btn => btn.classList.remove("region-button-active"));
         button.classList.add("region-button-active");
 
@@ -50,16 +55,10 @@ buttons.forEach(button => {
     });
 });
 
-var mapContainer = document.getElementById('map'); // 지도 컨테이너
-        var mapOptions = {
-            center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 중심 좌표 (서울)
-            level: 9 // 확대 수준
-        };
-
-        // ✅ 지도 생성
-        var map = new kakao.maps.Map(mapContainer, mapOptions);
-        var markers = []; // ✅ 현재 지도에 표시된 마커 저장 배열
-
+// ✅ Kakao 지도 초기화 및 지역별 중심 좌표 설정
+		var map;
+		var markers = [];
+		
         // ✅ 지역별 중심 좌표 설정
         var regionCenters = {
             seoul: { lat: 37.5665, lng: 126.9780 },
@@ -81,68 +80,63 @@ var mapContainer = document.getElementById('map'); // 지도 컨테이너
             jeju: { lat: 33.4996, lng: 126.5312 }
         };
 
-        // ✅ 빵집 데이터 (카카오 API 대체 가능)
-        var bakeryData = {
-            seoul: [
-                { name: "서울 빵집1", lat: 37.5665, lng: 126.9780 },
-                { name: "서울 빵집2", lat: 37.5700, lng: 126.9820 }
-            ],
-            busan: [
-                { name: "부산 빵집1", lat: 35.1796, lng: 129.0756 },
-                { name: "부산 빵집2", lat: 35.1805, lng: 129.0720 }
-            ],
-            jeju: [
-                { name: "제주 빵집1", lat: 33.4996, lng: 126.5312 },
-                { name: "제주 빵집2", lat: 33.5020, lng: 126.5375 }
-            ]
-        };
+		// ✅ Kakao 지도 초기화 함수
+		function initMap() {
+			
+			
+		    var mapContainer = document.getElementById('map');
+		    var mapOptions = {
+		        center: new kakao.maps.LatLng(regionCenters.seoul.lat, regionCenters.seoul.lng),
+		        level: 9
+		    };
+		    map = new kakao.maps.Map(mapContainer, mapOptions);
+			
+			
+		}
 
-        // ✅ 마커 추가 함수
-        function addMarkers(region) {
-            markers.forEach(marker => marker.setMap(null)); // 기존 마커 제거
-            markers = [];
+		// ✅ 지도 업데이트 (마커 추가 + 지도 이동)
+		function updateMap(region, bakeries) {
+			console.log("데이터",bakeries)
+		    // ✅ 기존 마커 제거
+		    markers.forEach(marker => marker.setMap(null));
+		    markers = [];
 
-            var bakeries = bakeryData[region] || [];
-            bakeries.forEach(bakery => {
-                var marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(bakery.lat, bakery.lng),
-                    map: map
-                });
+		    // ✅ 지도 중심 이동
+		    var center = regionCenters[region];
+		    if (center) {
+		        map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
+		        map.setLevel(7);
+		    }
+			let addedPlaces = new Set();
 
-                var infoWindow = new kakao.maps.InfoWindow({
-                    content: `<div style="padding:5px;">${bakery.name}</div>`
-                });
+		    // ✅ 새로운 마커 추가
+		    bakeries.forEach(bakery => {
+		        var position = new kakao.maps.LatLng(bakery.latitude, bakery.longitude);
+				
+				if (addedPlaces.has(bakery.name)) return;
+				        addedPlaces.add(bakery.name);
+						
+		        var marker = new kakao.maps.Marker({ position: position, map: map });
 
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    infoWindow.open(map, marker);
-                });
+		        var infoWindow = new kakao.maps.InfoWindow({ content: `<div style="padding:5px;">${bakery.name}</div>` });
+		        kakao.maps.event.addListener(marker, 'click', function() {
+		            infoWindow.open(map, marker);
+		        });
 
-                markers.push(marker);
-            });
-        }
+		        markers.push(marker);
+		    });
+		}
 
-        // ✅ 지역 버튼 클릭 시 지도 이동 + 마커 변경
-        document.querySelectorAll(".region-button").forEach(button => {
-            button.addEventListener("click", () => {
-                var region = button.getAttribute("data-region");
+		// ✅ Kakao 지도 API가 로드된 후 `initMap()` 실행
+		if (window.kakao && window.kakao.maps) {
+		    initMap();
+		} else {
+		    document.addEventListener("DOMContentLoaded", function() {
+		        kakao.maps.load(initMap);
+		    });
+		}
 
-                document.querySelectorAll(".region-button").forEach(btn => btn.classList.remove("region-button-active"));
-                button.classList.add("region-button-active");
 
-                var center = regionCenters[region];
-                if (center) {
-                    map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
-                    map.setLevel(7);
-                }
-
-                addMarkers(region);
-            });
-        });
-
-        // ✅ 기본적으로 서울 마커 표시
-        addMarkers("seoul");
-
-        
 
         document.addEventListener("DOMContentLoaded", function () {
             var swiper = new Swiper(".swiper-popularBakerySwiper", {

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.kro.bbanggil.bakery.mapper.BakeryMapper">
+
+<resultMap id="BakeryResultMap" type="kr.kro.bbanggil.bakery.dto.BakeryDto">
+ 		<result property="no" column="bakery_no"></result>
+        <result property="name" column="bakery_name"></result>
+        <result property="latitude" column="latitude"></result>
+        <result property="longitude" column="longitude"></result>
+        <result property="region" column="region"></result>
+        <result property="address" column="bakery_address"></result>
+        <result property="phone" column="bakery_phone"></result>
+        
+        
+       <association property="menu" javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseMenuDto">
+       <result property="menuNo" column="menu_no"></result>
+       <result property="menuName" column="menu_name"></result>
+       <result property="menuPrice" column="menu_price"></result>
+       <result property="menuInfo" column="menu_info"></result>
+       <result property="categoryName" column="category_no"></result>
+       </association>
+        
+       <association property="image" javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseImageDto">
+       <result property="imgNo" column="img_no"></result>
+       <result property="changeName" column="change_name"></result>
+       <result property="resourcesPath" column="resources_path"></result>
+       </association> 
+        
+        
+</resultMap>
+
+
+<insert id="insertBakery" parameterType="kr.kro.bbanggil.bakery.dto.BakeryDto"> 
+	<selectKey keyProperty="no" resultType="double" order="AFTER">
+	  SELECT bakery_seq.nextval FROM dual
+	
+	</selectKey>
+		INSERT INTO bakery_info(bakery_no,bakery_name,bakery_address,bakery_phone,latitude,longitude,region)
+		VALUES(bakery_seq.nextval,#{name},#{address},#{phone},#{latitude},#{longitude},#{region})
+
+</insert>
+
+<select id="getBakeriesByRegion" resultMap="BakeryResultMap" parameterType="string" >
+
+		SELECT *
+		FROM bakery_info
+		WHERE region = #{region}
+</select>
+
+<select id="getPopularBakeries" resultMap="kakaoResultMap">
+
+  SELECT 
+  bi.name,
+  bi.address,
+  m.menu_name,
+  m.menu_info,
+  bi2.resources_path
+  bi2.change_name
+  bi2.img_no
+  FROM bakery_info bi
+  join memu m on bi.bakery_no = m.menu_no
+  join menu_category mc on mc.category_no = m.category_no
+  join bakery_image bi2 on bi.bakery_no = bi2.bakery_no
+  order by 
+  limit 1
+
+
+
+
+
+</select>
+
+
+
+
+
+</mapper>
