@@ -1,10 +1,10 @@
-package kr.co.green;
+package kr.kro.bbanggil;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringProject5ApplicationTests {
+class FinalProjectApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,0 +1,473 @@
+/* 기본 스타일 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #FFFFFF;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    padding: 8px 15px;
+    width: 40%;
+    max-width: 500px;
+}
+
+.search-icon {
+    margin-right: 10px;
+    color: #666;
+}
+/* 히어로 섹션 */
+.hero-section {
+    height: 450px;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    transform: translateY(-50%);
+    max-width: 800px;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 16px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: white;
+    margin-bottom: 20px;
+    max-width: 500px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+}
+
+.hero-button {
+    background-color: #8B4513;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+    background-color: #a05215;
+}
+
+/* 섹션 컨테이너 */
+.section-container {
+    padding: 40px 5%;
+    border-bottom: 1px solid #eee;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+   
+    margin: 0 auto 30px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-right: 500px;
+}
+
+.view-all-button {
+    text-decoration: none;
+    color: #8b5e3b;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+}
+
+.view-all-button i {
+    margin-left: 4px;
+   
+}
+.view-all-button:hover {
+    color: #d48c4e;
+}
+
+
+/* 스크롤 */
+
+
+
+
+
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #8b5e3b !important;
+}
+
+.swiper-pagination-bullet {
+    background-color: #d48c4e;
+    opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background-color: #8b5e3b;
+}
+
+
+/* 최근 오픈 빵집 Swiper 버튼 */
+.recent-next, .recent-prev {
+    color: #a18267 !important;
+}
+
+/* 최근 오픈 빵집 페이지네이션 */
+.recent-pagination .swiper-pagination-bullet {
+    background-color: #a18267;
+    opacity: 0.5;
+}
+
+.recent-pagination .swiper-pagination-bullet-active {
+    opacity: 1;
+    background-color: #8b5e3b;
+}
+
+
+
+
+
+
+
+
+/* 빵집 카드 */
+.bakery-card {
+    flex: 0 0 auto;
+    width: 280px;
+    background-color: #fff;
+    border-radius: 12px;
+    margin: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bakery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.bakery-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.bakery-info {
+    padding: 16px;
+}
+
+.bakery-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.location-container, .rating-container, .open-date-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    color: #555;
+}
+
+.location-container i, .rating-container i, .open-date-container i {
+    font-size: 14px;
+    color: #a18267;
+    margin-right: 8px;
+}
+
+.location-text, .open-date-text {
+    font-size: 13px;
+    color: #666;
+}
+
+.rating-container i {
+    color: #FFD700;
+}
+
+.rating-text {
+    font-size: 13px;
+    color: #333;
+    font-weight: 500;
+}
+
+.specialty-container {
+    display: flex;
+   
+    color: #8b5e3b;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    
+}
+
+.specialty-label {
+    font-size: 12px;
+    color: #888;
+    margin-right: 6px;
+}
+
+.specialty-text {
+    font-size: 12px;
+    color: #333;
+    font-weight: 500;
+}
+
+.new-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff6b6b;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+}
+
+
+
+
+
+
+/* 지역별 빵집 */
+#map{
+    width: 100%;
+    max-width: 900px; /* 지도 크기 제한 */
+    height: 500px;
+    margin: 20px auto;
+    border-radius: 15px; /* 둥근 모서리 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    overflow: hidden; /* 모서리 밖 이미지 깔끔하게 정리 */
+            
+}
+.korea-map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.korea-map {
+    display: none;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+/* 선택된 지도만 보이도록 설정 */
+.korea-map.active {
+    display: block;
+}
+.region-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* 중앙 정렬 */
+    gap: 10px; /* 버튼 간격 */
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+/* 지역 버튼 스타일 */
+.region-button {
+    background: #f8f8f8;
+    border: 2px solid #ddd;
+    color: #333;
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.region-button:hover {
+    background: #ffe4c4;
+    color: #8b5e3b;
+    border-color: #e0a96d;
+}
+
+/* 선택된 지역 버튼 스타일 */
+.region-button-active {
+    background: #d48c4e;
+    color: white;
+    border-color: #d48c4e;
+    font-weight: bold;
+}
+
+
+/* 카테고리 */
+.categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.category-card {
+    flex: 0 0 calc(20% - 20px);
+    min-width: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.category-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.category-info {
+    padding: 12px;
+    text-align: center;
+}
+
+.category-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.category-count {
+    font-size: 12px;
+    color: #666;
+}
+
+/* 뉴스레터 */
+.newsletter-container {
+    padding: 60px 5%;
+    background: linear-gradient(135deg, #f9e8d4, #eddfc8);
+    display: flex;
+    justify-content: center;
+}
+
+.newsletter-content {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.newsletter-icon {
+    font-size: 36px;
+    color: #8B4513;
+    margin-bottom: 16px;
+}
+
+.newsletter-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #8B4513;
+    margin-bottom: 12px;
+}
+
+.newsletter-description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.subscribe-container {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.email-input {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: none;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+.subscribe-button {
+    background-color: #8B4513;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    margin-left: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.subscribe-button:hover {
+    background-color: #a05215;
+}
+
+.subscribed-text {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #4CAF50;
+    font-weight: 500;
+}
+
