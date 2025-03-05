@@ -1,5 +1,8 @@
 package kr.kro.bbanggil.register.service;
 
-public class RegisterServiceImpl {
+import org.springframework.stereotype.Service;
+
+@Service
+public class RegisterServiceImpl implements RegisterService{
 
 }
