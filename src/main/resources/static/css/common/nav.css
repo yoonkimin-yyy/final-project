@@ -1,0 +1,36 @@
+.navigation {
+    padding: 12px 0;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    overflow-x: auto;
+}
+
+.nav-scroll {
+    display: flex;
+    padding: 0 5%;
+    white-space: nowrap;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    margin-right: 8px;
+    border-radius: 20px;
+    font-size: 15px;
+    color: #666;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+    background-color: #f9e8d4;
+    color: #8B4513;
+}
+
+.nav-item-active {
+    background-color: #f9e8d4;
+    color: #8B4513;
+    font-weight: bold;
+}
+.nav-buttons {
+    display: flex;
+}

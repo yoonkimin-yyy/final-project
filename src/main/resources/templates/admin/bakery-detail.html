@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+
+<head>
+    <meta charset="UTF-8">
+    <title>빵집 상세 정보</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" th:href="@{/css/admin/bakery-detail.css}">
+</head>
+
+<body>
+    <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+    <div class="containers">
+        <h2>빵집 상세 정보</h2>
+        <div class="detail">
+            <div class="box">
+                <h1>주문량</h1>
+                <div class="text-size">345</div>
+            </div>
+            <div class="box">
+                <h1>매출순위</h1>
+                <div class="text-size">3</div>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>상호명</th>
+                <td>20205</td>
+            </tr>
+            <tr>
+                <th>사용자 ID</th>
+                <td>20255503</td>
+            </tr>
+            <tr>
+                <th>연락처</th>
+                <td>010-0000-0000</td>
+            </tr>
+            <tr>
+                <th>가게 설명</th>
+                <td>우리가게 정상영업 합니다</td>
+            </tr>
+            <tr>
+                <th>편의 정보</th>
+                <td>잘 찾아보면 뭔가있음</td>
+            </tr>
+        </table>
+
+
+    </div>
+    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+    <!--
+
+<script>
+    // 주문량 & 매출 순위 데이터
+    const orderData = {
+        labels: ["1월", "2월", "3월", "4월", "5월", "6월"],
+        datasets: [{
+            label: "주문량",
+            data: [120, 150, 170, 160, 200, 190],
+            backgroundColor: "rgba(54, 162, 235, 0.5)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1
+        }]
+    };
+
+    new Chart(document.getElementById("orderChart"), {
+        type: "bar",
+        data: orderData,
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+    
+    // 남은 계약 기간 데이터
+    const contractData = {
+        labels: ["사용한 기간", "남은 기간"],
+        datasets: [{
+            data: [8, 4], // 8개월 사용, 4개월 남음
+            backgroundColor: ["#FF6384", "#36A2EB"]
+        }]
+    };
+    
+    new Chart(document.getElementById("contractChart"), {
+        type: "doughnut",
+        data: contractData,
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+</script>
+-->
+
+</body>
+
+</html>
