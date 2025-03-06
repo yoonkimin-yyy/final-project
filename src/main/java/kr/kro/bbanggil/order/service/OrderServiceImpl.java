@@ -19,11 +19,6 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrderDto> list(OrderDto orderDto) {
 
-		// 1. 총가격을 넘김
-		// 2. 총가격 = 전체메뉴(유저번호)
-		// 3. 장바구니에서 메뉴랑 조인시키고
-		//    - 주문 정보에 해당하는 장바구니 번호가 없을 때
-		
 		List<OrderDto> result = orderMapper.list(orderDto);
 
 		return result;
