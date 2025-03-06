@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  							"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "kr.kro.bbanggil.bakery.mapper.BakeryMapper">
+
+
+<resultMap id = "BakeryInfoDTO" type = "kr.kro.bbanggil.bakery.dto.BakeryInfoDTO">
+	<result property="bakeryNo" column="bakery_no"></result>
+	<result property="bakeryName" column="bakery_name"></result>
+	<result property="bakeryAddress" column="bakery_address"></result>
+	<result property="bakeryPhone" column="bakery_phone"></result>
+	<result property="bakeryLat" column="latitude"></result>
+	<result property="bakeryLog" column="longitude"></result>
+	<result property="bakeryRegion" column="region"></result>
+	
+	<association property="bakeryDetailDTO" javaType="kr.kro.bbanggil.bakery.dto.BakeryDetailDTO">
+		<result property = "bakeryNo" column="bakery_no"></result>
+		<result property="bakeryExp" column="bakery_exp"></result>
+		<result property="bakeryAmenity" column="amenity"></result>
+		<result property = "bakeryInsideInfo" column="inside_info"></result>
+		<result property = "bakeryOutSideInfo" column="outside_info"></result>
+		<result property = "bakeryCreatedDate" column="created_date"></result>
+		<result property = "bakerySubmissionDate" column="submission_date"></result>		
+	</association>
+	<association property="bakeryReviewDTO" javaType="kr.kro.bbanggil.bakery.dto.BakeryReviewDTO">
+		<result property="reviewNo" column="review_no"></result>
+		<result property="orderNo" column="order_no"></result>
+		<result property="userNo" column="user_no"></result>
+		<result property="reviewDetail" column="review_detail"></result>
+		<result property="reviewRating" column="review_rating"></result>
+		<result property="reviewDate" column="review_date"></result>
+		<result property="bakeryNo" column="bakery_no"></result>
+	</association>
+	<association property="bakeryScheduleDTO" javaType="kr.kro.bbanggil.bakery.dto.BakeryScheduleDTO">
+		<result property="scheduleNo" column="schdule_no"></result>	
+		<result property="bakeryNo" column="bakery_no"></result>	
+		<result property="bakeryDay" column="day"></result>	
+		<result property="bakeryOpenTime" column="open_time"></result>	
+		<result property="bakeryCloseTime" column="close_time"></result>	
+	</association>
+</resultMap>
+
+<select id="totalCount">
+	SELECT COUNT(*) FROM bakery_info bi
+</select>
+
+<select id="bakeryList" resultMap="BakeryInfoDTO">
+	SELECT * FROM bakery_info bi
+	join bakery_schedule bs on bs.bakery_no = bi.bakery_no
+	WHERE day = #{day}
+	OFFSET ${pi.offset} ROWS FETCH NEXT ${pi.limit} ROWS ONLY
+</select>
+
+
+
+
+
+</mapper>

@@ -37,9 +37,9 @@
     </div>
 
     <div class="list-box">
-        <!-- 첫 번째 리스트 아이템 -->
-        <div class="list-item">
-            <div class="slider" id="slider1">
+
+        <div class="list-item" th:each ="post,iterStat : ${posts}">
+            <div class="slider" th:id="slider+${iterStat.index+1}">
                 <div class="slides">
                     <div class="hotel-slide">
                         <div class="image-container">
@@ -124,7 +124,9 @@
         </div>
     </div>
 
-    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
 
 
 </body>
