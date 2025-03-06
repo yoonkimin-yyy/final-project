@@ -37,7 +37,6 @@
     </div>
 
     <div class="list-box">
-
         <div class="list-item" th:each ="post,iterStat : ${posts}">
             <div class="slider" th:id="slider+${iterStat.index+1}">
                 <div class="slides">
@@ -126,8 +125,6 @@
 
 
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
-
-
 
 </body>
 </html>
