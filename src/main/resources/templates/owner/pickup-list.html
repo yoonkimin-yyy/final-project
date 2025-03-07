@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>픽업 목록</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <link rel="stylesheet" href="/css/common/nav.css">
+    <link rel="stylesheet" href="/css/home/home.css">
+    <link rel="stylesheet" href="/css/common/footer.css">
+    <link rel="stylesheet" href="/css/owner/pickup/pickup-list.css">
+    <!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+    <!-- 헤더 및 네비게이션 -->
+    <header th:replace="~{fragments/header :: HeaderFragment}"></header>
+        
+   
+
+    <!-- 네비게이션 메뉴 -->
+    <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+
+    <main>
+        <div class="main-div">
+            <div class="sub-div">
+                <div class="pick-order-list-div">
+                    <h3 class="pick-order-list">주문 목록</h3>
+                </div>
+            </div>
+            <!-- 필터 버튼 -->
+            <div class="filter-buttons">
+                <button class="filter-btn" id="all-filter-btn" data-filter="전체">전체</button>
+                <button class="filter-btn" id="pending-filter-btn" data-filter="대기">대기</button>
+                <button class="filter-btn" id="approved-filter-btn" data-filter="승인">승인</button>
+                <button class="filter-btn" id="rejected-filter-btn" data-filter="거절">거절</button>
+                <button class="filter-btn" id="completed-filter-btn" data-filter="완료">완료</button>
+            </div>
+
+            <!-- 날짜 선택 -->
+            <div class="date-controls">
+                <input type="date" id="date-picker">
+                <button id="yearly-report-btn">연간 매출 보기</button>
+            </div>
+
+            <!-- 주문 정보 -->
+            <div class="table-container">
+                <h4 style="text-align: right;">
+                    <div class="info-div" id="info-div-first"></div>
+                    <div class="info-div" id="info-div-second"></div>
+                    <div class="info-div" id="info-div-third"></div>
+                    <div class="info-div" id="info-div-fourth"></div>
+                    <div class="info-div" id="info-div-fifth"></div>
+                </h4>
+
+                <!-- 주문 테이블 -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>주문번호</th>
+                            <th>상태</th>
+                            <th>주문시간</th>
+                            <th>주문 금액</th>
+                            <th>고객 전화번호</th>
+                            <th>주문 상세보기</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-list">
+                        <tr class="pending" data-status="완료" data-date="2025-02-24 14:27:51.000">
+                            <td>1</td>
+                            <td>완료</td>
+                            <td>2025-02-24 14:27:51.000</td>
+                            <td>16,000원</td>
+                            <td>010-1234-5678</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr class="pending" data-status="승인" data-date="2025-02-24 14:27:51.000">
+                            <td>2</td>
+                            <td>승인</td>
+                            <td>2025-02-24 14:27:51.000</td>
+                            <td>12,000원</td>
+                            <td>010-2345-6789</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr class="pending" data-status="거절" data-date="2025-02-11 14:27:51.000">
+                            <td>3</td>
+                            <td>거절</td>
+                            <td>2025-02-11 14:27:51.000</td>
+                            <td>11,000원</td>
+                            <td>010-3456-7890</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr class="pending" data-status="완료" data-date="2025-02-12 14:27:51.000">
+                            <td>4</td>
+                            <td>완료</td>
+                            <td>2025-02-12 14:27:51.000</td>
+                            <td>14,000원</td>
+                            <td>010-4567-8901</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr class="pending" data-status="대기" data-date="2025-02-12 14:27:51.000">
+                            <td>5</td>
+                            <td>대기</td>
+                            <td>2025-02-12 14:27:51.000</td>
+                            <td>19,000원</td>
+                            <td>010-5678-9012</td>
+                            <td>                        
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 상세보기 팝업 -->
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <span class="close">&times;</span>
+                    <h2>주문 상세 정보</h2>
+                    <p id="popup-info"></p>
+                    <p><strong>주문 번호:</strong></p>
+                    <p><strong>메뉴:</strong></p>
+                    <p><strong>고객 전화번호:</strong></p>
+                    <p><strong>주문 시간:</strong></p>
+                    <p><strong>주문 금액:</strong></p>
+                    <p><strong>요청사항:</strong></p>
+                    <ul class="menu-list"></ul>
+                
+                    <div class="rejection-reason-div">
+                        <textarea id="rejection-reason" placeholder="거절 사유 입력..."></textarea>
+                    </div>    
+                    <div class="popup-buttons">
+                        <button id="approve-btn">승인</button>
+                        <button id="reject-btn">거절</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
+
+
+    <script src="/js/owner/pickup/pickup-list.js"></script>
+</body>
+</html>
