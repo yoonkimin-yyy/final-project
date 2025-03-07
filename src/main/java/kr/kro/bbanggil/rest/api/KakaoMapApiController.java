@@ -35,6 +35,10 @@ public class KakaoMapApiController {
 	@Value("${kakao.api.key}")
 	private String KAKAO_API_KEY;
 	
+	
+	/**
+	 * kakaoApi에서 query랑 region 입력하면 DB로 데이터 바로 들어감
+	 */
 	@GetMapping("/fetch")
 	public ResponseEntity<String> fetchBakeries(@RequestParam("query") String query, @RequestParam("region") String region) throws JsonMappingException, JsonProcessingException{
 		
@@ -53,11 +57,9 @@ public class KakaoMapApiController {
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,entity, String.class);
 		
 		 ObjectMapper objectMapper = new ObjectMapper();
-		 System.out.println(objectMapper);
 		 JsonNode root = objectMapper.readTree(response.getBody());
-		 System.out.println(root);
 		 JsonNode documents = root.get("documents");
-		 System.out.println(documents);
+
 		
 		
 		// JSON을 List<KakaoPlaceDto>로 변환
@@ -66,10 +68,6 @@ public class KakaoMapApiController {
 		 System.out.println(places.size());
 		 
 		 for(KakaoPlaceDto place : places) {
-			System.out.println(place.getPlaceName());
-			System.out.println(place.getRoadAddressName());
-			System.out.println(place.getPhone());
-			System.out.println(place.getAddressName());
 			
 			 if(place.getAddressName().contains(region)) {
 				 BakeryDto bakery = new BakeryDto();

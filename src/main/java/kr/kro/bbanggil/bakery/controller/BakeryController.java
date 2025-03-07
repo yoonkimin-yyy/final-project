@@ -22,7 +22,7 @@ public class BakeryController {
 		return "owner/menu-insert";
 		
 	}
-	@GetMapping("/detail")
+	@GetMapping("/detail/form")
 	public String detail() {
 		return "user/bakery-detail";
 	}

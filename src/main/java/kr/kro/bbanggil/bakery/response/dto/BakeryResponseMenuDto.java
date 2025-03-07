@@ -14,6 +14,6 @@ public class BakeryResponseMenuDto {
 	private double menuPrice;
 	private String menuInfo;
 	private String categoryName;
-	
+	private String category;
 	
 }

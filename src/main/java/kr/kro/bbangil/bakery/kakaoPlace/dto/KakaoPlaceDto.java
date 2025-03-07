@@ -17,10 +17,10 @@ public class KakaoPlaceDto {
 	private  String placeName;
 	
 	@JsonProperty("x")
-	private  double x; // 경도
+	private  double x; 
 	
 	@JsonProperty("y")
-	private  double y; // 위도
+	private  double y; 
 	
 	@JsonProperty("road_address_name")
 	private  String roadAddressName;

@@ -7,10 +7,7 @@ import lombok.Setter;
 @Setter
 public class SubscriptionDto {
 
-	
-	
 	private String email;
-	
 	
 	
 }
