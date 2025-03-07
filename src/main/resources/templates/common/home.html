@@ -6,10 +6,7 @@
     <title>빵지순례 - 전국 빵집 탐방 가이드</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/css/common/header.css">
-    <link rel="stylesheet" href="/css/common/nav.css">
     <link rel="stylesheet" href="/css/home/home.css">
-    <link rel="stylesheet" href="/css/common/footer.css">
     <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Swiper CSS -->
@@ -54,100 +51,30 @@
         <!-- Swiper Container -->
         <div class="swiper swiper-popularBakerySwiper"> 
             <div class="swiper-wrapper">
-                <div class="swiper-slide bakery-card">
-                    <img src="./자연도 소금빵 성수.jpg" alt="르빵 베이커리" class="bakery-image">
+            
+                <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card">
+                    <img th:src="@{${bakery.image.resourcesPath} + '/' + ${bakery.image.changeName}}"  th:alt="${bakery.name}" class="bakery-image">
                     <div class="bakery-info">
-                        <h3 class="bakery-name">자연도 소금빵 in성수</h3>
+                        <h3 class="bakery-name" th:text="${bakery.name}">자연도 소금빵 in성수</h3>
                         <div class="location-container">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울 성수동</span>
+                            <span class="location-text" th:text="${bakery.address}">서울 성수동</span>
                         </div>
                         <div class="rating-container">
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">4.8</span>
-                        </div>
+    						<i class="fas fa-star"></i>
+    							<span class="rating-text">
+        							<th:block th:if="${bakery.review != null}" 
+                 				 	th:text="${#numbers.formatDecimal(bakery.review.reviewRating, 1, 1)}"></th:block>
+        							<th:block th:if="${bakery.review == null}"></th:block>
+    							</span>
+							</div>
                         <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">소금빵</span>
+                            <span class="specialty-label" th:text="${bakery.menu.categoryName}">인기 메뉴</span>
+                            <span class="specialty-text" th:text="${bakery.menu.menuName}">소금빵</span>
                         </div>
                     </div>
                 </div>
     
-                <div class="swiper-slide bakery-card">
-                    <img src="./용산 테디뵈르하우스.png" alt="고대 베이커리" class="bakery-image">
-                    <div class="bakery-info">
-                        <h3 class="bakery-name">테디뵈르하우스</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울 용산구</span>
-                        </div>
-                        <div class="rating-container">
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">4.7</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">크루아상</span>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="swiper-slide bakery-card">
-                    <img src="./어니언 성수.jpg" alt="바다빵집" class="bakery-image">
-                    <div class="bakery-info">
-                        <h3 class="bakery-name">어니언 성수</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울 성수동</span>
-                        </div>
-                        <div class="rating-container">
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">4.9</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">팡도르</span>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="swiper-slide bakery-card">
-                    <img src="./망원동 라바즈.jpeg" alt="맛있는 빵집" class="bakery-image">
-                    <div class="bakery-info">
-                        <h3 class="bakery-name">라바즈</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울 망원동</span>
-                        </div>
-                        <div class="rating-container">
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">4.6</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">프랑스빵</span>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="swiper-slide bakery-card">
-                    <img src="./망원동 밀로밀.webp" alt="파리의 아침" class="bakery-image">
-                    <div class="bakery-info">
-                        <h3 class="bakery-name">밀로밀</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울 망원동</span>
-                        </div>
-                        <div class="rating-container">
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">4.9</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">소금빵</span>
-                        </div>
-                    </div>
-                </div>
     
                 <div class="swiper-slide bakery-card">
                     <img src="./인천 베이커리 율교.jpg" alt="쿠시야마 베이커리" class="bakery-image">
@@ -227,86 +154,29 @@
         <!-- Swiper 컨테이너 (최근 오픈 빵집) -->
         <div class="swiper recentBakerySwiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide bakery-card">
+
+                <div th:each="bakery : ${recentBakeries}"class="swiper-slide bakery-card">
                     <div class="new-badge">NEW</div>
-                    <img src="./브레드랩.jpg" alt="아침빵 베이커리" class="bakery-image">
+                    <img th:src="@{${bakery.image.resourcesPath} + '/' + ${bakery.image.changeName}}" th:alt="${bakery.name}" class="bakery-image">
                     <div class="bakery-info">
-                        <h3 class="bakery-name">브레드랩</h3>
+                        <h3 class="bakery-name" th:text="${bakery.name}">브레드랩</h3>
                         <div class="location-container">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울시 강남구 신사동</span>
+                            <span class="location-text" th:text="${bakery.address}">서울시 강남구 신사동</span>
                         </div>
                         <div class="open-date-container">
                             <i class="fas fa-calendar-alt"></i>
-                            <span class="open-date-text">오픈일: 2025.02.17</span>
+                            <span class="open-date-text" th:text="${bakery.detail.createDate}">오픈일: 2025.02.17</span>
                         </div>
                         <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴 :</span>
-                            <span class="specialty-text">치아바타</span>
+                            <span class="specialty-label" th:text="${bakery.menu.categoryName}"></span>
+                            <span class="specialty-text"  th:text="${bakery.menu.menuName}"></span>
                         </div>
                     </div>
                 </div>
     
-                <div class="swiper-slide bakery-card">
-                    <div class="new-badge">NEW</div>
-                    <img src="./르벵 베이커리.jpeg" alt="밀가루 천국" class="bakery-image">
-                    <div class="bakery-info">
-                        <h3 class="bakery-name">르벵 베이커리</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울시 마포구 연남동</span>
-                        </div>
-                        <div class="open-date-container">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="open-date-text">오픈일: 2025.02.10</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">크루아상, 바게트</span>
-                        </div>
-                    </div>
-                </div>
-  
-                <div class="swiper-slide bakery-card">
-                    <div class="new-badge">NEW</div>
-                    <img src="./밀도 베이커리.jpeg" alt="달콤 베이커리" class="bakery-image">
-                    <div class="bakery-info">
-                        <h3 class="bakery-name">밀도 베이커리</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울시 서초구 반포동</span>
-                        </div>
-                        <div class="open-date-container">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="open-date-text">오픈일: 2025.02.05</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">식빵, 잼</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="swiper-slide bakery-card">
-                    <div class="new-badge">NEW</div>
-                    <img src="./소울 브레드.jpg" alt="달콤 베이커리" class="bakery-image">
-                    <div class="bakery-info">
-                        <h3 class="bakery-name">소울 브레드</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text">서울시 서초구 우면동</span>
-                        </div>
-                        <div class="open-date-container">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="open-date-text">오픈일: 2025.02.05</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label">인기 메뉴</span>
-                            <span class="specialty-text">식빵, 잼</span>
-                        </div>
-                    </div>
-                </div>
-
+               
+               
                 <div class="swiper-slide bakery-card">
                     <div class="new-badge">NEW</div>
                     <img src="./서천 파티세리 수.jpg" alt="달콤 베이커리" class="bakery-image">
@@ -370,45 +240,14 @@
         </div>
 
         <div class="categories-container">
-            <div class="category-card">
-                <img src="https://api.a0.dev/assets/image?text=golden%20croissants%20on%20display&aspect=1:1&seed=130" alt="크루아상" class="category-image">
-                <div class="category-info">
-                    <h3 class="category-name">크루아상</h3>
-                    <p class="category-count">128개 빵집</p>
-                </div>
-            </div>
-
-            <div class="category-card">
+            <div class="category-card" th:each="bakery : ${categoryBakeries}">
                 <img src="https://api.a0.dev/assets/image?text=fresh%20loaves%20of%20bread&aspect=1:1&seed=131" alt="식빵" class="category-image">
                 <div class="category-info">
-                    <h3 class="category-name">식빵</h3>
-                    <p class="category-count">156개 빵집</p>
+                    <h3 class="category-name" th:text="${bakery.menu.category}"></h3>
+                    <p class="category-count"th:text="|${#numbers.formatInteger(bakery.cart.totalCount, 0)}개|"></p>
                 </div>
             </div>
 
-            <div class="category-card">
-                <img src="https://api.a0.dev/assets/image?text=colorful%20cakes%20in%20display&aspect=1:1&seed=132" alt="케이크" class="category-image">
-                <div class="category-info">
-                    <h3 class="category-name">케이크</h3>
-                    <p class="category-count">97개 빵집</p>
-                </div>
-            </div>
-
-            <div class="category-card">
-                <img src="https://api.a0.dev/assets/image?text=fruit%20tarts%20with%20vibrant%20colors&aspect=1:1&seed=133" alt="타르트" class="category-image">
-                <div class="category-info">
-                    <h3 class="category-name">타르트</h3>
-                    <p class="category-count">84개 빵집</p>
-                </div>
-            </div>
-
-            <div class="category-card">
-                <img src="https://api.a0.dev/assets/image?text=pastel%20colored%20macarons&aspect=1:1&seed=134" alt="마카롱" class="category-image">
-                <div class="category-info">
-                    <h3 class="category-name">마카롱</h3>
-                    <p class="category-count">113개 빵집</p>
-                </div>
-            </div>
         </div>
     </section>
 
