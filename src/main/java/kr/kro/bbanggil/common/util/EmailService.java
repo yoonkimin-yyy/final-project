@@ -5,7 +5,7 @@ public interface EmailService {
 	
 	
 	
-	public void sendSubscriptionEmail(String toEmail);  // 구독 완료 이메일 발송
+	public boolean sendSubscriptionEmail(String email);  // 구독 완료 이메일 발송
 	public void sendNewsletterEmail(String toEmail, String subject, String body);
 	
 	

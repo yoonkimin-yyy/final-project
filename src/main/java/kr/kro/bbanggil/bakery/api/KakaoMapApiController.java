@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.rest.api;
+package kr.kro.bbanggil.bakery.api;
 
 import java.util.List;
 

@@ -17,4 +17,9 @@ public interface BakeryMapper {
 	List<BakeryDto> getRecentBakeries();
 	List<BakeryDto>getCategoryBakeries(@Param("categoryNames") List<String> categoryName);
 	List<BakeryDto> getTopFiveOrders(); 
+	
+	
+	List<BakeryDto> findBakeryImages(@Param("no") double No);
+	
+	
 }

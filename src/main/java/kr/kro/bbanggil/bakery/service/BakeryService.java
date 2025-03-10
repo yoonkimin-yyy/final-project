@@ -1,7 +1,7 @@
 package kr.kro.bbanggil.bakery.service;
 
 import java.util.List;
-import java.util.Map;
+
 
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 
@@ -16,4 +16,11 @@ public interface BakeryService {
 	List<BakeryDto> getRecentBakeries();
 	List<BakeryDto>getCategoryBakeries(List<BakeryDto> topBakeries);
 	List<BakeryDto> getTopFiveOrders();
+	
+	
+	
+	
+	List<BakeryDto> getBakeryImages(double no);
+	
+	
 }
