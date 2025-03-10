@@ -19,6 +19,7 @@ import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDTO;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.FileUploadUtil;
+import kr.kro.bbanggil.bakery.util.LocationSelectUtil;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class BakeryServiceImpl implements BakeryService{
 	private final BakeryMapper mapper;
 	private final FileUploadUtil fileUpload;
 	private final KakaoController kakao;
+	private final LocationSelectUtil locationSelect;
 	
 	@Override
 	public List<CategoryResponseDTO> getCategory() {
@@ -60,9 +62,7 @@ public class BakeryServiceImpl implements BakeryService{
 			// 주소 앞부분(시,도)을 찾기위한 address
 		String[] address = bakeryRequestDTO.getBakeryAddress().split(" ");
 		String region = address[0].substring(0,2);
-		if(address[0].matches("경상남도")) {
-			region = "경남";
-		}
+		locationSelect.selectLocation(region);
 		
 		BakeryInfoVO bakeryVO = BakeryInfoVO.builder()
 								.bakeryName(bakeryRequestDTO.getBakeryName())
