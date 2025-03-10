@@ -13,6 +13,7 @@ import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDTO;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
+import kr.kro.bbanggil.bakery.dto.BakeryDto;
 
 @Mapper
 public interface BakeryMapper {
@@ -35,6 +36,16 @@ public interface BakeryMapper {
 							  @Param("bakeryNo") int no);
 
 
-//	void bakeryScheduleInsert(BakeryTimeRequestDTO timeDTO);
-
+	void insertBakery(BakeryDto bakery); // 카카오 에서 데이터 주입 받기
+	List<BakeryDto> getBakeriesByRegion(@Param("region") String region); // 지역에 따른 빵집 마커 select
+	
+	List<BakeryDto> getPopularBakeries(); // 인기빵집 select
+	List<BakeryDto> getRecentBakeries();
+	List<BakeryDto>getCategoryBakeries(@Param("categoryNames") List<String> categoryName);
+	List<BakeryDto> getTopFiveOrders(); 
+	
+	
+	List<BakeryDto> findBakeryImages(@Param("no") double No);
+	
+	
 }

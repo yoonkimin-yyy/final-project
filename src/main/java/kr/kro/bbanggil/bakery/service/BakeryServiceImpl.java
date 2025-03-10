@@ -22,6 +22,12 @@ import kr.kro.bbanggil.bakery.util.FileUploadUtil;
 import kr.kro.bbanggil.bakery.util.LocationSelectUtil;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -31,6 +37,7 @@ public class BakeryServiceImpl implements BakeryService{
 	private final FileUploadUtil fileUpload;
 	private final KakaoController kakao;
 	private final LocationSelectUtil locationSelect;
+	private static final Logger logger = LogManager.getLogger(BakeryServiceImpl.class);
 	
 	@Override
 	public List<CategoryResponseDTO> getCategory() {
@@ -111,4 +118,59 @@ public class BakeryServiceImpl implements BakeryService{
 		
 		
 	}
+
+	
+
+	@Override
+	public void saveBakery(BakeryDto bakery) {
+
+		try {
+			mapper.insertBakery(bakery);
+			logger.info("빵집 정보 저장 성공: {}",bakery.getName());
+		}catch(Exception e) {
+			logger.error("빵집 정보 저장 실패 : {}, 오류 메세지 :{}",bakery.getName(),e.getMessage(),e);
+			throw new RuntimeException("빵집 정보를 저장하는 중 오류 발생");
+		}
+		
+
+	}
+
+	@Override
+	public List<BakeryDto> getBakeriesByRegion(String region) {
+
+		return mapper.getBakeriesByRegion(region);
+	}
+
+	@Override
+	public List<BakeryDto> getPopularBakeries() {
+
+		return mapper.getPopularBakeries();
+	}
+
+	@Override
+	public List<BakeryDto> getRecentBakeries() {
+
+		return mapper.getRecentBakeries();
+	}
+
+	@Override
+	public List<BakeryDto> getCategoryBakeries(List<BakeryDto> topBakeries) {
+
+		List<String> categoryNames = topBakeries.stream().map(bakery -> bakery.getResponse().getCategory()).distinct()
+				.collect(Collectors.toList());
+
+		return mapper.getCategoryBakeries(categoryNames);
+	}
+
+	@Override
+	public List<BakeryDto> getTopFiveOrders() {
+		return mapper.getTopFiveOrders();
+	}
+
+	@Override
+	public List<BakeryDto> getBakeryImages(double no) {
+
+		return mapper.findBakeryImages(no);
+	}
+	
 }
