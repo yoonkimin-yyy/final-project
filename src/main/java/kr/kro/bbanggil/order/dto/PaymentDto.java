@@ -10,9 +10,9 @@ public class PaymentDto {
 	private String merchantUid;
 	private int account;
 	private String status;
-	//private String payRequestDate;
 	private String recipientsName;
 	private String recipientsPhoneNum;
 	private String requestContent;
-
+	private String impUid;
+	
 }

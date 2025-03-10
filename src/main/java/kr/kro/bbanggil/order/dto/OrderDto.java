@@ -10,5 +10,6 @@ public class OrderDto {
 	private String menuName;
 	private int menuPrice;
 	private int menuCount;
+	private String bakeryName;
 	
 }

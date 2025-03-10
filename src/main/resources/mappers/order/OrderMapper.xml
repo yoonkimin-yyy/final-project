@@ -7,13 +7,53 @@
 		<result property="menuPrice" column="MENU_PRICE"></result>
 		<result property="menuName" column="MENU_NAME"></result>
 		<result property="menuCount" column="MENU_COUNT"></result>
+		<result property="bakeryName" column="BAKERY_NAME"></result>
 	</resultMap>
 	
+	<resultMap id="successResultMap" type="kr.kro.bbanggil.order.dto.PaymentDto">
+		<result property="merchantUid" column="MERCHANT_UID"></result>
+		<result property="account" column="AMOUNT"></result>
+		<result property="status" column="STAUTS"></result>
+		<result property="recipientsName" column="RECIPIENTS_NAME"></result>
+		<result property="recipientsPhoneNum" column="RECIPIENTS_PHONENUM"></result>
+		<result property="requestContent" column="REQUEST_CONTENT"></result>
+	</resultMap>	
+	
+	<!-- USER_NO & CART_NO 수정해야함 -->	
 	<select id="list" resultMap="orderResultMap">
-		SELECT M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT FROM CART_INFO ci 
+		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
+		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO 
 		WHERE C.USER_NO = 1 AND C.CART_NO = 2
 	</select>
+	
+	<insert id="save" parameterType="kr.kro.bbanggil.order.dto.PaymentDto">
+		INSERT INTO PAYMENT VALUES(PAYMENT_SEQ.NEXTVAL,
+						   		   #{merchantUid},
+						   		   #{account},
+						   		   #{status},
+						   		   SYSDATE,
+						   		   #{recipientsName},
+						   		   #{recipientsPhoneNum},
+						   		   #{requestContent})
+	</insert>
+	
+	<!-- USER_NO 수정해야함 -->
+	<select id="findcart" resultType="int">
+		SELECT CART_NO FROM CART c
+		WHERE USER_NO = 2
+	</select>
+		
+	<select id="findpay" resultType="int">
+		SELECT p.PAY_NO FROM PAYMENT p 
+		WHERE p.MERCHANT_UID = #{merchantUid}
+	</select>	
+	
+	<insert id="orderInfo">
+		INSERT INTO ORDER_INFO VALUES(ORDER_INFO_SEQ.NEXTVAL,
+							  		  #{cartNo},
+							   		  #{payNo})				   		   
+	</insert>
 	
 </mapper>

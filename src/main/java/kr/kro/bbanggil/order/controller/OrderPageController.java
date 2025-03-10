@@ -19,9 +19,11 @@ public class OrderPageController {
 	
 	private final OrderService orderService; 
 	
-	// 장바구니에 담은 리스트 출력 및 결제하기 유저번호 세션으로 가져오기
+	/**
+     * 장바구니에 담은 빵 출력
+	 */
 	@GetMapping("/page")
-	public String order(OrderDto orderDto, Model model) {
+	public String order(OrderDto orderDto, Model model) { // @SessionAttribute("아이디") String 아이디 
 		
 		List<OrderDto> result = orderService.list(orderDto);
 		
