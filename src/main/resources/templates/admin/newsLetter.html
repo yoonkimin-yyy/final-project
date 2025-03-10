@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>뉴스레터 구독 & 발송</title>
+    
+</head>
+<body>
+    <h2>뉴스레터 구독하기</h2>
+    <input type="email" id="email" placeholder="이메일 주소 입력">
+    <button onclick="subscribe()">구독하기</button>
+    <p id="subscribed-message" style="display: none;"></p>
+
+    <h2>관리자 뉴스레터 발송</h2>
+    <form action ="/bbanggil/send" method="post">
+    <button >뉴스레터 즉시 발송</button>
+    </form>
+</body>
+<script src="/js/admin/newsLetter.js"></script>
+</html>
