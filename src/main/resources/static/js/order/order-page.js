@@ -10,8 +10,8 @@ function updateCharCount(element) {
 function requestPay() {
 	const totalCountText = document.getElementById('final-total').textContent;
 	const totalCount = totalCountText.replace('원', ''); // 가격 가져오고 replace로 '원' 제거
-	const name = '홍길동' //document.getElementById('nameInput').value;
-	const phoneNumber = '010-0000-0000' //document.getElementById('phoneNumberInput').value;
+	const name = document.getElementById('nameInput').value;
+	const phoneNumber = document.getElementById('phoneNumberInput').value;
 	const requestDetail = document.getElementById('requestDetailInput').value;
 	const storeName = document.getElementsByClassName('store-name')[0].textContent;	
 	var merchantUid = 'merchant_'+new Date().getTime(); // 고유한 주문번호 생성 
@@ -25,7 +25,7 @@ function requestPay() {
 	// 총가격 검증
 	$.ajax({
 		type : "POST",
-		url : "/order/accountCheck",
+		url : "/api/order/accountCheck",
 		data : {
 			'totalCount' : totalCount 
 		},
@@ -34,7 +34,7 @@ function requestPay() {
 				// 포트원 사전검증(고유번호, 총가격 넘기기)
 				$.ajax({
 					type : 'POST',
-					url : '/order/prepare',
+					url : '/api/order/prepare',
 					data : {
 						'merchantUid' : merchantUid,
 						'amount' : totalCount
@@ -82,7 +82,7 @@ function requestPay() {
 				// DB저장 & 사후검증
 				$.ajax({
 					type : 'POST',
-					url : '/order/validation/' + rsp.imp_uid,
+					url : '/api/order/validation/' + rsp.imp_uid,
 					data : JSON.stringify(payment),
 					contentType:"application/json"
 				}).done(function(data) {
@@ -91,7 +91,7 @@ function requestPay() {
 							payment.impUid = rsp.imp_uid;
 							payment.merchantUid = rsp.merchant_uid;
 							$.ajax({
-								url : '/order/success',
+								url : '/api/order/success',
 								method : 'POST',
 								data : JSON.stringify(payment),
 								contentType:"application/json"

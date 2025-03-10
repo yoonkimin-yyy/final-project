@@ -1,4 +1,50 @@
+// 3초마다 호출
+setInterval(async function() {
+	try {
+		const response = await fetch('/api/order/pickupCheck');
+		const data = await response.json();
+		
+	}
+}=> console.log('test'), 3000);
 // 주문 상품 데이터
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const orderItems = [
     { name: "크로와상", price: 4500, quantity: 1, image: "https://api.a0.dev/assets/image?text=delicious%20croissant%20bread&aspect=1:1" },
     { name: "초코 브레드", price: 5500, quantity: 1, image: "https://api.a0.dev/assets/image?text=chocolate%20bread%20with%20chips&aspect=1:1" },
@@ -126,5 +172,3 @@ function updateOrderTable(isAccepted) {
     `;
     orderItemsContainer.appendChild(totalRow);
 }
-
-setInterval(() => console.log('test'), 5000);

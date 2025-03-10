@@ -24,7 +24,7 @@ import kr.kro.bbanggil.order.service.OrderService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 @AllArgsConstructor
 public class ApiOrderPageController {
 	
