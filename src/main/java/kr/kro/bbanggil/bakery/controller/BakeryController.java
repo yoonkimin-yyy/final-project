@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
@@ -36,19 +38,19 @@ public class BakeryController {
 	@GetMapping("/insert/form")
 	public String bakeryInsertForm(BakeryInsertRequestDTO BakeryRequestDTO,
 								   Model model) {
-		
+		model.addAttribute(BakeryRequestDTO);
 		model.addAttribute("closeWindow", true);
 		return "owner/bakery-insert";
 	}
 	@PostMapping("/insert")
-	public String bakeryInsert(BakeryInsertRequestDTO BakeryRequestDTO,
-							   Model model) {
-		System.out.println("----------------");
-		System.out.println(BakeryRequestDTO.getInsideInfo());
-		System.out.println(BakeryRequestDTO.getTimeDTO().getWeekday());
-		System.out.println(BakeryRequestDTO.getTimeDTO().getWeekend());
-		System.out.println(BakeryRequestDTO.getTimeDTO().getMonday());
-		return "user/bakery-list";
+	public String bakeryInsert(@ModelAttribute BakeryInsertRequestDTO BakeryRequestDTO,
+							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
+							   Model model) throws Exception {
+		BakeryRequestDTO.getTimeDTO().dateSet();
+		BakeryRequestDTO.getTimeDTO().timeSet();
+		service.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO);
+		
+		return "common/home";
 	}
 	@GetMapping("/menu/insert/form")
 	public String menuInsertForm(Model model) {
@@ -62,9 +64,7 @@ public class BakeryController {
 	public ResponseEntity<Map<String,String>> menuInsert(MenuRequestDTO menuRequestDTO,
 			 				 @RequestParam("menuImage") MultipartFile file,
 			 				 Model model) {
-		System.out.println(menuRequestDTO.getMenuCategory());
-		System.out.println();
-		System.out.println();
+		
 		MenuResponseDTO result = service.menuInsert(menuRequestDTO,file);
 		
 		Map<String, String> response =new HashMap<>();
@@ -74,15 +74,3 @@ public class BakeryController {
 		
 	}
 }
-
-//	@PostMapping("menu/insert")
-//	public String menuInsert(menuRequestDTO menuRequestDTO,
-//			 				 @RequestParam("menuImage") MultipartFile file,
-//			 				 Model model) {
-//		System.out.println(menuRequestDTO.getMenuName());
-//		System.out.println(menuRequestDTO.getMenuPopulity());
-//		System.out.println(menuRequestDTO.getMenuPrice());
-//		
-//		return "owner/bakery-insert";
-//		
-//	}

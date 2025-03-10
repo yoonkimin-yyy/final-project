@@ -20,7 +20,7 @@
                 <option value="인기">인기</option>
             </select>
             <select name="menuCategory" id="menuCategory" class="menu-populity">
-            	<option th:each="category : ${category}" th:value="${category.category}" th:text="${category.category}"></option>
+            	<option th:each="category : ${category}" th:value="${category.categoryNo}" th:text="${category.category}"></option>
             </select>
         </div>
         <button class="add-to-menu" type="submit">메뉴추가</button>

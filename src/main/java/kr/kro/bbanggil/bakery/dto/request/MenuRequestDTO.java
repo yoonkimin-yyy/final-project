@@ -9,6 +9,6 @@ public class MenuRequestDTO {
 	private String menuName;
 	private String menuPrice;
 	private String menuPopulity;
-	private String menuCategory;
+	private int menuCategory;
 	FileRequestDTO fileRequestDTO = new FileRequestDTO();
 }

@@ -62,6 +62,22 @@ function openUpdateMenu() {
     window.open("/bakery/menu/insert/form", "_blank", "width=600, height=400, top=100, left=100");
 }
 
+function previewImages(event, previewId) {
+            const previewContainer = document.getElementById(previewId);
+            previewContainer.innerHTML = ''; // 기존 이미지 초기화
+            const files = event.target.files;
 
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '150px';
+                    img.style.margin = '5px';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
 

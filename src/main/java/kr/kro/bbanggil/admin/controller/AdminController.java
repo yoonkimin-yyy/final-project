@@ -10,7 +10,7 @@ public class AdminController {
 
 		@GetMapping("/form")
 		public String adminForm() {
-			return "admin/admin-page";
+			return "/admin/admin-page";
 		}
 		
 		@GetMapping("/bakery/detail")
