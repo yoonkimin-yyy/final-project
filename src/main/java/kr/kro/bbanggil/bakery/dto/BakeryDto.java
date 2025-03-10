@@ -1,10 +1,8 @@
 package kr.kro.bbanggil.bakery.dto;
 
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseBakeryDetailDto;
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseCartDto;
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseImageDto;
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseMenuDto;
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseReviewDto;
+
+import kr.kro.bbanggil.bakery.response.dto.BakeryResponseDto;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,13 +23,8 @@ public class BakeryDto {
     private String phone;  // 전화번호
     
     // 추가 연관된 필드
-    private BakeryResponseReviewDto review = new BakeryResponseReviewDto();  
-    private BakeryResponseMenuDto menu = new BakeryResponseMenuDto();  
-    private BakeryResponseImageDto image;
-    private BakeryResponseBakeryDetailDto detail = new BakeryResponseBakeryDetailDto();
-    private BakeryResponseCartDto cart = new BakeryResponseCartDto();
-
     
+    private BakeryResponseDto  response = new BakeryResponseDto();
     
 }
 

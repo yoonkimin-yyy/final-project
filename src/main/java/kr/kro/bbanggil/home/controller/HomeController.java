@@ -8,16 +8,20 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseReviewDto;
+
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
 import kr.kro.bbanggil.common.util.EmailServiceImpl;
-import kr.kro.bbanggil.common.util.NewsletterScheduler;
+import kr.kro.bbanggil.email.scheduler.NewsletterScheduler;
+import kr.kro.bbanggil.subscribe.dto.SubscriptionRequsetDto;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -34,21 +38,20 @@ public class HomeController {
 	 * 이메일로 구독 알림 보내는 기능
 	 */
 	@PostMapping("/subscribe")
-	public ResponseEntity<String> subscribe(@RequestParam("email") String email) {
-  
-
-	    if (email == null || email.isEmpty()) {
-	        return ResponseEntity.badRequest().body(" 이메일을 입력해주세요.");
+	public ResponseEntity<String> subscribe(@Valid @RequestBody SubscriptionRequsetDto request, BindingResult bindingResult) {
+	    if (bindingResult.hasErrors()) {
+	        return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
 	    }
 
-	    try {
-	        emailService.sendSubscriptionEmail(email);
-	        return ResponseEntity.ok(" 구독 완료! 확인 이메일을 발송했습니다.");
-	    } catch (Exception e) {
-	        return ResponseEntity.status(500).body(" 구독 이메일 발송 실패: " + e.getMessage());
+	    boolean isSuccess = emailService.sendSubscriptionEmail(request.getEmail());
+
+	    if (isSuccess) {
+	        return ResponseEntity.ok("구독 완료! 확인 이메일을 발송했습니다.");
+	    } else {
+	        return ResponseEntity.status(500).body("구독 이메일 발송 실패. 다시 시도해주세요.");
 	    }
-	
 	}
+	
 	/*
 	 * 이메일로 뉴스레터 발송
 	 */
@@ -64,6 +67,9 @@ public class HomeController {
 		return "admin/newsLetter";
 	}
 	
+	/**
+	 * 카카오 api를 이용하여 region과 query를 이용하여 데이터 db에 주입 받는 기능
+	 */
 	@GetMapping("/bakeries")
 	public ResponseEntity<List<BakeryDto>> getBakeriesByRegion(@RequestParam("region") String region){
 

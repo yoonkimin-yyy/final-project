@@ -1,16 +1,22 @@
-package kr.kro.bbanggil.common.util;
+package kr.kro.bbanggil.email.scheduler;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import kr.kro.bbanggil.common.util.EmailServiceImpl;
 import kr.kro.bbanggil.mail.mapper.EmailMapper;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class NewsletterScheduler {
+	
+	private static final Logger logger = LogManager.getLogger(NewsletterScheduler.class);
 
 	private final EmailServiceImpl emailService;
 	private final EmailMapper emailMapper;
@@ -19,8 +25,21 @@ public class NewsletterScheduler {
 	@Scheduled(cron = "0 0 9 * * MON")
 	public void sendWeeklyNewsletter() {
 		
-		String subject = " 이번 주의 새로운 빵집 소식!";
-		String body = """ 
+		/**
+		 * 랜덤 추천 빵집 정보 가져오기
+		 */
+		Map<String, String> bakeryInfo = emailMapper.getRandomBakery();
+		String bakeryName = bakeryInfo.get("BAKERY_NAME");
+		String imgNo = bakeryInfo.get("IMG_NO");
+		String changeName = bakeryInfo.get("CHANGE_NAME");
+		String resourcesPath = bakeryInfo.get("RESOURCES_PATH");
+		String openTime = bakeryInfo.get("OPEN_TIME");
+		String closeTime = bakeryInfo.get("CLOSE_TIME");
+	 
+
+		
+		String subject = " 🍞 이번 주의 새로운 빵집:" +bakeryName;
+		String body = String.format(""" 
 				<!DOCTYPE html>
 				<html lang="ko">
 				<head>
@@ -88,9 +107,8 @@ public class NewsletterScheduler {
 				    
 				    <div class="content">
 				        <p>이번 주에도 다양한 빵집 소식과 할인 정보를 전해드립니다! 🥐</p>
-				        <p><b>🥖 추천 빵집:</b> "서천 파티세리 수" - 갓 구운 크루아상이 인기!<br>
-				           <b>🍩 신상품:</b> 부드러운 크림 도넛 출시!<br>
-				           <b>🛍️ 할인 정보:</b> 2개 구매 시 1개 무료 이벤트 진행 중!</p>
+                        <p><b>🥖 추천 빵집:</b> "%s" - %s<br></p>
+                          <br><p><b>🕒 운영 시간:</b> %s ~ %s</p>
 				    </div>
 
 				    <a href="https://yourwebsite.com/newsletter" class="button">자세히 보기</a>
@@ -102,7 +120,7 @@ public class NewsletterScheduler {
 
 				</body>
 				</html>
-				""";
+				""",resourcesPath,bakeryName,openTime,closeTime);
 		
 		
 		List<String> subscriberEmails = emailMapper.getAllSubscriberEmails();
@@ -110,9 +128,9 @@ public class NewsletterScheduler {
 		 for (String email : subscriberEmails) {
 	            try {
 	                emailService.sendNewsletterEmail(email,subject,body);
-	                System.out.println(" 뉴스레터 발송 완료: " + email);
+	                logger.info(" 뉴스레터 발송 완료: {}", email);
 	            } catch (Exception e) {
-	                System.err.println(" 뉴스레터 발송 실패 (" + email + "): " + e.getMessage());
+	            	logger.error(" 뉴스레터 발송 실패 ({}): {}", email, e.getMessage(), e);
 	            }
 	        }
 		

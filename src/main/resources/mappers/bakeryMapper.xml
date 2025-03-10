@@ -3,54 +3,48 @@
 						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.bakery.mapper.BakeryMapper">
 
-<resultMap id="BakeryResultMap" type="kr.kro.bbanggil.bakery.dto.BakeryDto">
- 		<result property="no" column="bakery_no"></result>
-        <result property="name" column="bakery_name"></result>
-        <result property="latitude" column="latitude"></result>
-        <result property="longitude" column="longitude"></result>
-        <result property="region" column="region"></result>
-        <result property="address" column="bakery_address"></result>
-        <result property="phone" column="bakery_phone"></result>
-        
-        
-        <association property="review" javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseReviewDto">
-         <result property="reviewRating" column="review_rating"></result>
-        </association>
-        
-        
-        <association property="detail" javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseBakeryDetailDto">
-         <result property="createDate" column="created_date"></result>
-        </association>
-        
-         <association property="cart" javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseCartDto">
-         <result property="totalCount" column="bakery_count"></result>
-        </association>
-        
-        
-       <association property="menu" javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseMenuDto">
-       <result property="menuNo" column="menu_no"></result>
-       <result property="menuName" column="menu_name"></result>
-       <result property="menuPrice" column="menu_price"></result>
-       <result property="menuInfo" column="menu_info"></result>
-       <result property="categoryName" column="category_no"></result>
-       <result property="category" column="category"></result>
-       </association>
-        
-       <association property="image" javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseImageDto">
-       <result property="imgNo" column="img_no"></result>
-       <result property="changeName" column="change_name"></result>
-       <result property="resourcesPath" column="resources_path"></result>
-       </association> 
-        
-        
+<resultMap id="BakeryResultMap"
+	type="kr.kro.bbanggil.bakery.dto.BakeryDto">
+	<result property="no" column="bakery_no"></result>
+	<result property="name" column="bakery_name"></result>
+	<result property="latitude" column="latitude"></result>
+	<result property="longitude" column="longitude"></result>
+	<result property="region" column="region"></result>
+	<result property="address" column="bakery_address"></result>
+	<result property="phone" column="bakery_phone"></result>
+
+
+	<association property="response"
+		javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseDto">
+
+		<result property="reviewRating" column="review_rating"></result>
+
+		<result property="createDate" column="created_date"></result>
+
+		<result property="totalCount" column="bakery_count"></result>
+
+		<result property="menuNo" column="menu_no"></result>
+		<result property="menuName" column="menu_name"></result>
+		<result property="menuPrice" column="menu_price"></result>
+		<result property="menuInfo" column="menu_info"></result>
+		<result property="categoryName" column="category_no"></result>
+		<result property="category" column="category"></result>
+
+		<result property="imgNo" column="img_no"></result>
+		<result property="changeName" column="change_name"></result>
+		<result property="resourcesPath" column="resources_path"></result>
+
+		<result property="day" column="DAY"></result>
+		<result property="openTime" column="open_time"></result>
+		<result property="closeTime" column="close_time"></result>
+
+	</association>
+
 </resultMap>
 
 
 <insert id="insertBakery" parameterType="kr.kro.bbanggil.bakery.dto.BakeryDto"> 
-	<selectKey keyProperty="no" resultType="double" order="AFTER">
-	  SELECT bakery_seq.nextval FROM dual
-	
-	</selectKey>
+
 		INSERT INTO bakery_info(bakery_no,bakery_name,bakery_address,bakery_phone,latitude,longitude,region)
 		VALUES(bakery_seq.nextval,#{name},#{address},#{phone},#{latitude},#{longitude},#{region})
 
@@ -172,8 +166,44 @@ ORDER BY
 </select>
 
 
+<select id="findBakeryImages" resultMap="BakeryResultMap">
 
+SELECT
+	bi2.CHANGE_NAME,
+	bi2.IMG_NO,
+	bi2.RESOURCES_PATH ,
+	bi.BAKERY_NO ,
+	bi.BAKERY_NAME ,
+	bi.BAKERY_ADDRESS,
+	bi.BAKERY_PHONE
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_IMAGE bi2 
+ON
+	bi.BAKERY_NO = bi2.BAKERY_NO
+WHERE
+	BI.BAKERY_NO = #{no}
+	
+</select>
 
+<select id="findBakeriesInfo" resultMap="BakeryResultMap">
+
+SELECT
+	bi.BAKERY_NAME,
+	bi.BAKERY_ADDRESS ,
+	bi.BAKERY_PHONE ,
+	bs."DAY" ,
+	bs.OPEN_TIME,
+	bs.CLOSE_TIME
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_SCHEDULE bs 
+ON
+	bs.BAKERY_NO = bi.BAKERY_NO
+	WHERE 
+		bi.BAKERY_NO = #{no}
+
+</select>
 
 
 
