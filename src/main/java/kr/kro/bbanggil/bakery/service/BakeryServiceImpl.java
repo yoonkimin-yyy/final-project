@@ -59,16 +59,17 @@ public class BakeryServiceImpl implements BakeryService{
 		return result;
 	}
 	
-	
+	/**
+	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
+	 * address : 받아온 주소를 " "기준으로 잘라서 배열에 넣어두는 변수
+	 */
 	@Override
 	public void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO) throws Exception {
 		try {
-			// 카카오 api로 사용자가 입력한 주소를 위도, 경도로 변환
 		JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
-		
-			// 주소 앞부분(시,도)을 찾기위한 address
+			
 		String[] address = bakeryRequestDTO.getBakeryAddress().split(" ");
-		String region = address[0].substring(0,2);
+		String region = address[0];
 		locationSelect.selectLocation(region);
 		
 		BakeryInfoVO bakeryVO = BakeryInfoVO.builder()
@@ -94,15 +95,23 @@ public class BakeryServiceImpl implements BakeryService{
 		for(BakeryTimeSetDTO item : bakeryRequestDTO.getTimeDTO().getSetDTO()) {
 			mapper.bakeryScheduleInsert(item,bakeryRequestDTO.getBakeryNo());
 		}
-			
+			/**
+			 * filemap : 이미지가 들어가지는 위치에 따라 ("이미지의 위치",이미지 내용)으로 매핑되는 변수
+			 */
 		Map<String,List<MultipartFile>> filemap = new LinkedHashMap<>();
 		filemap.put("main", bakeryImgRequestDTO.getMain());
 		filemap.put("inside", bakeryImgRequestDTO.getInside());
 		filemap.put("outside", bakeryImgRequestDTO.getOutside());
 		filemap.put("parking", bakeryImgRequestDTO.getParking());
+		
+		/**
+		 * imgLocation : 이미지가 입력된 위치
+		 * files : 해당 위치에 들어간 이미지들
+		 */
 		for(Map.Entry<String,List<MultipartFile>> entry : filemap.entrySet()) {
 			String imgLocation = entry.getKey();
 			List<MultipartFile> files = entry.getValue();
+			
 			if(bakeryImgRequestDTO.checkFile(files)) {
 				for(int i=0;i<files.size();i++) {
 					fileUpload.uploadFile(files.get(i), bakeryRequestDTO.getFileDTO(), "bakery");

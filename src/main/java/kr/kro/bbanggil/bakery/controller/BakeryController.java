@@ -52,6 +52,13 @@ public class BakeryController {
 		model.addAttribute("closeWindow", true);
 		return "owner/bakery-insert";
 	}
+	/**
+	 * 
+	 * @param BakeryRequestDTO : insert에 대한 전반적인 데이터가 들어있는 DTO
+	 * @param BakeryImgRequestDTO : insert에 필요한 이미지들을 포함하는 DTO
+	 * dateSet() : weekday, weekend 데이터 입력 시 각 요일에 맞게 데이터를 넣어주는 메서드
+	 * timeSet() : 각 요일에 opentime, closetime를 설정해주는 메서드
+	 */
 	@PostMapping("/insert")
 	public String bakeryInsert(@ModelAttribute BakeryInsertRequestDTO BakeryRequestDTO,
 							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
