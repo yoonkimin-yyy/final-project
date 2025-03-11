@@ -37,4 +37,9 @@ public class BakeryInsertRequestDTO {
 	
 	BakeryTimeRequestDTO timeDTO = new BakeryTimeRequestDTO();
 	FileRequestDTO fileDTO = new FileRequestDTO();
+	
+	public void setTime() {
+		timeDTO.dateSet();
+		timeDTO.timeSet();
+	}
 }

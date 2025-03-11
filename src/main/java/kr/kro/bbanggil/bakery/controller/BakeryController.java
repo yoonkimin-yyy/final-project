@@ -63,8 +63,7 @@ public class BakeryController {
 	public String bakeryInsert(@ModelAttribute BakeryInsertRequestDTO BakeryRequestDTO,
 							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
 							   Model model) throws Exception {
-		BakeryRequestDTO.getTimeDTO().dateSet();
-		BakeryRequestDTO.getTimeDTO().timeSet();
+		BakeryRequestDTO.setTime();
 		service.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO);
 		
 		return "common/home";
