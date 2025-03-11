@@ -3,6 +3,9 @@ package kr.kro.bbanggil.order.api;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +21,9 @@ import com.siot.IamportRestClient.request.PrepareData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
-import kr.kro.bbanggil.order.dto.OrderDto;
-import kr.kro.bbanggil.order.dto.PaymentDto;
+import kr.kro.bbanggil.order.exception.OrderException;
+import kr.kro.bbanggil.order.request.dto.OrderRequestDto;
+import kr.kro.bbanggil.order.request.dto.PaymentRequestDto;
 import kr.kro.bbanggil.order.service.OrderService;
 import lombok.AllArgsConstructor;
 
@@ -28,6 +32,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ApiOrderPageController {
 	
+	private static final Logger logger = LogManager.getLogger(ApiOrderPageController.class);
 	private final OrderService orderService;
 	private IamportClient iamportClient;
 	
@@ -37,9 +42,9 @@ public class ApiOrderPageController {
 	@PostMapping("/accountCheck")
 	@ResponseBody
 	public Boolean accountCheck(@RequestParam("totalCount") int totalCount, 
-								 OrderDto orderDto) {
+								 OrderRequestDto orderRequestDto) {
 		
-		boolean result = orderService.accountCheck(totalCount, orderDto);
+		boolean result = orderService.accountCheck(totalCount, orderRequestDto);
 
 		return result;
 	}
@@ -49,16 +54,16 @@ public class ApiOrderPageController {
 	 */
 	@PostMapping("/prepare")
 	@ResponseBody 
-	public String accountCheckJ(@RequestParam("merchantUid") String merchantUid,
-								@RequestParam("amount") BigDecimal amount) {
+	public String paymentCheck(@RequestParam("merchantUid") String merchantUid,
+							   @RequestParam("amount") BigDecimal amount) {
 		
 		try {
 			iamportClient.postPrepare(new PrepareData(merchantUid, amount));
+			return merchantUid;
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			logger.info(e.getMessage());
+			throw new OrderException("결제금액이 일치하지 않습니다.", "/order/page", HttpStatus.BAD_REQUEST);
 		}
-		
-		return merchantUid;
 	}
 	
 	/**
@@ -67,27 +72,34 @@ public class ApiOrderPageController {
 	@PostMapping("/validation/{imp_uid}")
 	@ResponseBody
 	public IamportResponse<Payment> validateIamport(@PathVariable("imp_uid") String imp_uid,
-													@RequestBody PaymentDto paymentDto,
-													OrderDto orderDto) 
+													@RequestBody PaymentRequestDto paymentRequestDto,
+													OrderRequestDto orderRequestDto) 
 	throws IamportResponseException, IOException {
 
-		return orderService.validateIamport(imp_uid, paymentDto, orderDto);
+		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto);
 	}
 	
 	/**
 	 * DB저장
 	 */
 	@PostMapping("/success")
-	public ResponseEntity<String> processOrder(@RequestBody PaymentDto paymentDto) {
+	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDtoDto) {
 		
-		return ResponseEntity.ok(orderService.saveOrder(paymentDto));
+		boolean result = orderService.saveOrder(paymentRequestDtoDto);
+		
+		if(result) {
+			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
+		}
+		
+		return ResponseEntity.badRequest().body("주문 저장에 실패했습니다");
 	}
 	
 	/**
 	 * 결제취소
 	 */
 	@PostMapping("/cancel/{imp_uid}")
-	public IamportResponse<Payment> cancelPayment(@PathVariable String imp_uid) throws IamportResponseException, IOException {
+	public IamportResponse<Payment> cancelPayment(@PathVariable String imp_uid) 
+			throws IamportResponseException, IOException {
 		return orderService.cancelPayment(imp_uid);
 	}
 	

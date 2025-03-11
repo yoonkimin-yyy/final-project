@@ -5,15 +5,19 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import kr.kro.bbanggil.order.dto.OrderDto;
-import kr.kro.bbanggil.order.dto.PaymentDto;
+import kr.kro.bbanggil.order.request.dto.OrderRequestDto;
+import kr.kro.bbanggil.order.request.dto.PaymentRequestDto;
+import kr.kro.bbanggil.order.response.dto.OrderResponseDto;
+
 
 @Mapper
 public interface OrderMapper {
 
-	List<OrderDto> list(OrderDto orderDto);
+	List<OrderResponseDto> list(OrderRequestDto orderRequestDto);
 	
-	void save(PaymentDto paymentDto);
+	int calculate(OrderRequestDto orderRequestDto);
+	
+	void save(PaymentRequestDto paymentRequsetDto);
 
 	int findcart();
 	

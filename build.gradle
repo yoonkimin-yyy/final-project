@@ -70,7 +70,7 @@ dependencies {
 }
 
 configurations {
-   all*.exclude module: 'spring-boot-starter-logging'
+	all*.exclude module: 'spring-boot-starter-logging'
 }
 
 tasks.named('test') {

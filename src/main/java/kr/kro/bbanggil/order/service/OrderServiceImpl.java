@@ -2,6 +2,8 @@ package kr.kro.bbanggil.order.service;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,15 +12,17 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
-import kr.kro.bbanggil.order.dto.OrderDto;
-import kr.kro.bbanggil.order.dto.PaymentDto;
 import kr.kro.bbanggil.order.mapper.OrderMapper;
+import kr.kro.bbanggil.order.request.dto.OrderRequestDto;
+import kr.kro.bbanggil.order.request.dto.PaymentRequestDto;
+import kr.kro.bbanggil.order.response.dto.OrderResponseDto;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
 	
+	private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 	private final OrderMapper orderMapper;
 	private final IamportClient iamportClient;
 	
@@ -26,9 +30,9 @@ public class OrderServiceImpl implements OrderService {
 	 * 장바구니 출력
 	 */
 	@Override
-	public List<OrderDto> list(OrderDto orderDto) {
+	public List<OrderResponseDto> list(OrderRequestDto orderRequestDto) {
 
-		List<OrderDto> result = orderMapper.list(orderDto);
+		List<OrderResponseDto> result = orderMapper.list(orderRequestDto);
 
 		return result;
 	}
@@ -37,15 +41,9 @@ public class OrderServiceImpl implements OrderService {
 	 * 가격검증
 	 */
 	@Override
-	public boolean accountCheck(int totalCount, OrderDto orderDto) {
+	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto) {
 		
-		int dbTotalCount = 0; // DB 총가격 저장  
-		
-		List<OrderDto> result = orderMapper.list(orderDto);
-		
-		for(OrderDto rs : result) {
-			dbTotalCount += rs.getMenuPrice() * rs.getMenuCount();
-		}
+		int dbTotalCount = orderMapper.calculate(orderRequestDto);
 		
 		if(totalCount == dbTotalCount) {
 			return true;
@@ -58,57 +56,46 @@ public class OrderServiceImpl implements OrderService {
 	 * 사후검증 & 취소처리
 	 */
 	@Override
-	public IamportResponse<Payment> validateIamport(String imp_uid, PaymentDto paymentDto, OrderDto orderDto) {
-		int dbTotalPrice = 0; // DB 총가격 저장
+	public IamportResponse<Payment> validateIamport(String imp_uid, 
+													PaymentRequestDto paymentRequestDto, 
+													OrderRequestDto orderRequestDto) {
 		
-		List<OrderDto> result = orderMapper.list(orderDto);
+		int dbTotalPrice = orderMapper.calculate(orderRequestDto);
 		
-		for(int i=0; i<result.size(); i++) {
-			dbTotalPrice += (result.get(i).getMenuPrice() * result.get(i).getMenuCount());
-		}
-		
-		if(dbTotalPrice == paymentDto.getAccount()) {
+		if(dbTotalPrice == paymentRequestDto.getAccount()) {
 			try {
 				IamportResponse<Payment> payment = iamportClient.paymentByImpUid(imp_uid);
-				System.out.println("결제 요청 응답. 결제 내역 - 주문 번호: {" + payment.getResponse() + "}");
+				
 				return payment;
 			} catch(Exception e) {
-				System.out.println(e.getMessage());
-				return null;
+				logger.info(e.getMessage());
+				cancelPayment(paymentRequestDto.getImpUid());
 			} 
-		} else {
-			try {
-				CancelData cancelData = new CancelData(imp_uid, true);
-				IamportResponse<Payment> payment = iamportClient.cancelPaymentByImpUid(cancelData);
-	            System.out.println("결제 금액 오류. 결제 취소 처리 - 주문 번호 : {" + payment.getResponse() + "}");
-	            return null;
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				return null;
-			}
-		}
+		} 
+
+		return null;
 	}
 	
 	/**
 	 * DB저장
 	 */
 	@Override
-	@Transactional
-	public String saveOrder(PaymentDto paymentDto) {
+	@Transactional(rollbackFor = {Exception.class})
+	public boolean saveOrder(PaymentRequestDto paymentRequestDto) {
 		try {
-			orderMapper.save(paymentDto);
+			orderMapper.save(paymentRequestDto);
 			
 			int cartNo = orderMapper.findcart(); 
-			int payNo = orderMapper.findpay(paymentDto.getMerchantUid());
+			int payNo = orderMapper.findpay(paymentRequestDto.getMerchantUid());
 			
 			orderMapper.orderInfo(cartNo, payNo);
 			orderMapper.pickupCheck(payNo);
 			
-			return "주문 정보가 성공적으로 저장되었습니다.";
+			return true;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			cancelPayment(paymentDto.getImpUid());
-			return "주문 정보 저장에 실패했습니다.";
+			logger.info(e.getMessage());
+			cancelPayment(paymentRequestDto.getImpUid());
+			return false;
 		}
 	}
 	
@@ -121,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
             IamportResponse<Payment> payment = iamportClient.cancelPaymentByImpUid(cancelData);
             return payment;
         } catch (Exception e) {
-        	System.out.println(e.getMessage());
+        	logger.info(e.getMessage());
             return null;
         }
     }
