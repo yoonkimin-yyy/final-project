@@ -56,4 +56,11 @@
 							   		  #{payNo})				   		   
 	</insert>
 	
+	<insert id="pickupCheck">
+		INSERT INTO PICKUP_STATUS VALUES(PICKUP_STATUS_SEQ.NEXTVAL,
+										 #{payNo},
+										 DEFAULT,
+										 DEFAULT)
+	</insert>
+	
 </mapper>

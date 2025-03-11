@@ -102,6 +102,7 @@ public class OrderServiceImpl implements OrderService {
 			int payNo = orderMapper.findpay(paymentDto.getMerchantUid());
 			
 			orderMapper.orderInfo(cartNo, payNo);
+			orderMapper.pickupCheck(payNo);
 			
 			return "주문 정보가 성공적으로 저장되었습니다.";
 		} catch (Exception e) {

@@ -20,5 +20,7 @@ public interface OrderMapper {
 	int findpay(String merchantUid);
 
 	void orderInfo(@Param("cartNo")int cartNo, @Param("payNo") int payNo);
+
+	void pickupCheck(int payNo);
 	
 }

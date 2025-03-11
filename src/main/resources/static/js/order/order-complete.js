@@ -24,27 +24,6 @@ setInterval(async function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const orderItems = [
     { name: "크로와상", price: 4500, quantity: 1, image: "https://api.a0.dev/assets/image?text=delicious%20croissant%20bread&aspect=1:1" },
     { name: "초코 브레드", price: 5500, quantity: 1, image: "https://api.a0.dev/assets/image?text=chocolate%20bread%20with%20chips&aspect=1:1" },
