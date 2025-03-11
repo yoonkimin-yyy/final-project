@@ -1,6 +1,5 @@
 package kr.kro.bbanggil.bakery.service;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,19 +7,20 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import groovy.transform.Undefined.EXCEPTION;
 import kr.kro.bbanggil.bakery.api.KakaoController;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
-import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
+import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.FileUploadUtil;
 import kr.kro.bbanggil.bakery.util.LocationSelectUtil;
@@ -40,9 +40,10 @@ public class BakeryServiceImpl implements BakeryService{
 	/**
 	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
 	 * address : 받아온 주소를 " "기준으로 잘라서 배열에 넣어두는 변수
+	 * @throws Exception 
 	 */
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = EXCEPTION.class)
 	public void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO) throws Exception {
 		try {
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
@@ -101,9 +102,13 @@ public class BakeryServiceImpl implements BakeryService{
 						}
 					}
 				}
-		} catch (IOException e) {
+				throw new RuntimeException();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			logger.error("에러발생! : {}",e.getMessage());
+			throw new BakeryException("신청작업 오류","common/error",HttpStatus.BAD_REQUEST);
+//			e.printStackTrace();
 		}
 		
 		

@@ -1,32 +1,23 @@
 package kr.kro.bbanggil.bakery.controller;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
+import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
-import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.service.BakeryService;
-import lombok.AllArgsConstructor;
-
-import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
+import lombok.AllArgsConstructor;
 
 @Controller
 @RequestMapping("/bakery")
@@ -59,7 +50,7 @@ public class BakeryController {
 	 * timeSet() : 각 요일에 opentime, closetime를 설정해주는 메서드
 	 */
 	@PostMapping("/insert")
-	public String bakeryInsert(@ModelAttribute BakeryInsertRequestDTO BakeryRequestDTO,
+	public String bakeryInsert(@ModelAttribute@Valid BakeryInsertRequestDTO BakeryRequestDTO,
 							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
 							   Model model) throws Exception {
 		BakeryRequestDTO.setTime();
@@ -67,14 +58,14 @@ public class BakeryController {
 		
 		return "common/home";
 	}
-	@GetMapping("/menu/insert/form")
-	public String menuInsertForm(Model model) {
-		List<CategoryResponseDTO> category = service.getCategory();
-
-		model.addAttribute("category",category);
-		return "owner/menu-insert";
-		
-	}
+//	@GetMapping("/menu/insert/form")
+//	public String menuInsertForm(Model model) {
+//		List<CategoryResponseDTO> category = service.getCategory();
+//
+//		model.addAttribute("category",category);
+//		return "owner/menu-insert";
+//		
+//	}
 	
 	
 	@GetMapping("/detail/form")
@@ -95,7 +86,10 @@ public class BakeryController {
 	}
 	
 	
-	
+	@GetMapping("/error")
+	public String errorTest() {
+		return "/common/error";
+	}
 	
 	
 }
