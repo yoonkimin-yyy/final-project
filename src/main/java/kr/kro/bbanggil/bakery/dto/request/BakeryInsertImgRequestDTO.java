@@ -15,6 +15,6 @@ public class BakeryInsertImgRequestDTO {
 	List<MultipartFile> parking;
 	
 	public boolean checkFile(List<MultipartFile> obj) {
-		return obj==null&&!obj.isEmpty();
+		return !obj.get(0).getOriginalFilename().equals("");
 	}
 }

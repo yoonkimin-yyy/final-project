@@ -49,33 +49,32 @@ public class BakeryServiceImpl implements BakeryService{
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
 				
 			String[] address = bakeryRequestDTO.getBakeryAddress().split(" ");
-			String region = address[0];
-			locationSelect.selectLocation(region);
-			int bakeryNo = mapper.getBakeryNo();
+			String region = locationSelect.selectLocation(address[0]);
 			
 			BakeryInfoVO bakeryVO = BakeryInfoVO.builder()
+									
 									.bakeryName(bakeryRequestDTO.getBakeryName())
 									.bakeryAddress(bakeryRequestDTO.getBakeryAddress())
 									.bakeryPhone(bakeryRequestDTO.getBakeryPhone())
 									.latitude(location.get("y").asDouble())
 									.longitude(location.get("x").asDouble())
-									.region(address[0].substring(0, 2))
+									.region(region)
 									.build();
 			
 				mapper.bakeryInsert(bakeryVO);
-				bakeryRequestDTO.setBakeryNo(bakeryNo);
+				bakeryRequestDTO.setBakeryNo(bakeryVO.getBakeryNo());
 				
 			BakeryDetailVO detailVO = BakeryDetailVO.builder()
 									  .amenity(bakeryRequestDTO.getParkingInfo())
 									  .insideInfo(bakeryRequestDTO.getInsideInfo())
 									  .outsideInfo(bakeryRequestDTO.getOutsideInfo())
 									  .createdDate(bakeryRequestDTO.getCreatedDate())
-									  .bakeryNo(bakeryNo)
+									  .bakeryNo(bakeryRequestDTO.getBakeryNo())
 									  .build();
 				mapper.bakeryDetailInsert(detailVO);
 				
 				for(BakeryTimeSetDTO item : bakeryRequestDTO.getTime()) {
-					mapper.bakeryScheduleInsert(item,bakeryNo);
+					mapper.bakeryScheduleInsert(item,bakeryRequestDTO.getBakeryNo());
 				}
 				/**
 				 * filemap : 이미지가 들어가지는 위치에 따라 ("이미지의 위치",이미지 내용)으로 매핑되는 변수
@@ -85,7 +84,7 @@ public class BakeryServiceImpl implements BakeryService{
 			filemap.put("inside", bakeryImgRequestDTO.getInside());
 			filemap.put("outside", bakeryImgRequestDTO.getOutside());
 			filemap.put("parking", bakeryImgRequestDTO.getParking());
-		
+			
 				/**
 				 * imgLocation : 이미지가 입력된 위치
 				 * files : 해당 위치에 들어간 이미지들
@@ -94,15 +93,18 @@ public class BakeryServiceImpl implements BakeryService{
 					String imgLocation = entry.getKey();
 					List<MultipartFile> files = entry.getValue();
 					
+					
 					if(bakeryImgRequestDTO.checkFile(files)) {
 						for(int i=0;i<files.size();i++) {
 							fileUpload.uploadFile(files.get(i), bakeryRequestDTO.getFileDTO(), "bakery");
 							bakeryRequestDTO.setImgLocation(imgLocation);
 							mapper.bakeryFileUpload(bakeryRequestDTO);
 						}
+					} else {
+						logger.warn("파일업로드 실패! : {}",imgLocation);
 					}
 				}
-				throw new RuntimeException();
+				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			

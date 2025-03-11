@@ -11,6 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
+@Valid
 public class BakeryInsertRequestDTO {
 	
 	@Pattern(regexp="^[가-힣]{2,10}$", message="한글만 가능합니다.")

@@ -34,12 +34,7 @@
 			   category
 		FROM menu_category
 	</select>
-	<select id="getBakeryNo" resultType="int">
-		SELECT bakery_seq.nextval from dual
-	</select>
-	<select id="getCurrentBakeryNo" resultType="int">
-		SELECT bakery_seq.currval from dual
-	</select>
+	
 	<insert id="bakeryFileUpload">
 		INSERT INTO bakery_Image
 		VALUES(img_seq.nextval,
@@ -55,15 +50,17 @@
 			   '')
 	</insert>
 	<insert id="bakeryInsert">
-	
-		INSERT INTO bakery_info
-		VALUES(#{bakeryNo},
-			   #{bakeryName},
-			   #{bakeryAddress},
-			   #{bakeryPhone},
-			   #{latitude},
-			   #{longitude},
-			   #{region})
+		<selectKey resultType="int" keyProperty="bakeryNo" order="BEFORE">
+			SELECT bakery_seq.nextval from dual
+		</selectKey>
+			INSERT INTO bakery_info
+			VALUES(#{bakeryNo},
+				   #{bakeryName},
+				   #{bakeryAddress},
+				   #{bakeryPhone},
+				   #{latitude},
+				   #{longitude},
+				   #{region})
 	</insert>
 	<insert id="bakeryDetailInsert">
 		INSERT INTO bakery_detail

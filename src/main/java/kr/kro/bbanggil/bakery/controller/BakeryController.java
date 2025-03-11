@@ -50,7 +50,7 @@ public class BakeryController {
 	 * timeSet() : 각 요일에 opentime, closetime를 설정해주는 메서드
 	 */
 	@PostMapping("/insert")
-	public String bakeryInsert(@ModelAttribute@Valid BakeryInsertRequestDTO BakeryRequestDTO,
+	public String bakeryInsert(@ModelAttribute @Valid BakeryInsertRequestDTO BakeryRequestDTO,
 							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
 							   Model model) throws Exception {
 		BakeryRequestDTO.setTime();
