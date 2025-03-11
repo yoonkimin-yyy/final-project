@@ -1,11 +1,13 @@
-package kr.kro.bbanggil.order.request.dto;
+package kr.kro.bbanggil.order.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PaymentRequestDto {
+@AllArgsConstructor
+public class PaymentResponseDto {
 
 	private String merchantUid;
 	private int account;

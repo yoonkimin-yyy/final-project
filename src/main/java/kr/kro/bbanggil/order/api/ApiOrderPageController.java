@@ -21,9 +21,9 @@ import com.siot.IamportRestClient.request.PrepareData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
+import kr.kro.bbanggil.order.dto.request.PaymentRequestDto;
 import kr.kro.bbanggil.order.exception.OrderException;
-import kr.kro.bbanggil.order.request.dto.OrderRequestDto;
-import kr.kro.bbanggil.order.request.dto.PaymentRequestDto;
 import kr.kro.bbanggil.order.service.OrderService;
 import lombok.AllArgsConstructor;
 
@@ -34,7 +34,7 @@ public class ApiOrderPageController {
 	
 	private static final Logger logger = LogManager.getLogger(ApiOrderPageController.class);
 	private final OrderService orderService;
-	private IamportClient iamportClient;
+	private final IamportClient iamportClient;
 	
 	/**
 	 * 가격검증
@@ -44,9 +44,7 @@ public class ApiOrderPageController {
 	public Boolean accountCheck(@RequestParam("totalCount") int totalCount, 
 								 OrderRequestDto orderRequestDto) {
 		
-		boolean result = orderService.accountCheck(totalCount, orderRequestDto);
-
-		return result;
+		return orderService.accountCheck(totalCount, orderRequestDto);
 	}
 	
 	/**
@@ -85,9 +83,7 @@ public class ApiOrderPageController {
 	@PostMapping("/success")
 	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDtoDto) {
 		
-		boolean result = orderService.saveOrder(paymentRequestDtoDto);
-		
-		if(result) {
+		if(orderService.saveOrder(paymentRequestDtoDto)) {
 			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
 		}
 		

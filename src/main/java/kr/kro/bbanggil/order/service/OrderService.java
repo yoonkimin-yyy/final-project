@@ -5,9 +5,9 @@ import java.util.List;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
-import kr.kro.bbanggil.order.request.dto.OrderRequestDto;
-import kr.kro.bbanggil.order.request.dto.PaymentRequestDto;
-import kr.kro.bbanggil.order.response.dto.OrderResponseDto;
+import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
+import kr.kro.bbanggil.order.dto.request.PaymentRequestDto;
+import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 
 
 public interface OrderService {

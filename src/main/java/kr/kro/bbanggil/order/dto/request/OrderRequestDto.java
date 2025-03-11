@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.order.request.dto;
+package kr.kro.bbanggil.order.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

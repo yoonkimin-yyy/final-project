@@ -12,10 +12,10 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
+import kr.kro.bbanggil.order.dto.request.PaymentRequestDto;
+import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.order.mapper.OrderMapper;
-import kr.kro.bbanggil.order.request.dto.OrderRequestDto;
-import kr.kro.bbanggil.order.request.dto.PaymentRequestDto;
-import kr.kro.bbanggil.order.response.dto.OrderResponseDto;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -32,9 +32,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrderResponseDto> list(OrderRequestDto orderRequestDto) {
 
-		List<OrderResponseDto> result = orderMapper.list(orderRequestDto);
-
-		return result;
+		return orderMapper.list(orderRequestDto);
 	}
 	
 	/**
@@ -42,14 +40,8 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto) {
-		
-		int dbTotalCount = orderMapper.calculate(orderRequestDto);
-		
-		if(totalCount == dbTotalCount) {
-			return true;
-		} 
-		
-		return false;
+
+		return orderMapper.calculate(orderRequestDto) == totalCount ? true : false;
 	}
 	
 	/**

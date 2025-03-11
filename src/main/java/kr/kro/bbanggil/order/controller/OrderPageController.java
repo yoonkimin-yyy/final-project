@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import kr.kro.bbanggil.order.request.dto.OrderRequestDto;
-import kr.kro.bbanggil.order.response.dto.OrderResponseDto;
+import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
+import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.order.service.OrderService;
 import lombok.AllArgsConstructor;
 
