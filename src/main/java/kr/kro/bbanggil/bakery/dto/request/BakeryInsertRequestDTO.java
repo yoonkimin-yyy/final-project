@@ -1,9 +1,11 @@
 package kr.kro.bbanggil.bakery.dto.request;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,5 +43,8 @@ public class BakeryInsertRequestDTO {
 	public void setTime() {
 		timeDTO.dateSet();
 		timeDTO.timeSet();
+	}
+	public List<BakeryTimeSetDTO> getTime() {
+		return timeDTO.getSetDTO();
 	}
 }

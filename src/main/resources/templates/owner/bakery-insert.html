@@ -7,6 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/owner/bakery/insert/insert.css}">
     <script src="/js/owner/bakery/insert/insert.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -119,19 +120,10 @@
                 </div>
                 <!-- 메뉴 리스트 -->
                 <div class="menu-list active" id="menu">
-                    <div class="menu-item">
-                        <img src="https://api.a0.dev/assets/image?text=fresh%20croissant%20with%20butter" alt="크로아상"
-                            class="menu-image">
-                        <div class="menu-info">
-                            <div class="menu-name">크로아상</div>
-                            <div class="menu-description">바삭한 정통 프랑스 크로아상</div>
-                            <div class="menu-price">4,500원</div>
-                        </div>
-                        <button class="add-to-cart">담기</button>
-                    </div>
+                    
                     <div class="menu-item" onclick="openUpdateMenu()">
                         <div></div>
-                        <div class="update-menu">+</div>
+                        <div class="update-menu">메뉴는 가게 등록 후에 추가 하실 수 있습니다.</div>
                     </div>
                 </div>
                 <!-- 실내 사진 섹션 -->

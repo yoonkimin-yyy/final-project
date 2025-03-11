@@ -2,35 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.bakery.mapper.BakeryMapper">
-	<resultMap id="menuResultMap" type="kr.kro.bbanggil.bakery.dto.response.MenuResponseDTO">
-		<result property="menuNo" column="menu_no"></result>
-		<result property="menuName" column="menu_name"></result>
-		<result property="menuPrice" column="menu_price"></result>
-		<result property="menuPopulity" column="menu_info"></result>
-		<result property="bakeryNo" column="bakery_no"></result>
-		<result property="categoryNo" column="category_no"></result>
-			
-		<association property="fileResponseDto" javaType="kr.kro.bbanggil.bakery.dto.response.FileResponseDTO">
-			<result property="changeName" column="change_name"></result>
-			<result property="folderNamePath" column="folder_name_path"></result>
-			<result property="resourcesPath" column="resources_path"></result>
-		</association>
-	</resultMap>
 	
-
 	<insert id="menuInsert">
-		INSERT INTO menu VALUES(menu_seq.nextval,
-								#{menuName},
-								#{menuPrice},
-								#{menuPopulity},
-								160,
-								#{menuCategory})
+	<selectKey resultType="int" keyProperty="menuNo" order="BEFORE">
+		SELECT menu_seq.nextval from dual
+	</selectKey>
+		INSERT INTO menu VALUES(#{menuRequestDTO.menuNo},
+								#{menuRequestDTO.menuName},
+								#{menuRequestDTO.menuPrice},
+								#{menuRequestDTO.menuPopulity},
+								#{bakeryNo},
+								#{menuRequestDTO.menuCategory})
 	</insert>
+	<insert id="menuFileUpload">
+	INSERT INTO menu_image
+		VALUES(menu_img_seq.nextval,
+			   #{fileDTO.changeName},
+			   #{fileDTO.originalName},
+			   #{fileDTO.extension},
+			   #{fileDTO.size},
+			   #{fileDTO.localPath},
+			   #{fileDTO.localResourcePath},
+			   #{fileDTO.folderNamePath},
+			   #{menuNo})
+	</insert>
+	
+	
 	
 	<select id="getCategory">
 		SELECT category_no AS categoryNo,
 			   category
 		FROM menu_category
+	</select>
+	<select id="getBakeryNo" resultType="int">
+		SELECT bakery_seq.nextval from dual
+	</select>
+	<select id="getCurrentBakeryNo" resultType="int">
+		SELECT bakery_seq.currval from dual
 	</select>
 	<insert id="bakeryFileUpload">
 		INSERT INTO bakery_Image
@@ -47,9 +55,7 @@
 			   '')
 	</insert>
 	<insert id="bakeryInsert">
-	<selectKey resultType="int" keyProperty="bakeryNo" order="BEFORE">
-	SELECT bakery_seq.nextval from dual
-	</selectKey>
+	
 		INSERT INTO bakery_info
 		VALUES(#{bakeryNo},
 			   #{bakeryName},

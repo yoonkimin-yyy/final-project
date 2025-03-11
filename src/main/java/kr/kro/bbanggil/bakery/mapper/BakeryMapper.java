@@ -10,7 +10,6 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
-import kr.kro.bbanggil.bakery.dto.response.MenuResponseDTO;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
@@ -18,11 +17,11 @@ import kr.kro.bbanggil.bakery.dto.BakeryDto;
 @Mapper
 public interface BakeryMapper {
 
-	void menuInsert(MenuRequestDTO menuRequestDTO);
+	void menuInsert(@Param("menuRequestDTO")MenuRequestDTO menuRequestDTO, 
+					@Param("bakeryNo")int bakeryNo);
 
-	List<MenuResponseDTO> menuList(MenuRequestDTO menuRequestDTO);
 
-	void menuFileUpload(FileRequestDTO fileRequestDTO);
+	void menuFileUpload(MenuRequestDTO menuRequestDTO);
 
 	List<CategoryResponseDTO> getCategory();
 
@@ -46,6 +45,10 @@ public interface BakeryMapper {
 	
 	
 	List<BakeryDto> findBakeryImages(@Param("no") double No);
-	
+
+	int getBakeryNo();
+
+	int getCurrentBakeryNo();
+
 	
 }

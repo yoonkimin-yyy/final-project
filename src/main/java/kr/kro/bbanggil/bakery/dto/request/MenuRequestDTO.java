@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @Valid
 public class MenuRequestDTO {
+	private int menuNo;
 	
 	@NotBlank
 	@Pattern(regexp = "^[a-zA-Z0-9가-힣]+$", message = "특수문자는 사용할 수 없습니다.")
@@ -20,5 +21,5 @@ public class MenuRequestDTO {
 	
 	private String menuPopulity;
 	private int menuCategory;
-	FileRequestDTO fileRequestDTO = new FileRequestDTO();
+	FileRequestDTO fileDTO = new FileRequestDTO();
 }
