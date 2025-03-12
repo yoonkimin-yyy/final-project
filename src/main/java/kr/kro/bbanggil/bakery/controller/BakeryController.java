@@ -26,10 +26,6 @@ public class BakeryController {
 	private final BakeryService service;
 	private final BakeryServiceImpl bakeryService;
 	
-	
-	
-	
-	
 	@GetMapping("/list")
 	public String list() {
 		return "user/bakery-list";
@@ -58,15 +54,6 @@ public class BakeryController {
 		
 		return "common/home";
 	}
-//	@GetMapping("/menu/insert/form")
-//	public String menuInsertForm(Model model) {
-//		List<CategoryResponseDTO> category = service.getCategory();
-//
-//		model.addAttribute("category",category);
-//		return "owner/menu-insert";
-//		
-//	}
-	
 	
 	@GetMapping("/detail/form")
 	public String detail() {
@@ -85,11 +72,6 @@ public class BakeryController {
 	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 	}
 	
-	
-	@GetMapping("/error")
-	public String errorTest() {
-		return "/common/error";
-	}
 	
 	
 }

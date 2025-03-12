@@ -106,11 +106,9 @@ public class BakeryServiceImpl implements BakeryService{
 				}
 				
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			
 			logger.error("에러발생! : {}",e.getMessage());
 			throw new BakeryException("신청작업 오류","common/error",HttpStatus.BAD_REQUEST);
-//			e.printStackTrace();
 		}
 		
 		
