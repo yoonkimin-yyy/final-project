@@ -81,6 +81,7 @@ body {
 .hours-item {
     display: flex;
     justify-content: space-between;
+    align-items:center;
     padding: 5px 0;
     font-size: 14px;
 }
@@ -91,8 +92,10 @@ body {
 }
 
 .hours-item .time {
-    color: #333;
-    font-weight: 500;
+    height : 30px;
+    width : 180px;
+    margin-left : 10px;
+    margin-right : 10px;
 }
 
 .info-item i {
@@ -275,5 +278,5 @@ body {
 }
 .update-menu{
     padding: 50px;
-    padding-left: 400px;
+    padding-left: 230px;
 }
