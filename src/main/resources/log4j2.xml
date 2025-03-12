@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-   
-<Configuration status="INFO">
-   <Properties>
-      <Property name="LOG_PATH">logs</Property>
-      <Property name="DEFAULT_PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %5p ${sys:PID} --- [%15.15t] %-40.40c{1.} : %m%n%xwEx</Property>                                                      
-        <Property name="COLOR_PATTERN">[%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint}] %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c}{cyan} %clr{:}{faint} %m%n%xwEx</Property>
-   </Properties>
-   
+<?xml version="1.0" encoding="UTF-8"?>
+<Comfiguration status="INFO">
+
+	<properties>
+		<property name="LOG_PATH">logs</property>
+		<Property name="DEFAULT_PATTERN">[%d{yyyy-mm-dd HH:mm:ss.SSS}] %5p ${sys:PID} --- [%15.15t] %-40.40c{1.} : %m%n%xwEx</Property>
+		<Property name="COLOR_PATTERN">[%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint}] %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c}{cyan} %clr{:}{faint} %m%n%xwEx</Property>
+	</properties>
+	
+	
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${COLOR_PATTERN}"/>
@@ -83,9 +84,6 @@
             <AppenderRef ref="RollingFileAppender"/>
         </Logger>
     </Loggers>
-   
-
-</Configuration>
 
 
 
@@ -96,5 +94,4 @@
 
 
 
-
-
+</Comfiguration>
