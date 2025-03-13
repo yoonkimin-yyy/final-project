@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
 import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.order.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -27,9 +27,9 @@ public class OrderPageController {
      * 유저아이디 (USER_NO)로 리스트를 가져와야 함
 	 */
 	@GetMapping("/page")
-	public String order(OrderRequestDto orderRequestDto, Model model) { 
+	public String order(Model model) { 
 		
-		List<OrderResponseDto> result = orderService.list(orderRequestDto);
+		List<OrderResponseDto> result = orderService.list();
 		
 		model.addAttribute("results", result);
 		
@@ -37,7 +37,8 @@ public class OrderPageController {
 	}
 	
 	@GetMapping("/complete")
-	public String complete() {
+	public String complete(@RequestParam("bakeryName") String bakeryName, Model model) {
+		model.addAttribute("bakeryName", bakeryName);
 		return "user/order-complete";
 	}
 	
