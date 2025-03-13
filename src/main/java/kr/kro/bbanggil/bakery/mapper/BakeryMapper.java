@@ -50,5 +50,9 @@ public interface BakeryMapper {
 
 	int getCurrentBakeryNo();
 
+
+	void setBakery(@Param("bakeryNo")int bakeryNo,
+				   @Param("userNo")int userNo);
+
 	
 }
