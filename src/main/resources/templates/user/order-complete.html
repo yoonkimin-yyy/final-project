@@ -16,37 +16,28 @@
 <body>
     <div class="container">
         <div class="order-complete-header" style="position: relative; margin-top: 46px;">
-            <!-- 임시 관리자 버튼 추가 -->
-            <div class="admin-buttons">
-                <span>임시버튼</span>
-                <button class="admin-button accept-button" onclick="handleAccept()">수락</button>
-                <button class="admin-button reject-button" onclick="handleReject()">취소</button>
-            </div>  
-
             <div class="check-circle">
                 <i class="fas fa-circle-notch fa-spin"></i>
             </div>
             <h1 class="complete-title">결제가 완료되었습니다!</h1>
-            <div class="store-name">파리바게트 강남점</div>
+            <div class="store-name" th:text="${bakeryName}"></div>
             <h3 class="order-status">사장님이 주문을 확인중입니다</h3>
-            <!-- 사장님이 취소 버튼을 눌렀을 때 나오는 멘트 -->
-            <span class="store-message">죄송합니다. 재료 소진으로 주문이 취소되었습니다.</span>
+            <span class="store-message"></span>
         </div>
 
-        <!-- 주문을 수락 시 -->
         <div class="order-info">
             <div class="order-info-item">
                 <div class="info-label">주문번호</div>
-                <div class="info-value">2024022001</div>
+                <div class="info-value" id="orderNum"></div>
             </div>
             <div class="order-info-item">
-                <div class="info-label">주문일시</div>
+                <div class="info-label">주문승인 일시</div>
                 <div class="info-value" id="orderDate"></div>
             </div>
         </div>
 
         <div class="order-details">
-            <h2 class="section-title">주문 상품 내역</h2>
+            <h2 class="section-title">주문상품 내역</h2>
             <table class="order-table">
                 <thead>
                     <tr>
@@ -80,6 +71,8 @@
 </body>
 
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script src="/js/order/order-complete.js"></script> 
 

@@ -2,11 +2,14 @@ package kr.kro.bbanggil.order.api;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +26,8 @@ import com.siot.IamportRestClient.response.Payment;
 
 import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
 import kr.kro.bbanggil.order.dto.request.PaymentRequestDto;
+import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
+import kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto;
 import kr.kro.bbanggil.order.exception.OrderException;
 import kr.kro.bbanggil.order.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -85,7 +90,7 @@ public class ApiOrderPageController {
 		
 		if(orderService.saveOrder(paymentRequestDtoDto)) {
 			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
-		}
+		}	
 		
 		return ResponseEntity.badRequest().body("주문 저장에 실패했습니다");
 	}
@@ -99,4 +104,22 @@ public class ApiOrderPageController {
 		return orderService.cancelPayment(imp_uid);
 	}
 	
+	/**
+	 * 주문상태 
+	 */
+	@GetMapping("/pickupCheck")
+	public HashMap<String, Object> pickupCheckStatus() {
+		int payNo = orderService.getPayNo();
+		
+		HashMap<String, Object> response = new HashMap<>();
+
+		PickupCheckResponseDto result = orderService.pickupCheckStatus(payNo);
+		List<OrderResponseDto> list = orderService.pickupList(result, payNo);
+		
+		response.put("result", result);
+		response.put("list", list);
+
+		return response;
+	}
+
 }
