@@ -1,6 +1,9 @@
 function toggleDetail(clickedRow) {
     const nextRow = clickedRow.nextElementSibling;
-
+	// 특정 class를 포함하면 함수가 실행되지 않음
+	if (event.target.classList.contains('no-toggle')) {
+	       return;
+	   }
     // 상세 정보가 표시되는 <tr>인지 확인
     if (nextRow && nextRow.classList.contains('detail-row')) {
         const detailDiv = nextRow.querySelector('.detail-info');

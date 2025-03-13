@@ -9,9 +9,9 @@
 </head>
 
 <body>
-    <form id="insertForm" th:action="@{/bakery/menu/insert}" method="post" enctype="multipart/form-data">
+    <form id="insertForm" th:action="@{/bakery/img/insert}" method="post" enctype="multipart/form-data" >
         <label for="menuImage" class="menu-image">+</label>
-        <input type="file" id="menuImage" name="menuImage" style="display: none;" multiple>
+        <input type="file" id="menuImage" name="menuImage" style="display: none;" multiple accept="image/*">
         <div class="menu-info">
             <input type="text" id="menuName" name="menuName" placeholder="메뉴명">
             <input type="text" id="menuPrice" name="menuPrice" placeholder="가격">

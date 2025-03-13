@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
@@ -72,6 +74,9 @@ public class BakeryController {
 	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 	}
 	
-	
+	@GetMapping("/update/form")
+	public String bakeryUpdateForm() {
+		return "/owner/bakery-update";
+	}
 	
 }

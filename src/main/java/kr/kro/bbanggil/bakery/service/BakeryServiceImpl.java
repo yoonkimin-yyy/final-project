@@ -1,5 +1,6 @@
 package kr.kro.bbanggil.bakery.service;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.FileUploadUtil;
@@ -168,4 +170,14 @@ public class BakeryServiceImpl implements BakeryService{
 		return mapper.findBakeryImages(no);
 	}
 	
+	@Override
+	public void imgInsert(MultipartFile file) {
+		try {
+			FileRequestDTO fileDTO = new FileRequestDTO();
+			fileUpload.uploadFile(file, fileDTO, "bakery");
+			mapper.imgInsert(fileDTO);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

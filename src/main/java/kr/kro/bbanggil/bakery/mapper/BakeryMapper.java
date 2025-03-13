@@ -50,5 +50,8 @@ public interface BakeryMapper {
 
 	int getCurrentBakeryNo();
 
+
+	void imgInsert(FileRequestDTO fileDTO);
+
 	
 }
