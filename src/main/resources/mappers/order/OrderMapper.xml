@@ -12,6 +12,7 @@
 	
 	<resultMap id="successResultMap" type="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">
 		<result property="merchantUid" column="MERCHANT_UID"></result>
+		<result property="impUid" column="IMP"></result>
 		<result property="account" column="AMOUNT"></result>
 		<result property="status" column="STAUTS"></result>
 		<result property="recipientsName" column="RECIPIENTS_NAME"></result>
@@ -19,13 +20,30 @@
 		<result property="requestContent" column="REQUEST_CONTENT"></result>
 	</resultMap>	
 	
+	<resultMap id="pickupResultMap" type="kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto">
+		<result property="pickupStatusNo" column="PICKUP_STATUS_NO"></result>
+		<result property="pickupStatus" column="PICKUP_STATUS"></result>
+		<result property="refusalDetail" column="REFUSAL_DETAIL"></result>
+	</resultMap>
+	
 	<!-- USER_NO & CART_NO 수정해야함 -->	
 	<select id="list" resultMap="orderResultMap">
-		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT FROM CART_INFO ci 
+		<!-- SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO 
 		WHERE C.USER_NO = 1 AND C.CART_NO = 1
+		WHERE C.USER_NO = 1 AND C.CART_NO = 2 -->
+		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
+		FROM CART_INFO ci 
+		JOIN CART c ON ci.CART_NO = c.CART_NO
+		JOIN ORDER_INFO oi ON OI.CART_NO = c.CART_NO 
+		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
+		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
+		WHERE oi.CART_NO = (SELECT max(oi.cart_no) FROM ORDER_INFO oi
+						    JOIN cart c ON oi.CART_NO = c.CART_NO 
+					        WHERE user_no = 1)
+		ORDER BY oi.pay_no DESC
 	</select>
 	
 	<select id="calculate" resultType="int">
@@ -39,6 +57,7 @@
 	<insert id="save" parameterType="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">
 		INSERT INTO PAYMENT VALUES(PAYMENT_SEQ.NEXTVAL,
 						   		   #{merchantUid},
+						   		   #{impUid},
 						   		   #{account},
 						   		   #{status},
 						   		   SYSDATE,
@@ -70,5 +89,27 @@
 										 DEFAULT,
 										 DEFAULT)
 	</insert>
+	
+	<select id="pickupPay" resultType="int">
+		SELECT PAY_NO
+		FROM (
+		    SELECT oi.PAY_NO
+		    FROM CART_INFO ci
+		    JOIN CART c ON ci.CART_NO = c.CART_NO
+		    JOIN ORDER_INFO oi ON oi.CART_NO = c.CART_NO
+		    WHERE c.USER_NO = 2
+		    ORDER BY oi.PAY_NO DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
+	
+	<select id="pickupStatus" resultMap="pickupResultMap">
+		SELECT PICKUP_STATUS_NO, PICKUP_STATUS, REFUSAL_DETAIL FROM PICKUP_STATUS ps 
+		WHERE PAY_NO = #{payNo}				
+	</select>
+	
+	<select id="refund">
+		SELECT IMP FROM PAYMENT WHERE PAY_NO = #{payNo}
+	</select> 
 	
 </mapper>
