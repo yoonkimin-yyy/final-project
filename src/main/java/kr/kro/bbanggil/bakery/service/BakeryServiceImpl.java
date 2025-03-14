@@ -1,8 +1,14 @@
 package kr.kro.bbanggil.bakery.service;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +26,7 @@ import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.FileUploadUtil;
@@ -115,6 +122,14 @@ public class BakeryServiceImpl implements BakeryService{
 		
 		
 	}
+	@Override
+	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
+		bakeryUpdateResponseDTO response = mapper.getBakeryInfo(bakeryNo);
+		response.setImgDTO(mapper.getBakeryImg(bakeryNo));
+		List<BakeryTimeSetDTO> timeDTO = mapper.getBakerySchedule(bakeryNo);
+		setBakeryOperatingHours(response,timeDTO);
+		return response;
+	}
 
 	
 
@@ -169,5 +184,46 @@ public class BakeryServiceImpl implements BakeryService{
 
 		return mapper.findBakeryImages(no);
 	}
-	
+	private void setBakeryOperatingHours(bakeryUpdateResponseDTO bakeryInfo, List<BakeryTimeSetDTO> timeDTO) {
+		Map<String, Consumer<String>> daySetterMap = new HashMap<>();
+	    daySetterMap.put("월", value -> bakeryInfo.setMonday(value));
+	    daySetterMap.put("화", value -> bakeryInfo.setTuesday(value));
+	    daySetterMap.put("수", value -> bakeryInfo.setWednesday(value));
+	    daySetterMap.put("목", value -> bakeryInfo.setThursday(value));
+	    daySetterMap.put("금", value -> bakeryInfo.setFriday(value));
+	    daySetterMap.put("토", value -> bakeryInfo.setSaturday(value));
+	    daySetterMap.put("일", value -> bakeryInfo.setSunday(value));
+
+	    // 영업시간을 BakeryUpdateResponseDTO에 세팅
+	    for (BakeryTimeSetDTO time : timeDTO) {
+	        String formattedTime = time.getStart() + "~" + time.getEnd();
+	        if (daySetterMap.containsKey(time.getDay())) {
+	            daySetterMap.get(time.getDay()).accept(formattedTime);
+	        }
+	    }
+	    Map<String, Supplier<String>> dayGetterMap = new HashMap<>();
+	    dayGetterMap.put("월", bakeryInfo::getMonday);
+	    dayGetterMap.put("화", bakeryInfo::getTuesday);
+	    dayGetterMap.put("수", bakeryInfo::getWednesday);
+	    dayGetterMap.put("목", bakeryInfo::getThursday);
+	    dayGetterMap.put("금", bakeryInfo::getFriday);
+	    dayGetterMap.put("토", bakeryInfo::getSaturday);
+	    dayGetterMap.put("일", bakeryInfo::getSunday);
+
+	    // 월~금 값이 모두 같은지 확인
+	    Set<String> uniqueTimes = new HashSet<>();
+	    Set<String> checkTimes = new HashSet<>();
+	    for (String day : Arrays.asList("월", "화", "수", "목", "금")) {
+	        uniqueTimes.add(dayGetterMap.get(day).get());
+	    }
+	    if(uniqueTimes.size() == 1) {
+	    	bakeryInfo.setWeekday(uniqueTimes.iterator().next());
+	    }
+	    for (String day : Arrays.asList("토", "일")) {
+	    	checkTimes.add(dayGetterMap.get(day).get());
+	    }
+	    if(checkTimes.size() == 1) {
+	    	 bakeryInfo.setWeekend(checkTimes.iterator().next());
+	    }
+	}
 }

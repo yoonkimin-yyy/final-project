@@ -9,6 +9,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 
 public interface BakeryService {
 
@@ -25,6 +26,8 @@ public interface BakeryService {
 	List<BakeryDto> getTopFiveOrders();
 	
 	List<BakeryDto> getBakeryImages(double no);
+
+	bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo);
 
 	
 	

@@ -10,6 +10,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
@@ -53,6 +54,13 @@ public interface BakeryMapper {
 
 	void setBakery(@Param("bakeryNo")int bakeryNo,
 				   @Param("userNo")int userNo);
+
+
+	bakeryUpdateResponseDTO getBakeryInfo(int bakeryNo);
+
+	List<FileRequestDTO> getBakeryImg(int bakeryNo);
+
+	List<BakeryTimeSetDTO> getBakerySchedule(int bakeryNo);
 
 	
 }
