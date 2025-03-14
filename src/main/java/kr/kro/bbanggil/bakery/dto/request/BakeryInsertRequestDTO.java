@@ -17,7 +17,6 @@ public class BakeryInsertRequestDTO {
 	@Pattern(regexp="^[가-힣]{2,10}$", message="한글만 가능합니다.")
 	private String bakeryName;
 	
-	
 	@NotBlank(message = "주소는 비어있으면 안됩니다")
 	private String bakeryAddress;
 	

@@ -12,7 +12,7 @@
 
 <body>
 	<form th:action="@{/bakery/insert}" method="Post" th:object="${bakery}" enctype="multipart/form-data" >
-	
+	<input type="hidden" th:field="*{bakeryNo}",th:value="*{bakeryNo}">
     <div class="container">
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="info-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <input type="text" th:field="*{bakery.bakeryAddress}" placeholder="주소">
+                        <input type="text" th:field="*{bakeryAddress}" placeholder="주소">
                     </div>
                     <div class="info-item">
                         <i class="fas fa-clock"></i>
@@ -56,52 +56,52 @@
                             
                                 <div class="hours-item">
                                     <span class="day">평일</span>
-                                    <input type="text" class="time" name="timeDTO.weekday" id="weekday" placeholder="영업시간(00:00~00:00)"> 
+                                    <input type="text" class="time" th:field="*{weekday}" id="weekday" placeholder="영업시간(00:00~00:00)"> 
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">주말</span>
-                                    <input type="text" class="time" name="timeDTO.weekend" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{weekend}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                             </div>
                             <div id="date-table" style="display:none;">
                                 <div class="hours-item">
                                     <span class="day">월요일</span>
-                                    <input type="text" class="time" name="timeDTO.monday" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{monday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">화요일</span>
-                                    <input type="text" class="time" name="timeDTO.tuesday" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{tuesday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">수요일</span>
-                                    <input type="text" class="time" name="timeDTO.wednesday" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{wednesday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">목요일</span>
-                                    <input type="text" class="time" name="timeDTO.thursday" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{thursday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">금요일</span>
-                                    <input type="text" class="time" name="timeDTO.friday" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{friday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">토요일</span>
-                                    <input type="text" class="time" name="timeDTO.saturday" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{saturday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">일요일</span>
-                                    <input type="text" class="time" name="timeDTO.sunday" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{sunday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-phone"></i>
-                        <input type="text" name="bakeryPhone" placeholder="전화번호">
+                        <input type="text" th:field="*{bakeryPhone}" placeholder="전화번호">
                     </div>
                     <div class="info-item">
                         <i class="fas fa-calendar"></i>
-                        <input type="text" name="createdDate" placeholder="창립일or오픈일(선택)">
+                        <input type="text" th:field="*{createdDate}" placeholder="창립일or오픈일(선택)">
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                     
                     <div class="menu-item" onclick="openUpdateMenu()">
                         <div></div>
-                        <div class="update-menu">메뉴는 가게 등록 후에 추가 하실 수 있습니다.</div>
+                        <div class="update-menu">+</div>
                     </div>
                 </div>
                 <!-- 실내 사진 섹션 -->
@@ -132,7 +132,7 @@
                     <label for="insideImage" class="photo-upload">사진 추가</label>
                     <input type="file" id="insideImage" name="inside" multiple style="display: none">
                     <div class="photo-description">
-                        <textarea class="description" name="insideInfo" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
+                        <textarea class="description" th:field="*{insideInfo}" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
                         </ul>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                     <label for="outsideImage" class="photo-upload">사진 추가</label>
                     <input type="file" id="outsideImage" name="outside" multiple style="display: none">
                     <div class="photo-description">
-                        <textarea class="description" name="outsideInfo" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
+                        <textarea class="description" th:field="*{outsideInfo}" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
                         </ul>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                         <label for="parking-image" class="parking-photo-upload">사진 추가</label>
                         <input type="file" id="parking-image" name="parking" multiple style="display: none">
                         <div class="parking-details">
-                            <textarea class="parking-text" name="parkingInfo" placeholder="주차장 정보를 입력해주세요" ;></textarea>
+                            <textarea class="parking-text" th:field="*{parkingInfo}" placeholder="주차장 정보를 입력해주세요" ;></textarea>
                         </div>
                     </div>
                 </div>

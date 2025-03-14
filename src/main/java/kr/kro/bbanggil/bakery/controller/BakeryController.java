@@ -77,7 +77,7 @@ public class BakeryController {
 	}
 	
 	@GetMapping("/update/form")
-	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false)int bakeryNo,Model model) {
+	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false) Integer bakeryNo,Model model) {
 		int no = 223;
 		bakeryUpdateResponseDTO result = service.getbakeryInfo(no);
 		model.addAttribute("bakery",result);

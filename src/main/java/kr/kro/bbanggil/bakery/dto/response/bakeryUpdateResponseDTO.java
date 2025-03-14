@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class bakeryUpdateResponseDTO {
+	
 	private int bakeryNo;
 	private String bakeryName;
 	private String bakeryAddress;
