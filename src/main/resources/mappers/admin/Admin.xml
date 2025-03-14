@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.kro.bbanggil.admin.mapper.AdminMapper">
+	
+	<resultMap id="adminMap" type="kr.kro.bbanggil.admin.dto.AdminDto">
+		<result property="userName" column="USER_NAME"></result>
+		<result property="userId" column="USER_Id"></result>
+		<result property="userPhoneNum" column="USER_PHONENUM"></result>
+		<result property="bakeryName" column="BAKERY_NAME"></result>
+		<result property="bakeryPhone" column="BAKERY_PHONE"></result>
+		<result property="bakeryAddress" column="BAKERY_ADDRESS"></result>
+		<result property="menuName" column="MENU_NAME"></result>
+		<result property="amenity" column="AMENITY"></result>
+		<result property="insideInfo" column="INSIDE_INFO"></result>
+		<result property="outsideInfo" column="OUTSIDE_INFO"></result>
+	</resultMap>
+
+	<select id="list" resultMap="adminMap">
+		SELECT ui.USER_ID, ui.USER_PHONENUM FROM BAKERY_ACCESS ba
+		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+		WHERE ba.AGREE = 'N'
+	</select>
+	
+	<!-- <select id="list" resultMap="adminMap">
+		SELECT USER_NAME, USER_Id, USER_PHONENUM, BAKERY_NAME, 
+			   BAKERY_PHONE, BAKERY_ADDRESS, MENU_NAME, AMENITY, INSIDE_INFO, OUTSIDE_INFO 
+		FROM BAKERY_ACCESS ba
+		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO 
+		JOIN MENU m ON ba.BAKERY_NO = m.BAKERY_NO 
+		WHERE AGREE = 'N'
+	</select> -->
+
+
+
+
+</mapper>

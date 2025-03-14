@@ -78,6 +78,27 @@ new Chart(ctx, {
         }
     }
 });
+
 function bakeryDetail(){
     window.open("/admin/bakery/detail");
 }
+
+// 상세 정보를 토글하는 함수
+   function toggleDetails(userId) {
+       var detailRow = document.getElementById('details-' + userId);
+
+       // 다른 신청자 상세 정보가 보이면 숨김 처리
+       var allDetails = document.querySelectorAll('.detail-info');
+       allDetails.forEach(function(row) {
+           if (row !== detailRow) {
+               row.style.display = 'none';
+           }
+       });
+
+       // 선택된 신청자의 상세 정보를 토글
+       if (detailRow.style.display === 'none' || detailRow.style.display === '') {
+           detailRow.style.display = 'block';
+       } else {
+           detailRow.style.display = 'none';
+       }
+   }

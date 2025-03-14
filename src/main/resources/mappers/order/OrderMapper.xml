@@ -25,7 +25,7 @@
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO 
-		WHERE C.USER_NO = 1 AND C.CART_NO = 2
+		WHERE C.USER_NO = 1 AND C.CART_NO = 1
 	</select>
 	
 	<select id="calculate" resultType="int">
@@ -33,7 +33,7 @@
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO 
-		WHERE C.USER_NO = 1 AND C.CART_NO = 2				
+		WHERE C.USER_NO = 1 AND C.CART_NO = 1			
 	</select>
 	
 	<insert id="save" parameterType="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">

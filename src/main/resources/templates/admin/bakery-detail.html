@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/head :: HeadFragment}"></head>
-
 <head>
     <meta charset="UTF-8">
     <title>빵집 상세 정보</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" th:href="@{/css/admin/bakery-detail.css}">
 </head>
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 <body>
-    <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
     <div class="containers">
         <h2>빵집 상세 정보</h2>
         <div class="detail">
