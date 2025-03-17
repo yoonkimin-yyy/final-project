@@ -91,4 +91,10 @@
 			   #{timeDTO.start},
 			   #{timeDTO.end})
 	</insert>
+	<insert id="setBakery">
+		INSERT INTO bakery_access
+		VALUES(#{bakeryNo},
+			   'N',
+			   #{userNo})
+	</insert>
 </mapper>

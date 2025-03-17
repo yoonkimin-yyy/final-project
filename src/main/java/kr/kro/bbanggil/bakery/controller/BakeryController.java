@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
@@ -50,9 +53,10 @@ public class BakeryController {
 	@PostMapping("/insert")
 	public String bakeryInsert(@ModelAttribute @Valid BakeryInsertRequestDTO BakeryRequestDTO,
 							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
+							   @SessionAttribute(name="userNo", required=false) int userNo,
 							   Model model) throws Exception {
 		BakeryRequestDTO.setTime();
-		service.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO);
+		service.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
 		
 		return "common/home";
 	}

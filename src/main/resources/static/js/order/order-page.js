@@ -52,7 +52,9 @@ function requestPay() {
 	});
 
 	function payment() {
-
+		const bakeryOriginName = document.getElementById('store-name').textContent;
+		const bakeryName = bakeryOriginName.substring(1, bakeryOriginName.length-1);
+		
 		var payment = {
 			recipientsName: name,
 			recipientsPhoneNum: phoneNumber,
@@ -90,7 +92,8 @@ function requestPay() {
 								contentType: "application/json"
 							}).then(function (res) {
 								if (res === '주문정보가 성공적으로 저장되었습니다.') {
-									window.location.href = '/order/complete';
+									
+									window.location.href = '/order/complete?bakeryName='+ bakeryName;
 								}
 							}).catch(function (err) {
 								alert("결제 오류로 취소되었습니다.");

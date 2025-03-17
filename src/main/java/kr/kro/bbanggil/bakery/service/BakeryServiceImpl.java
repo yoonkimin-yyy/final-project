@@ -46,7 +46,7 @@ public class BakeryServiceImpl implements BakeryService{
 	 */
 	@Override
 	@Transactional(rollbackFor = EXCEPTION.class)
-	public void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO) throws Exception {
+	public void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO,int userNo) throws Exception {
 		try {
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
 				
@@ -106,6 +106,8 @@ public class BakeryServiceImpl implements BakeryService{
 						logger.warn("파일업로드 실패! : {}",imgLocation);
 					}
 				}
+			mapper.setBakery(bakeryRequestDTO.getBakeryNo(),userNo);	
+			
 				
 		} catch (Exception e) {
 			

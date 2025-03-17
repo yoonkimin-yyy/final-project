@@ -15,7 +15,7 @@ public interface BakeryService {
 
 
 
-	void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO) throws Exception;
+	void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO, int userNo) throws Exception;
 
 	public void saveBakery(BakeryDto bakery);
 	List<BakeryDto> getBakeriesByRegion(String region);
