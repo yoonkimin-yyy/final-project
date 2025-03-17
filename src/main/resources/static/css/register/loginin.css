@@ -33,6 +33,7 @@
 .form-group {
     margin-bottom: 30px;
     color: #a18267;
+    width: 60%;
 }
 
 .login-input {
@@ -53,6 +54,7 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 60%;
 }
 .login-btn-div p{
     margin-bottom: 10px;
@@ -91,7 +93,7 @@ button:hover {
 .login-link {
     display: flex;
     justify-content: space-evenly;
-    width: 100%;
+    width: 60%;
     font-size: 14px;
     color: #a18267;
     text-decoration: none;
@@ -119,4 +121,10 @@ a:hover {
     font-weight: bold;
 }
 
+.error-text {
+    color: red;
+    font-size: 13px;
+    margin-bottom: 10px;
+    width: 60%;
+}
 
