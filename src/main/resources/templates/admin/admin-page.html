@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-<head th:replace="~{fragments/head :: HeadFragment}"></head>
-
 <head>
     <meta charset="UTF-8">
     <title>관리자 대시보드</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <link rel="stylesheet" href="/css/common/nav.css">
+    <link rel="stylesheet" href="/css/common/footer.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
     <script src="/js/admin/admin.js"></script>
@@ -14,7 +14,7 @@
 
 <body>
     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
-
+	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
     <div class="dashboard wrapper">
         <div class="tabs">
             <button class="tab active" href="#" onclick="showTab('traffic')">트래픽 모니터링</button>
