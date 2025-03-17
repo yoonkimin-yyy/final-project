@@ -30,6 +30,16 @@ public class BakeryServiceImpl implements BakeryService {
 											int boardLimit,
 											String orderType,
 											BakerySearchDTO bakerySearchDTO){
+		String searchText = bakerySearchDTO.getSearchText();
+        String[] keywords = searchText.split("\\s+"); // 공백 기준으로 분리
+
+        if (keywords.length >= 2) {
+            bakerySearchDTO.setKeyword1(keywords[0]); // 첫 번째 단어 (ex: 경기)
+            bakerySearchDTO.setKeyword2(keywords[1]); // 두 번째 단어 (ex: 단팥빵)
+        } else {
+            bakerySearchDTO.setKeyword1(searchText);  // 단어 하나만 입력된 경우
+            bakerySearchDTO.setKeyword2(searchText);
+        }
 		
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		

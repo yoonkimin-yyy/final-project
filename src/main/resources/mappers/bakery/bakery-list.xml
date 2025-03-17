@@ -68,14 +68,22 @@
 		   bs.open_time,
 		   bs.close_time,
 		   ROUND(AVG(r.review_rating),1) AS review_avg,
-		   COUNT(review_no) AS review_count 
+		   COUNT(review_no) AS review_count,
+		   mc.category
 		   FROM bakery_info bi
 		LEFT JOIN bakery_schedule bs on bs.bakery_no = bi.bakery_no
 		LEFT JOIN bakery_detail bd on bd.bakery_no = bi.bakery_no
 		LEFT JOIN review r on r.bakery_no = bi.bakery_no
+		LEFT JOIN menu m ON m.BAKERY_NO = bi.BAKERY_NO 
+		LEFT JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO 
 		WHERE day = #{day}
 		AND (bi.bakery_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
-   		OR bi.bakery_address LIKE '%' || #{bakerySearchDTO.searchText} || '%')
+   		OR bi.bakery_address LIKE '%' || #{bakerySearchDTO.searchText} || '%'
+   		OR mc.category LIKE '%' || #{bakerySearchDTO.searchText} || '%'
+   		OR m.menu_name LIKE '%' || #{bakerySearchDTO.searchText} || '%')
+   		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword1} || '%' AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword2} || '%')
+  		  OR
+    		(bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword2} || '%' AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword1} || '%')
 		GROUP BY bi.bakery_no,
 		   bi.bakery_name,
 		   bi.bakery_address,
@@ -85,7 +93,8 @@
 		   bd.amenity,
 		   bs."DAY" ,
 		   bs.open_time,
-		   bs.close_time
+		   bs.close_time,
+		   mc.category
 		   <choose>
 		   		<when test="orderType=='recent'">
 		   			ORDER BY bi.bakery_no DESC

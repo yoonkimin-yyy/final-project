@@ -128,8 +128,8 @@ var mapContainer = document.getElementById('map'); // 지도 컨테이너
 
                 document.querySelectorAll(".region-button").forEach(btn => btn.classList.remove("region-button-active"));
                 button.classList.add("region-button-active");
-
                 var center = regionCenters[region];
+				console.log(center)
                 if (center) {
                     map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
                     map.setLevel(7);

@@ -1,12 +1,40 @@
+var regionCenters = {
+            서울: { lat: 37.5665, lng: 126.9780 },
+            경기: { lat: 37.2750, lng: 127.0095 },
+            인천: { lat: 37.4563, lng: 126.7052 },
+            부산: { lat: 35.1796, lng: 129.0756 },
+            대구: { lat: 35.8714, lng: 128.6014 },
+            광주: { lat: 35.1595, lng: 126.8526 },
+            대전: { lat: 36.3504, lng: 127.3845 },
+            울산: { lat: 35.5384, lng: 129.3114 },
+            세종: { lat: 36.4801, lng: 127.2890 },
+            강원: { lat: 37.8854, lng: 127.7298 },
+            충북: { lat: 36.6357, lng: 127.4912 },
+            충남: { lat: 36.5184, lng: 126.8000 },
+            전북: { lat: 35.7175, lng: 127.1530 },
+            전남: { lat: 34.8679, lng: 126.9910 },
+            경북: { lat: 36.5760, lng: 128.5056 },
+            경남: { lat: 35.4606, lng: 128.2132 },
+            제주: { lat: 33.4996, lng: 126.5312 }
+        };
+var myPosition;
+var locPosition
+
 navigator.geolocation.getCurrentPosition(function(position) {
     var lat = position.coords.latitude; // 위도
     var lng = position.coords.longitude; // 경도
-    var locPosition = new kakao.maps.LatLng(lat, lng); // 좌표 생성
-
-    console.log(lat, lng);
+	var region = document.getElementById('searchText').value.split(" ")[0];
+	var center = regionCenters[region];
+	myPosition = new kakao.maps.LatLng(lat,lng);
+	
+	if(center){
+		locPosition = new kakao.maps.LatLng(center.lat,center.lng);
+	} else {
+		locPosition = myPosition;
+	}
 
     // 지도에 현재 위치를 표시
-    displayCurrentLocation(locPosition);
+	displayCurrentLocation(locPosition);
 }, function(error) {
     alert('위치 정보를 가져올 수 없습니다.');
 });
@@ -16,25 +44,28 @@ var mapOption ;
 var map ;
 // 현재 위치 마커 추가가
 function displayCurrentLocation(locPosition) {
+	
+	
     mapContainer = document.getElementById('map'); // 지도를 표시할 div
-    mapOption = { 
-        center: locPosition, // 현재 위치를 중심으로 지도 설정
-        level: 5 // 확대 레벨
-    };
-    
-    // 지도 생성
-     map = new kakao.maps.Map(mapContainer, mapOption); 
+	var region = document.getElementById('searchText').value;
+	var center = regionCenters[region];
+	mapOption = { 
+	        center: myPosition, // 현재 위치를 중심으로 지도 설정
+	        level: 7 // 확대 레벨
+	    };
+	map = new kakao.maps.Map(mapContainer, mapOption);
+
     
 	// 야구공모양 마커주소
 	var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
-	var imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기
+	var imageSize = new kakao.maps.Size(30, 34); // 마커이미지의 크기
 	var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션.
 	// 내위치 야구공모양 마커주소
 	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
     // 내현재 위치를 표시할 마커 야구공 모양으로 생성
     var marker = new kakao.maps.Marker({
         map: map,
-        position: locPosition,
+        position: myPosition,
         title: '내 위치',
 		image : markerImage
     });
@@ -44,8 +75,9 @@ function displayCurrentLocation(locPosition) {
         content: '<div style="padding:5px;">내 위치</div>',
         removable: true
     });
-    infowindow.open(map, marker);
 	
+    infowindow.open(map, marker);
+	map.setCenter(locPosition);
 	$.ajax({
 	               url: '/api/list',
 	               type: "GET",
@@ -55,6 +87,8 @@ function displayCurrentLocation(locPosition) {
 				   },
 	               dataType: "json",
 	               success: function (response) {
+					console.log("?ASdasd")
+					console.log(response)
 	                   response.posts.forEach(function (bakery) {
 	                       var coords = new kakao.maps.LatLng(bakery.bakeryLat, bakery.bakeryLog);
 	                       
@@ -284,12 +318,6 @@ $(document).ready(function() {
 			   
 			   
 });
-
-
-
-
-
-
 
 
 
