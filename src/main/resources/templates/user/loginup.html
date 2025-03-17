@@ -4,119 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>빵지순례 - 전국 빵집 탐방 가이드</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/css/common/header.css">
     <link rel="stylesheet" href="/css/common/nav.css">
     <link rel="stylesheet" href="/css/home/home.css">
     <link rel="stylesheet" href="/css/common/footer.css">
-    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
-    <!-- Swiper CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/register/loginup.css}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+	<!-- Swiper JS -->
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
     <!-- 헤더 및 네비게이션 -->
     <header th:replace="~{fragments/header :: HeaderFragment}"></header>
-
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-    	<link rel="stylesheet" th:href="@{/css/register/checkbox.css}">
-    	<script src="/js/register/checkbox.js"></script>
-   	</head>
-    	<link rel="stylesheet" th:href="@{/css/register/loginup.css}">
-    	<script src="/js/register/loginup.js"></script>
-</head>
     <main>
-        <div class="loginup-container">
-            <h2>회원가입 (일반)</h2>
-            <form autocomplete="off" class="loginup-form" action="/loginup" method="post">
-                <div class="form-group">
-                    <div class="loginup-input-div">
-                    <div class="loginup-id">
-                        <label for="userid"></label>
-                        <input class="loginup-input-id" type="text" placeholder="아이디"
-                               id="userid" name="userid" required>
-                        <button class="id-check-btn" type="button">중복확인</button>
-                    </div>
-                    </div>
-                    <div class="loginup-input-div">
-                        <label for="password"></label>
-                        <input class="loginup-input-first" type="password" placeholder="비밀번호"
-                               id="password" name="password" required>
-                    </div>
-                    <div class="loginup-input-div">
-                        <label for="password-confirm"></label>
-                        <input class="loginup-input-last" type="password" placeholder="비밀번호 확인"
-                               style="border-top: 0px;" id="password-confirm" name="password-confirm" required>
-                    </div>
-                <div class="error-text" id="id-msg"></div>
-                <div class="error-text" id="password-msg"></div>
-                <div class="error-text" id="password-confirm-msg"></div>
-                </div>
-                <div class="form-group">
-                    <div class="address-input-div">
-                        <div class="postcode-div">
-                            <label for="postcode"></label>
-                            <input class="postcode-input" type="text" placeholder="우편번호"
-                                   id="postcode" name="postcode" required>
-                            <button class="postcode-btn" type="button" onclick="execDaumPostcode()">우편번호찾기</button>
-                        </div>
-                            <input class="loginup-input-first" type="text" id="address" 
-                                   name="address" placeholder="주소" required>
-                            <input class="loginup-input-last" type="text" id="detailAddress" 
-                                   style="border-top: 0px;" name="detailAddress" placeholder="상세주소 (선택)">
-                        </div>
-                <div class="error-text" id="postcode-msg"></div>
-                <div class="error-text" id="address-msg"></div>
-                <div class="error-msg" id="error-msg"></div>
-                </div>
-                <div class="form-group">
-                    <div class="loginup-input-div">
-                        <label style="margin-left: 3px;" for="birthdate">생년월일</label>
-                        <input class="loginup-input-first" type="date" 
-                               id="birthdate" name="birthdate" required>
-                    </div>
-                    <div class="loginup-input-div">
-                        <label for="username"></label>
-                        <input class="loginup-input" type="text" placeholder="이름"
-                               id="username" name="username" required>
-                    </div>
-                    <div class="loginup-input-div">
-                        <label for="email"></label>
-                        <input class="loginup-input" type="email" placeholder="이메일"
-                               id="email" name="email" required>
-                    </div>
-                    <div class="loginup-input-div">
-                        <label for="phone"></label>
-                        <input class="loginup-input-last" type="tel" placeholder="휴대폰번호 (-없이)"
-                                style="border-top: 0px;" id="phone" name="phone" required>
-                    </div>
-                <div class="error-text" id="birthday-msg"></div>
-                <div class="error-text" id="name-msg"></div>
-                <div class="error-text" id="email-msg"></div>
-                <div class="error-text" id="phone-msg"></div>
-                </div>
-                <input type="hidden" id="token" name="token">
-                <div class="phone-btn-div">
-                    <label for="phone-auth"></label>
-                    <input class="phone-auth" type="text" placeholder="인증번호"
-                           id="phone-auth" name="phone-auth" required>
-                    <div class="error-text" id="phone-auth-msg"></div>
-                <button class="phone-btn" type="button">인증번호받기</button>
-                </div>
-                <div class="loginup-btn-div">
-                    <button class="loginup-btn" type="button">가입하기</button>
-                </div>
-            </div>
+    	<form autocomplete="off" class="loginup-form" action="/register/loginup" method="post">
+	        <div class="loginup-container">
+	            <h2>회원가입 (일반)</h2>
+	                <div class="form-group">
+	                    <div class="loginup-input-div">
+	                    <div class="loginup-id">
+	                        <label for="userid"></label>
+	                        <input class="loginup-input-id" type="text" placeholder="아이디"
+	                               id="userid" name="userId" required>
+	                        <button class="id-check-btn" type="button" id="id-check-btn">중복확인</button>
+	                    </div>
+	                    </div>
+	                    <div class="loginup-input-div">
+	                        <label for="password"></label>
+	                        <input class="loginup-input-first" type="password" placeholder="비밀번호"
+	                               id="password" name="userPassword" required>
+	                    </div>
+	                    <div class="loginup-input-div">
+	                        <label for="password-confirm"></label>
+	                        <input class="loginup-input-last" type="password" placeholder="비밀번호 확인"
+	                               style="border-top: 0px;" id="password-confirm" name="password-confirm" required>
+	                    </div>
+	                <div class="error-text" id="id-msg"></div>
+	                <div class="error-text" id="password-msg"></div>
+	                <div class="error-text" id="password-confirm-msg"></div>
+	                </div>
+	                <div class="form-group">
+	                    <div class="address-input-div">
+	                        <div class="postcode-div">
+	                            <label for="postcode"></label>
+	                            <input class="postcode-input" type="text" placeholder="우편번호"
+	                                   id="sample6_postcode" name="requestAddressDto.userPostcode" required>
+	                            <button class="postcode-btn" type="button" onclick="sample6_execDaumPostcode()">우편번호찾기</button>
+	                        </div>
+	                            <input class="loginup-input-first" type="text" id="sample6_address" 
+	                                   name="address" placeholder="주소" required>
+	                            <input type="hidden" name="requestAddressDto.userCity" id="city">
+	                            <input type="hidden" name="requestAddressDto.userDistrict" id="district">
+	                            <input type="hidden" name="requestAddressDto.userStreet" id="street">
+	                            <input type="hidden" name="requestAddressDto.userNumber" id="number">
+	                            <input class="loginup-input-last" type="text" id="sample6_detailAddress" 
+	                                   style="border-top: 0px;" name="requestAddressDto.userDetailaddress" placeholder="상세주소 (선택)">
+	                        </div>
+	                <div class="error-text" id="postcode-msg"></div>
+	                <div class="error-text" id="address-msg"></div>
+	                <div class="error-msg" id="error-msg"></div>
+	                </div>
+	                <div class="form-group">
+	                    <div class="loginup-input-div">
+	                        <label style="margin-left: 3px;" for="birthdate">생년월일</label>
+	                        <input class="loginup-input-first" type="date" 
+	                               id="birthdate" name="userBirthDate" required>
+	                    </div>
+	                    <div class="loginup-input-div">
+	                        <label for="username"></label>
+	                        <input class="loginup-input" type="text" placeholder="이름"
+	                               id="username" name="userName" required>
+	                    </div>
+	                    <div class="loginup-input-div">
+	                        <label for="email"></label>
+	                        <input class="loginup-input" type="email" placeholder="이메일"
+	                               id="email" name="userEmail" required>
+	                    </div>
+	                    <div class="loginup-input-div">
+	                        <label for="phone"></label>
+	                        <input class="loginup-input-last" type="tel" placeholder="휴대폰번호 (-없이)"
+	                                style="border-top: 0px;" id="phone" name="userPhoneNum" required>
+	                    </div>
+	                <div class="error-text" id="birthday-msg"></div>
+	                <div class="error-text" id="name-msg"></div>
+	                <div class="error-text" id="email-msg"></div>
+	                <div class="error-text" id="phone-msg"></div>
+	                </div>
+	                <input type="hidden" id="token" name="token">
+	                <div class="phone-btn-div">
+	                    <label for="phone-auth"></label>
+	                    <input class="phone-auth" type="text" placeholder="인증번호"
+	                           id="phone-auth" name="phone-auth" required>
+	                    <div class="error-text" id="phone-auth-msg"></div>
+	                <button id="phone-btn" class="phone-btn" type="button" onclick="sendSMS()">인증번호받기</button>
+	                <button id="check-btn" class="phone-btn" type="button" onclick="checkSMS()">인증번호확인</button>
+	                </div>
+	                <div class="loginup-btn-div">
+	                    <button class="loginup-btn" type="submit">가입하기</button>
+	                </div>
+	        </div>
             <div class="loginup-link">
-                <a href="./business-loginup.html">사업자회원가입하기</a>
-            </div>
-            </form>
-        </div>
+                <a href="/register/businessloginup/form">사업자회원가입하기</a>
+        	</div>
+    	</form>
     </main>
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/register/loginup.js"></script> 
 </body>
 </html>

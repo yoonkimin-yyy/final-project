@@ -4,63 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>빵지순례 - 전국 빵집 탐방 가이드</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/css/common/header.css">
     <link rel="stylesheet" href="/css/common/nav.css">
     <link rel="stylesheet" href="/css/home/home.css">
     <link rel="stylesheet" href="/css/common/footer.css">
-    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
+    <link rel="stylesheet" th:href="@{/css/register/loginin.css}">
     <!-- Swiper CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+	<!-- Swiper JS -->
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
     <!-- 헤더 및 네비게이션 -->
     <header th:replace="~{fragments/header :: HeaderFragment}"></header>
-
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-    	<link rel="stylesheet" th:href="@{/css/register/checkbox.css}">
-    	<script src="/js/register/checkbox.js"></script>
-   	</head>
-    	<link rel="stylesheet" th:href="@{/css/register/loginin.css}">
-    	<script src="/js/register/loginin.js"></script>
-   	</head>
     <main>
-        <div class="login-container">
-            <div class="login-h2">
-                <!-- <h2>로그인</h2> -->
-                <img src="/img/common/이빵이.png" style="width: 100px" alt="" >
-            </div>
-            <form action="/loginin" method="post">
-                <div class="form-group">
-                    <label for="userid"></label>
-                    <input class="login-input" type="text" placeholder="ID"
-                           id="userid" name="userid" required>
-                </div>
-                <div class="form-group">
-                    <label for="password"></label>
-                    <input class="login-input" type="password" placeholder="Password"
-                           id="password" name="password" required>
-                </div>
-            <div class="login-btn-div">
-                <button class="login-btn" type="submit">로그인</button>
-                <p>- 간편 로그인 -</p>
-                <button class="login-snsbtn">카카오 로그인</button>
-                <button class="login-snsbtn">네이버 로그인</button>
-                <button class="login-snsbtn">구글 로그인</button>
-            </div>
-            <div class="login-link">
-                <a href="/register/findidpw" class="login-find">아이디/비밀번호 찾기</a>
-                <p>|</p>
-                <a href="/register/typeloginup" class="loginup">회원가입</a>
-            </div>
-            </form>
-        </div>
+    	<form autocomplete="off" action="/register/loginin" method="post">
+	       	<div class="login-container">
+	            <div class="login-h2">
+	                <!-- <h2>로그인</h2> -->
+	                <img src="/img/common/이빵이.png" style="width: 100px" alt="" >
+	            </div>
+	                <div class="form-group">
+	                    <label for="userid"></label>
+	                    <input class="login-input" type="text" placeholder="ID"
+	                           id="userid" name="userId" required>
+	                </div>
+	                <div class="form-group">
+	                    <label for="password"></label>
+	                    <input class="login-input" type="password" placeholder="Password"
+	                           id="password" name="userPassword" required>
+	                </div>
+	                <div class="error-text">
+					    <p th:if="${status == 'failed'}" style="color: red;">아이디 또는 비밀번호가 잘못되었습니다.</p>
+					</div>
+		            <div class="login-btn-div">
+		                <button class="login-btn" type="submit">로그인</button>
+		                <p>- 간편 로그인 -</p>
+		                <button class="login-snsbtn">카카오 로그인</button>
+		                <button class="login-snsbtn">네이버 로그인</button>
+		                <button class="login-snsbtn">구글 로그인</button>
+		            </div>
+		            <div class="login-link">
+		                <a th:href="@{/register/findidpw}" class="login-find">아이디/비밀번호 찾기</a>
+		                <p>|</p>
+		                <a th:href="@{/register/typeloginup/form}" class="loginup">회원가입</a>
+		            </div>
+	        </div>
+    	</form>
     </main>
-</body>
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
-    </html>
+</body>
+</html>
