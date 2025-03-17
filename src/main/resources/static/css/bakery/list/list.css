@@ -147,8 +147,9 @@
         /* 리스트 스타일 */
         .list-box {
             max-width: 800px;
-            margin: 0 auto;
+			margin: 0px auto;
             padding: 20px;
+            width : 800px;
         }
 
         .list-item {
@@ -202,7 +203,7 @@
         }
 
         /* 네비게이션 버튼 스타일 */
-        .navigation {
+        .direction-btn {
             position: absolute;
             width: 100%;
             top: 50%;
@@ -212,7 +213,7 @@
             padding: 0 20px;
         }
 
-        .navigation button {
+        .direction-btn button {
             background-color: rgba(255,255,255,0.7);
             border: none;
             padding: 10px 15px;
