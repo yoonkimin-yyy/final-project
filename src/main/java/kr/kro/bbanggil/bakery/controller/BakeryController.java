@@ -1,17 +1,31 @@
 package kr.kro.bbanggil.bakery.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
+import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
+import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
+import kr.kro.bbanggil.bakery.util.ListPageNation;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.SessionAttribute;
+
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
@@ -26,14 +40,54 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/bakery")
 @AllArgsConstructor
 public class BakeryController {
-	private final BakeryService service;
+
 	private final BakeryServiceImpl bakeryService;
+	private final ListPageNation pageNation;
 	
 	@GetMapping("/list")
-	public String list() {
+	public String list(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
+					   @RequestParam(value="orderType", required=false,defaultValue="recent")String orderType,
+					   @ModelAttribute BakerySearchDTO bakerySearchDTO,
+						BakeryInfoDTO bakeryInfoDTO,
+					    Model model) {
+		//전체 게시물
+		int postCount = bakeryService.totalCount(bakerySearchDTO);
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		Map<String,Object> result = bakeryService.bakeryList(pageNation,
+															currentPage,
+															postCount,
+															pageLimit,
+															boardLimit,
+															orderType,
+															bakerySearchDTO);
+		
+		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
+		
+		List<BakeryInfoDTO> postsResult = (List<BakeryInfoDTO>) result.get("posts");
+		List<List<BakeryInfoDTO>> imagesResult = (List<List<BakeryInfoDTO>>) result.get("images");
+		String todayDayOfWeek = (String) result.get("today");
+		List<BakeryInfoDTO> bakeryInfo = new ArrayList<>();
+		
+		for(int i=0;i<postsResult.size();i++) {
+			BakeryInfoDTO post = postsResult.get(i);
+			for(int j=0;j<imagesResult.get(i).size();j++) {
+				post.setBakeryImageDTO(imagesResult.get(i).get(j).getBakeryImageDTO());
+			}
+			bakeryInfo.add(post);
+		}
+		
+		model.addAttribute("orderType",orderType);
+		model.addAttribute("posts",bakeryInfo);
+		model.addAttribute("pi",piResult);
+		model.addAttribute("today",todayDayOfWeek);
+		model.addAttribute("bakerySearchDTO",bakerySearchDTO);
+		
 		return "user/bakery-list";
 	}
 	
+
 	@GetMapping("/insert/form")
 	public String bakeryInsertForm(BakeryRequestDTO BakeryRequestDTO,
 								   Model model) {
@@ -54,10 +108,11 @@ public class BakeryController {
 							   Model model) throws Exception {
 		int userNo = 3;
 		BakeryRequestDTO.setTime();
-		service.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
+		bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
 		
 		return "common/home";
 	}
+
 	
 	@GetMapping("/detail/form")
 	public String detail() {
@@ -70,7 +125,7 @@ public class BakeryController {
 		/**
 		 * 가게 정보 가져오는 기능
 		 */
-	    List<BakeryDto> bakeriesInfo = service.getBakeryImages(no); 
+	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
 	    model.addAttribute("bakeriesInfo", bakeriesInfo);
 	    
 	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
@@ -78,7 +133,7 @@ public class BakeryController {
 	
 	@GetMapping("/update/form")
 	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false) Integer bakeryNo,Model model) {
-		bakeryUpdateResponseDTO result = service.getbakeryInfo(bakeryNo);
+		bakeryUpdateResponseDTO result = bakeryService.getbakeryInfo(bakeryNo);
 		model.addAttribute("bakery",result);
 		return "owner/bakery-update";
 	}
@@ -88,9 +143,10 @@ public class BakeryController {
 							   BakeryImgRequestDTO bakeryImgRequestDTO
 							   ) {
 		int no = 33;
-		service.bakeryUpdate(bakeryRequestDTO,bakeryImgRequestDTO,no);
+		bakeryService.bakeryUpdate(bakeryRequestDTO,bakeryImgRequestDTO,no);
 		return "/owner/owner-mypage";
 	}
 	
+
 	
 }

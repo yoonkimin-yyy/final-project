@@ -71,6 +71,18 @@
 			   #{fileDTO.folderNamePath},
 			   #{menuNo})
 	</insert>
+	<insert id="imgInsert">
+	INSERT INTO menu_imege
+		VALUES(menu_img_seq.nextval,
+			   #{changeName},
+			   #{originalName},
+			   #{extension},
+			   #{size},
+			   #{localPath},
+			   #{localResourcePath},
+			   #{folderNamePath},
+			   56)
+	</insert>
 	
 	
 	

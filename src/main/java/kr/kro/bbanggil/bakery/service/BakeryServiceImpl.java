@@ -3,9 +3,23 @@ package kr.kro.bbanggil.bakery.service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
+import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
+import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
+import kr.kro.bbanggil.bakery.util.ListPageNation;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -14,7 +28,6 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,8 +42,8 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
-import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.FileUploadUtil;
 import kr.kro.bbanggil.bakery.util.LocationSelectUtil;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
@@ -40,11 +53,87 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class BakeryServiceImpl implements BakeryService{
-	private final BakeryMapper mapper;
+	private final BakeryMapper bakeryMapper;
 	private final FileUploadUtil fileUpload;
 	private final KakaoController kakao;
 	private final LocationSelectUtil locationSelect;
 	private static final Logger logger = LogManager.getLogger(BakeryServiceImpl.class);
+	
+	@Override
+	public Map<String, Object> bakeryList(ListPageNation pageNation,
+											int currentPage,
+											int postCount,
+											int pageLimit,
+											int boardLimit,
+											String orderType,
+											BakerySearchDTO bakerySearchDTO){
+		String searchText = bakerySearchDTO.getSearchText();
+        String[] keywords = searchText.split("\\s+"); // 공백 기준으로 분리
+
+        if (keywords.length >= 2) {
+            bakerySearchDTO.setKeyword1(keywords[0]); // 첫 번째 단어 (ex: 경기)
+            bakerySearchDTO.setKeyword2(keywords[1]); // 두 번째 단어 (ex: 단팥빵)
+        } else {
+            bakerySearchDTO.setKeyword1(searchText);  // 단어 하나만 입력된 경우
+            bakerySearchDTO.setKeyword2(searchText);
+        }
+		
+		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
+		
+		System.out.println(pi.getLimit());
+		System.out.println(pi.getOffset());
+		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
+															getTodayDayOfWeek(),
+															orderType,
+															bakerySearchDTO);
+		
+		for(BakeryInfoDTO item : posts) {
+			System.out.println(item.getBakeryName());
+		}
+ 		
+		List<List<BakeryInfoDTO>> images = new ArrayList<>();
+		
+		for (int i = 0; i < posts.size(); i++) {
+		    images.add(bakeryMapper.bakeryImage(posts.get(i).getBakeryNo()));
+		}
+		
+		Map<String,Object> result = new HashMap<>();
+		
+		result.put("pi", pi);
+		result.put("posts", posts);
+		result.put("images", images);
+//		result.put("today", today);
+		
+		return result;
+	}
+	
+	// 빵집 수 
+	@Override
+	public int totalCount(BakerySearchDTO bakerySearchDTO) {
+		return bakeryMapper.totalCount(bakerySearchDTO);
+	}
+	
+
+	
+	//오늘 요일 구하기
+	@Override
+	public String getTodayDayOfWeek() {
+		LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        return getKoreanDayOfWeek(dayOfWeek);
+	}
+	
+	private String getKoreanDayOfWeek(DayOfWeek dayOfWeek) {
+        return switch (dayOfWeek) {
+            case MONDAY -> "월";
+            case TUESDAY -> "화";
+            case WEDNESDAY -> "수";
+            case THURSDAY -> "목";
+            case FRIDAY -> "금";
+            case SATURDAY -> "토";
+            case SUNDAY -> "일";
+        };
+    }
 	
 	/**
 	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
@@ -70,8 +159,8 @@ public class BakeryServiceImpl implements BakeryService{
 									.region(region)
 									.build();
 			
-				mapper.bakeryInsert(bakeryVO);
-				bakeryRequestDTO.setBakeryNo(bakeryVO.getBakeryNo());
+			bakeryMapper.bakeryInsert(bakeryVO);
+			bakeryRequestDTO.setBakeryNo(bakeryVO.getBakeryNo());
 				
 			BakeryDetailVO detailVO = BakeryDetailVO.builder()
 									  .amenity(bakeryRequestDTO.getParkingInfo())
@@ -80,10 +169,10 @@ public class BakeryServiceImpl implements BakeryService{
 									  .createdDate(bakeryRequestDTO.getCreatedDate())
 									  .bakeryNo(bakeryRequestDTO.getBakeryNo())
 									  .build();
-				mapper.bakeryDetailInsert(detailVO);
+			bakeryMapper.bakeryDetailInsert(detailVO);
 				
 				for(BakeryTimeSetDTO item : bakeryRequestDTO.getTime()) {
-					mapper.bakeryScheduleInsert(item,bakeryRequestDTO.getBakeryNo());
+					bakeryMapper.bakeryScheduleInsert(item,bakeryRequestDTO.getBakeryNo());
 				}
 				/**
 				 * filemap : 이미지가 들어가지는 위치에 따라 ("이미지의 위치",이미지 내용)으로 매핑되는 변수
@@ -103,13 +192,13 @@ public class BakeryServiceImpl implements BakeryService{
 						for(int i=0;i<files.size();i++) {
 							fileUpload.uploadFile(files.get(i), bakeryRequestDTO.getFileDTO(), "bakery");
 							bakeryRequestDTO.setImgLocation(imgLocation);
-							mapper.bakeryFileUpload(bakeryRequestDTO);
+							bakeryMapper.bakeryFileUpload(bakeryRequestDTO);
 						}
 					} else {
 						logger.warn("파일업로드 실패! : {}",imgLocation);
 					}
 				}
-			mapper.setBakery(bakeryRequestDTO.getBakeryNo(),userNo);	
+				bakeryMapper.setBakery(bakeryRequestDTO.getBakeryNo(),userNo);	
 			
 				
 		} catch (Exception e) {
@@ -129,9 +218,9 @@ public class BakeryServiceImpl implements BakeryService{
 	 */
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
-		bakeryUpdateResponseDTO response = mapper.getBakeryInfo(bakeryNo);
-		response.setImgDTO(mapper.getBakeryImg(bakeryNo));
-		List<BakeryTimeSetDTO> timeDTO = mapper.getBakerySchedule(bakeryNo);
+		bakeryUpdateResponseDTO response = bakeryMapper.getBakeryInfo(bakeryNo);
+		response.setImgDTO(bakeryMapper.getBakeryImg(bakeryNo));
+		List<BakeryTimeSetDTO> timeDTO = bakeryMapper.getBakerySchedule(bakeryNo);
 		setBakeryOperatingHours(response,timeDTO);
 		return response;
 	}
@@ -140,7 +229,7 @@ public class BakeryServiceImpl implements BakeryService{
 	public void bakeryUpdate(BakeryRequestDTO bakeryRequestDTO,
 			   				 BakeryImgRequestDTO bakeryImgRequestDTO,
 			   				 int userNo) {
-		int requestUserNo = mapper.requestUserNo(bakeryRequestDTO.getBakeryNo());
+		int requestUserNo = bakeryMapper.requestUserNo(bakeryRequestDTO.getBakeryNo());
 		Map<String,List<MultipartFile>> filemap = setImg(bakeryImgRequestDTO);
 		try {
 		if(requestUserNo==userNo) {
@@ -148,18 +237,18 @@ public class BakeryServiceImpl implements BakeryService{
 				String imgLocation = entry.getKey();
 				List<MultipartFile> files = entry.getValue();
 					if(bakeryImgRequestDTO.checkFile(files)) {
-						List<FileResponseDTO> fileCheck = mapper.getFileInfo(imgLocation);
+						List<FileResponseDTO> fileCheck = bakeryMapper.getFileInfo(imgLocation);
 						for(int i=0;i<fileCheck.size();i++) {
 							String fileName = fileCheck.get(i).getChangeName();
 							String localPath = fileCheck.get(i).getLocalPath();
-							mapper.deleteFile(fileName);
+							bakeryMapper.deleteFile(fileName);
 							fileUpload.deleteFile(localPath, imgLocation, fileName);
 						}
 						
 						for(int i=0;i<files.size();i++) {
 							fileUpload.uploadFile(files.get(i),bakeryRequestDTO.getFileDTO(), "bakery");
 							bakeryRequestDTO.setImgLocation(imgLocation);
-							mapper.bakeryFileUpload(bakeryRequestDTO);
+							bakeryMapper.bakeryFileUpload(bakeryRequestDTO);
 						}
 							
 					}else {
@@ -167,13 +256,13 @@ public class BakeryServiceImpl implements BakeryService{
 					}
 					
 				}
-			mapper.bakeryUpdate(bakeryRequestDTO);
-			mapper.bakeryDetailUpdate(bakeryRequestDTO);
+			bakeryMapper.bakeryUpdate(bakeryRequestDTO);
+			bakeryMapper.bakeryDetailUpdate(bakeryRequestDTO);
 			bakeryRequestDTO.setTime();
 			for(BakeryTimeSetDTO item : bakeryRequestDTO.getTime()) {
-				mapper.bakeryScheduleUpdate(item,bakeryRequestDTO.getBakeryNo());
+				bakeryMapper.bakeryScheduleUpdate(item,bakeryRequestDTO.getBakeryNo());
 			}
-			mapper.bakeryAccessUpdate(bakeryRequestDTO);
+			bakeryMapper.bakeryAccessUpdate(bakeryRequestDTO);
 			}
 		} catch(Exception e) {
 			logger.error("에러발생! : {}",e.getMessage());
@@ -186,7 +275,7 @@ public class BakeryServiceImpl implements BakeryService{
 	public void saveBakery(BakeryDto bakery) {
 
 		try {
-			mapper.insertBakery(bakery);
+			bakeryMapper.insertBakery(bakery);
 			logger.info("빵집 정보 저장 성공: {}",bakery.getName());
 		}catch(Exception e) {
 			logger.error("빵집 정보 저장 실패 : {}, 오류 메세지 :{}",bakery.getName(),e.getMessage(),e);
@@ -199,19 +288,19 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public List<BakeryDto> getBakeriesByRegion(String region) {
 
-		return mapper.getBakeriesByRegion(region);
+		return bakeryMapper.getBakeriesByRegion(region);
 	}
 
 	@Override
 	public List<BakeryDto> getPopularBakeries() {
 
-		return mapper.getPopularBakeries();
+		return bakeryMapper.getPopularBakeries();
 	}
 
 	@Override
 	public List<BakeryDto> getRecentBakeries() {
 
-		return mapper.getRecentBakeries();
+		return bakeryMapper.getRecentBakeries();
 	}
 
 	@Override
@@ -220,18 +309,18 @@ public class BakeryServiceImpl implements BakeryService{
 		List<String> categoryNames = topBakeries.stream().map(bakery -> bakery.getResponse().getCategory()).distinct()
 				.collect(Collectors.toList());
 
-		return mapper.getCategoryBakeries(categoryNames);
+		return bakeryMapper.getCategoryBakeries(categoryNames);
 	}
 
 	@Override
 	public List<BakeryDto> getTopFiveOrders() {
-		return mapper.getTopFiveOrders();
+		return bakeryMapper.getTopFiveOrders();
 	}
 
 	@Override
 	public List<BakeryDto> getBakeryImages(double no) {
 
-		return mapper.findBakeryImages(no);
+		return bakeryMapper.findBakeryImages(no);
 	}
 	private void setBakeryOperatingHours(bakeryUpdateResponseDTO bakeryInfo, List<BakeryTimeSetDTO> timeDTO) {
 		BakeryTimeRequestDTO requestDTO =  bakeryInfo.getTimeDTO();
@@ -284,4 +373,16 @@ public class BakeryServiceImpl implements BakeryService{
 		result.put("parking", bakeryImgRequestDTO.getParking());
 		return result;
 	}
+	
+	@Override
+	public void imgInsert(MultipartFile file) {
+		try {
+			FileRequestDTO fileDTO = new FileRequestDTO();
+			fileUpload.uploadFile(file, fileDTO, "bakery");
+			bakeryMapper.imgInsert(fileDTO);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

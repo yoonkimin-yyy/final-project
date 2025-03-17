@@ -249,6 +249,10 @@ a:hover {
     /* background-color: #fff; */
     /* border: 1px solid #a18267; */
 }
+.detail-info table{
+	width : 100%;
+	height : 100%;	
+}
 
 .menu-div {
     /* border-bottom: 1px solid #a18267; */
@@ -440,4 +444,15 @@ footer {
 
 .bbangllogo-class {
     margin-top: 10px;
+}
+.additional-btn{
+	padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #a18267;
+    color: #fff;
+    border: 1px solid #a18267;
+    border-radius: 4px;
+    cursor: pointer;
 }

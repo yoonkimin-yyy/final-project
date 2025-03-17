@@ -5,21 +5,29 @@
     <meta charset="UTF-8">
     <title>빵집 수정</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <link rel="stylesheet" href="/css/common/nav.css">
     <link rel="stylesheet" th:href="@{/css/owner/bakery/insert/insert.css}">
-    <script src="/js/owner/bakery/insert/insert.js"></script>
+    <script src="/js/owner/bakery/insert/insert.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+<header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 	<form th:action="@{/bakery/insert}" method="Post" enctype="multipart/form-data">
 	
     <div class="container">
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
             <div>
-                <label for="imageInput" class="main-photo-upload">+</label>
-                <input type="file" id="imageInput" name="main" multiple style="display: none">
-                <div id="mainPreview"></div>
+                <label for="imageInput" class="main-photo-upload">메인 사진</label>
+                <input type="file" id="imageInput" data-preview-container="mainPreviewContainer" name="main" multiple style="display: none">
+                <div id="mainPreviewContainer" class="preview-container main-preview">
+			        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+			        <img class="preview-img" src="" alt="미리보기 이미지">
+			        <button class="nav-btn next-btn" type="button">&#10095;</button>
+			    </div>
 
             </div>
         </div>
@@ -130,7 +138,12 @@
                 <div class="interior-photos" id="interior" style="display: none;">
                     <h3>실내 전경</h3>
                     <label for="insideImage" class="photo-upload">사진 추가</label>
-                    <input type="file" id="insideImage" name="inside" multiple style="display: none">
+                    <input type="file" id="insideImage" name="inside" data-preview-container="insidePreviewContainer" multiple style="display: none">
+                    <div id="insidePreviewContainer" class="preview-container preview">
+				        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+				        <img class="preview-img img-size" src="" alt="미리보기 이미지">
+				        <button class="nav-btn next-btn" type="button">&#10095;</button>
+				    </div>
                     <div class="photo-description">
                         <textarea class="description" name="insideInfo" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
                         </ul>
@@ -140,7 +153,12 @@
                 <div class="exterior-photos" id="exterior" style="display: none;">
                     <h3>실외 전경</h3>
                     <label for="outsideImage" class="photo-upload">사진 추가</label>
-                    <input type="file" id="outsideImage" name="outside" multiple style="display: none">
+                    <input type="file" id="outsideImage" data-preview-container="outsidePreviewContainer" name="outside" multiple style="display: none">
+                    <div id="outsidePreviewContainer" class="preview-container preview">
+				        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+				        <img class="preview-img img-size" src="" alt="미리보기 이미지">
+				        <button class="nav-btn next-btn" type="button">&#10095;</button>
+				    </div>
                     <div class="photo-description">
                         <textarea class="description" name="outsideInfo" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
                         </ul>
@@ -150,10 +168,15 @@
                 <div class="parking-info" id="parking" style="display: none;">
                     <h3>주차 안내</h3>
                     <div class="parking-content">
-                        <label for="parking-image" class="parking-photo-upload">사진 추가</label>
-                        <input type="file" id="parking-image" name="parking" multiple style="display: none">
+                        <label for="parking-image" class="photo-upload">사진 추가</label>
+                        <input type="file" id="parking-image" data-preview-container="parkingPreviewContainer" name="parking" multiple style="display: none">
+                        <div id="parkingPreviewContainer" class="preview-container parking-container preview">
+					        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+					        <img class="preview-img parking-preview" src="" alt="미리보기 이미지">
+					        <button class="nav-btn next-btn" type="button">&#10095;</button>
+					    </div>
                         <div class="parking-details">
-                            <textarea class="parking-text" name="parkingInfo" placeholder="주차장 정보를 입력해주세요" ;></textarea>
+                            <textarea class="parking-text" name="parkingInfo" placeholder="주차장 정보를 입력해주세요" ></textarea>
                         </div>
                     </div>
                 </div>
