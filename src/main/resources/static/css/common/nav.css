@@ -34,3 +34,8 @@
 .nav-buttons {
     display: flex;
 }
+
+.change{
+	background-color: #fff;
+	border : 0;
+}

@@ -51,8 +51,12 @@ public interface BakeryMapper {
 	int getCurrentBakeryNo();
 
 
+
+	void imgInsert(FileRequestDTO fileDTO);
+
 	void setBakery(@Param("bakeryNo")int bakeryNo,
 				   @Param("userNo")int userNo);
+
 
 	
 }
