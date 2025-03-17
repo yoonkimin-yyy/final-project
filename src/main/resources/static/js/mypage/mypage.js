@@ -1,3 +1,4 @@
+
 function toggleDetail(clickedRow) {
     const nextRow = clickedRow.nextElementSibling;
 
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // 리뷰 작성 하기 버튼 (등록 버튼 아님)
+document.addEventListener("DOMContentLoaded", function () {
 const writeBtn = document.getElementById('review-write-btn');
 const textDiv = document.getElementById('review-text-div');
 
@@ -53,6 +55,7 @@ writeBtn.addEventListener('click', () => {
 
 
 })
+});
 
 
 // 리뷰 작성 ~ 등록 버튼 까지

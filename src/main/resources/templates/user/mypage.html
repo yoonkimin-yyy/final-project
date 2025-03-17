@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/common/nav.css">
     <link rel="stylesheet" href="/css/home/home.css">
     <link rel="stylesheet" href="/css/common/footer.css">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
     <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
     <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -20,20 +21,15 @@
 <body>
     <!-- 헤더 및 네비게이션 -->
     <header th:replace="~{fragments/header :: HeaderFragment}"></header>
-
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-    	<link rel="stylesheet" th:href="@{/css/register/checkbox.css}">
-    	<script src="/js/register/checkbox.js"></script>
-   	</head>
-    	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
-    	<script src="/js/mypage/mypage.js"></script>
-</head>
+    <!-- 마이페이지 스크립트 -->
+    <script src="/js/mypage/mypage.js"></script>
 <main>
     <div class="mypage-container">
         <div class="mypage-title">
             <h1>마이페이지</h1>
-            <p>안녕하세요, 회원님!🥖</p>
+            <p>안녕하세요, <p>회원</p>님!🥖</p>
         </div>
         <div class="mypage-content">
             <div class="mypage-info">
@@ -42,8 +38,7 @@
                 <p>이메일 <br> &nbsp; 🥐 &nbsp;asd123@naver.com</p>
                 <p>핸드폰 <br> &nbsp; 🥐 &nbsp;010.1234.5678</p>
             <div class="mypage-menu">
-                <a href="/mypage/edit">회원정보 수정 ✎</a>
-                <!-- <a href="#">내가 쓴 리뷰 ✎</a> -->
+                <a href="./edit.html">회원정보 수정 ✎</a>
             </div>
         </div>
             <div class="mypage-order">
@@ -62,15 +57,15 @@
                     <tbody class="mypage-table-body">
                         <tr class="tbody-tr" onclick="toggleDetail(this);">
                             <td>1</td>
-                            <td>이빵이오</td>
-                            <td>36,000원</td>
+                            <td>성심당</td>
+                            <td>58,000원</td>
                             <td>대기</td>
                         </tr>
                         <tr class="detail-row">
                             <td colspan="4">
                                 <div id="detail-info" class="detail-info">
                                     <div class="menu-div">
-                                        <p>🥯 구매한 빵 : 우유식빵 1개, 소금빵 2개, 단팥빵 1개</p>
+                                        <p>🥯 구매한 빵 : 튀김소보루 3개, 딸기시루케익 1개</p>
                                     </div>
                                     <div class="review-info-div">
                                         <p>내 리뷰 ✎</p>
@@ -153,15 +148,15 @@
                         </tr>
                         <tr class="tbody-tr" onclick="toggleDetail(this);">
                             <td>2</td>
-                            <td>이빵이오</td>
-                            <td>12,000원</td>
+                            <td>안양빵집</td>
+                            <td>8000원</td>
                             <td>확인</td>
                         </tr>
                         <tr class="detail-row">
                             <td colspan="4">
                                 <div id="detail-info" class="detail-info">
                                     <div class="menu-div">
-                                        <p>🥯 구매한 빵 : 우유식빵 1개, 소금빵 2개, 단팥빵 1개</p>
+                                        <p>🥯 구매한 빵 : 토스트 1개, 소금빵 2개, 찹쌀도넛 3개</p>
                                     </div>
                                      <div class="review-div">
                                         <div class="review-write-div">
