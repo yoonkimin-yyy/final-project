@@ -1,3 +1,85 @@
+navigator.geolocation.getCurrentPosition(function(position) {
+    var lat = position.coords.latitude; // 위도
+    var lng = position.coords.longitude; // 경도
+    var locPosition = new kakao.maps.LatLng(lat, lng); // 좌표 생성
+
+    console.log(lat, lng);
+
+    // 지도에 현재 위치를 표시
+    displayCurrentLocation(locPosition);
+}, function(error) {
+    alert('위치 정보를 가져올 수 없습니다.');
+});
+
+var mapContainer;
+var mapOption ;
+var map ;
+// 현재 위치 마커 추가가
+function displayCurrentLocation(locPosition) {
+    mapContainer = document.getElementById('map'); // 지도를 표시할 div
+    mapOption = { 
+        center: locPosition, // 현재 위치를 중심으로 지도 설정
+        level: 5 // 확대 레벨
+    };
+    
+    // 지도 생성
+     map = new kakao.maps.Map(mapContainer, mapOption); 
+    
+	// 야구공모양 마커주소
+	var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+	var imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기
+	var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션.
+	// 내위치 야구공모양 마커주소
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+    // 내현재 위치를 표시할 마커 야구공 모양으로 생성
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: locPosition,
+        title: '내 위치',
+		image : markerImage
+    });
+
+    // 내 현재 위치에 '내 위치'라는 인포윈도우 생성
+    var infowindow = new kakao.maps.InfoWindow({
+        content: '<div style="padding:5px;">내 위치</div>',
+        removable: true
+    });
+    infowindow.open(map, marker);
+	
+	$.ajax({
+	               url: '/api/list',
+	               type: "GET",
+				   data:{
+						searchText: $("#searchText").val(),
+						orderType: $("#filter-select").val()
+				   },
+	               dataType: "json",
+	               success: function (response) {
+	                   response.posts.forEach(function (bakery) {
+	                       var coords = new kakao.maps.LatLng(bakery.bakeryLat, bakery.bakeryLog);
+	                       
+	                       var marker = new kakao.maps.Marker({
+	                           map: map,
+	                           position: coords
+	                       });
+
+	                       var infowindow = new kakao.maps.InfoWindow({
+	                           content: `<div style="padding:5px;">${bakery.bakeryName}<br>${bakery.bakeryAddress}</div>`
+	                       });
+
+	                       kakao.maps.event.addListener(marker, 'click', function () {
+	                           infowindow.open(map, marker);
+	                       });
+	                   });
+	               },
+	               error: function (xhr, status, error) {
+	                   console.error("데이터 가져오기 실패:", error);
+	               }
+	           });
+}	
+
+
+
 function initializeSliders() {
     console.log('슬라이더 초기화 시작');
     const sliders = document.querySelectorAll('.slider');
@@ -69,7 +151,8 @@ document.addEventListener('DOMContentLoaded', initializeSliders);
 $(document).ready(function() {
     let currentPage = 2; // 초기 페이지 설정
     let isLoading = false; // 데이터 로딩 상태
-
+	let orderType = $("#filter-select").val();
+	console.log(currentPage)
     // 스크롤 이벤트 감지
     $(window).on('scroll', function() {
         // 스크롤이 페이지 하단에 도달했는지 확인
@@ -83,17 +166,22 @@ $(document).ready(function() {
         if (isLoading) return; // 이미 로딩 중이면 중복 실행 방지
         isLoading = true; 
         console.log("Loading more posts...");
+		console.log(currentPage)
         $('#loading').show(); // 로딩 표시
 
         $.ajax({
-            url: '/bakery/api/list',
+            url: '/api/list',
             type: 'GET',
-            data: { currentPage: currentPage },
+            data: {
+				 currentPage: currentPage,
+				 searchText: $("#searchText").val(),
+				 orderType: $("#filter-select").val()
+			 },
             dataType: 'json',
             success: function(response) {
-                console.log(response);
                 let posts = response.posts;
                 let postContainer = $('.list-box');
+				console.log(response)
 				
 				$(document).on('click', '.prev', function() {
 				            const sliderId = $(this).data('slider');
@@ -113,35 +201,25 @@ $(document).ready(function() {
 
                 // 포스트 데이터를 순회하여 HTML 생성 및 추가
                 posts.forEach((post, index) => {
-                    console.log("Adding post:", post);
+                    
+					console.log(post.bakeryName)
+					
+					
 
                     let postHtml = `
                         <div class="list-item">
                             <div class="slider" id="slider${index + 11}">
                                 <div class="slides">
+								${post.bakeryImageDTO.map(image => `
                                     <div class="hotel-slide">
                                         <div class="image-container">
-                                            <img src="https://api.a0.dev/assets/image?text=delicious%20bread%201&aspect=16:9" alt="빵 이미지 1" class="reserve-img">
-                                            <p class="hotel-info2">크로와상</p>
-                                            <p class="bread-price">4,500원</p>
+                                            <img src="${image.resourcesPath}/${image.changeName}" alt="빵 이미지 1" class="reserve-img">
+                                            <p class="hotel-info2">${post.bakeryName}</p>
                                         </div>
                                     </div>
-                                    <div class="hotel-slide">
-                                        <div class="image-container">
-                                            <img src="https://api.a0.dev/assets/image?text=delicious%20bread%202&aspect=16:9" alt="빵 이미지 2" class="reserve-img">
-                                            <p class="hotel-info2">바게트</p>
-                                            <p class="bread-price">3,800원</p>
-                                        </div>
-                                    </div>
-                                    <div class="hotel-slide">
-                                        <div class="image-container">
-                                            <img src="https://api.a0.dev/assets/image?text=delicious%20bread%203&aspect=16:9" alt="빵 이미지 3" class="reserve-img">
-                                            <p class="hotel-info2">식빵</p>
-                                            <p class="bread-price">5,000원</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="navigation">
+									`).join('')}
+                                  </div>
+                                <div class="direction-btn">
                                     <button class="prev" data-slider="${index + 11}">&lt;</button>
                                     <button class="next" data-slider="${index + 11}">&gt;</button>
                                 </div>
@@ -154,8 +232,8 @@ $(document).ready(function() {
                                 <p class="list-item-address">📍<span>${post.bakeryAddress}</span></p>
                                 <p class="list-item-score">⭐️평점: <span>${post.bakeryReviewDTO.reviewRating}</span></p>
                                 <p class="list-item-time">🕒영업시간: <span>${post.bakeryScheduleDTO.bakeryOpenTime}</span>~<span>${post.bakeryScheduleDTO.bakeryCloseTime}</span></p>
-                                <p class="list-item-review">📝리뷰: <span></span></p>
-                                <p class="list-item-parking">🚗: <span>${post.bakeryAmenity}</span></p>
+                                <p class="list-item-review">📝리뷰: <span>${post.reviewCount}</span></p>
+                                <p class="list-item-parking">🚗: <span>${post.bakeryDetailDTO.bakeryAmenity}</span></p>
                             </div>
                         </div>
                     `;
@@ -166,6 +244,25 @@ $(document).ready(function() {
                 currentPage++; // 다음 페이지를 위해 페이지 번호 증가
                 isLoading = false; // 로딩 상태 초기화
                 $('#loading').hide(); // 로딩 표시 숨김
+				console.log("aaa")
+				console.log(response)
+				response.posts.forEach(function (bakery) {
+                       var coords = new kakao.maps.LatLng(bakery.bakeryLat, bakery.bakeryLog);
+                       
+                       var marker = new kakao.maps.Marker({
+                           map: map,
+                           position: coords
+                       });
+
+                       var infowindow = new kakao.maps.InfoWindow({
+                           content: `<div style="padding:5px;">${bakery.bakeryName}<br>${bakery.bakeryAddress}</div>`
+                       });
+
+                       kakao.maps.event.addListener(marker, 'click', function () {
+                           infowindow.open(map, marker);
+                       });
+                   });
+									   
 				initializeSliders(); // ajax 실행 후 슬라이드기능 삽입
             },
             error: function(xhr, status, error) {
@@ -175,7 +272,22 @@ $(document).ready(function() {
             }
         });
     }
+	$("#filter-select").change(function() {
+	               orderType = $(this).val();
+	               offset = 0;
+	               loadMoreData(true);
+	           });
+	$("#searchBtn").click(function() {
+	               offset = 0;
+	               loadMoreData(true);
+	           });
+			   
+			   
 });
+
+
+
+
 
 
 

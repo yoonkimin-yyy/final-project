@@ -1,5 +1,8 @@
 package kr.kro.bbanggil.bakery.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,11 +16,13 @@ public class BakeryInfoDTO {
 	private String bakeryName;
 	private String bakeryAddress;
 	private String bakeryPhone;
-	private double bakeryLat;
-	private double bakeryLog;
+	private double bakeryLat;//위도
+	private double bakeryLog;//경도
 	private String bakeryRegion;
 	private BakeryDetailDTO bakeryDetailDTO = new BakeryDetailDTO();
 	private BakeryReviewDTO bakeryReviewDTO = new BakeryReviewDTO();
 	private BakeryScheduleDTO bakeryScheduleDTO = new BakeryScheduleDTO();
+	private List<BakeryImageDTO> bakeryImageDTO = new ArrayList<>();
+	private int reviewCount;
 	
 }

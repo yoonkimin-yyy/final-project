@@ -12,7 +12,7 @@ public class BakeryReviewDTO {
 	private int orderNo;
 	private int userNo;
 	private String reviewDetail;
-	private int reviewRating;
+	private double reviewRating;
 	private String reviewDate;
 	private int bakeryNo;
 }

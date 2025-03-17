@@ -2,6 +2,7 @@ package kr.kro.bbanggil.bakery.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
-import kr.kro.bbanggil.bakery.dto.BakeryScheduleDTO;
+import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
@@ -26,19 +27,38 @@ public class BakeryServiceImpl implements BakeryService {
 											int currentPage,
 											int postCount,
 											int pageLimit,
-											int boardLimit){
+											int boardLimit,
+											String orderType,
+											BakerySearchDTO bakerySearchDTO){
 		
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		
-		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, getTodayDayOfWeek());
+		System.out.println(pi.getLimit());
+		System.out.println(pi.getOffset());
+		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
+															getTodayDayOfWeek(),
+															orderType,
+															bakerySearchDTO);
 		
-
+		for(BakeryInfoDTO item : posts) {
+			System.out.println(item.getBakeryName());
+		}
+ 		
+		List<List<BakeryInfoDTO>> images = new ArrayList<>();
+		
+		for (int i = 0; i < posts.size(); i++) {
+		    images.add(bakeryMapper.bakeryImage(posts.get(i).getBakeryNo()));
+		}
+		
+		
+		
 			
 		
 		Map<String,Object> result = new HashMap<>();
 		
 		result.put("pi", pi);
 		result.put("posts", posts);
+		result.put("images", images);
 //		result.put("today", today);
 		
 		return result;
@@ -46,9 +66,11 @@ public class BakeryServiceImpl implements BakeryService {
 	
 	// 빵집 수 
 	@Override
-	public int totalCount() {
-		return bakeryMapper.totalCount();
+	public int totalCount(BakerySearchDTO bakerySearchDTO) {
+		return bakeryMapper.totalCount(bakerySearchDTO);
 	}
+	
+
 	
 	//오늘 요일 구하기
 	@Override

@@ -15,31 +15,72 @@ function displayCurrentLocation(locPosition) {
     var mapContainer = document.getElementById('map'); // 지도를 표시할 div
     var mapOption = { 
         center: locPosition, // 현재 위치를 중심으로 지도 설정
-        level: 7 // 확대 레벨
+        level: 5 // 확대 레벨
     };
     
     // 지도 생성
     var map = new kakao.maps.Map(mapContainer, mapOption); 
     
-    // 현재 위치를 표시할 마커 생성
+	// 야구공모양 마커주소
+	var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+	var imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기
+	var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션.
+	// 내위치 야구공모양 마커주소
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+    // 내현재 위치를 표시할 마커 야구공 모양으로 생성
     var marker = new kakao.maps.Marker({
         map: map,
         position: locPosition,
-        title: '내 위치'
+        title: '내 위치',
+		image : markerImage
     });
 
-    // 현재 위치에 인포윈도우 추가
+    // 내 현재 위치에 '내 위치'라는 인포윈도우 생성
     var infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;">집가고싶다</div>',
+        content: '<div style="padding:5px;">내 위치</div>',
         removable: true
     });
     infowindow.open(map, marker);
+	
+	$.ajax({
+	               url: '/api/list',
+	               type: "GET",
+				   data:{
+						searchText: $("#searchText").val(),
+						orderType: $("#filter-select").val()
+				   },
+	               dataType: "json",
+	               success: function (response) {
+	                   response.posts.forEach(function (bakery) {
+	                       var coords = new kakao.maps.LatLng(bakery.bakeryLat, bakery.bakeryLog);
+	                       
+	                       var marker = new kakao.maps.Marker({
+	                           map: map,
+	                           position: coords
+	                       });
+
+	                       var infowindow = new kakao.maps.InfoWindow({
+	                           content: `<div style="padding:5px;">${bakery.bakeryName}<br>${bakery.bakeryAddress}</div>`
+	                       });
+
+	                       kakao.maps.event.addListener(marker, 'click', function () {
+	                           infowindow.open(map, marker);
+	                       });
+	                   });
+	               },
+	               error: function (xhr, status, error) {
+	                   console.error("데이터 가져오기 실패:", error);
+	               }
+	           });
+}		   
+	
+	
 
     // 내 위치 주변 빵집 검색
-    searchNearbyBakeries(map, locPosition);
-}
+/*    searchNearbyBakeries(map, locPosition);*/
 
-// 내 위치 주변 빵집 검색
+
+/*// 내 위치 주변 빵집 검색
 function searchNearbyBakeries(map, locPosition) {
     var ps = new kakao.maps.services.Places(); // 장소 검색 객체 생성
     
@@ -77,4 +118,4 @@ function displayMarker(map, place) {
     kakao.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map, marker);
     });
-}
+}*/
