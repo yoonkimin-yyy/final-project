@@ -34,6 +34,7 @@
     display: flex;
 }
 
+
 /* 드롭다운 css */
 .dropdown {
         position: relative;
@@ -60,3 +61,9 @@
     .dropdown-item:hover {
         background-color: #f0f0f0;
     }
+
+.change{
+	background-color: #fff;
+	border : 0;
+}
+
