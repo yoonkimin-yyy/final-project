@@ -2,9 +2,8 @@ package kr.kro.bbanggil.bakery.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
-import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +32,6 @@ public class bakeryUpdateResponseDTO {
 	private String weekend;
 	
 	List<FileRequestDTO> imgDTO = new ArrayList<>();
-	
+	BakeryTimeRequestDTO timeDTO = new BakeryTimeRequestDTO();
 	
 }

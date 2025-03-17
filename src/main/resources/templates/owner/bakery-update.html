@@ -11,7 +11,7 @@
 </head>
 
 <body>
-	<form th:action="@{/bakery/insert}" method="Post" th:object="${bakery}" enctype="multipart/form-data" >
+	<form th:action="@{/bakery/update}" method="Post" th:object="${bakery}" enctype="multipart/form-data" >
 	<input type="hidden" th:field="*{bakeryNo}",th:value="*{bakeryNo}">
     <div class="container">
         <!-- 이미지 슬라이더 -->
@@ -56,41 +56,41 @@
                             
                                 <div class="hours-item">
                                     <span class="day">평일</span>
-                                    <input type="text" class="time" th:field="*{weekday}" id="weekday" placeholder="영업시간(00:00~00:00)"> 
+                                    <input type="text" class="time" th:field="*{timeDTO.weekday}" id="weekday" placeholder="영업시간(00:00~00:00)"> 
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">주말</span>
-                                    <input type="text" class="time" th:field="*{weekend}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.weekend}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                             </div>
                             <div id="date-table" style="display:none;">
                                 <div class="hours-item">
                                     <span class="day">월요일</span>
-                                    <input type="text" class="time" th:field="*{monday}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.monday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">화요일</span>
-                                    <input type="text" class="time" th:field="*{tuesday}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.tuesday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">수요일</span>
-                                    <input type="text" class="time" th:field="*{wednesday}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.wednesday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">목요일</span>
-                                    <input type="text" class="time" th:field="*{thursday}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.thursday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">금요일</span>
-                                    <input type="text" class="time" th:field="*{friday}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.friday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">토요일</span>
-                                    <input type="text" class="time" th:field="*{saturday}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.saturday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                                 <div class="hours-item">
                                     <span class="day">일요일</span>
-                                    <input type="text" class="time" th:field="*{sunday}" placeholder="영업시간(00:00~00:00)">
+                                    <input type="text" class="time" th:field="*{timeDTO.sunday}" placeholder="영업시간(00:00~00:00)">
                                 </div>
                             </div>
                         </div>

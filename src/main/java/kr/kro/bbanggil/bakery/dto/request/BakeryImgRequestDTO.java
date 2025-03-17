@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BakeryInsertImgRequestDTO {
+public class BakeryImgRequestDTO {
 	List<MultipartFile> main;
 	List<MultipartFile> inside;
 	List<MultipartFile> outside;

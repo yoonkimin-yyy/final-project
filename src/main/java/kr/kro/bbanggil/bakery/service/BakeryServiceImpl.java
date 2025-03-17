@@ -24,8 +24,10 @@ import groovy.transform.Undefined.EXCEPTION;
 import kr.kro.bbanggil.bakery.api.KakaoController;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
-import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
@@ -51,7 +53,7 @@ public class BakeryServiceImpl implements BakeryService{
 	 */
 	@Override
 	@Transactional(rollbackFor = EXCEPTION.class)
-	public void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO,int userNo) throws Exception {
+	public void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo) throws Exception {
 		try {
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
 				
@@ -86,12 +88,8 @@ public class BakeryServiceImpl implements BakeryService{
 				/**
 				 * filemap : 이미지가 들어가지는 위치에 따라 ("이미지의 위치",이미지 내용)으로 매핑되는 변수
 				 */
-			Map<String,List<MultipartFile>> filemap = new LinkedHashMap<>();
-			filemap.put("main", bakeryImgRequestDTO.getMain());
-			filemap.put("inside", bakeryImgRequestDTO.getInside());
-			filemap.put("outside", bakeryImgRequestDTO.getOutside());
-			filemap.put("parking", bakeryImgRequestDTO.getParking());
-			
+			Map<String,List<MultipartFile>> filemap = setImg(bakeryImgRequestDTO);
+						
 				/**
 				 * imgLocation : 이미지가 입력된 위치
 				 * files : 해당 위치에 들어간 이미지들
@@ -122,6 +120,13 @@ public class BakeryServiceImpl implements BakeryService{
 		
 		
 	}
+	/**
+	 * bakeryUpdate 페이지를 로드할떄 사용
+	 * response : 특정 번호의 빵집에 대한 데이터
+	 * setBakeryOperatingHours : 데이터 형태 변환용 메서드(요일에 맞게 시간 형식 맞춤)
+	 * 							 ex)월 : open_time = 09:00 , close_time = 17:00
+	 * 								월 : 09:00~17:00
+	 */
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
 		bakeryUpdateResponseDTO response = mapper.getBakeryInfo(bakeryNo);
@@ -130,7 +135,51 @@ public class BakeryServiceImpl implements BakeryService{
 		setBakeryOperatingHours(response,timeDTO);
 		return response;
 	}
-
+	
+	@Override
+	public void bakeryUpdate(BakeryRequestDTO bakeryRequestDTO,
+			   				 BakeryImgRequestDTO bakeryImgRequestDTO,
+			   				 int userNo) {
+		int requestUserNo = mapper.requestUserNo(bakeryRequestDTO.getBakeryNo());
+		Map<String,List<MultipartFile>> filemap = setImg(bakeryImgRequestDTO);
+		try {
+		if(requestUserNo==userNo) {
+			for(Map.Entry<String,List<MultipartFile>> entry : filemap.entrySet()) {
+				String imgLocation = entry.getKey();
+				List<MultipartFile> files = entry.getValue();
+					if(bakeryImgRequestDTO.checkFile(files)) {
+						List<FileResponseDTO> fileCheck = mapper.getFileInfo(imgLocation);
+						for(int i=0;i<fileCheck.size();i++) {
+							String fileName = fileCheck.get(i).getChangeName();
+							String localPath = fileCheck.get(i).getLocalPath();
+							mapper.deleteFile(fileName);
+							fileUpload.deleteFile(localPath, imgLocation, fileName);
+						}
+						
+						for(int i=0;i<files.size();i++) {
+							fileUpload.uploadFile(files.get(i),bakeryRequestDTO.getFileDTO(), "bakery");
+							bakeryRequestDTO.setImgLocation(imgLocation);
+							mapper.bakeryFileUpload(bakeryRequestDTO);
+						}
+							
+					}else {
+						logger.warn("파일업로드 실패! : {}",imgLocation);
+					}
+					
+				}
+			mapper.bakeryUpdate(bakeryRequestDTO);
+			mapper.bakeryDetailUpdate(bakeryRequestDTO);
+			bakeryRequestDTO.setTime();
+			for(BakeryTimeSetDTO item : bakeryRequestDTO.getTime()) {
+				mapper.bakeryScheduleUpdate(item,bakeryRequestDTO.getBakeryNo());
+			}
+			mapper.bakeryAccessUpdate(bakeryRequestDTO);
+			}
+		} catch(Exception e) {
+			logger.error("에러발생! : {}",e.getMessage());
+			throw new BakeryException("신청작업 오류","common/error",HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 
 	@Override
@@ -185,14 +234,15 @@ public class BakeryServiceImpl implements BakeryService{
 		return mapper.findBakeryImages(no);
 	}
 	private void setBakeryOperatingHours(bakeryUpdateResponseDTO bakeryInfo, List<BakeryTimeSetDTO> timeDTO) {
+		BakeryTimeRequestDTO requestDTO =  bakeryInfo.getTimeDTO();
 		Map<String, Consumer<String>> daySetterMap = new HashMap<>();
-	    daySetterMap.put("월", value -> bakeryInfo.setMonday(value));
-	    daySetterMap.put("화", value -> bakeryInfo.setTuesday(value));
-	    daySetterMap.put("수", value -> bakeryInfo.setWednesday(value));
-	    daySetterMap.put("목", value -> bakeryInfo.setThursday(value));
-	    daySetterMap.put("금", value -> bakeryInfo.setFriday(value));
-	    daySetterMap.put("토", value -> bakeryInfo.setSaturday(value));
-	    daySetterMap.put("일", value -> bakeryInfo.setSunday(value));
+	    daySetterMap.put("월", value -> requestDTO.setMonday(value));
+	    daySetterMap.put("화", value -> requestDTO.setTuesday(value));
+	    daySetterMap.put("수", value -> requestDTO.setWednesday(value));
+	    daySetterMap.put("목", value -> requestDTO.setThursday(value));
+	    daySetterMap.put("금", value -> requestDTO.setFriday(value));
+	    daySetterMap.put("토", value -> requestDTO.setSaturday(value));
+	    daySetterMap.put("일", value -> requestDTO.setSunday(value));
 
 	    // 영업시간을 BakeryUpdateResponseDTO에 세팅
 	    for (BakeryTimeSetDTO time : timeDTO) {
@@ -225,5 +275,13 @@ public class BakeryServiceImpl implements BakeryService{
 	    if(checkTimes.size() == 1) {
 	    	 bakeryInfo.setWeekend(checkTimes.iterator().next());
 	    }
+	}
+	private Map<String,List<MultipartFile>> setImg(BakeryImgRequestDTO bakeryImgRequestDTO) {
+		Map<String,List<MultipartFile>> result = new LinkedHashMap<>();
+		result.put("main", bakeryImgRequestDTO.getMain());
+		result.put("inside", bakeryImgRequestDTO.getInside());
+		result.put("outside", bakeryImgRequestDTO.getOutside());
+		result.put("parking", bakeryImgRequestDTO.getParking());
+		return result;
 	}
 }

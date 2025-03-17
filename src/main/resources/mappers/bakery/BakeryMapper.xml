@@ -127,7 +127,51 @@
 	<insert id="setBakery">
 		INSERT INTO bakery_access
 		VALUES(#{bakeryNo},
-			   'N',
-			   #{userNo})
+			   '대기',
+			   #{userNo},
+			   '',
+			   '')
 	</insert>
+	<select id="requestUserNo">
+		SELECT user_no FROM BAKERY_INFO bi 
+		JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO 
+		WHERE ba.BAKERY_NO = ${bakeryNo}
+	</select>
+	<select id="getFileInfo">
+		SELECT change_name AS changeName,
+			   local_path AS localPath
+		FROM bakery_image
+		WHERE 'position' = '${imgLocation}'
+	</select>
+	<delete id="deleteFile">
+		DELETE FROM bakery_image
+		where change_name = ${fileName}
+	</delete>
+	
+	<update id="bakeryUpdate">
+		UPDATE bakery_info
+		SET bakery_name = #{bakeryName},
+			bakery_address = #{bakeryAddress},
+			bakery_phone = #{bakeryPhone}
+		WHERE bakery_no = #{bakeryNo}
+	</update>
+	<update id="bakeryDetailUpdate">
+		UPDATE bakery_detail
+		set amenity = #{parkingInfo},
+			inside_info = #{insideInfo},
+			outside_info = #{outsideInfo}
+		WHERE bakery_no = #{bakeryNo}
+	</update>
+	<update id="bakeryScheduleUpdate">
+		UPDATE bakery_Schedule
+		set open_time = #{timeDTO.start},
+			close_time= #{timeDTO.end}
+		WHERE bakery_no = #{bakeryNo}
+		AND day = #{timeDTO.day}
+	</update>
+	<update id="bakeryAccessUpdate">
+		UPDATE bakery_Access
+		SET agree = '대기'
+		WHERE bakery_no = #{bakeryNo}
+	</update>
 </mapper>

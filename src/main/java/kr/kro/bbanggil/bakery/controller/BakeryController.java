@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
-import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.service.BakeryService;
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
@@ -35,7 +35,7 @@ public class BakeryController {
 	}
 	
 	@GetMapping("/insert/form")
-	public String bakeryInsertForm(BakeryInsertRequestDTO BakeryRequestDTO,
+	public String bakeryInsertForm(BakeryRequestDTO BakeryRequestDTO,
 								   Model model) {
 		model.addAttribute(BakeryRequestDTO);
 		model.addAttribute("closeWindow", true);
@@ -49,8 +49,8 @@ public class BakeryController {
 	 * timeSet() : 각 요일에 opentime, closetime를 설정해주는 메서드
 	 */
 	@PostMapping("/insert")
-	public String bakeryInsert(@ModelAttribute @Valid BakeryInsertRequestDTO BakeryRequestDTO,
-							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
+	public String bakeryInsert(@ModelAttribute @Valid BakeryRequestDTO BakeryRequestDTO,
+							   @ModelAttribute BakeryImgRequestDTO BakeryImgRequestDTO,
 							   Model model) throws Exception {
 		int userNo = 3;
 		BakeryRequestDTO.setTime();
@@ -78,10 +78,18 @@ public class BakeryController {
 	
 	@GetMapping("/update/form")
 	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false) Integer bakeryNo,Model model) {
-		int no = 223;
-		bakeryUpdateResponseDTO result = service.getbakeryInfo(no);
+		bakeryUpdateResponseDTO result = service.getbakeryInfo(bakeryNo);
 		model.addAttribute("bakery",result);
 		return "owner/bakery-update";
+	}
+	
+	@PostMapping("/update")
+	public String bakeryUpdate(BakeryRequestDTO bakeryRequestDTO,
+							   BakeryImgRequestDTO bakeryImgRequestDTO
+							   ) {
+		int no = 33;
+		service.bakeryUpdate(bakeryRequestDTO,bakeryImgRequestDTO,no);
+		return "/owner/owner-mypage";
 	}
 	
 	

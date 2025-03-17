@@ -54,18 +54,21 @@ public class BakeryTimeRequestDTO {
 	private List<BakeryTimeSetDTO> setDTO = new ArrayList<>();
 	
 	public void dateSet() {
-		if(!weekday.isEmpty()) {
-			monday = weekday;
-			tuesday = weekday;
-			wednesday = weekday;
-			thursday = weekday;
-			friday = weekday;
-		}
-		if(!weekend.isEmpty()) {
-			saturday = weekend;
-			sunday = weekend;
+		if(weekday!=null&&weekend!=null) {
+			if(!weekday.isEmpty()) {
+				monday = weekday;
+				tuesday = weekday;
+				wednesday = weekday;
+				thursday = weekday;
+				friday = weekday;
+			}
+			if(!weekend.isEmpty()) {
+				saturday = weekend;
+				sunday = weekend;
+			}
 		}
 	}
+	
 	
 	public void timeSet() {
 		String[] week = {monday,tuesday,wednesday,thursday,friday,saturday,sunday};

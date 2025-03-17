@@ -17,5 +17,5 @@ public class BakeryUpdateRequestDTO {
 	
 	
 	BakeryTimeRequestDTO timeDTO = new BakeryTimeRequestDTO();
-	BakeryInsertImgRequestDTO imgDTO = new BakeryInsertImgRequestDTO();
+	BakeryImgRequestDTO imgDTO = new BakeryImgRequestDTO();
 }
