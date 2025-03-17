@@ -174,7 +174,7 @@ public class MemberController {
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
             session.setAttribute("role", loginUser.getUserName());
-            return "redirect:/home";  
+            return "redirect:/mypage/mypage";  
         } else {
             session.setAttribute("status", "failed");
             return "redirect:/register/loginin/form";

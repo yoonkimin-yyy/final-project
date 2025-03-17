@@ -9,21 +9,15 @@
     <link rel="stylesheet" href="/css/bakery/detail/detail.css">
     <link rel="stylesheet" href="/css/common/header.css"><link>
     <link rel="stylesheet" href="/css/common/nav.css"><link>
-    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
+    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
 </head>
 <body>
     <div class="container">
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
             <div class="slider">
-                <div class="slide">
-                    <img src="./성심당.jpg" alt="빵집 전경 1">
-                </div>
-                <div class="slide">
-                    <img src="https://api.a0.dev/assets/image?text=fresh%20bread%20display%20in%20bakery" alt="빵집 전경 2">
-                </div>
-                <div class="slide">
-                    <img src="https://api.a0.dev/assets/image?text=cozy%20bakery%20cafe%20interior" alt="빵집 전경 3">
+                <div class="slide" th:each="bakery : ${bakeriesInfo}">
+                    <img th:src="@{${bakery.image.resourcesPath} + '/' + ${bakery.image.changeName}}"  alt="빵집이미지">
                 </div>
             </div>
             <button class="slider-button prev"><i class="fas fa-chevron-left"></i></button>
@@ -34,27 +28,27 @@
 <div class="header">
     <div class="header-container"> <!--flex 컨테이너 추가-->
 
-        <div class="bakery-info">
-            <h1 class="bakery-name">대전 성심당</h1>
+        <div class="bakery-info" th:each="bakery : ${bakeriesInfo}">
+            <h1 class="bakery-name" th:text="${bakery.name}">대전 성심당</h1>
         <div class="rating">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star-half-alt"></i>
-            <span>4.5</span>
+            <span th:text="${bakery.review.reviewRating}">4.5</span>
         </div>
         <div class="info-item">
             <i class="fas fa-map-marker-alt"></i>
-            <span>서울시 강남구 신사동 123-45</span>
+            <span th:text="${bakery.address}">서울시 강남구 신사동 123-45</span>
         </div>
         <div class="info-item">
             <i class="fas fa-clock"></i>
-            <span id="today-hours">오늘 07:00 - 22:00</span>
+            <span id="today-hours" >오늘 07:00 - 22:00</span>
             <button class="hours-toggle">더보기</button>
             <div class="hours-detail" style="display: none;">
                 <div class="hours-item">
-                    <span class="day">월요일</span>
+                    <span class="day" th:text="${bakery.schedule.day}">월요일</span>
                     <span class="time">07:00 - 22:00</span>
                 </div>
                 <div class="hours-item">
@@ -457,25 +451,6 @@
         </form>
     </div>
 </div>
-<script>
-    
-    kakao.maps.load(function () {
-        // 지도를 생성합니다
-        const container = document.getElementById('kakaoMap');
-        var options ={
-            center: new kakao.maps.LatLng(36.3281, 127.4239),
-            level: 3 // 확대 레벨
-        };
-        
-        var map = new kakao.maps.Map(container, options);
-        
-        // 마커 추가
-        var marker = new kakao.maps.Marker({
-            position: options.center
-        });
-        marker.setMap(map);
-    })
-</script>
     <script src="/js/bakery/detail/detail.js"></script>
 </body>
 </html>
