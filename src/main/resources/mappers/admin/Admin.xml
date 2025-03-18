@@ -3,37 +3,76 @@
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.admin.mapper.AdminMapper">
 	
-	<resultMap id="adminMap" type="kr.kro.bbanggil.admin.dto.AdminDto">
+	<resultMap id="adminMap" type="kr.kro.bbanggil.admin.dto.response.AdminResponseDto">
 		<result property="userName" column="USER_NAME"></result>
 		<result property="userId" column="USER_Id"></result>
 		<result property="userPhoneNum" column="USER_PHONENUM"></result>
 		<result property="bakeryName" column="BAKERY_NAME"></result>
-		<result property="bakeryPhone" column="BAKERY_PHONE"></result>
 		<result property="bakeryAddress" column="BAKERY_ADDRESS"></result>
-		<result property="menuName" column="MENU_NAME"></result>
 		<result property="amenity" column="AMENITY"></result>
 		<result property="insideInfo" column="INSIDE_INFO"></result>
 		<result property="outsideInfo" column="OUTSIDE_INFO"></result>
+		<result property="agree" column="AGREE"></result>
+		<result property="submissionDate" column="SUBMISSION_DATE"></result>
+		<collection property="bakeryImgPath" resultMap="imgPathMap"></collection>
+	</resultMap>
+	
+	<resultMap id="imgPathMap"  type="kr.kro.bbanggil.admin.dto.response.BakeryImgResponseDto">
+		<result property="resourcesPath" column="RESOURCES_PATH"/>
+       	<result property="changeName" column="CHANGE_NAME"/>
 	</resultMap>
 
-	<select id="list" resultMap="adminMap">
-		SELECT ui.USER_ID, ui.USER_PHONENUM FROM BAKERY_ACCESS ba
+	<select id="subList" resultMap="adminMap">
+		SELECT ui.USER_ID, ui.USER_PHONENUM, ba.AGREE, bi.BAKERY_NAME, bd.SUBMISSION_DATE 
+		FROM BAKERY_ACCESS ba
 		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-		WHERE ba.AGREE = 'N'
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
+		ORDER BY bd.SUBMISSION_DATE DESC
 	</select>
 	
-	<!-- <select id="list" resultMap="adminMap">
-		SELECT USER_NAME, USER_Id, USER_PHONENUM, BAKERY_NAME, 
-			   BAKERY_PHONE, BAKERY_ADDRESS, MENU_NAME, AMENITY, INSIDE_INFO, OUTSIDE_INFO 
-		FROM BAKERY_ACCESS ba
-		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO
+	<select id="acceptList" resultMap="adminMap">
+		SELECT * FROM (
+			SELECT * FROM (
+			SELECT ROWNUM AS rn, f.* FROM (
+				SELECT * FROM BAKERY_ACCESS ba
+				JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+				JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+				JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+				ORDER BY bd.SUBMISSION_DATE)f)
+			WHERE rn = #{listNum})m
+		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = m.BAKERY_NO
+	</select>
+	
+	<!-- <select id="acceptList" resultMap="adminMap">
+		SELECT * FROM (
+		SELECT ROWNUM AS rn, f.* FROM (
+		SELECT * FROM BAKERY_ACCESS ba
+		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
 		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
-		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO 
-		JOIN MENU m ON ba.BAKERY_NO = m.BAKERY_NO 
-		WHERE AGREE = 'N'
+		ORDER BY bd.SUBMISSION_DATE)f)
+		WHERE rn = #{listNum}
 	</select> -->
-
-
-
-
+	
+	<update id="update">
+		UPDATE BAKERY_ACCESS 
+		SET AGREE = #{action}, REJECT = #{rejectReason}
+		WHERE BAKERY_NO = (
+		    SELECT bakery_no 
+		FROM (
+		    SELECT ROWNUM AS rn, f.* 
+		    FROM (
+		        SELECT * 
+		        FROM BAKERY_ACCESS ba
+		        JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+		        JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		        JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
+		        WHERE ba.AGREE = '대기'
+		        ORDER BY bd.SUBMISSION_DATE DESC
+		    ) f
+		) 
+		WHERE rn = #{listNum} 
+		)
+	</update>
 </mapper>

@@ -28,12 +28,6 @@
 	
 	<!-- USER_NO & CART_NO 수정해야함 -->	
 	<select id="list" resultMap="orderResultMap">
-		<!-- SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT FROM CART_INFO ci 
-		JOIN CART c ON ci.CART_NO = c.CART_NO
-		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
-		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO 
-		WHERE C.USER_NO = 1 AND C.CART_NO = 1
-		WHERE C.USER_NO = 1 AND C.CART_NO = 2 -->
 		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
 		FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
@@ -47,11 +41,20 @@
 	</select>
 	
 	<select id="calculate" resultType="int">
-		SELECT SUM(M.MENU_PRICE * CI.MENU_COUNT) AS TOTAL_SUM FROM CART_INFO ci 
+		SELECT SUM(M.MENU_PRICE * CI.MENU_COUNT) AS TOTAL_SUM
+		FROM CART_INFO ci 
+		JOIN CART c ON ci.CART_NO = c.CART_NO
+		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
+		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
+		WHERE C.USER_NO = 1
+		AND c.CART_NO = (SELECT max(oi.cart_no) FROM ORDER_INFO oi
+						    JOIN cart c ON oi.CART_NO = c.CART_NO 
+					        WHERE user_no = 1)
+		<!-- SELECT SUM(M.MENU_PRICE * CI.MENU_COUNT) AS TOTAL_SUM FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO 
-		WHERE C.USER_NO = 1 AND C.CART_NO = 1			
+		WHERE C.USER_NO = 1 AND C.CART_NO = 1	 -->		
 	</select>
 	
 	<insert id="save" parameterType="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">

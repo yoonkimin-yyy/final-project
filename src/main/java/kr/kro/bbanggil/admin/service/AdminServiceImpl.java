@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import kr.kro.bbanggil.admin.dto.AdminDto;
+import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
 import lombok.AllArgsConstructor;
 
@@ -15,8 +15,18 @@ public class AdminServiceImpl implements AdminService {
 	private final AdminMapper adminMapper;
 	
 	@Override
-	public List<AdminDto> list(AdminDto adminDto) {
-		return adminMapper.list(adminDto);
+	public List<AdminResponseDto> subList() {
+		return adminMapper.subList();
+	}
+	
+	@Override
+	public AdminResponseDto acceptList(int listNum) {
+		return adminMapper.acceptList(listNum);
+	}
+	
+	@Override
+	public void update(String action, int listNum, String rejectReason) {
+		adminMapper.update(action, listNum, rejectReason);
 	}
 	
 }
