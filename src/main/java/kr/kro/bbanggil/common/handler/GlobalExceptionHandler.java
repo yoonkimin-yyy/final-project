@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public String handleValidException(Model model) {
-		model.addAttribute("message","Validation(유효성검증)ㄴ 오류!!!");
+		model.addAttribute("message","Validation(유효성검증) 오류!!!");
 		model.addAttribute("status",HttpStatus.BAD_REQUEST);
 		
 		return "common/error";
@@ -37,5 +37,4 @@ public class GlobalExceptionHandler {
 		
 		return oe.getPath();
 	}
-	
 }

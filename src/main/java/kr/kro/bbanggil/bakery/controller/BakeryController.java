@@ -23,15 +23,15 @@ import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
-import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.service.BakeryService;
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
 import lombok.AllArgsConstructor;
@@ -44,11 +44,6 @@ public class BakeryController {
 	private final BakeryServiceImpl bakeryService;
 	private final ListPageNation pageNation;
 	
-	public BakeryController(BakeryServiceImpl bakeryService, ListPageNation pageNation) {
-		this.bakeryService = bakeryService;
-		this.pageNation = pageNation;
-	}
-
 	@GetMapping("/list")
 	public String list(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
 					   @RequestParam(value="orderType", required=false,defaultValue="recent")String orderType,
@@ -94,7 +89,7 @@ public class BakeryController {
 	
 
 	@GetMapping("/insert/form")
-	public String bakeryInsertForm(BakeryInsertRequestDTO BakeryRequestDTO,
+	public String bakeryInsertForm(BakeryRequestDTO BakeryRequestDTO,
 								   Model model) {
 		model.addAttribute(BakeryRequestDTO);
 		model.addAttribute("closeWindow", true);
@@ -108,12 +103,12 @@ public class BakeryController {
 	 * timeSet() : 각 요일에 opentime, closetime를 설정해주는 메서드
 	 */
 	@PostMapping("/insert")
-	public String bakeryInsert(@ModelAttribute @Valid BakeryInsertRequestDTO BakeryRequestDTO,
-							   @ModelAttribute BakeryInsertImgRequestDTO BakeryImgRequestDTO,
-							   @SessionAttribute(name="userNo", required=false) int userNo,
+	public String bakeryInsert(@ModelAttribute @Valid BakeryRequestDTO BakeryRequestDTO,
+							   @ModelAttribute BakeryImgRequestDTO BakeryImgRequestDTO,
 							   Model model) throws Exception {
+		int userNo = 3;
 		BakeryRequestDTO.setTime();
-		service.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
+		bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
 		
 		return "common/home";
 	}
@@ -130,16 +125,28 @@ public class BakeryController {
 		/**
 		 * 가게 정보 가져오는 기능
 		 */
-	    List<BakeryDto> bakeriesInfo = service.getBakeryImages(no); 
+	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
 	    model.addAttribute("bakeriesInfo", bakeriesInfo);
 	    
 	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 	}
 	
 	@GetMapping("/update/form")
-	public String bakeryUpdateForm() {
-		return "/owner/bakery-update";
+	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false) Integer bakeryNo,Model model) {
+		bakeryUpdateResponseDTO result = bakeryService.getbakeryInfo(bakeryNo);
+		model.addAttribute("bakery",result);
+		return "owner/bakery-update";
 	}
+	
+	@PostMapping("/update")
+	public String bakeryUpdate(BakeryRequestDTO bakeryRequestDTO,
+							   BakeryImgRequestDTO bakeryImgRequestDTO
+							   ) {
+		int no = 33;
+		bakeryService.bakeryUpdate(bakeryRequestDTO,bakeryImgRequestDTO,no);
+		return "/owner/owner-mypage";
+	}
+	
 
 	
 }
