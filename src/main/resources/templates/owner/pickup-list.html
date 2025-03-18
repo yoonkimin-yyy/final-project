@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>픽업 목록</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <link rel="stylesheet" href="/css/common/nav.css">
+    <link rel="stylesheet" href="/css/home/home.css">
+    <link rel="stylesheet" href="/css/common/footer.css">
+    <link rel="stylesheet" href="/css/owner/pickup/pickup-list.css">
+    <!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+    <!-- 헤더 및 네비게이션 -->
+    <header th:replace="~{fragments/header :: HeaderFragment}"></header>
+        
+   
+
+    <!-- 네비게이션 메뉴 -->
+    <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+
+    <main>
+        <div class="main-div">
+            <div class="sub-div">
+                <div class="pick-order-list-div">
+                    <h3 class="pick-order-list">주문 목록</h3>
+                </div>
+            </div>
+            <!-- 필터 버튼 -->
+            <div class="filter-buttons">
+                <button class="filter-btn" id="all-filter-btn" data-filter="전체">전체</button>
+                <button class="filter-btn" id="pending-filter-btn" data-filter="대기">대기</button>
+                <button class="filter-btn" id="approved-filter-btn" data-filter="승인">승인</button>
+                <button class="filter-btn" id="rejected-filter-btn" data-filter="거절">거절</button>
+                <button class="filter-btn" id="completed-filter-btn" data-filter="완료">완료</button>
+            </div>
+
+            <!-- 날짜 선택 -->
+            <div class="date-controls">
+                <input type="date" id="date-picker">
+				<a th:href="@{/sales/annual}" id="sales-a"
+					onclick="window.open(this.href, '_blank', 'width=1000,height=850'); return false;">
+				    연간 매출 확인
+				</a>
+            </div>
+
+            <!-- 주문 정보 -->
+            <div class="table-container">
+                <h4 style="text-align: right;">
+                    <div class="info-div" id="info-div-first"></div>
+                    <div class="info-div" id="info-div-second"></div>
+                    <div class="info-div" id="info-div-third"></div>
+                    <div class="info-div" id="info-div-fourth"></div>
+                    <div class="info-div" id="info-div-fifth"></div>
+                </h4>
+
+                <!-- 주문 테이블 -->
+                <table>
+                	
+                    <thead>
+                        <tr>
+                            <th>주문번호</th>
+                            <th>상태</th>
+                            <th>주문시간</th>
+                            <th>주문 금액</th>
+                            <th>고객 전화번호</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-list">
+                        <tr class="pending" th:each="order : ${orders}" th:attr="data-status=${order.statusDTO.pickupStatus}, data-date=${order.payDTO.paymentDate}">
+                            <td th:text="${order.payDTO.orderNo}"></td>
+                            <td th:text="${order.statusDTO.pickupStatus}"></td>
+                            <td th:text="${order.payDTO.paymentDate}"></td>
+                            <td th:text="${order.payDTO.amount}"></td>
+                            <td th:text="${order.userDTO.recipientsPhonenum}"></td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            </div>
+
+            <!-- 상세보기 팝업 -->
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <span class="close">&times;</span>
+                    <h2>주문 상세 정보</h2>
+                    <p id="popup-info"></p>
+                    
+                    <p><strong>주문 번호 :</strong>&nbsp;<strong><span id="popup-order-number"></span></strong></p>
+	                <div class="menu-div">
+	                    <p th:each="order : ${orders}">
+	                    	<strong>
+	                    		<span>메뉴 :</span>
+	                    		<br>
+	                    		<span th:each="menu : ${order.menuDTO}">
+	                    			<span th:utext="${menu.menuName} + '&nbsp;&nbsp;' + ${menu.menuCount} + '개'"></span>
+	                    			<br> 
+	                    		</span>
+	                    	</strong>
+	                    </p>
+	                </div>
+                    <p><strong>고객 전화번호 :</strong>&nbsp;<strong><span id="popup-customer-phone"></span></strong></p>
+                    <p><strong>주문 시간 :</strong><strong>&nbsp;<span id="popup-order-time"></span></strong></p>
+                    <p><strong>주문 금액 :</strong><strong>&nbsp;<span id="popup-total-price"></span></strong></p>
+                    <p th:each="order : ${orders}"><strong>요청사항 :</strong>&nbsp;<strong><span id="popup-request" th:text="${order.payDTO.requestContent}"></span></strong></p>
+                    <ul class="menu-list" id="popup-menu-list" ></ul>
+                
+                    <div class="rejection-reason-div">
+                        <textarea id="rejection-reason" placeholder="거절 사유 입력..."></textarea>
+                    </div>    
+                    <div class="popup-buttons">
+                        <button id="approve-btn">승인</button>
+                        <button id="reject-btn">거절</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
+
+	
+    <script src="/js/owner/pickup/pickup-list.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+</body>
+</html>
