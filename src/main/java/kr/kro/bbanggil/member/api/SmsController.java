@@ -20,8 +20,9 @@ public class SmsController {
     // 인증번호 전송
     @PostMapping("/send")
     public ResponseEntity<?> SendSMS(@RequestBody SmsRequestDTO smsRequestDTO){
-        smsService.sendCertificationCode(smsRequestDTO.getPhoneNumber());
-        return ResponseEntity.ok("문자를 전송했습니다.");
+        String result = smsService.sendCertificationCode(smsRequestDTO.getPhoneNumber());
+//        return ResponseEntity.ok("문자를 전송했습니다.");
+        return ResponseEntity.ok(result);
     }
     
     // 인증번호 확인

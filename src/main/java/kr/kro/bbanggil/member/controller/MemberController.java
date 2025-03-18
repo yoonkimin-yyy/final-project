@@ -30,7 +30,7 @@ public class MemberController {
     // 회원가입 타입 선택 페이지 (일반/사업자 선택)
     @GetMapping("/typeloginup/form")
     public String typeLoginup() {
-        return "common/type-loginup";
+        return "/common/type-loginup";
     }
 
     // 체크박스 페이지 (일반/사업자 구분)
@@ -38,7 +38,7 @@ public class MemberController {
     public String checkBox(@RequestParam(value = "type", required = false, defaultValue = "user") String type, Model model) {
         model.addAttribute("userType", type);
         model.addAttribute("checkBoxDto", new MemberRequestCheckBoxDto()); // 체크박스 DTO 추가
-        return "common/checkbox";
+        return "/common/checkbox";
     }
     
     // 체크박스 
@@ -52,7 +52,7 @@ public class MemberController {
         if (!"Y".equals(checkBoxDto.getTermsofuse()) || !"Y".equals(checkBoxDto.getInformation())) {
             model.addAttribute("error", "필수 항목을 체크해야 합니다.");
             model.addAttribute("userType", type);
-            return "common/checkbox";
+            return "/common/checkbox";
         }
 
         // 세션에 체크박스 정보 저장
@@ -78,7 +78,7 @@ public class MemberController {
         }
 
 
-        return "user/loginup";
+        return "/user/loginup";
     }
 
     // 일반 회원가입 처리
@@ -124,7 +124,7 @@ public class MemberController {
             model.addAttribute("checkBoxDto", checkBoxDto);
         }
 
-        return "owner/business-loginup";
+        return "/owner/business-loginup";
     }
 
     // 사업자 회원가입 처리
@@ -156,7 +156,7 @@ public class MemberController {
     	    
     	 // 로그인 페이지 진입 시 에러 메시지 초기화
     	 session.removeAttribute("status");  
-    	 return "common/loginin";  
+    	 return "/common/loginin";  
     }
     
     // 로그인 처리
@@ -181,13 +181,8 @@ public class MemberController {
 
     // 아이디/비밀번호 찾기 페이지
     @GetMapping("/findidpw")
-    public String findIdPw(HttpSession session) {
-    	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    	System.out.println(session.getAttribute("userNum"));
-    	System.out.println(session.getAttribute("userId"));
-    	System.out.println(session.getAttribute("role"));
-    	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        return "common/find-id-pw";
+    public String findIdPw() {
+        return "/common/find-id-pw";
     }
     
     
