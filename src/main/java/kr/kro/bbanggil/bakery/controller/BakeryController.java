@@ -105,8 +105,8 @@ public class BakeryController {
 	@PostMapping("/insert")
 	public String bakeryInsert(@ModelAttribute @Valid BakeryRequestDTO BakeryRequestDTO,
 							   @ModelAttribute BakeryImgRequestDTO BakeryImgRequestDTO,
+							   @SessionAttribute("userNum")int userNo,
 							   Model model) throws Exception {
-		int userNo = 3;
 		BakeryRequestDTO.setTime();
 		bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
 		
@@ -140,10 +140,9 @@ public class BakeryController {
 	
 	@PostMapping("/update")
 	public String bakeryUpdate(BakeryRequestDTO bakeryRequestDTO,
-							   BakeryImgRequestDTO bakeryImgRequestDTO
-							   ) {
-		int no = 33;
-		bakeryService.bakeryUpdate(bakeryRequestDTO,bakeryImgRequestDTO,no);
+							   BakeryImgRequestDTO bakeryImgRequestDTO,
+							   @SessionAttribute("userNum")int userNo) {
+		bakeryService.bakeryUpdate(bakeryRequestDTO,bakeryImgRequestDTO,userNo);
 		return "/owner/owner-mypage";
 	}
 	
