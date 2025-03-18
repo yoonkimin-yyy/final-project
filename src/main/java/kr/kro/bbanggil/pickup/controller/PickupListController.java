@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;
 import kr.kro.bbanggil.pickup.service.PickupServiceImpl;
 
@@ -34,20 +36,26 @@ public class PickupListController {
 	
     // 주문 목록을 테이블로 반환하는 메서드
     @GetMapping("/list") 
-    public String list(Model model,@ModelAttribute PickupBakeryInfoResponseDTO pickupDTO
-    						//@RequestParam int bakeryNo
+    public String list(Model model,@ModelAttribute PickupBakeryInfoResponseDTO pickupDTO,
+    					@SessionAttribute("userNum") int userNo,
+    						HttpSession session,
+    						@RequestParam("bakeryNo") int bakeryNo
     						) {	
     	
     	// 세션 어트리뷰트 = userNo <- list의 매개변수로 받고 써야됨
     	// 로그인 된 사용자의 빵집 번호 가져오기
     	//int bakeryNo = 14; //pickupDTO.getBakeryNo(); 기존 번호 53
-    	int userNo = 33;
-    	int bakeryNo = 14;
-    	
-    	//session.setAttribute("bakeryNo", bakeryNo);
+    	session.setAttribute("bakeryNo", bakeryNo);
     	
     	// 풀어야됨
         List<PickupBakeryInfoResponseDTO> orderList = pickupServiceImpl.getAllOrders(userNo, bakeryNo);
+       
+        model.addAttribute("orders",orderList);
+        model.addAttribute("bakeryNo",bakeryNo);
+        System.out.println("-------세션 확인------");
+        System.out.println(userNo);
+        System.out.println(bakeryNo);
+        System.out.println("-------세션 확인------");
         
         return "owner/pickup-list";  
     }

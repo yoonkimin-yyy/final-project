@@ -25,15 +25,14 @@ public class SalesController {
     private SalesServiceImpl salesService;
 
     @GetMapping("/annual")
-    public String getSales(@RequestParam(name = "year", required = false) Integer year, Model model, HttpSession session) {
+    public String getSales(@RequestParam(name = "year", required = false) Integer year, Model model, HttpSession session,
+    		@RequestParam("bakeryNo") int bakeryNo) {
         
+    	
         if (year == null) {
             year = LocalDate.now().getYear();  // 현재 연도
         }
         
-        // 세션에서 userNo 가져오기 (로그인 구현 후 세션에서 가져오게 변경)
-        //session.setAttribute("bakeryNo", bakeryNo);
-        int bakeryNo = 14; // 하드코딩 대신 bakeryNo 가져오기
 
         // 매출 조회
         List<PickupBakeryInfoResponseDTO> monthlySales = salesService.getMonthlySales(year, bakeryNo);
@@ -66,6 +65,6 @@ public class SalesController {
         model.addAttribute("totalSales", formattedTotalSales);
         model.addAttribute("year", year);  // 선택한 년도
 
-        return "owner/sales-by-year";
+        return "/owner/sales-by-year";
     }
 }
