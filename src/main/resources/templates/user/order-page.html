@@ -89,7 +89,7 @@
 		</div>
 
 		<div style="display: flex; gap: 10px;">
-			<button class="checkout-button" style="background: #6B6B6B;">뒤로가기</button>
+			<button class="checkout-button" style="background: #6B6B6B;" onclick="window.history.back();">뒤로가기</button>
 			<button id="checkout-button" class="checkout-button"
 					onclick="requestPay()"
 					th:text="${#aggregates.sum(results.![menuPrice * menuCount])} + '원 결제하기'"></button>
