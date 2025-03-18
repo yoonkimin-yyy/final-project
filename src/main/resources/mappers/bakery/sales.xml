@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.kro.bbanggil.sales.mapper.SalesMapper">
+
+	<resultMap id="pickupResultMap"
+		type="kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO">
+		<result property="bakeryNo" column="bakery_no"></result>
+
+		<association property="payDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupPaymentResponseDTO">
+			<result property="orderNo" column="order_no"></result>
+			<result property="requestContent" column="request_content"></result>
+			<result property="paymentDate" column="pay_request_date"></result>
+			<result property="amount" column="amount"></result>
+		</association>
+		
+		<association property="statusDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupStatusResponseDTO">
+			<result property="pickupStatus" column="pickup_status"></result>
+			<result property="rejectionReason" column="refusal_detail"></result>
+		</association>
+		
+		<association property="userDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupUserInfoResponseDTO">
+			<result property="userNo" column="user_no"></result>
+			<result property="recipientsPhonenum" column="recipients_phonenum"></result>
+		</association>
+		
+		<association property="menuDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupMenuResponseDTO">
+			<result property="menuName" column="menu_name"></result>
+			<result property="menuCount" column="menu_count"></result>
+			<result property="price" column="menu_price"></result>
+		</association>
+		
+		<association property="salesDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupSalesResponseDTO">
+			<result property="year" column="year"></result>
+			<result property="month" column="month"></result>
+			<result property="totalSales" column="total_sales"></result>
+		</association>
+	</resultMap>
+
+	<!-- 월별 매출 조회 -->
+    <select id="getMonthlySales" resultMap="pickupResultMap">
+        SELECT
+	        EXTRACT(MONTH FROM p.pay_request_date) AS month, 
+	        SUM(p.amount) AS total_sales
+	    FROM PAYMENT p
+	    JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
+	    JOIN cart c ON c.cart_no = oi.cart_no
+	    JOIN cart_info ci ON ci.cart_no = c.cart_no
+	    JOIN menu m ON ci.menu_no = m.menu_no
+	    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
+	    WHERE bi.bakery_no = #{bakeryNo}
+	    AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
+	    GROUP BY EXTRACT(MONTH FROM p.pay_request_date)
+	    ORDER BY month
+    </select>
+
+    <!-- 연간 총 매출 조회 -->
+    <select id="getAnnualTotalSales" resultType="int">
+        SELECT SUM(p.amount)
+	    FROM PAYMENT p
+	    JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
+	    JOIN cart c ON c.cart_no = oi.cart_no
+	    JOIN cart_info ci ON ci.cart_no = c.cart_no
+	    JOIN menu m ON ci.menu_no = m.menu_no
+	    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
+	    WHERE bi.bakery_no = #{bakeryNo}
+	    AND EXTRACT(YEAR FROM p.pay_request_date) = 2025
+    </select>
+
+    <!-- 사용 가능한 연도 목록 조회 -->
+    <select id="getAvailableYears" resultType="int">
+        SELECT EXTRACT(YEAR FROM p.pay_request_date) AS year
+		FROM PAYMENT p
+		JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
+		JOIN cart c ON c.cart_no = oi.cart_no
+		JOIN cart_info ci ON ci.cart_no = c.cart_no
+		JOIN menu m ON ci.menu_no = m.menu_no
+		JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
+		WHERE bi.bakery_no = #{bakeryNo}
+		GROUP BY EXTRACT(YEAR FROM p.pay_request_date)
+		ORDER BY year DESC
+    </select>
+</mapper>
