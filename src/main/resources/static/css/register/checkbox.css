@@ -135,11 +135,13 @@
 .essential-em {
     font-style: normal;
     color: green;
+    margin-right: 5px;
 }
 
 .select-em {
     font-style: normal;
     color: #a18267;
+    margin-right: 5px;
 }
 
 .span-div {

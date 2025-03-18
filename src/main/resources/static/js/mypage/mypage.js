@@ -1,6 +1,9 @@
 function toggleDetail(clickedRow) {
     const nextRow = clickedRow.nextElementSibling;
-
+	// 특정 class를 포함하면 함수가 실행되지 않음
+	if (event.target.classList.contains('no-toggle')) {
+	       return;
+	   }
     // 상세 정보가 표시되는 <tr>인지 확인
     if (nextRow && nextRow.classList.contains('detail-row')) {
         const detailDiv = nextRow.querySelector('.detail-info');
@@ -37,12 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
+// 리뷰 작성 ~ 등록 버튼 까지
+document.addEventListener('DOMContentLoaded', () => {
+	
 // 리뷰 작성 하기 버튼 (등록 버튼 아님)
 const writeBtn = document.getElementById('review-write-btn');
 const textDiv = document.getElementById('review-text-div');
 
 textDiv.style.display = 'flex';
 textDiv.style.display = 'none';
+
+console.log(writeBtn);
 
 writeBtn.addEventListener('click', () => {
         if(textDiv.style.display === 'none') {
@@ -53,10 +63,6 @@ writeBtn.addEventListener('click', () => {
 
 
 })
-
-
-// 리뷰 작성 ~ 등록 버튼 까지
-document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.querySelector('.text-btn');
     const reviewTextarea = document.querySelector('.review-text-textarea');
     const charCount = document.querySelector('.char-count');
@@ -84,9 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (reviewText === '' && selectedRating === 0) {
             errorMessage = '평점과 내용을 작성해 주세요';
         } else if (reviewText === '') {
-            errorMessage += '내용을 입력해 주세요';
+            errorMessage = '내용을 입력해 주세요';
         } else if (selectedRating === 0) {
-            errorMessage += '평점을 선택해 주세요.';
+            errorMessage = '평점을 선택해 주세요.';
         } 
 
         if (errorMessage) {

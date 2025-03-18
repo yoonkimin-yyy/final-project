@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.mypage.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MypageController {
 	
 	@GetMapping("/mypage")
-	public String myPage() {
-		
+	public String myPage(Model model) {
+		model.addAttribute("goOwnerPage",true);
 		return "user/mypage";
 		
 	}
@@ -20,6 +21,12 @@ public class MypageController {
 		
 		return "user/edit";
 		
+	}
+	
+	@GetMapping("owner/mypage")
+	public String ownerMypage(Model model) {
+		model.addAttribute("goMyPage",true);
+		return "owner/owner-mypage";
 	}
 	
 }
