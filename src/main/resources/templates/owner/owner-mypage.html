@@ -49,7 +49,7 @@
                             <td>2025-03-10</td>
                             <td>110</td>
                             <td>대기</td>
-                            <td class="no-toggle"><button class="additional-btn no-toggle" >확인</button></td>
+                            <td class="no-toggle"><button class="additional-btn no-toggle" th:onclick="|location.href='@{/pickup/list(bakeryNo=14)}'|">확인</button></td>
                         </tr>
                         <tr class="detail-row">
                             <td colspan="5">
@@ -180,7 +180,7 @@
                         </tr>
                     </tbody>
                 </table>
-                                <button class="additional-btn" type="button">신청</button>
+                                <button class="additional-btn" type="button" th:onclick="|location.href='@{/bakery/insert/form}'|">신청</button>
             </div>
         </div>
     </div>
