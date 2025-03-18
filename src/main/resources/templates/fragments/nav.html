@@ -6,42 +6,44 @@
         <div class="nav-item dropdown">
             <a href="#" class="nav-link">지역별 빵집</a>
             <div class="dropdown-menu">
-                <a href="http://localhost/bakery/list?searchText=%EC%84%9C%EC%9A%B8&orderType=recent" class="dropdown-item">서울</a>
-                <a href="http://localhost/bakery/list?searchText=%EA%B2%BD%EA%B8%B0&orderType=recent" class="dropdown-item">경기</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%9D%B8%EC%B2%9C&orderType=recent" class="dropdown-item">인천</a>
-                <a href="http://localhost/bakery/list?searchText=%EB%B6%80%EC%82%B0&orderType=recent" class="dropdown-item">부산</a>
-                <a href="http://localhost/bakery/list?searchText=%EB%8C%80%EA%B5%AC&orderType=recent" class="dropdown-item">대구</a>
-                <a href="http://localhost/bakery/list?searchText=%EA%B4%91%EC%A3%BC&orderType=recent" class="dropdown-item">광주</a>
-                <a href="http://localhost/bakery/list?searchText=%EB%8C%80%EC%A0%84&orderType=recent" class="dropdown-item">대전</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%9A%B8%EC%82%B0&orderType=recent" class="dropdown-item">울산</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%84%B8%EC%A2%85&orderType=recent" class="dropdown-item">세종</a>
-                <a href="http://localhost/bakery/list?searchText=%EA%B0%95%EC%9B%90&orderType=recent" class="dropdown-item">강원</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%B6%A9%EB%B6%81&orderType=recent" class="dropdown-item">충북</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%B6%A9%EB%82%A8&orderType=recent" class="dropdown-item">충남</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%A0%84%EB%B6%81&orderType=recent" class="dropdown-item">전북</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%A0%84%EB%82%A8&orderType=recent" class="dropdown-item">전남</a>
-                <a href="http://localhost/bakery/list?searchText=%EA%B2%BD%EB%B6%81&orderType=recent" class="dropdown-item">경북</a>
-                <a href="http://localhost/bakery/list?searchText=%EA%B2%BD%EB%82%A8&orderType=recent" class="dropdown-item">경남</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%A0%9C%EC%A3%BC&orderType=recent" class="dropdown-item">제주</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%84%9C%EC%9A%B8&orderType=recent}'|" class="dropdown-item">서울</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EA%B2%BD%EA%B8%B0&orderType=recent}'|" class="dropdown-item">경기</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%9D%B8%EC%B2%9C&orderType=recent}'|" class="dropdown-item">인천</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EB%B6%80%EC%82%B0&orderType=recent}'|" class="dropdown-item">부산</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EB%8C%80%EA%B5%AC&orderType=recent}'|" class="dropdown-item">대구</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EA%B4%91%EC%A3%BC&orderType=recent}'|" class="dropdown-item">광주</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EB%8C%80%EC%A0%84&orderType=recent}'|" class="dropdown-item">대전</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%9A%B8%EC%82%B0&orderType=recent}'|" class="dropdown-item">울산</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%84%B8%EC%A2%85&orderType=recent}'|" class="dropdown-item">세종</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EA%B0%95%EC%9B%90&orderType=recent}'|" class="dropdown-item">강원</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%B6%A9%EB%B6%81&orderType=recent}'|" class="dropdown-item">충북</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%B6%A9%EB%82%A8&orderType=recent}'|" class="dropdown-item">충남</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%A0%84%EB%B6%81&orderType=recent}'|" class="dropdown-item">전북</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%A0%84%EB%82%A8&orderType=recent}'|" class="dropdown-item">전남</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EA%B2%BD%EB%B6%81&orderType=recent}'|" class="dropdown-item">경북</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EA%B2%BD%EB%82%A8&orderType=recent}'|" class="dropdown-item">경남</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%A0%9C%EC%A3%BC&orderType=recent}'|" class="dropdown-item">제주</a>
             </div>
         </div>
         
-        <a href="http://localhost/bakery/list?searchText=&orderType=popular" class="nav-item">인기 빵집</a>
-        <a href="http://localhost/bakery/list?searchText=&orderType=recent" class="nav-item">신규 오픈</a>
+        <a th:onclick="|location.href='@{/bakery/list?searchText=&orderType=popular}'|" class="nav-item">인기 빵집</a>
+        <a th:onclick="|location.href='@{/bakery/list?searchText=&orderType=recent}'|" class="nav-item">신규 오픈</a>
         <div class="nav-item dropdown">
             <a href="#" class="nav-link">빵 카테고리</a>
             <div class="dropdown-menu">
-                <a href="http://localhost/bakery/list?searchText=%EB%B2%A0%EC%9D%B4%EC%A7%81+%EB%B9%B5&orderType=recent" class="dropdown-item">베이직 빵</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%86%8C%ED%94%84%ED%8A%B8+%EB%B8%8C%EB%A0%88%EB%93%9C&orderType=recent" class="dropdown-item">소프트 브레드</a>
-                <a href="http://localhost/bakery/list?searchText=%EB%94%94%EC%A0%80%ED%8A%B8%EB%B9%B5&orderType=recent" class="dropdown-item">디저트 빵</a>
-                <a href="http://localhost/bakery/list?searchText=%EB%8B%A8%ED%8C%A5+%26+%EC%A0%84%ED%86%B5+%EB%B9%B5&orderType=recent" class="dropdown-item">단팥 & 전통 빵</a>
-                <a href="http://localhost/bakery/list?searchText=%EA%B1%B4%EA%B0%95+%26+%EA%B3%A1%EB%AC%BC+%EB%B9%B5&orderType=recent" class="dropdown-item">건강 & 곡물 빵</a>
-                <a href="http://localhost/bakery/list?searchText=%ED%81%AC%EB%A6%BC+%26+%ED%95%84%EB%A7%81+%EB%B9%B5&orderType=recent" class="dropdown-item">크림 & 필링 빵</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%83%8C%EB%93%9C%EC%9C%84%EC%B9%98+%26+%EB%B8%8C%EB%9F%B0%EC%B9%98+%EB%B9%B5&orderType=recent" class="dropdown-item">샌드위치 & 브런치 빵</a>
-                <a href="http://localhost/bakery/list?searchText=%ED%8C%8C%EC%9D%B4+%26+%ED%83%80%EB%A5%B4%ED%8A%B8&orderType=recent" class="dropdown-item">파이 & 타르트</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%8A%A4%EC%BD%98+%26+%EC%BF%A0%ED%82%A4&orderType=recent" class="dropdown-item">스콘 & 쿠키</a>
-                <a href="http://localhost/bakery/list?searchText=%EC%BB%A4%ED%94%BC+%26+%EC%9D%8C%EB%A3%8C&orderType=recent" class="dropdown-item">커피 & 음료</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EB%B2%A0%EC%9D%B4%EC%A7%81+%EB%B9%B5&orderType=recent}'|" class="dropdown-item">베이직 빵</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%86%8C%ED%94%84%ED%8A%B8+%EB%B8%8C%EB%A0%88%EB%93%9C&orderType=recent}'|" class="dropdown-item">소프트 브레드</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EB%94%94%EC%A0%80%ED%8A%B8%EB%B9%B5&orderType=recent}'|" class="dropdown-item">디저트 빵</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EB%8B%A8%ED%8C%A5+%26+%EC%A0%84%ED%86%B5+%EB%B9%B5&orderType=recent}'|" class="dropdown-item">단팥 & 전통 빵</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EA%B1%B4%EA%B0%95+%26+%EA%B3%A1%EB%AC%BC+%EB%B9%B5&orderType=recent}'|" class="dropdown-item">건강 & 곡물 빵</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%ED%81%AC%EB%A6%BC+%26+%ED%95%84%EB%A7%81+%EB%B9%B5&orderType=recent}'|" class="dropdown-item">크림 & 필링 빵</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%83%8C%EB%93%9C%EC%9C%84%EC%B9%98+%26+%EB%B8%8C%EB%9F%B0%EC%B9%98+%EB%B9%B5&orderType=recent}'|" class="dropdown-item">샌드위치 & 브런치 빵</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%ED%8C%8C%EC%9D%B4+%26+%ED%83%80%EB%A5%B4%ED%8A%B8&orderType=recent}'|" class="dropdown-item">파이 & 타르트</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%8A%A4%EC%BD%98+%26+%EC%BF%A0%ED%82%A4&orderType=recent}'|" class="dropdown-item">스콘 & 쿠키</a>
+                <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%BB%A4%ED%94%BC+%26+%EC%9D%8C%EB%A3%8C&orderType=recent}'|" class="dropdown-item">커피 & 음료</a>
             </div>
     </div>
+            <a th:if="${goOwnerPage}" th:onclick="|location.href='@{/mypage/owner/mypage}'|" class="nav-item">전환</a>
+            <a th:if="${goMyPage}" th:onclick="|location.href='@{/mypage/mypage}'|" class="nav-item">전환</a>
 </nav>
 
