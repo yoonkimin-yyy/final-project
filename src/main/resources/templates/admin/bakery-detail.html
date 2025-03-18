@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-
 <head>
     <meta charset="UTF-8">
     <title>빵집 상세 정보</title>
@@ -11,10 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" th:href="@{/css/admin/bakery-detail.css}">
 </head>
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 <body>
     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+
     <div class="containers">
         <h2>빵집 상세 정보</h2>
         <div class="detail">
@@ -23,7 +24,7 @@
                 <div class="text-size">345</div>
             </div>
             <div class="box">
-                <h1>매출순위</h1>
+                <h1>매출순위테스트</h1>
                 <div class="text-size">3</div>
             </div>
         </div>
