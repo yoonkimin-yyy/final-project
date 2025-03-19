@@ -59,7 +59,9 @@ public class BakeryController {
 
 	@GetMapping("/detail")
 	public String getBakeryImages(@RequestParam(value = "bakeryNo", required = false) double no,
-			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, Model model) {
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+			@RequestParam(value = "sort" ,defaultValue= "latest") String sort,
+			Model model) {
 
 		/**
 		 * 가게 정보 가져오는 기능
@@ -78,14 +80,13 @@ public class BakeryController {
 
 		PageResponseDto pageInfo = PaginationUtil.getPageInfo(totalReviews, currentPage, pageLimit, reviewLimit);
 
-		Map<String, Object> result = reviewService.list(pageInfo, currentPage, totalReviews, pageLimit, reviewLimit,no);
+		Map<String, Object> result = reviewService.list(pageInfo, currentPage, totalReviews, pageLimit, reviewLimit,
+				no, sort);
 
-
-		
 		model.addAttribute("pi", pageInfo);
 		model.addAttribute("reviews", result.get("reviews"));
 		model.addAttribute("bakeryNo", no);
-
+		model.addAttribute("sort", sort);
 
 		/**
 		 * 메뉴 리스트 보여주는 기능
@@ -105,9 +106,20 @@ public class BakeryController {
 		 */
 		List<ReviewResponseDto> reviewImages = reviewService.getReviewImages(no);
 		model.addAttribute("reviewImages", reviewImages);
-		
-		
 
+		
+		Map<String, Integer> tagCounts = reviewService.getTagCounts(no);
+		
+		
+		
+		model.addAttribute("tagCounts", tagCounts);
+		model.addAttribute("bakeryNo", no);
+		
+		
+		
+		
+		
+		
 		return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 	}
 
@@ -123,21 +135,16 @@ public class BakeryController {
 	}
 
 	@GetMapping("/kakao")
-	
-	public ResponseEntity<BakeryDto> getKakaoMap(@RequestParam("bakeryNo") double bakeryNo){
-		
-		BakeryDto bakery = bakeryService.getBakeryByNo(bakeryNo);
-		
-		 if (bakery == null) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-	        }
-	        return ResponseEntity.ok(bakery);
-	    }
-		
-	}
-	
-	
-	
-	
-	
 
+	public ResponseEntity<BakeryDto> getKakaoMap(@RequestParam("bakeryNo") double bakeryNo) {
+
+		BakeryDto bakery = bakeryService.getBakeryByNo(bakeryNo);
+
+		if (bakery == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		return ResponseEntity.ok(bakery);
+	}
+
+
+}

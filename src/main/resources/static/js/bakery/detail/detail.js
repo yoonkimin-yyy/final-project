@@ -658,45 +658,6 @@ function updateTagCountsOnEdit(prevTags, newTags) {
     });
 
     
-
-
-    // ===== 리뷰 정렬 기능 =====
-    const reviewSort = document.getElementById('reviewSort');
-    const reviewList = document.querySelector('.review-list');
-
-    function sortReviews(sortBy) {
-        const reviews = Array.from(document.querySelectorAll('.review'));
-        
-        reviews.sort((a, b) => {
-            const ratingA = parseFloat(a.querySelector('.review-rating').dataset.rating);
-            const ratingB = parseFloat(b.querySelector('.review-rating').dataset.rating);
-            const dateA = new Date(a.querySelector('.review-date').textContent.split(' ')[0]);
-            const dateB = new Date(b.querySelector('.review-date').textContent.split(' ')[0]);
-
-            switch(sortBy) {
-                case 'highest':
-                    return ratingB - ratingA;
-                case 'lowest':
-                    return ratingA - ratingB;
-                case 'latest':
-                default:
-                    return dateB - dateA;
-            }
-        });
-
-        reviewList.innerHTML = '';
-        reviews.forEach(review => reviewList.appendChild(review));
-    }
-
-    // 리뷰 정렬 이벤트
-    reviewSort?.addEventListener('change', (e) => {
-        sortReviews(e.target.value);
-    });
-
-
-    
-    
-    
    
 // 이미지 클릭 시 큰 화면으로 보기
 document.querySelector('.reviews').addEventListener('click', (e) => {
@@ -883,7 +844,9 @@ function editReview(ele) {
 
 
 
-
+function sortReviews() {
+      document.getElementById('reviewSortForm').submit();
+  }
 
 
 

@@ -69,10 +69,9 @@ public class ReviewController {
 			@RequestParam(value = "fileName", defaultValue = "none") String fileName) {
 		int userNo = 1;
 
-		System.out.println("dfsfsfsfsf");
+		
 		int result = reviewService.deleteReview(reviewNo, userNo, fileName);
-		System.out.println(result);
-
+		
 		if (result > 0) {
 			return ResponseEntity.ok("리뷰 삭제 성공");
 		} else {
@@ -80,5 +79,10 @@ public class ReviewController {
 		}
 
 	}
-
+	
+	
+	
+	
+	
+	
 }

@@ -26,7 +26,9 @@ public interface ReviewMapper {
 	
 	public int getTotalCount(double no);
 	
-	List<ReviewResponseDto> list(@Param("pi") PageResponseDto pageInfo ,@Param("bakeryNo")double bakeryNo);
+	List<ReviewResponseDto> list(@Param("pi") PageResponseDto pageInfo ,
+								@Param("bakeryNo")double bakeryNo,
+								@Param("orderBy") String orderBy);
 	public List<ReviewResponseDto> getReviewImages(double bakeryNo);
 	
 	
@@ -56,6 +58,8 @@ public interface ReviewMapper {
 	public void deleteReviewImages(@Param("reviewNo")int reviewNo);
 	public int deleteReview(@Param("reviewNo")int reviewNo);
 	
+	
+	List<ReviewResponseDto> getTagCounts(@Param("bakeryNo")double bakeryNo);
 	
 	
 	

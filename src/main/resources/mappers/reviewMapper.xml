@@ -156,7 +156,7 @@ FROM
 		MAX(rtn.tag_forth) AS tag_forth,
 		MAX(rtn.tag_five) AS tag_five,
 		ROW_NUMBER() OVER (
-		ORDER BY r.review_date DESC) AS rn
+		ORDER BY ${orderBy}) AS rn
 	FROM
 		REVIEW r
 	JOIN USER_INFO ui ON
@@ -278,6 +278,26 @@ DELETE FROM REVIEW_IMG where review_no = #{reviewNo}
 DELETE FROM REVIEW WHERE review_no = #{reviewNo}
 </delete>
 
+
+
+<select id="getTagCounts" resultMap ="ReviewResultMap">
+
+ SELECT 
+        r.review_no,
+        rtn.tag_first,
+        rtn.tag_second,
+        rtn.tag_third,
+        rtn.tag_forth,
+        rtn.tag_five
+    FROM REVIEW r
+    JOIN REVIEW_TAG_NAME rtn ON r.review_no = rtn.review_no
+    WHERE r.bakery_no = #{bakeryNo}
+
+
+
+
+
+</select>
 
 
 

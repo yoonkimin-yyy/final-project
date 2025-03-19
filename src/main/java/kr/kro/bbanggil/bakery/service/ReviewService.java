@@ -18,7 +18,7 @@ public interface ReviewService {
 	
 	public int getTotalReviewCount(double bakeryNo);
 	
-	Map<String, Object> list(PageResponseDto pageInfo, int currentPage, int postCount, int pageLimit, int boardLimit,double bakeryNo);
+	Map<String, Object> list(PageResponseDto pageInfo, int currentPage, int postCount, int pageLimit, int boardLimit,double bakeryNo,String sort);
 	
 	
 	List<ReviewResponseDto> getReviewImages(double bakeryNo);
@@ -29,5 +29,7 @@ public interface ReviewService {
 	int editReview(ReviewRequestDto reviewRequestDto, List<MultipartFile> files);
 	
 	int deleteReview(int reviewNo,int userNo, String fileName);
+	
+	Map<String,Integer> getTagCounts(double bakeryNo);
 	
 }

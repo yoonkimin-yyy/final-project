@@ -106,9 +106,19 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Map<String, Object> list(PageResponseDto pageInfo, int currentPage, int postCount, int pageLimit,
-			int boardLimit, double bakeryNo) {
+			int boardLimit, double bakeryNo, String sort) {
 
-		List<ReviewResponseDto> reviews = reviewMapper.list(pageInfo, bakeryNo);
+		String orderBy = "r.review_date DESC";
+		System.out.println(orderBy);
+		System.out.println("fsfsfsf");
+
+		if ("highest".equals(sort)) {
+			orderBy = "r.review_rating DESC";
+		} else if ("lowest".equals(sort)) {
+			orderBy = "r.review_rating ASC";
+		}
+
+		List<ReviewResponseDto> reviews = reviewMapper.list(pageInfo, bakeryNo, orderBy);
 
 		Map<String, Object> result = new HashMap<>();
 		result.put("pi", pageInfo);
@@ -216,4 +226,36 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 
 	}
+
+	@Override
+	public Map<String, Integer> getTagCounts(double bakeryNo) {
+
+		System.out.println("rlals");
+		List<ReviewResponseDto> tagList = reviewMapper.getTagCounts(bakeryNo);
+
+		System.out.println(tagList);
+		System.out.println("dfsfsfsfs");
+		Map<String, Integer> tagCounts = new HashMap<>();
+
+		for (ReviewResponseDto tag : tagList) {
+			addTagToMap(tagCounts, tag.getTagFirst());
+			addTagToMap(tagCounts, tag.getTagSecond());
+			addTagToMap(tagCounts, tag.getTagThird());
+			addTagToMap(tagCounts, tag.getTagForth());
+			addTagToMap(tagCounts, tag.getTagFive());
+		}
+		System.out.println(tagCounts);
+		return tagCounts;
+
+	}
+
+	/*
+	 * 태그 개수를 계산하는 헬퍼 메서드
+	 */
+	private void addTagToMap(Map<String, Integer> tagCounts, String tag) {
+		if (tag != null && !tag.isEmpty()) {
+			tagCounts.put(tag, tagCounts.getOrDefault(tag, 0) + 1);
+		}
+	}
+
 }

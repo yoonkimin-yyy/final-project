@@ -1,5 +1,8 @@
 package kr.kro.bbanggil.bakery.review.response.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -31,5 +34,17 @@ public class ReviewResponseDto {
 	private String tagForth;   // 네 번째 태그
 	private String tagFive;    // 다섯 번째 태그
 	private int viewCount;     // 조회수
+	
+	
+	public List<String> getTags() {
+	    List<String> tags = new ArrayList<>();
+	    if (tagFirst != null && !tagFirst.isEmpty()) tags.add(tagFirst);
+	    if (tagSecond != null && !tagSecond.isEmpty()) tags.add(tagSecond);
+	    if (tagThird != null && !tagThird.isEmpty()) tags.add(tagThird);
+	    if (tagForth != null && !tagForth.isEmpty()) tags.add(tagForth);
+	    if (tagFive != null && !tagFive.isEmpty()) tags.add(tagFive);
+	    return tags;
+	}
+	
 		
 }
