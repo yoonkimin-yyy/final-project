@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.sales.mapper;
+package kr.kro.bbanggil.pickup.mapper;
 
 import java.util.List;
 

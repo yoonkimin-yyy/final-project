@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.common.util;
+package kr.kro.bbanggil.email.service;
 
 public interface EmailService {
 

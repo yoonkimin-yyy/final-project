@@ -1,11 +1,11 @@
-package kr.kro.bbanggil.sales.service;
+package kr.kro.bbanggil.pickup.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.pickup.mapper.SalesMapper;
 import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;
-import kr.kro.bbanggil.sales.mapper.SalesMapper;
 
 @Service
 public class SalesServiceImpl implements SalesService {

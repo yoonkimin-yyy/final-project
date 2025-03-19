@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.common.util;
+package kr.kro.bbanggil.email.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.bakery.response.dto;
+package kr.kro.bbanggil.bakery.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
