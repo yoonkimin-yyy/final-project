@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import kr.kro.bbanggil.pickup.exception.PickupException;
 import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;
 import kr.kro.bbanggil.pickup.service.SalesServiceImpl;
 
@@ -33,18 +35,14 @@ public class SalesController {
     	int bakeryNo = (int) session.getAttribute("bakeryNo");
         if (bakeryNo == 0) {
             // bakeryNo 값이 잘못 전달된 경우에 대한 처리 로직
-            System.out.println("bakeryNo가 전달되지 않았거나 값이 잘못되었습니다.");
-            // 예외 처리 또는 기본값을 설정할 수 있습니다.
+        	throw new PickupException("잘못된 요청입니다.","common/error",HttpStatus.BAD_REQUEST);
         }
         
         if (year == null) {
             year = LocalDate.now().getYear();  // 현재 연도
         }
         
-        System.out.println("----");
-        System.out.println(year);
-        System.out.println(bakeryNo);  // bakeryNo 값 출력
-        System.out.println("----");
+        
 
         // 매출 조회
         List<PickupBakeryInfoResponseDTO> monthlySales = salesService.getMonthlySales(year, bakeryNo);
