@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+
 public class PickupCheckRequestDto {
+
+	  	private int pickupStatusNo;
+	   private String pickupStatus;
+	   private String refusalDetail;
 	
-	private int pickupStatusNo;
-	private String pickupStatus;
-	private String refusalDetail;
 	
 }
