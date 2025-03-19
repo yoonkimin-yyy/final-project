@@ -2,18 +2,17 @@
 <html>
 
 <head>
-<title>주문/결제</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
 	<link rel="stylesheet" th:href="@{/css/order/order-page.css}">
-	<link rel="stylesheet" href="/css/common/footer.css">
-	<link rel="stylesheet" href="/css/common/nav.css">
-	<link rel="stylesheet" href="/css/common/header.css">
 </head>
 
 <header th:replace="~{fragments/header :: HeaderFragment}"></header>
 <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 <body>
+	<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+	
 	<div class="container">
 		<div class="body-header">
 			<h1>
