@@ -1,8 +1,11 @@
 package kr.kro.bbanggil.bakery.dto;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
-import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseScheduleDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 
 public class BakeryDto {
-
-	
 	private double no;  // DB에서 사용될 ID
     private String name;  // 빵집 이름
     private double latitude;  // 위도
@@ -24,7 +25,9 @@ public class BakeryDto {
     
     // 추가 연관된 필드
     
-    private BakeryResponseDto  response = new BakeryResponseDto();
+    private BakeryDetailResponseDto  response = new BakeryDetailResponseDto();
+    private List<BakeryResponseScheduleDto> schedule = new ArrayList<>();
+  
     
 }
 
