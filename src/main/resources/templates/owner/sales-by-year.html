@@ -11,14 +11,25 @@
         <h1>연간 매출</h1>
         
         <!-- 연도 선택 드롭다운 -->
-        <label for="year-select">년도 선택:</label>
-        <select id="year-select" name="year">
-            <th:block th:each="availableYear : ${availableYears}">
-                <option th:value="${availableYear}" 
-                        th:text="${availableYear}" 
-                        th:selected="${availableYear == year}"></option>
-            </th:block>
-        </select>
+        <form action="/sales/annual" method="get">
+		    <label for="year-select">년도 선택:</label>
+		    <select id="year-select" name="year" 
+		            data-available-years="[[${availableYears}]]" 
+		            data-current-year="[[${year}]]">
+		        <th:block th:each="availableYear : ${availableYears}">
+		            <option th:value="${availableYear}" 
+		                    th:text="${availableYear}" 
+		                    th:selected="${availableYear == year}"></option>
+		        </th:block>
+		    </select>
+		    
+		    <!-- bakeryNo 값이 제대로 설정되어야 함 -->
+		    <input type="hidden" name="bakeryNo" th:value="${bakeryNo}"/>
+		    
+		    <button type="submit">확인</button>
+		</form>
+
+
 
         <h2 th:text="${year} + '년 매출'"></h2>
 

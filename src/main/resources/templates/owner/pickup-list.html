@@ -25,7 +25,6 @@
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
     
-    <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
 
     <main>
         <div class="main-div">
@@ -46,7 +45,7 @@
             <!-- 날짜 선택 -->
             <div class="date-controls">
                 <input type="date" id="date-picker">
-				<a th:href="@{/sales/annual}" id="sales-a"
+				<a th:href="@{/sales/annual(bakeryNo=${bakeryNo})}" id="sales-a"
 					onclick="window.open(this.href, '_blank', 'width=1000,height=850'); return false;">
 				    연간 매출 확인
 				</a>
