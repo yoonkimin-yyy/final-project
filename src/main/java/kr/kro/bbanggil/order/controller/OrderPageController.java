@@ -1,10 +1,14 @@
 package kr.kro.bbanggil.order.controller;
 
-import java.util.List;
+
 
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.order.service.OrderService;
 import lombok.AllArgsConstructor;
+
+
 
 @Controller
 @RequestMapping("/order")
@@ -32,11 +38,12 @@ public class OrderPageController {
 		
 		return "user/order-page";
 	}
-	
+
 	@GetMapping("/complete")
 	public String complete(@RequestParam("bakeryName") String bakeryName, Model model) {
 		model.addAttribute("bakeryName", bakeryName);
 		return "user/order-complete";
 	}
+
 	
 }

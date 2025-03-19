@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     const yearSelect = document.getElementById("year-select");
-    const salesDataTable = document.getElementById("sales-data");
+    
+    // `data-*` 속성에서 값을 가져오고, JSON으로 변환
+    const availableYears = JSON.parse(yearSelect.getAttribute("data-available-years"));
+    const currentYear = parseInt(yearSelect.getAttribute("data-current-year"), 10);
 
-    // 현재 연도 구하기
-    function getCurrentYear() {
-        return new Date().getFullYear();
-    }
 
     // 연도 선택 옵션 추가
     function populateYearOptions(availableYears, currentYear) {
@@ -13,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const option = document.createElement("option");
             option.value = year;
             option.textContent = year;
-            // 서버에서 받은 year와 일치하는 옵션 선택
             if (year === currentYear) {
                 option.selected = true;
             }
@@ -21,38 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 서버에서 매출 데이터 불러오기
-    function loadSalesData(year) {
-        // 예시로 `fetch`를 사용해 AJAX 방식으로 데이터를 불러옵니다
-        fetch(`/sales/annual?year=${year}`)
-            .then(response => response.json())
-            .then(data => {
-                // 매출 데이터가 반환되면 해당 데이터를 테이블에 채워 넣음
-                const monthlySalesMap = data.monthlySalesMap;
-                const totalSales = data.totalSales;
-
-                // 월별 매출액 채우기
-                for (let month = 1; month <= 12; month++) {
-                    const salesAmount = monthlySalesMap[month] || 0;
-                    document.querySelector(`#month-${month}`).textContent = salesAmount;
-                }
-
-                // 총 매출액 채우기
-                document.querySelector("#total-sales").textContent = totalSales;
-            })
-            .catch(error => {
-				
-            });
-    }
-
     // 초기 실행: 연도 선택 드롭다운 채우기
-    const availableYears = /* 서버에서 전달받은 사용 가능한 연도 목록 */;
-    const currentYear = /* 서버에서 전달받은 선택된 연도 */;
     populateYearOptions(availableYears, currentYear);
-    loadSalesData(currentYear);
 
-    // 연도 변경 시 매출 데이터 불러오기
+    // 연도 변경 시 폼 제출 (매출 데이터를 가져오고 페이지 새로고침)
     yearSelect.addEventListener("change", (event) => {
-        loadSalesData(event.target.value);
+        const selectedYear = event.target.value;
+
+        // 폼을 제출하여 서버로 선택된 연도를 전달하고 페이지 새로 고침
+        const form = document.querySelector("form");
+        const bakeryNoInput = document.querySelector("input[name='bakeryNo']");
+        bakeryNoInput.value = bakeryNoInput.getAttribute('data-bakery-no'); // 필요한 경우 bakeryNo 값을 폼에 추가
+
+        form.submit(); // 폼 제출
     });
 });

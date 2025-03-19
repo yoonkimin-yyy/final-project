@@ -1,25 +1,15 @@
 package kr.kro.bbanggil.bakery.service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.stereotype.Service;
-
-import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
-import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
-import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
-import kr.kro.bbanggil.bakery.util.ListPageNation;
-import kr.kro.bbanggil.common.dto.PageInfoDTO;
-
-import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -28,6 +18,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,18 +27,25 @@ import com.fasterxml.jackson.databind.JsonNode;
 import groovy.transform.Undefined.EXCEPTION;
 import kr.kro.bbanggil.bakery.api.KakaoController;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
+import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
-import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
-import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
+import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
-import kr.kro.bbanggil.bakery.util.FileUploadUtil;
+import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
+import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.bakery.util.LocationSelectUtil;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.FileUploadUtil;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -114,7 +112,6 @@ public class BakeryServiceImpl implements BakeryService{
 	}
 	
 
-	
 	//오늘 요일 구하기
 	@Override
 	public String getTodayDayOfWeek() {
@@ -322,6 +319,48 @@ public class BakeryServiceImpl implements BakeryService{
 
 		return bakeryMapper.findBakeryImages(no);
 	}
+	
+	@Override
+	public List<BakeryDto> getBakeriesInfo(double no){
+		return bakeryMapper.findBakeriesInfo(no);
+	}
+
+	@Override
+	public List<MenuResponseDto> getMenuInfo(double no){
+		return bakeryMapper.getMenuInfo(no);
+	}
+
+	@Override
+	public void addCart(int userNo, List<MenuDetailRequestDto> menuDto) {
+
+		Integer cartNo = bakeryMapper.getCartNoByUserNo(userNo);
+
+		if (cartNo == null) {
+			bakeryMapper.insertCart(userNo);
+			cartNo = bakeryMapper.getLastCartNo();
+		}
+
+		for (MenuDetailRequestDto item : menuDto) {
+			bakeryMapper.insertCartInfo(cartNo, item.getMenuNo(), item.getMenuCount());
+		}
+
+	}
+
+	public BakeryDto getBakeryByNo(double bakeryNo) {
+		return bakeryMapper.findBakeryByNo(bakeryNo);
+	}
+
+	public List<BakeryDto> getBakeryDetail(double no) {
+		
+		return bakeryMapper.getBakeryDetail(no);
+	}
+
+	
+	
+	
+	
+	
+	
 	private void setBakeryOperatingHours(bakeryUpdateResponseDTO bakeryInfo, List<BakeryTimeSetDTO> timeDTO) {
 		BakeryTimeRequestDTO requestDTO =  bakeryInfo.getTimeDTO();
 		Map<String, Consumer<String>> daySetterMap = new HashMap<>();
