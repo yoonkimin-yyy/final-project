@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>아티장 베이커리</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
     <link rel="stylesheet" href="/css/bakery/detail/detail.css">
-    <link rel="stylesheet" href="/css/common/header.css"><link>
-    <link rel="stylesheet" href="/css/common/nav.css"><link>
     <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
 </head>
 <body>
@@ -451,6 +447,7 @@
         </form>
     </div>
 </div>
+	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
     <script src="/js/bakery/detail/detail.js"></script>
 </body>
 </html>
