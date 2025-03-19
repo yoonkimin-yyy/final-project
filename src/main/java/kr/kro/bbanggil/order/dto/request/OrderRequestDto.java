@@ -15,4 +15,6 @@ public class OrderRequestDto {
 	private int menuPrice;
 
 	private PickupCheckRequestDto pickDto = new PickupCheckRequestDto();
+    
+    
 }

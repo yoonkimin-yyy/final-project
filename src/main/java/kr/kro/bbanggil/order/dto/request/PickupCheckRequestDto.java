@@ -13,5 +13,4 @@ public class PickupCheckRequestDto {
 	   private String refusalDetail;
 	
 	
-	
 }

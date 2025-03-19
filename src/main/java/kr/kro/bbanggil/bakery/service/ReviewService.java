@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.kro.bbanggil.bakery.review.request.dto.ReviewRequestDto;
-import kr.kro.bbanggil.bakery.review.response.dto.PageResponseDto;
-import kr.kro.bbanggil.bakery.review.response.dto.ReviewResponseDto;
+import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 
 
 public interface ReviewService {

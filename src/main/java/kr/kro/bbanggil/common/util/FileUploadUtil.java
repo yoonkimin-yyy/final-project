@@ -11,7 +11,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.kro.bbanggil.bakery.review.request.dto.FileRequestDto;
+import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.common.config.FileUploadProperties;
 import lombok.AllArgsConstructor;
 
@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class FileUploadUtil {
    private FileUploadProperties fileUploadProperties;
    
-   public void uploadFile(MultipartFile file, FileRequestDto FileRequestDTO, String folderName) throws IOException {
+   public void uploadFile(MultipartFile file, FileRequestDTO FileRequestDTO, String folderName) throws IOException {
       FileRequestDTO.setLocalPath(fileUploadProperties.getLocalPath());
       FileRequestDTO.setLocalResourcePath(fileUploadProperties.getResourcesPath());
       

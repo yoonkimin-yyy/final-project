@@ -2,7 +2,6 @@ package kr.kro.bbanggil.bakery.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +11,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.kro.bbanggil.bakery.review.mapper.ReviewMapper;
-import kr.kro.bbanggil.bakery.review.request.dto.FileRequestDto;
-import kr.kro.bbanggil.bakery.review.request.dto.ReviewRequestDto;
-import kr.kro.bbanggil.bakery.review.response.dto.PageResponseDto;
-import kr.kro.bbanggil.bakery.review.response.dto.ReviewResponseDto;
-import kr.kro.bbanggil.common.config.FileUploadProperties;
+import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
+import kr.kro.bbanggil.bakery.mapper.ReviewMapper;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 
@@ -54,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
 					if (!file.isEmpty()) {
 						logger.info(" 이미지 업로드 시작 - 원본 파일명: {}", file.getOriginalFilename());
 
-						FileRequestDto fileRequestDto = new FileRequestDto();
+						FileRequestDTO fileRequestDto = new FileRequestDTO();
 						fileRequestDto.setReviewNo(reviewDto.getReviewNo());
 						System.out.println(fileRequestDto.getReviewNo());
 						fileUploadUtil.uploadFile(file, fileRequestDto, "bakery"); // 개별 파일 업로드
@@ -159,10 +157,10 @@ public class ReviewServiceImpl implements ReviewService {
 		reviewMapper.updateReview(reviewRequestDto);
 
 		// 2. 새로운 이미지 업로드 처리 (추가된 이미지만 `review_img` 테이블에 저장)
-		List<FileRequestDto> savedFileList = new ArrayList<>();
+		List<FileRequestDTO> savedFileList = new ArrayList<>();
 		if (files != null && !files.isEmpty()) {
 			for (MultipartFile file : files) {
-				FileRequestDto fileRequestDto = new FileRequestDto();
+				FileRequestDTO fileRequestDto = new FileRequestDTO();
 				try {
 					fileUploadUtil.uploadFile(file, fileRequestDto, "bakery");
 				} catch (IOException e) {

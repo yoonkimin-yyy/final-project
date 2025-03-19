@@ -4,65 +4,40 @@
 <head>
     <title>주문완료</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/order-complete.css">
+    <link rel="stylesheet" th:href="@{/css/order/order-complete.css}">
+	<link rel="stylesheet" href="/css/common/footer.css">
+	<link rel="stylesheet" href="/css/common/nav.css">
+	<link rel="stylesheet" href="/css/common/header.css">
 </head>
 
-<header class="header">
-    <div class="container">
-        <div class="header-left">
-            <img src="../img/header.webp" style="width: 80px;" alt="">
-            <h1 class="header-title">BBANGL</h1>
-        </div>
-        <div class="header-menu">
-        <a href="#" class="menu-item">빵집 리스트</a>
-        <div class="dropdown">
-            <a href="#" class="menu-item">새소식</a>
-            <div class="dropdown-content">
-                <a href="#" class="dropdown-item">공지사항</a>
-                <a href="#" class="dropdown-item">이벤트</a>
-            </div>
-        </div>
-        <a href="#" class="menu-item">1:1 문의</a>
-        <a href="#" class="menu-item">로그인</a>
-        <a href="#" class="menu-item">회원가입</a>
-    </div>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 <body>
     <div class="container">
-        <div class="order-complete-header" style="position: relative;">
-            <!-- 임시 관리자 버튼 추가 -->
-            <div class="admin-buttons">
-                <span>임시버튼</span>
-                <button class="admin-button accept-button" onclick="handleAccept()">수락</button>
-                <button class="admin-button reject-button" onclick="handleReject()">취소</button>
-            </div>  
-
+        <div class="order-complete-header" style="position: relative; margin-top: 46px;">
             <div class="check-circle">
                 <i class="fas fa-circle-notch fa-spin"></i>
             </div>
             <h1 class="complete-title">결제가 완료되었습니다!</h1>
-            <div class="store-name">파리바게트 강남점</div>
+            <div class="store-name" th:text="${bakeryName}"></div>
             <h3 class="order-status">사장님이 주문을 확인중입니다</h3>
-            <!-- 사장님이 취소 버튼을 눌렀을 때 나오는 멘트 -->
-            <span class="store-message">죄송합니다. 재료 소진으로 주문이 취소되었습니다.</span>
+            <span class="store-message"></span>
         </div>
 
-        <!-- 주문을 수락 시 -->
         <div class="order-info">
             <div class="order-info-item">
                 <div class="info-label">주문번호</div>
-                <div class="info-value">2024022001</div>
+                <div class="info-value" id="orderNum"></div>
             </div>
             <div class="order-info-item">
-                <div class="info-label">주문일시</div>
+                <div class="info-label">주문승인 일시</div>
                 <div class="info-value" id="orderDate"></div>
             </div>
         </div>
 
         <div class="order-details">
-            <h2 class="section-title">주문 상품 내역</h2>
+            <h2 class="section-title">주문상품 내역</h2>
             <table class="order-table">
                 <thead>
                     <tr>
@@ -83,11 +58,11 @@
         </div>
         
         <div class="button-container">
-            <button class="nav-button home-button" onclick="window.location.href='/'">
+            <button class="nav-button home-button" th:onclick="|location.href='@{/bbanggil/home}'|">
                 <i class="fas fa-home"></i>
                 홈으로 가기
             </button>
-            <button class="nav-button mypage-button" onclick="window.location.href='/mypage'">
+            <button class="nav-button mypage-button" th:onclick="|location.href='@{/mypage}'|">
                 <i class="fas fa-user"></i>
                 마이페이지
             </button>
@@ -95,23 +70,10 @@
     </div>
 </body>
 
-<footer>
-    <div class="footer-content">
-        <div class="footer-info">
-            <img class="bbangllogo-class" src="../img/footer.webp" style="width: 100px" alt="" >
-            <p>BBANGL © 2024</p>
-            <p>문의: sked456@naver.com</p>
-            <p>경기도 안양시 만안구  303, S210, S213,215, S802-S804호(안양동, 메쎄포스빌)</p>
-        </div>
-        <div class="footer-links">
-            <a href="#">이용약관</a>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">제휴문의</a>
-            <a href="#">고객센터</a>
-        </div>
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
 
-<script src="../js/order-complete.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script src="/js/order/order-complete.js"></script> 
 
 </html>

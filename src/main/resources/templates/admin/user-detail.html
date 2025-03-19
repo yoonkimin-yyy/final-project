@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="~{fragments/head :: HeadFragment}"></head>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +8,8 @@
     <link rel="stylesheet" th:href="@{/css/admin/user-detail.css}">
     <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
 </head>
-<header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 <body>
     <div class="containers">
