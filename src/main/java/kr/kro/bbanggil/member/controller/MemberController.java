@@ -192,7 +192,25 @@ public class MemberController {
 		return "redirect:/bbanggil/home";
 	}
     
-    
+    @GetMapping("/mypage")
+	public String myPage(Model model) {
+		model.addAttribute("goOwnerPage",true);
+		return "user/mypage";
+		
+	}
+	
+	@GetMapping("/edit")
+	public String edit() {
+		
+		return "user/edit";
+		
+	}
+	
+	@GetMapping("owner/mypage")
+	public String ownerMypage(Model model) {
+		model.addAttribute("goMyPage",true);
+		return "owner/owner-mypage";
+	}
     
     
     

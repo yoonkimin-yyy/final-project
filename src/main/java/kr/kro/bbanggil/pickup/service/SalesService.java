@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.sales.service;
+package kr.kro.bbanggil.pickup.service;
 import java.util.List;
 
 import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;

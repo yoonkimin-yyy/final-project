@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.subscribe.dto;
+package kr.kro.bbanggil.email.dto.subscribe;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
