@@ -14,13 +14,13 @@ import kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto;
 @Mapper
 public interface OrderMapper {
 
-	List<OrderResponseDto> list();
+	List<OrderResponseDto> list(String userId);
 	
-	int calculate(OrderRequestDto orderRequestDto);
+	int calculate(@Param("OrderRequestDto")OrderRequestDto orderRequestDto, @Param("userId")String userId);
 	
 	void save(PaymentRequestDto paymentRequsetDto);
 
-	int findcart();
+	int findcart(int userNo);
 	
 	int findpay(String merchantUid);
 
@@ -28,7 +28,7 @@ public interface OrderMapper {
 
 	void pickupCheck(int payNo);
 
-	int pickupPay();
+	int pickupPay(int userNo);
 
 	PickupCheckResponseDto pickupStatus(int payNo);
 
