@@ -1,8 +1,8 @@
 package kr.kro.bbanggil.bakery.dto;
 
 
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseDto;
 
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

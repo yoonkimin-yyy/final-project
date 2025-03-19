@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.sales.controller;
+package kr.kro.bbanggil.pickup.controller;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;
-import kr.kro.bbanggil.sales.service.SalesServiceImpl;
+import kr.kro.bbanggil.pickup.service.SalesServiceImpl;
 
 @Controller
 @RequestMapping("/sales")

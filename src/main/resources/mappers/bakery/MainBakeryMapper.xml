@@ -15,7 +15,7 @@
 
 
 	<association property="response"
-		javaType="kr.kro.bbanggil.bakery.response.dto.BakeryResponseDto">
+		javaType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto">
 
 		<result property="reviewRating" column="review_rating"></result>
 
