@@ -837,6 +837,7 @@
 
 .carousel-slide {
     min-width: 100%;
+    flex:0 0 100%;
     transition: opacity 0.5s ease-in-out;
 }
 
@@ -982,10 +983,10 @@
 .review-tags {
     display: flex;
     gap: 8px;
-    padding: 10px;
+    
     font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-    white-space: nowrap; /* ✅ 자동 줄 바꿈 방지 */
-    align-items: center; /* ✅ 세로 중앙 정렬 */
+    white-space: nowrap; /*  자동 줄 바꿈 방지 */
+    align-items: center; /*  세로 중앙 정렬 */
 
 }
 
@@ -1039,3 +1040,12 @@
 .tag-checkbox:checked + .tag-label .tag-text {
     color: white;
 }
+.pagination{
+	
+	display:flex;
+	justify-content:center;
+}
+
+
+
+

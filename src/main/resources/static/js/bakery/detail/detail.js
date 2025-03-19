@@ -1,7 +1,12 @@
-let selectedImages = []; //
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    updateGauge();
+	const bakeryNo = getBakeryNoFromURL();
+	        if (bakeryNo) {
+	            document.getElementById("bakeryNo").value = bakeryNo;
+	        }
+
+	
     // ===== 탭 전환 기능 =====
     const tabButtons = document.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
@@ -19,24 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // 별점 HTML 생성 함수
-    function generateStarsHTML(rating) {
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 !== 0;
-        let html = '';
-    
-        for (let i = 0; i < fullStars; i++) {
-            html += '<i class="fas fa-star"></i>';
-        }
-        if (hasHalfStar) {
-            html += '<i class="fas fa-star-half-alt"></i>';
-        }
-        for (let i = Math.ceil(rating); i < 5; i++) {
-            html += '<i class="far fa-star"></i>';
-        }
-    
-        return html;
-    }
+   
       // ===== 리뷰 별점 기능 =====
       const starContainer = document.querySelector('.stars');
       const stars = starContainer.querySelectorAll('i');
@@ -125,12 +113,18 @@ document.getElementById('openReviewModal')?.addEventListener('click', () => {
 
 
 const reviewForm = document.getElementById('reviewForm');
+
+// ⭐ 폼 제출 이벤트 추가
+   reviewForm.addEventListener("submit", function (e) {
+       e.preventDefault();  // 기본 제출 동작 막기 (페이지 새로고침 방지)
+       submitReview();      // AJAX 함수 호출
+   });
+
+
 // 이미지 업로드 관련 요소들 가져오기
 const imageInput = document.getElementById('imageInput');
 const imageUploadBtn = document.querySelector('.image-upload-btn');
 const imagePreviewContainer = document.querySelector('.image-preview-container');
-let selectedImages = [];
-
 
 
 
@@ -138,22 +132,7 @@ imageUploadBtn.addEventListener('click', () => {
     imageInput.click();
 });
 
-imageInput.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    files.forEach(file => {
-        if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const imageUrl = e.target.result;
-                selectedImages.push(imageUrl);
-                addImagePreview(imageUrl);
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    imageInput.value = ''; // 리셋하여 같은 파일 다시 선택 가능하게
-});
-
+// 이미지 미리보기 함수
 function addImagePreview(imageUrl) {
     const previewItem = document.createElement('div');
     previewItem.className = 'image-preview-item';
@@ -163,38 +142,61 @@ function addImagePreview(imageUrl) {
     `;
 
     previewItem.querySelector('.remove-image').addEventListener('click', () => {
-        const index = selectedImages.indexOf(imageUrl);
-        if (index > -1) {
-            selectedImages.splice(index, 1);
-        }
+        
         previewItem.remove();
     });
 
     imagePreviewContainer.appendChild(previewItem);
+	
 }
+
+// 이미지 미리보기 함수
+imageInput.addEventListener("change", (event) => {
+    event.stopPropagation(); //  불필요한 이벤트 전파 차단
+
+    const files = event.target.files;
+
+    if (!files.length) return; // 파일이 없으면 실행 안 함
+
+    // 기존 미리보기 삭제 (새로운 이미지 선택 시)
+    imagePreviewContainer.innerHTML = "";
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            addImagePreview(e.target.result);
+        };
+
+        reader.readAsDataURL(file); // 파일을 읽어서 Data URL 생성
+    }
+});
+
+
 function updateTagCountsAndGauge(selectedTags) {
     const tagElements = document.querySelectorAll('.tag');
 
-    // ✅ 선택된 태그 개수 증가
+    //  선택된 태그 개수 증가
     selectedTags.forEach(tagHTML => {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = tagHTML;
 
-        // ✅ 태그 텍스트만 추출 (이모지 제외)
+        //  태그 텍스트만 추출 (이모지 제외)
         const tagText = tempDiv.querySelector('.tag-text')?.textContent.trim();
         if (!tagText) return; // 유효하지 않은 태그 무시
 
-        // ✅ 기존 태그 중복 체크
+        //  기존 태그 중복 체크
         let tagElement = Array.from(tagElements).find(tag =>
             tag.querySelector('.text').textContent.trim() === tagText
         );
 
         if (tagElement) {
-            // ✅ 기존 태그 개수 증가
+            //  기존 태그 개수 증가
             let countElement = tagElement.querySelector('.count');
             countElement.textContent = parseInt(countElement.textContent, 10) + 1;
         } else {
-            // ✅ 태그가 없으면 새로 추가
+            //  태그가 없으면 새로 추가
             const tagContainer = document.querySelector('.tag-container');
             const newTag = document.createElement('div');
             newTag.classList.add('tag');
@@ -213,134 +215,16 @@ function updateTagCountsAndGauge(selectedTags) {
         }
     });
 
-    // ✅ 게이지 업데이트 실행
+    //  게이지 업데이트 실행
     updateGauge();
 }
-
-
-
-
-
-
-reviewForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    
-
-    const name = document.getElementById('name').value;
-    const rating = document.getElementById('rating').value;
-    const content = document.getElementById('content').value;
-    const date = new Date().toISOString().split('T')[0];
-    const starsHTML = generateStarsHTML(parseFloat(rating));
-
-    const selectedTags = Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(tag => {
-        const label = document.querySelector(`label[for="${tag.id}"]`);
-        return label.outerHTML.trim(); // ✅ 기존 태그 HTML을 그대로 복사
-    });
-
-
-
-
-    // ✅ 태그 HTML 생성
-    
-    const tagsHTML = selectedTags.length > 0
-    ? `<div class="review-tags-display">
-        ${selectedTags.join(' ')}  <!-- ✅ 그대로 사용 -->
-       </div>`
-    : '';
-
-
-
-    // 이미지 HTML 생성
-    const imagesHTML = selectedImages.length > 0 
-        ? `<div class="review-images">
-            ${selectedImages.map(url => `
-                <img src="${url}" alt="리뷰 이미지" class="review-image">
-            `).join('')}
-           </div>`
-        : '';
-
-        const reviewHTML = `
-            <div class="review">
-                <div class="review-header">
-                <span class="reviewer-name">${name}</span>
-                <span class="review-date">${date}</span>
-            </div>
-            <div class="review-rating" data-rating="${rating}">
-                 ${starsHTML}
-            </div>
-        <div class="review-content">${content}</div>
-        ${imagesHTML ? `<div class="review-images">${imagesHTML}</div>` : ""}
-        ${tagsHTML ? `<div class="review-tags-display">${tagsHTML}</div>` : ""}
-        <div class="review-actions">
-            <button class="review-edit-btn">수정</button>
-            <button class="review-delete-btn">삭제</button>
-        </div>
-    </div>
-    `;
-  
-    if (currentEditingReview) {
-        console.log("🔄 기존 리뷰 수정 중!");
-        console.log(currentEditingReview)
-        console.log(currentEditingReview.prevTags)
-        console.log(selectedTags)
-        // ✅ 기존 리뷰 수정
-        const prevTags = currentEditingReview.prevTags || [];
-        currentEditingReview.innerHTML = reviewHTML;
-
-       updateTagCountsOnEdit(prevTags, selectedTags);
-
-
-        //currentEditingReview = null;
-    } else {
-        // ✅ 새 리뷰 추가
-        document.querySelector('.review-list').insertAdjacentHTML('afterbegin', reviewHTML);
-        
-            updateTagCountsAndGauge(selectedTags);
-    }
-
-    updateGauge();
-
-    closeReviewModal();
-
-   
-    // 폼 초기화
-    reviewForm.reset();
-    updateStars(0);
-    selectedImages.length = 0;
-    document.getElementById("previewImages").innerHTML = '';
-
-
-    // 현재 정렬 상태 유지
-    if (reviewSort) {
-        sortReviews(reviewSort.value);
-    }
-});
-
-
-document.querySelector('.review-list').addEventListener('click', (e) => {
-    if (e.target.classList.contains('review-edit-btn')) {
-        const reviewElement = e.target.closest('.review');
-        console.log("✅ 클릭된 리뷰 요소:", reviewElement);
-        
-        if (!reviewElement) {
-            console.error("❌ reviewElement가 없습니다! (버튼이 .review 내부에 있는지 확인)");
-        } else {
-            startEditing(reviewElement);
-        }
-    } else if (e.target.classList.contains('review-delete-btn')) {
-        deleteReview(e.target.closest('.review'));
-    }
-});
-
-
 
 
 function updateGauge() {
     const tags = document.querySelectorAll('.tag');
     if (tags.length === 0) return;
 
-    // ✅ 모든 태그 개수 가져오기
+    // 모든 태그 개수 가져오기
     const counts = Array.from(tags).map(tag => {
         const countElement = tag.querySelector('.count');
         return countElement ? parseInt(countElement.textContent.trim(), 10) : 0;
@@ -348,7 +232,7 @@ function updateGauge() {
 
     const maxCount = Math.max(...counts, 1); // 최소 1로 설정하여 NaN 방지
 
-    // ✅ 각 태그의 게이지 업데이트
+    //  각 태그의 게이지 업데이트
     tags.forEach((tag, index) => {
         const percent = (counts[index] / maxCount) * 100;
         const gaugeElement = tag.querySelector('.gauge');
@@ -367,18 +251,18 @@ function updateGauge() {
     if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
         console.log(reviewElement);
 
-        // ✅ 삭제되는 리뷰에서 사용된 태그 찾기
+        //  삭제되는 리뷰에서 사용된 태그 찾기
         const reviewTagsContainer = reviewElement.querySelector('.review-tags-display');
         if (!reviewTagsContainer) {
-            console.warn("⚠️ review-tags-display 요소가 없습니다.");
+            console.warn("⚠ review-tags-display 요소가 없습니다.");
             return;
         }
 
         const reviewTags = Array.from(reviewTagsContainer.querySelectorAll('.tag-text'))
             .map(tag => tag.textContent.trim());
 
-        console.log("📝 삭제할 태그 리스트:", reviewTags);
-        // ✅ 태그 카운트 감소
+        console.log(" 삭제할 태그 리스트:", reviewTags);
+        //  태그 카운트 감소
         reviewTags.forEach(tagText => {
             const tagElement = Array.from(document.querySelectorAll('.tag')).find(tag =>
                 tag.querySelector('.text').textContent.trim() === tagText
@@ -397,11 +281,11 @@ function updateGauge() {
             }
         });
 
-        // ✅ 리뷰 삭제
+        //  리뷰 삭제
         reviewElement.remove();
-        console.log("✅ 리뷰 삭제 완료!");
+        console.log(" 리뷰 삭제 완료!");
 
-        // ✅ 게이지 업데이트
+        //  게이지 업데이트
         updateGauge();
     }
 }
@@ -416,19 +300,25 @@ document.addEventListener('keydown', (e) => {
 });
 
 // 모달 바깥 클릭시 닫기
-document.getElementById('reviewModal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('reviewModal')) {
-        closeReviewModal();
-    }
+document.getElementById('reviewModal').addEventListener('click', (event) => {
+	
+	const modalContent = document.querySelector('.modal-content');
+	
+	   if (!modalContent.contains(event.target)) { 
+	       closeReviewModal();
+	   }
+	    
+	
 });
+
 
 function startEditing(reviewElement) {
     console.log("startEditing() 호출됨");
-    console.log("🔍 전달된 reviewElement:", reviewElement);
+    console.log(" 전달된 reviewElement:", reviewElement);
 
 
     if (!reviewElement) {
-        console.error("❌ reviewElement가 없습니다!");
+        console.error(" reviewElement가 없습니다!");
         return;
     }
     currentEditingReview = reviewElement;
@@ -449,7 +339,7 @@ function startEditing(reviewElement) {
     const existingTags = Array.from(reviewElement.querySelectorAll('.review-tags-display label'))
     .map(label => label.outerHTML.trim());
 
-    console.log("기존 태그(HTML):", existingTags);
+  
    
 
     // 모달 폼에 데이터 설정
@@ -460,35 +350,26 @@ function startEditing(reviewElement) {
     // 기존 태그 체크하기
     document.querySelectorAll('.tag-checkbox').forEach(checkbox => {
         const label = document.querySelector(`label[for="${checkbox.id}"]`);
-        const labelHTML = label?.outerHTML.trim(); // ✅ label 전체 HTML 비교
+        const labelHTML = label?.outerHTML.trim(); //  label 전체 HTML 비교
 
         checkbox.checked = existingTags.includes(labelHTML);
     });
     
     
-        // 이미지 미리보기 설정
-    imagePreviewContainer.innerHTML = '';
-    existingImages.forEach(imageUrl => {
-        addImagePreview(imageUrl);
-    });
-
     // 모달 제목 변경
     document.querySelector('.modal-content h2').textContent = '리뷰 수정';
     document.querySelector('.submit-review').textContent = '수정완료';
 
     // 모달 열기
-    console.log("✅ openReviewModal() 실행 전!"); // ✅ 실행 전 로그 추가
-   
     openReviewModal();
 
-    
 }
 
 function updateTagCountsOnEdit(prevTags, newTags) {
     console.log(prevTags);
     const tagElements = document.querySelectorAll('.tag');
 
-    // ✅ 기존 태그 리스트 (텍스트만 추출)
+    //  기존 태그 리스트 (텍스트만 추출)
     const prevTagTexts = prevTags.map(prevTag => {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = prevTag;
@@ -496,7 +377,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
         return tempDiv.querySelector('.tag-text')?.textContent.trim();
     }).filter(Boolean); // null 값 제거
 
-    // ✅ 새로운 태그 리스트 (텍스트만 추출)
+    //  새로운 태그 리스트 (텍스트만 추출)
     const newTagTexts = newTags.map(newTag => {
         const tempDiv = document.createElement('div');
         
@@ -504,10 +385,9 @@ function updateTagCountsOnEdit(prevTags, newTags) {
         return tempDiv.querySelector('.tag-text')?.textContent.trim();
     }).filter(Boolean); // null 값 제거
 
-    console.log("🔽 기존 태그:", prevTagTexts);
-    console.log("🔼 새로운 태그:", newTagTexts);
+ 
 
-    // ✅ 삭제된 태그 → 카운트 감소
+    //  삭제된 태그 → 카운트 감소
     prevTagTexts.forEach(prevTagText => {
         if (!newTagTexts.includes(prevTagText)) {
             console.log(` 삭제된 태그: ${prevTagText}`);
@@ -527,11 +407,10 @@ function updateTagCountsOnEdit(prevTags, newTags) {
             }
         }
     });
-    // ✅ 추가된 태그 → 카운트 증가
+    //  추가된 태그 → 카운트 증가
     newTagTexts.forEach(newTagText => {
         if (!prevTagTexts.includes(newTagText)) {
-            console.log(` 추가된 태그: ${newTagText}`);
-
+            
             const tagElement = Array.from(tagElements).find(tag =>
                 tag.querySelector('.text').textContent.trim() === newTagText
             );
@@ -560,11 +439,9 @@ function updateTagCountsOnEdit(prevTags, newTags) {
         }
     });
 
-    // ✅ 게이지 업데이트
+    //  게이지 업데이트
     updateGauge();
 }
-
-
 
 
 });
@@ -695,6 +572,62 @@ function updateTagCountsOnEdit(prevTags, newTags) {
             }
         });
     });
+	
+	
+	
+	const checkoutButton = document.querySelector('.checkout-button');
+
+	checkoutButton.addEventListener('click', () => {
+	    const cartItems = document.querySelectorAll('.cart-item');
+
+	    if (cartItems.length === 0) {
+	        alert('장바구니가 비어 있습니다.');
+	        return;
+	    }
+
+	    // 장바구니 데이터를 JSON으로 변환
+	    let orderList = [];
+	    cartItems.forEach(item => {
+	        const name = item.querySelector('.cart-item-name').textContent;
+	        const price = parseInt(item.querySelector('.cart-item-price').textContent.replace(/[^0-9]/g, ''));
+	        const quantity = parseInt(item.querySelector('.quantity').textContent);
+
+	        orderList.push({
+	            menuName: name,
+	            menuPrice: price,
+	            quantity: quantity
+	        });
+	    });
+
+	    // ✅ AJAX 호출
+	    sendOrderData(orderList);
+	});
+	
+	
+	
+	document.getElementById("orderForm").addEventListener("submit", function(event) {
+	    event.preventDefault(); // 기본 폼 전송 방지
+
+	    let cartItems = [];
+
+	    document.querySelectorAll(".cart-items .item").forEach(item => {
+	        let menuNo = item.getAttribute("data-menu-no");
+	        let menuCount = item.querySelector(".item-quantity").innerText.replace("개", "").trim();
+
+	        cartItems.push({
+	            menuNo: parseInt(menuNo),
+	            menuCount: parseInt(menuCount)
+	        });
+	    });
+
+	    // orderData를 JSON 형식으로 변환 후 설정
+	    document.getElementById("orderData").value = JSON.stringify(cartItems);
+
+
+	    // 폼 제출
+	    this.submit();
+	});
+	
 
     // ===== 영업시간 토글 기능 =====
     const hoursToggle = document.querySelector('.hours-toggle');
@@ -714,49 +647,6 @@ function updateTagCountsOnEdit(prevTags, newTags) {
         hoursToggle.textContent = isExpanded ? '접기' : '더보기';
     });
 
-    
-
-
-  
-
-   
-
-    // ===== 리뷰 정렬 기능 =====
-    const reviewSort = document.getElementById('reviewSort');
-    const reviewList = document.querySelector('.review-list');
-
-    function sortReviews(sortBy) {
-        const reviews = Array.from(document.querySelectorAll('.review'));
-        
-        reviews.sort((a, b) => {
-            const ratingA = parseFloat(a.querySelector('.review-rating').dataset.rating);
-            const ratingB = parseFloat(b.querySelector('.review-rating').dataset.rating);
-            const dateA = new Date(a.querySelector('.review-date').textContent.split(' ')[0]);
-            const dateB = new Date(b.querySelector('.review-date').textContent.split(' ')[0]);
-
-            switch(sortBy) {
-                case 'highest':
-                    return ratingB - ratingA;
-                case 'lowest':
-                    return ratingA - ratingB;
-                case 'latest':
-                default:
-                    return dateB - dateA;
-            }
-        });
-
-        reviewList.innerHTML = '';
-        reviews.forEach(review => reviewList.appendChild(review));
-    }
-
-    // 리뷰 정렬 이벤트
-    reviewSort?.addEventListener('change', (e) => {
-        sortReviews(e.target.value);
-    });
-
-
-    
-    
     
    
 // 이미지 클릭 시 큰 화면으로 보기
@@ -790,9 +680,6 @@ function formatDate(date) {
 
 
 
-
-
-
 // 전역 변수로 현재 수정 중인 리뷰 요소를 저장
 let currentEditingReview = null;
 
@@ -800,20 +687,20 @@ let currentEditingReview = null;
 function closeReviewModal() {
 
     const modal = document.getElementById('reviewModal');
-    if (!modal) {
-        console.error("❌ 'reviewModal' 요소를 찾을 수 없습니다!");
-        return;
-    }
-
+   
+	
+	if (!modal) {
+	      console.error(" 'reviewModal' 요소를 찾을 수 없습니다!");
+	      return;
+	  }
+	
+	
+	
     modal.style.display = 'none';
-  
     document.body.style.overflow = 'auto';
-    
+
 }
 
-
-
-   
 
 const carouselContainer = document.querySelector('.carousel'); // 캐러셀 전체 컨테이너
 const carouselItems = document.querySelectorAll('.carousel-slide'); // 개별 슬라이드
@@ -858,6 +745,96 @@ nextCarouselButton.addEventListener('click', () => {
 
 generateDots();
 
+
+// URL에서 bakeryNo 값을 가져와 hidden input에 설정
+function getBakeryNoFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("bakeryNo"); 
+}
+
+// bakeryNo 값 가져오기
+const bakeryNo = getBakeryNoFromURL();
+
+
+function initKakaoMap() {
+    const container = document.getElementById('kakaoMap');
+    const urlParams = new URLSearchParams(window.location.search);
+    let bakeryNo = urlParams.get('bakeryNo');
+
+    if (!bakeryNo) {
+        alert("빵집 번호가 없습니다.");
+        return;
+    }
+
+    fetchBakeryData(bakeryNo, function (bakery) {
+        kakao.maps.load(function () {
+            var options = {
+                center: new kakao.maps.LatLng(bakery.latitude, bakery.longitude),
+                level: 3
+            };
+            var map = new kakao.maps.Map(container, options);
+
+            var markerPosition = new kakao.maps.LatLng(bakery.latitude, bakery.longitude);
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                map: map
+            });
+
+            var infoWindow = new kakao.maps.InfoWindow({
+                content: `<div style="padding:5px;">${bakery.name}</div>`
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                infoWindow.open(map, marker);
+            });
+
+            map.panTo(markerPosition);
+        });
+    });
+}
+
+// 페이지 로드 후 지도 초기화 실행
+document.addEventListener("DOMContentLoaded", initKakaoMap);
+
+
+
+
+function editReview(ele) {
+
+    //  모달창 열기
+    document.getElementById("reviewModal").style.display = "block";
+
+    //  기존 데이터 초기화 (새로 입력하는 방식)
+    document.getElementById("userId").value = "";
+    document.getElementById("content").value = "";
+    document.getElementById("rating").value = "0";
+    document.querySelector(".rating-value").textContent = "0";
+
+    //  별점 초기화
+    document.querySelectorAll(".stars i").forEach(star => {
+        star.classList.add("far");
+        star.classList.remove("fas");
+    });
+
+    //  태그 체크박스 초기화
+    document.querySelectorAll(".tag-checkbox").forEach(tag => {
+        tag.checked = false;
+    });
+
+    //  이미지 미리보기 초기화
+    document.getElementById("preview").innerHTML = "";
+	
+	
+	document.getElementById("reviewSubmitBtn").textContent = "수정 완료";
+	document.getElementById("reviewSubmitBtn").setAttribute("onclick", "submitReviewEdit()");
+}
+
+
+
+
+function sortReviews() {
+      document.getElementById('reviewSortForm').submit();
+  }
 
 
 

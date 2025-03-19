@@ -3,7 +3,7 @@
 						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.email.mapper.EmailMapper">
 
-<resultMap id="BakeryResultMap"
+<resultMap id="EmailResultMap"
 	type="kr.kro.bbanggil.bakery.dto.BakeryDto">
 	<result property="no" column="bakery_no"></result>
 	<result property="name" column="bakery_name"></result>
@@ -52,7 +52,7 @@
 </select>
 
 
-<select id="getRandomBakery" resultMap="BakeryResultMap">
+<select id="getRandomBakery" resultMap="EmailResultMap">
 
 SELECT
 	bi.BAKERY_NAME,

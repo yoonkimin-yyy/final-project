@@ -26,4 +26,8 @@ public class BakeryResponseDto {
 	private String closeTime;
 	private String reviewRating;
 	
+	
+	
+	
+	
 }
