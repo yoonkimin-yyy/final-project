@@ -17,13 +17,17 @@ public class BakeryResponseDto {
 	private String resourcesPath; // 웹에서 접근 가능한 이미지 경로
 	private int menuNo; //메뉴번호
 	private String menuName;// 메뉴 이름
-	private double menuPrice; // 메뉴 가격
+	private Long menuPrice; // 메뉴 가격
 	private String menuInfo; // 메뉴 정보
 	private String categoryName; 
 	private String category;
-	private String day;
-	private String openTime;
-	private String closeTime;
 	private String reviewRating;
+	
+	private String amenity;
+	private String insideInfo;
+	private String outsideInfo;
+	private String createdDate;
+	private String submissionDate;
+	
 	
 }

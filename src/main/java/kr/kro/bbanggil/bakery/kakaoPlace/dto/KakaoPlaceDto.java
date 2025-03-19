@@ -1,4 +1,4 @@
-package kr.kro.bbangil.bakery.kakaoPlace.dto;
+package kr.kro.bbanggil.bakery.kakaoPlace.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

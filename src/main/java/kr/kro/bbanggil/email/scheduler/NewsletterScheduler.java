@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import kr.kro.bbanggil.common.util.EmailServiceImpl;
-import kr.kro.bbanggil.mail.mapper.EmailMapper;
+import kr.kro.bbanggil.email.mapper.EmailMapper;
 import lombok.RequiredArgsConstructor;
 
 @Component

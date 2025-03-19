@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.mail.mapper;
+package kr.kro.bbanggil.email.mapper;
 
 import java.util.List;
 import java.util.Map;

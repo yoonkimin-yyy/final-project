@@ -5,7 +5,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.bakery.request.dto.MenuRequestDto;
+import kr.kro.bbanggil.bakery.response.dto.MenuResponseDto;
+import kr.kro.bbanggil.bakery.review.response.dto.ReviewResponseDto;
 
 @Mapper
 public interface BakeryMapper {
@@ -20,6 +24,19 @@ public interface BakeryMapper {
 	
 	
 	List<BakeryDto> findBakeryImages(@Param("no") double No);
+	List<BakeryDto> findBakeriesInfo(@Param("no") double No);
+	List<MenuResponseDto> getMenuInfo(@Param("no") double No);
+	List<BakeryDto> getBakeryDetail(@Param("no") double No);
+	public List<ReviewResponseDto> getReviewImages(@Param("bakeryNo") double bakeryNo);
+
+	
+	
+	void insertCartInfo(int cartNo, int menuNo, int menuCount);
+	Integer getCartNoByUserNo(int userNo);
+	Integer getLastCartNo();
+	void insertCart(int userNo);
+	BakeryDto findBakeryByNo(@Param("no")double bakeryNo);
+	
 	
 	
 }

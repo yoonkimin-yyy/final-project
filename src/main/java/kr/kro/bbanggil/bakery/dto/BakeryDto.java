@@ -1,8 +1,13 @@
 package kr.kro.bbanggil.bakery.dto;
 
 
-import kr.kro.bbanggil.bakery.response.dto.BakeryResponseDto;
+import java.util.ArrayList;
+import java.util.List;
 
+import kr.kro.bbanggil.bakery.request.dto.MenuRequestDto;
+import kr.kro.bbanggil.bakery.response.dto.BakeryResponseDto;
+import kr.kro.bbanggil.bakery.response.dto.BakeryResponseScheduleDto;
+import kr.kro.bbanggil.bakery.response.dto.MenuResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +30,8 @@ public class BakeryDto {
     // 추가 연관된 필드
     
     private BakeryResponseDto  response = new BakeryResponseDto();
+    private List<BakeryResponseScheduleDto> schedule = new ArrayList<>();
+  
     
 }
 

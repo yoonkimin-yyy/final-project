@@ -1,5 +1,6 @@
 package kr.kro.bbanggil.bakery.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
+import kr.kro.bbanggil.bakery.request.dto.MenuRequestDto;
+import kr.kro.bbanggil.bakery.response.dto.MenuResponseDto;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -70,5 +73,47 @@ public class BakeryServiceImpl implements BakeryService {
 
 		return bakeryMapper.findBakeryImages(no);
 	}
+	
+	@Override
+	public List<BakeryDto> getBakeriesInfo(double no){
+		return bakeryMapper.findBakeriesInfo(no);
+	}
+
+	@Override
+	public List<MenuResponseDto> getMenuInfo(double no){
+		return bakeryMapper.getMenuInfo(no);
+	}
+
+	@Override
+	public void addCart(int userNo, List<MenuRequestDto> menuDto) {
+
+		Integer cartNo = bakeryMapper.getCartNoByUserNo(userNo);
+
+		if (cartNo == null) {
+			bakeryMapper.insertCart(userNo);
+			cartNo = bakeryMapper.getLastCartNo();
+		}
+
+		for (MenuRequestDto item : menuDto) {
+			bakeryMapper.insertCartInfo(cartNo, item.getMenuNo(), item.getMenuCount());
+		}
+
+	}
+
+	public BakeryDto getBakeryByNo(double bakeryNo) {
+		return bakeryMapper.findBakeryByNo(bakeryNo);
+	}
+
+	public List<BakeryDto> getBakeryDetail(double no) {
+		
+		return bakeryMapper.getBakeryDetail(no);
+	}
+
+	
+	
+	
+	
+	
+	
 	
 }

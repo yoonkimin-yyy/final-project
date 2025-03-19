@@ -51,14 +51,15 @@
         <!-- Swiper Container -->
         <div class="swiper swiper-popularBakerySwiper"> 
             <div class="swiper-wrapper">
-            
                 <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card">
+				<a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
                     <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"  th:alt="${bakery.name}" class="bakery-image">
+                   </a>
                     <div class="bakery-info">
-                        <h3 class="bakery-name" th:text="${bakery.name}">자연도 소금빵 in성수</h3>
+                        <h3 class="bakery-name" th:text="${bakery.name}"></h3>
                         <div class="location-container">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text" th:text="${bakery.address}">서울 성수동</span>
+                            <span class="location-text" th:text="${bakery.address}"></span>
                         </div>
                         <div class="rating-container">
     						<i class="fas fa-star"></i>
@@ -69,12 +70,11 @@
     							</span>
 							</div>
                         <div class="specialty-container">
-                            <span class="specialty-label" th:text="${bakery.response.categoryName}">인기 메뉴</span>
-                            <span class="specialty-text" th:text="${bakery.response.menuName}">소금빵</span>
+                            <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
+                            <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
                         </div>
                     </div>
                 </div>
-    
     
                 <div class="swiper-slide bakery-card">
                     <img src="./인천 베이커리 율교.jpg" alt="쿠시야마 베이커리" class="bakery-image">
@@ -98,7 +98,6 @@
                   <!-- 네비게이션 버튼 -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
-
         <!-- 페이지네이션 -->
         <div class="swiper-pagination"></div>
     </div>

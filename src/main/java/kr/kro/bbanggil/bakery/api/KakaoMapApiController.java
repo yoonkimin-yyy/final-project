@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.bakery.kakaoPlace.dto.KakaoPlaceDto;
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
-import kr.kro.bbangil.bakery.kakaoPlace.dto.KakaoPlaceDto;
 import lombok.RequiredArgsConstructor;
 
 
