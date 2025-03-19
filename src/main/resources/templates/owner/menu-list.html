@@ -4,8 +4,8 @@
         <link rel="stylesheet" href="/css/common/header.css">
 	    <link rel="stylesheet" href="/css/common/nav.css">
 	    <link rel="stylesheet" href="/css/common/footer.css">
-    	<link rel="stylesheet" th:href="@{/css/owner/mypage/mypage.css}">
-    	<script src="/js/mypage/mypage.js"></script>
+    	<link rel="stylesheet" th:href="@{/css/owner/menu/list.css}">
+    	<script src="/js/owner/menu/list.js"></script>
    	</head>
 <body>
      <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
@@ -28,7 +28,7 @@
             </div>
         </div>
             <div class="mypage-order">
-                <p>🍞 가게내역 🍞</p>
+                <p>🍞 가게내역(임시) 🍞</p>
                 <table class="mypage-table">
                     <thead class="mypage-table-head">
                         <tr>
@@ -47,7 +47,7 @@
                             <td>성심당 본점</td>
                             <td>2025-03-10</td>
                             <td>110</td>
-                            <td class="no-toggle"><button class="additional-btn no-toggle" >확인</button></td>
+                            <td class="no-toggle"><button class="btn no-toggle" >확인</button></td>
                         </tr>
                         <tr class="detail-row">
                             <td colspan="5">
@@ -60,29 +60,35 @@
 								                	<img alt="사진없음">
 								                	<div>크루아상</div>
 								                	<div>4,500원</div>
+								                	<div>
+								                	<button class="btn">수정</button>
+								                	<button class="btn">삭제</button>
+								                	</div>
 								                </div>
 							                </td>
 							            </tr>
 							            <tr>
 							                <th>메뉴 2</th>
-							                <td>식빵</td>
+							                <td>
+							                	<div class="second-menu-info">
+							                		<button class="btn">추가</button>
+							                	</div>
+							                </td>
 							            </tr>
 							            <tr>
 							                <th>메뉴 3</th>
-							                <td>아메리카노</td>
+							                <td></td>
 							            </tr>
 							            <tr>
 							                <th>메뉴 4</th>
-							                <td>카라멜 마끼아또</td>
+							                <td></td>
 							            </tr>
 							            <tr>
 							                <th>메뉴 5</th>
-							                <td>팥빙수</td>
+							                <td></td>
 							            </tr>
 							        </table>
                                         <div>
-                                            <button class="update-btn" th:onclick="|location.href='@{/bakery/update/form(bakeryNo=1)}'|" type="button">수정</button>
-                                            <button class="delete-btn" type="button">삭제</button>
                                         </div>  
                                     </div>
                                     	
@@ -183,7 +189,6 @@
                         </tr>
                     </tbody>
                 </table>
-                                <button class="additional-btn" type="button">신청</button>
             </div>
         </div>
     </div>

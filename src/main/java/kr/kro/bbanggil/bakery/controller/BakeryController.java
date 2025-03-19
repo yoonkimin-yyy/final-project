@@ -5,35 +5,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
-import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
-import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
-import kr.kro.bbanggil.bakery.util.ListPageNation;
-import kr.kro.bbanggil.common.dto.PageInfoDTO;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.SessionAttribute;
-
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
+import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
 import kr.kro.bbanggil.bakery.service.BakeryService;
-import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
+import kr.kro.bbanggil.bakery.util.ListPageNation;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -41,7 +31,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class BakeryController {
 
-	private final BakeryServiceImpl bakeryService;
+	private final BakeryService bakeryService;
 	private final ListPageNation pageNation;
 
 	@GetMapping("/list")
