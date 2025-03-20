@@ -36,5 +36,7 @@ public interface OrderMapper {
 	PickupCheckResponseDto pickupStatus(int payNo);
 
 	String refund(int payNo);
+	
+	int countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
 
 }
