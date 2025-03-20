@@ -118,8 +118,6 @@ public class ReviewServiceImpl implements ReviewService {
 			int boardLimit, double bakeryNo, String sort) {
 
 		String orderBy = "r.review_date DESC";
-		System.out.println(orderBy);
-		System.out.println("fsfsfsf");
 
 		if ("highest".equals(sort)) {
 			orderBy = "r.review_rating DESC";
@@ -162,9 +160,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 		// 1. 리뷰 내용 및 평점 업데이트
 
-		System.out.println(reviewRequestDto.getReviewDetail());
-		System.out.println(reviewRequestDto.getReviewNo());
-		System.out.println(reviewRequestDto.getReviewRating());
 		reviewMapper.updateReview(reviewRequestDto);
 
 		// 2. 새로운 이미지 업로드 처리 (추가된 이미지만 `review_img` 테이블에 저장)
@@ -239,11 +234,9 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public Map<String, Integer> getTagCounts(double bakeryNo) {
 
-		System.out.println("rlals");
 		List<ReviewResponseDto> tagList = reviewMapper.getTagCounts(bakeryNo);
 
 		System.out.println(tagList);
-		System.out.println("dfsfsfsfs");
 		Map<String, Integer> tagCounts = new HashMap<>();
 
 		for (ReviewResponseDto tag : tagList) {
@@ -257,11 +250,6 @@ public class ReviewServiceImpl implements ReviewService {
 		return tagCounts;
 
 	}
-	
-	
-	
-	
-	
 	
 
 	/*

@@ -161,12 +161,13 @@
 						<td th:text="${userLists.size() - iterStat.index}"></td>
 						<td th:text="${list.userId}"></td>
 						<td th:text="${list.userPhoneNum}"></td>
-						<td th:text="${list.userEmail}" id="th:email"></td>
+						<td th:text="${list.userEmail}"></td>
 						<td th:text="${list.userType}"></td>
-						<td th:text="${list.emailConsent}"></td>
-						<td th:if="${list.emailConsent == 'Y'}"><input
-							type="checkbox" name="check1" value="1" data-email="${list.userEmail}"
-							onclick="event.stopPropagation(); addEmailToModal(event, this);" style="transform: scale(1.5);"></td>
+						<td th:text="${list.agreeEmail}"></td>
+						<td th:if="${list.agreeEmail == 'Y'}"><input type="checkbox"
+							name="check1" value="1" th:data-email="${list.userEmail}"
+							onclick="event.stopPropagation(); addEmailToModal(event, this);"
+							style="transform: scale(1.5);"></td>
 					</tr>
 					<div class="email-btn-div">
 						<button class="email-btn" id="email-btn">전체선택</button>
@@ -226,7 +227,8 @@
 						required></textarea>
 				</div>
 
-				<button type="submit">전송</button>
+				<button type="button" id="submitBtn">전송</button>
+				<button type="reset" style="background-color: #FFD700; color: white;">초기화</button>
 				<button type="button" id="cancelBtn">취소</button>
 			</form>
 		</div>
@@ -234,6 +236,7 @@
 
 </body>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/admin/admin-page.js"></script>
 
 </html>

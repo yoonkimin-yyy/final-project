@@ -347,6 +347,7 @@ input:focus {outline: none;}
     color: red;
     font-size: 13px;
     text-align: left;
+    white-space: pre-line; 
 } 
 
 

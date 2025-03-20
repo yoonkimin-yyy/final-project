@@ -15,7 +15,7 @@ public class AdminResponseDto {
 	private String userPhoneNum;
 	private String userEmail;
 	private String userType;
-	private String emailConsent;
+	private String agreeEmail;
 	private String bakeryNo;
 	private String bakeryName;
 	private String bakeryAddress;

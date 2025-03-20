@@ -12,6 +12,7 @@ public class ReviewRequestDto {
     private int userNo;  
     private int orderNo=2;
     private int tagNo; 
+    private String userId;
     private double reviewRating;     // 리뷰 평점 (0.5 ~ 5.0)
     private String reviewDetail;     // 리뷰 내용
     private List<String> reviewTag;  //  태그 리스트 그대로 유지

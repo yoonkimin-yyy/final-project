@@ -10,7 +10,7 @@
 		<result property="userPhoneNum" column="USER_PHONENUM"></result>
 		<result property="userEmail" column="USER_EMAIL"></result>
 		<result property="userType" column="USER_TYPE"></result>
-		<result property="emailConsent" column="EMAIL_CONSENT"></result>
+		<result property="agreeEmail" column="AGREE_EMAIL"></result>
 		<result property="bakeryName" column="BAKERY_NAME"></result>
 		<result property="bakeryNo" column="BAKERY_NO"></result>
 		<result property="bakeryAddress" column="BAKERY_ADDRESS"></result>
@@ -95,8 +95,10 @@
 	</select>
 	
 	<select id="userId" resultMap="adminMap">
-		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, ui.USER_TYPE, ui.EMAIL_CONSENT  
+		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, 
+			   ui.USER_TYPE, a.AGREE_EMAIL
 		FROM USER_INFO ui 
+		JOIN AGREE a ON ui.USER_NO = a.USER_NO 
 		ORDER BY ui.USER_NO DESC
 	</select>
 		

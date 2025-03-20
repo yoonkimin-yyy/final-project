@@ -27,19 +27,23 @@ public class AwsS3Util {
     	try {
     		String originalFilename = multipartFile.getOriginalFilename();
     		String changeName = UUID.randomUUID().toString() + "." + getFileExtension(originalFilename);
+    		int urlLength = amazonS3.getUrl(bucket, changeName).toString().length();
+    		int changeLength = changeName.length();
+    		int result = urlLength - changeLength;
     		
     		ObjectMetadata metadata = new ObjectMetadata();
     		metadata.setContentLength(multipartFile.getSize());
     		metadata.setContentType(multipartFile.getContentType());
     		
     		amazonS3.putObject(bucket, changeName, multipartFile.getInputStream(), metadata);
+    		
     		fileDTO.setChangeName(changeName);
     		fileDTO.setExtension(getFileExtension(originalFilename));
     		fileDTO.setOriginalName(originalFilename);
     		fileDTO.setSize(multipartFile.getSize());
-    		fileDTO.setLocalPath(amazonS3.getUrl(bucket, changeName).toString());
+    		fileDTO.setLocalPath("성공!!!");
     		fileDTO.setFolderNamePath("성공?");
-    		fileDTO.setLocalResourcePath("성공!!");
+    		fileDTO.setLocalResourcePath(amazonS3.getUrl(bucket, changeName).toString().substring(0, result));
     	} catch(Exception e) {
     		throw new BakeryException("S3 업로드 실패","common/error",HttpStatus.METHOD_NOT_ALLOWED);
     	}

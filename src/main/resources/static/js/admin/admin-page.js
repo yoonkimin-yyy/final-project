@@ -109,15 +109,36 @@ function moveSlide(step) {
 var modal = document.getElementById("myModal");
 // 모달 열기 버튼
 var openModalBtn = document.getElementById("openModalBtn");
-console.log(openModalBtn);
-console.log("asd")
 // 모달 닫기 버튼
 var closeBtn = document.getElementById("closeBtn");
+
+let selectedEmails = [];  // 선택된 이메일을 저장할 배열
 
 // 모달 열기
 openModalBtn.onclick = function() {
 	//event.preventDefault();
     modal.style.display = "block";
+}
+
+// 체크박스를 클릭할 때 이메일을 모달에 추가하거나 제거
+function addEmailToModal(event, checkbox) {
+    const email = checkbox.getAttribute('data-email');
+    // 체크된 경우 이메일 배열에 추가
+    if (checkbox.checked) {
+        selectedEmails.push(email);
+    } else {
+        // 체크 해제된 경우 이메일 배열에서 제거
+        selectedEmails = selectedEmails.filter(e => e !== email);
+    }
+	// 모달에 이메일 목록 업데이트
+	updateEmailField();
+}
+
+function updateEmailField() {
+    const emailField = document.getElementById('email');
+    
+    // 이메일 필드에 선택된 이메일들을 콤마로 구분하여 표시
+    emailField.value = selectedEmails.join(', ');
 }
 
 // 모달 닫기
@@ -134,3 +155,40 @@ window.onclick = function(event) {
     }
 }
 
+document.getElementById('submitBtn').addEventListener('click', function(event) {
+    event.preventDefault();  // 폼 제출 방지 (기본 동작 막기)
+	
+    // 이메일 전송 로직 (예: AJAX 요청 보내기)
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    console.log('이메일1:', email);
+	console.log('이메일2:', selectedEmails);
+    console.log('제목:', subject);
+    console.log('메시지:', message);
+	
+	var emailInfo = {
+		address: email,
+		title: subject,
+		content: message
+	};
+	
+	$.ajax({
+		type: 'POST',
+		url: '/api/admin/sendEmail',
+		data: JSON.stringify(emailInfo),
+		contentType: "application/json"
+	}).then(function (res) {
+		if (res) {
+			console.log('카카카');
+		}
+	}).catch(function (err) {
+		consoel.log('시시시시시');
+	});
+	
+	
+	
+	
+
+    // 추가적인 이메일 전송 코드 작성...
+}); //document.getElementById('submitBtn').addEventListener('click', function(event) {
