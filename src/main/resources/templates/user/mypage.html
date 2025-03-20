@@ -2,7 +2,7 @@
 
 <html lang="ko">
 <head>
-<<<<<<< HEAD
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>빵지순례 - 전국 빵집 탐방 가이드</title>
@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/common/footer.css">
     <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
     <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
+    <script src="/js/mypage/mypage.js"></script>
 
 	<head th:replace="~{fragments/head :: HeadFragment}"></head>
 
@@ -24,18 +25,14 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
+    <!-- 마이페이지 스크립트 -->
     <!-- 헤더 및 네비게이션 -->
     <header th:replace="~{fragments/header :: HeaderFragment}"></header>
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
-    <!-- 마이페이지 스크립트 -->
-    <script src="/js/mypage/mypage.js"></script>
 
-   	</head>
-    	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
-    	<script src="/js/mypage/mypage.js"></script>
-	</head>
+   	
 
 
 <main>

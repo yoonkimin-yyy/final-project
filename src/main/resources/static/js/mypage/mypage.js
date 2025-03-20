@@ -68,10 +68,6 @@ writeBtn.addEventListener('click', () => {
 
 });
 
-
-// 리뷰 작성 ~ 등록 버튼 까지
-document.addEventListener('DOMContentLoaded', () => {
-
     const submitButton = document.querySelector('.text-btn');
     const reviewTextarea = document.querySelector('.review-text-textarea');
     const charCount = document.querySelector('.char-count');
@@ -198,3 +194,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

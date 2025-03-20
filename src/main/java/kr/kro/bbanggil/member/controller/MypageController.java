@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.mypage.controller;
+package kr.kro.bbanggil.member.controller;
 
 import java.util.Map;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.kro.bbanggil.member.service.MypageServiceImpl;
 import kr.kro.bbanggil.mypage.model.dto.response.MypagePageInfoDto;
-import kr.kro.bbanggil.mypage.service.MypageServiceImpl;
 import kr.kro.bbanggil.mypage.util.MypagePagination;
 import lombok.AllArgsConstructor;
 

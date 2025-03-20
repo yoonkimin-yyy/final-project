@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.mypage.service;
+package kr.kro.bbanggil.member.service;
 
 import java.util.HashMap;
 import java.util.Map;
