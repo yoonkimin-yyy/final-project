@@ -37,12 +37,11 @@ public class PickupListController {
     // 주문 목록을 테이블로 반환하는 메서드
     @GetMapping("/list") 
     public String list(Model model,@ModelAttribute PickupBakeryInfoResponseDTO pickupDTO,
-    					//@SessionAttribute("userNum") int userNo,
+    					@SessionAttribute("userNum") int userNo,
     						HttpSession session,
     						@RequestParam("bakeryNo") int bakeryNo
     						) {	
     	
-    	int userNo = 33;
     	// 로그인 된 사용자의 빵집 번호 세션에 저장
     	session.setAttribute("bakeryNo", bakeryNo);
     	
