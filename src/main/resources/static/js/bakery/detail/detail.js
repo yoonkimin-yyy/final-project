@@ -277,7 +277,7 @@ function updateGauge() {
                     tagElement.remove();
                 }
             } else {
-                console.warn(`⚠️ 태그를 찾을 수 없습니다: ${tagText}`);
+                console.warn(`태그를 찾을 수 없습니다: ${tagText}`);
             }
         });
 
