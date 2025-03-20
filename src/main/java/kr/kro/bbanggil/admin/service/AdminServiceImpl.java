@@ -20,6 +20,16 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
+	public List<AdminResponseDto> bakeryList() {
+		return adminMapper.bakeryList();
+	}
+	
+	@Override
+	public List<AdminResponseDto> userList() {
+		return adminMapper.userId();
+	}
+	
+	@Override
 	public AdminResponseDto acceptList(int listNum) {
 		return adminMapper.acceptList(listNum);
 	}

@@ -129,32 +129,22 @@
 			<table>
 				<thead>
 					<tr>
-						<th>상호명</th>
+						<th>번호</th>
+						<th>가게명</th>
 						<th>사용자ID</th>
 						<th>연락처</th>
-						<th>주소</th>
+						<th>가게주소</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr onclick="bakeryDetail()">
-						<td>베이커리A</td>
-						<td>user01</td>
-						<td>010-1234-5678</td>
-						<td>서울시 강남구</td>
+					<tr id="user1" th:each="list, iterStat : ${bakeryLists}"
+						th:attr="onclick=|location.href='/admin/bakery/detail?listNum=${sublists.size() - iterStat.index}'|">
+						<td th:text="${bakeryLists.size() - iterStat.index}"></td>
+						<td th:text="${list.bakeryName}"></td>
+						<td th:text="${list.userId}"></td>
+						<td th:text="${list.userPhoneNum}"></td>
+						<td th:text="${list.bakeryAddress}"></td>
 					</tr>
-					<tr onclick="bakeryDetail()">
-						<td>베이커리B</td>
-						<td>user02</td>
-						<td>010-2134-5678</td>
-						<td>서울시 강남구</td>
-					</tr>
-					<tr onclick="bakeryDetail()">
-						<td>베이커리C</td>
-						<td>user01</td>
-						<td>010-1234-5678</td>
-						<td>서울시 강남구</td>
-					</tr>
-					<!-- 추가 행들 -->
 				</tbody>
 			</table>
 
@@ -169,41 +159,26 @@
 						<th>이메일</th>
 						<th>핸드폰번호</th>
 						<th>타입</th>
-						<th>경고/정지</th>
-						<th>신고된 리뷰</th>
+						<th>email 수신동의 여부</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr id="user1" onclick="userDetail()">
-						<td>1</td>
-						<td>user01</td>
-						<td>user01@example.com</td>
-						<td>010-1234-5678</td>
-						<td>관리자</td>
-						<td class="status"></td>
-						<td></td>
+					<tr id="user1" th:each="list, iterStat : ${userLists}"
+						th:attr="onclick=|location.href='/admin/user/detail?listNum=${sublists.size() - iterStat.index}'|">
+						<td th:text="${userLists.size() - iterStat.index}"></td>
+						<td th:text="${list.userId}"></td>
+						<td th:text="${list.userPhoneNum}"></td>
+						<td th:text="${list.userEmail}"></td>
+						<td th:text="${list.userType}"></td>
+						<td th:text="${list.emailConsent}"></td>
+						<td th:if="${list.emailConsent == 'Y'}"><input type="checkbox" name="check1" value="1"
+							onclick="event.stopPropagation();" style="transform: scale(1.5);"></td>
 					</tr>
-					<tr id="user2" onclick="userDetail()">
-						<td>2</td>
-						<td>user02</td>
-						<td>user02@example.com</td>
-						<td>010-1234-5678</td>
-						<td>유저</td>
-						<td class="status">안됨?</td>
-						<td>맛이 있을까요 없을까요</td>
-						<td class="popup-btn" onclick="openPopup()">더보기</td>
-					</tr>
-					<tr id="user3" onclick="userDetail()">
-						<td>3</td>
-						<td>user03</td>
-						<td>user03@example.com</td>
-						<td>010-2451-5678</td>
-						<td>관리자</td>
-						<td class="status"></td>
-						<td></td>
-					</tr>
-					<!-- 추가 행들 -->
+					<div class="email-btn-div">
+						<button class="email-btn" id="email-btn">전체선택</button>
+						<button class="email-btn" id="email-btn">email전송</button>
+					</div>
 				</tbody>
 			</table>
 		</div>
@@ -230,7 +205,7 @@
 						<td th:text="${list.submissionDate}"></td>
 						<td th:text="${list.bakeryName}"></td>
 						<td th:text="${list.agree}"></td>
-						<td></td>
+						<td th:text="${list.acceptDate}"></td>
 					</tr>
 				</tbody>
 			</table>

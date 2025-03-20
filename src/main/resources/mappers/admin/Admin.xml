@@ -4,16 +4,22 @@
 <mapper namespace="kr.kro.bbanggil.admin.mapper.AdminMapper">
 	
 	<resultMap id="adminMap" type="kr.kro.bbanggil.admin.dto.response.AdminResponseDto">
+		<result property="userNum" column="USER_NUM"></result>
 		<result property="userName" column="USER_NAME"></result>
 		<result property="userId" column="USER_Id"></result>
 		<result property="userPhoneNum" column="USER_PHONENUM"></result>
+		<result property="userEmail" column="USER_EMAIL"></result>
+		<result property="userType" column="USER_TYPE"></result>
+		<result property="emailConsent" column="EMAIL_CONSENT"></result>
 		<result property="bakeryName" column="BAKERY_NAME"></result>
+		<result property="bakeryNo" column="BAKERY_NO"></result>
 		<result property="bakeryAddress" column="BAKERY_ADDRESS"></result>
 		<result property="amenity" column="AMENITY"></result>
 		<result property="insideInfo" column="INSIDE_INFO"></result>
 		<result property="outsideInfo" column="OUTSIDE_INFO"></result>
 		<result property="agree" column="AGREE"></result>
 		<result property="submissionDate" column="SUBMISSION_DATE"></result>
+		<result property="acceptDate" column="ACCEPT_DATE"></result>
 		<collection property="bakeryImgPath" resultMap="imgPathMap"></collection>
 	</resultMap>
 	
@@ -23,12 +29,14 @@
 	</resultMap>
 
 	<select id="subList" resultMap="adminMap">
-		SELECT ui.USER_ID, ui.USER_PHONENUM, ba.AGREE, bi.BAKERY_NAME, bd.SUBMISSION_DATE 
+		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
+			   ba.AGREE, bi.BAKERY_NAME, bd.SUBMISSION_DATE, 
+			   ba.ACCEPT_DATE 
 		FROM BAKERY_ACCESS ba
 		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
 		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
 		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
-		ORDER BY bd.SUBMISSION_DATE DESC
+		ORDER BY bi.BAKERY_NO DESC
 	</select>
 	
 	<select id="acceptList" resultMap="adminMap">
@@ -39,7 +47,7 @@
 				JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
 				JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
 				JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
-				ORDER BY bd.SUBMISSION_DATE)f)
+				ORDER BY bi.BAKERY_NO)f)
 			WHERE rn = #{listNum})m
 		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = m.BAKERY_NO
 	</select>
@@ -57,7 +65,7 @@
 	
 	<update id="update">
 		UPDATE BAKERY_ACCESS 
-		SET AGREE = #{action}, REJECT = #{rejectReason}
+		SET AGREE = #{action}, REJECT = #{rejectReason}, ACCEPT_DATE = SYSDATE 
 		WHERE BAKERY_NO = (
 		    SELECT bakery_no 
 		FROM (
@@ -68,11 +76,28 @@
 		        JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
 		        JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
 		        JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
-		        WHERE ba.AGREE = '대기'
-		        ORDER BY bd.SUBMISSION_DATE DESC
+		        ORDER BY bi.BAKERY_NO
 		    ) f
 		) 
 		WHERE rn = #{listNum} 
 		)
 	</update>
+	
+	<select id="bakeryList" resultMap="adminMap">
+		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
+			   bi.BAKERY_NAME, bi.BAKERY_ADDRESS 
+		FROM BAKERY_ACCESS ba
+		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+		WHERE ba.AGREE = '승인' 
+		ORDER BY bi.BAKERY_NO DESC
+	</select>
+	
+	<select id="userId" resultMap="adminMap">
+		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, ui.USER_TYPE, ui.EMAIL_CONSENT  
+		FROM USER_INFO ui 
+		ORDER BY ui.USER_NO DESC
+	</select>
+		
 </mapper>

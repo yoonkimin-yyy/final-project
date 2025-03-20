@@ -8,6 +8,10 @@ public interface AdminService {
 
 	List<AdminResponseDto> subList();
 
+	List<AdminResponseDto> bakeryList();
+
+	List<AdminResponseDto> userList();
+	
 	AdminResponseDto acceptList(int listNum);
 
 	void update(String action, int listNum, String rejectReason);

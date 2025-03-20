@@ -45,3 +45,25 @@ window.onclick = function(event) {
     }
 }
 
+let currentIndex = 0;
+
+function moveSlide(step) {
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    // 현재 인덱스를 변경하여 슬라이드 이동
+    currentIndex += step;
+
+    // 인덱스가 범위를 벗어나지 않도록 처리
+    if (currentIndex >= totalSlides) {
+        currentIndex = 0; // 마지막에서 다음을 눌렀을 때 첫 번째로 돌아감
+    }
+    if (currentIndex < 0) {
+        currentIndex = totalSlides - 1; // 첫 번째에서 이전을 눌렀을 때 마지막으로 돌아감
+    }
+
+    // 슬라이드 이동
+    const sliderContainer = document.querySelector('.slider-container');
+    const slideWidth = slides[0].offsetWidth;
+    sliderContainer.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+}
