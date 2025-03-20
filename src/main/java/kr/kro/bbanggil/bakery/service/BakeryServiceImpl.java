@@ -81,17 +81,23 @@ public class BakeryServiceImpl implements BakeryService{
 		
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		
-		System.out.println(pi.getLimit());
-		System.out.println(pi.getOffset());
+		System.out.println("day : " + getTodayDayOfWeek());
+		System.out.println("bakerySearchDTO.getSearchText" + bakerySearchDTO.getSearchText());
+		
+		System.out.println("bakerySearchDTO.getKeyword1()"+bakerySearchDTO.getKeyword1());
+		System.out.println("bakerySearchDTO.getKeyword2()"+bakerySearchDTO.getKeyword2());
+		System.out.println("orderType : " + orderType);
+		System.out.println("offset = "+pi.getOffset());
+		System.out.println("boardLimit = aaa"+pi.getBoardLimit());
 		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
 															getTodayDayOfWeek(),
 															orderType,
 															bakerySearchDTO);
 		
-		for(BakeryInfoDTO item : posts) {
+		for(BakeryInfoDTO item : posts)
+		{
 			System.out.println(item.getBakeryName());
 		}
- 		
 		List<List<BakeryInfoDTO>> images = new ArrayList<>();
 		
 		for (int i = 0; i < posts.size(); i++) {
@@ -134,6 +140,7 @@ public class BakeryServiceImpl implements BakeryService{
             case SUNDAY -> "일";
         };
     }
+
 	
 	/**
 	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
@@ -163,8 +170,10 @@ public class BakeryServiceImpl implements BakeryService{
 									.region(region)
 									.build();
 			
-			bakeryMapper.bakeryInsert(bakeryVO);
-			bakeryRequestDTO.setBakeryNo(bakeryVO.getBakeryNo());
+
+				bakeryMapper.bakeryInsert(bakeryVO);
+				bakeryRequestDTO.setBakeryNo(bakeryVO.getBakeryNo());
+
 				
 			BakeryDetailVO detailVO = BakeryDetailVO.builder()
 									  .amenity(bakeryRequestDTO.getParkingInfo())
@@ -305,9 +314,9 @@ public class BakeryServiceImpl implements BakeryService{
 	}
 
 	@Override
-	public List<BakeryDto> getRecentBakeries() {
+	public List<BakeryDto> getRecentBakeries(double bakeryNo) {
 
-		return bakeryMapper.getRecentBakeries();
+		return bakeryMapper.getRecentBakeries(bakeryNo);
 	}
 
 	@Override
@@ -328,6 +337,7 @@ public class BakeryServiceImpl implements BakeryService{
 	public List<BakeryDto> getBakeryImages(double no) {
 
 		return bakeryMapper.findBakeryImages(no);
+
 	}
 	
 	@Override
@@ -421,6 +431,7 @@ public class BakeryServiceImpl implements BakeryService{
 		result.put("outside", bakeryImgRequestDTO.getOutside());
 		result.put("parking", bakeryImgRequestDTO.getParking());
 		return result;
+
 	}
 	
 	@Override

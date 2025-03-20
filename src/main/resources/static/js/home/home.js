@@ -2,6 +2,9 @@ document.querySelector('.subscribe-button').addEventListener('click', function (
 	const emailInput = document.querySelector('.email-input');
 	const subscribedMessage = document.getElementById('subscribed-message');
 
+	console.log(subscribedMessage);
+	
+	
 	if (emailInput.value && emailInput.value.includes('@')) {
 		subscribedMessage.style.display = 'block';
 		emailInput.value = '';

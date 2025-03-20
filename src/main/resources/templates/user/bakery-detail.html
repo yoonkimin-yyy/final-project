@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<head th:replace="~{fragments/head :: HeadFragment}"></head>
@@ -28,26 +28,6 @@
             <button class="slider-button next"><i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <!-- <div class="container">
-		<div class="slider-container" th:each="bakery : ${bakeriesInfo}">
-			<div class="slider">
-				<div class="slide">
-					<img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" th:alt="${bakery.name}" class="bakery-image">
-				</div>
-				<div class="slide">
-					<img src="https://api.a0.dev/assets/image?text=fresh%20bread%20display%20in%20bakery" alt="빵집 전경 2">
-				</div>
-				<div class="slide">
-					<img src="https://api.a0.dev/assets/image?text=cozy%20bakery%20cafe%20interior" alt="빵집 전경 3">
-				</div>
-			</div>
-			<button class="slider-button prev">
-				<i class="fas fa-chevron-left"></i>
-			</button>
-			<button class="slider-button next">
-				<i class="fas fa-chevron-right"></i>
-			</button>
-		</div> -->
 
         <!-- 헤더 섹션 -->
         <div class="header">
@@ -195,7 +175,11 @@
                                     th:utext="${review.tagFirst}">
                                 </th:block>
                             </div>
-                            <img th:src="@{${review.resourcesPath} + '/' + ${review.changeName}}" class="review-image">
+                            <th:block th:each="image : ${reviewImages}">
+    <img th:if="${image.resourcesPath != null and image.changeName != null}" 
+         th:src="@{|${image.resourcesPath}/${image.changeName}|}" 
+         class="review-image">
+</th:block>
                             <div class="review-actions">
                                 <button type="button" class="btn btn-edit" onclick="editReview()">수정</a>
                                     <button type="button" class="btn btn-delete" onclick="deleteReview()"
@@ -299,7 +283,7 @@
                     </div>
                     <form id="orderForm" action="/bakery/cart/add" method="POST">
                         <input type="hidden" name="orderData" id="orderData">
-                        <input type="hidden" name="userNo" id="userNo" value="4">
+                        <input type="hidden" name="userNo" id="userNo" value="${userNo}">
                         <button type="submit" class="checkout-button">주문하기</button>
                     </form>
                 </div>
@@ -359,7 +343,7 @@
                 <div class="form-group button-group">
                     <button type="button" class="submit-review" id="reviewSubmitBtn"
                         onclick="submitReview()">등록하기</button>
-                    <button type="button" class="cancel-review" onclick="closeReviewModal()">삭제</button>
+                    <button type="button" class="cancel-review" onclick="closeReviewModal()">취소</button>
                 </div>
             </form>
         </div>
@@ -446,8 +430,10 @@
             </form>
         </div>
     </div>
-</div>
-	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+  
+
+	
+	<input type="hidden" id="userNum" th:value="${userNum}" name="userNum">
     <script src="/js/bakery/detail/detail.js"></script>
     <script src="/js/bakery/detail/detailAjax.js"></script>
 

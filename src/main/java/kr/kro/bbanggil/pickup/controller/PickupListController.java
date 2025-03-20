@@ -69,8 +69,6 @@ public class PickupListController {
         try {
             // 상태 업데이트 서비스 호출
             boolean isUpdated = pickupServiceImpl.updateOrderStatus(orderNo, status, rejectionReason);
-            System.out.println("qqqqqqqqqqqq");
-            System.out.println(isUpdated);
             
 
             return ResponseEntity.ok(response);

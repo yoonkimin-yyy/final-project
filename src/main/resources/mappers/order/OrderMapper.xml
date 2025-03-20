@@ -113,4 +113,33 @@
 		SELECT IMP FROM PAYMENT WHERE PAY_NO = #{payNo}
 	</select> 
 	
+	
+	<select id="countByUserAndOrder">
+SELECT
+	c.CART_NO ,
+	oi.ORDER_NO ,
+	oi.PAY_NO ,
+	ui.USER_NO ,
+	ui.USER_ID
+FROM
+	CART c
+JOIN ORDER_INFO oi 
+  ON
+	c.CART_NO = oi.CART_NO
+JOIN USER_INFO ui 
+  ON
+	c.USER_NO = UI.USER_NO
+WHERE
+	ui.USER_NO = #{userNo}
+	AND oi.ORDER_NO = #{orderNo}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

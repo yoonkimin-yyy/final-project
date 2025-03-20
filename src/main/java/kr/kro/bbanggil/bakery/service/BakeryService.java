@@ -1,5 +1,6 @@
 package kr.kro.bbanggil.bakery.service;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +29,14 @@ public interface BakeryService {
 	public String getTodayDayOfWeek();
 
 
-	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo,String role) throws Exception;
 
+	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo,String role) throws Exception;
+  
 	public void saveBakery(BakeryDto bakery);
 	List<BakeryDto> getBakeriesByRegion(String region);
 	
 	List<BakeryDto> getPopularBakeries();
-	List<BakeryDto> getRecentBakeries();
+	List<BakeryDto> getRecentBakeries(double bakeryNo);
 	List<BakeryDto>getCategoryBakeries(List<BakeryDto> topBakeries);
 	List<BakeryDto> getTopFiveOrders();
 	
