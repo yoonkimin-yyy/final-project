@@ -3,5 +3,11 @@
 						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.mypage.mapper.MypageMapper">
 
+	<select id="getTotalCount" resultType="int"> 
+		SELECT count(*) FROM USER_INFO ui 
+		JOIN CART c ON ui.USER_NO = c.USER_NO 
+		JOIN ORDER_INFO oi ON oi.CART_NO =c.CART_NO 
+		WHERE UI.USER_NO = #{userNo};
+	</select>
 
 </mapper>

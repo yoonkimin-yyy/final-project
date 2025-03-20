@@ -8,7 +8,7 @@ import kr.kro.bbanggil.mypage.model.dto.response.MypagePageInfoDto;
 public class MypagePagination {
 	
 	public MypagePageInfoDto getMyList(int listCount, int currentPage,
-			   							 int pageLimit, int boardLimit);
+			   							 int pageLimit, int boardLimit) {
 	
 	int maxPage = (int)(Math.ceil((double)listCount/boardLimit));
 
@@ -33,5 +33,6 @@ public class MypagePagination {
 	return new MypagePageInfoDto(listCount, currentPage, pageLimit, boardLimit,
 	   maxPage, startPage, endPage, row, offset, limit);
 
+}
 }
 

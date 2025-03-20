@@ -25,18 +25,19 @@ public class MypageController {
 	public String myPageForm(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 							  Model model) {
 		
+		
 		int pageLimit = 10;
 		int boardLimit = 10;
 
-		Map<String, Object> result = mypageService.getAllPosts(mypagePagination, 
-											  					currentPage,
-											  					postCount,
-											  					pageLimit,
-											  					boardLimit);
+		Map<String, Object> result = mypageService.getMyList(mypagePagination, 
+															currentPage,
+															currentPage,
+															pageLimit,
+															boardLimit);
 		
-		MypagePageInfoDto npiResult = (mypagePagination) result.get("pi");
+		MypagePageInfoDto piResult = (MypagePageInfoDto) result.get("pi");
 
-            model.addAttribute("pi", npiResult);
+            model.addAttribute("pi", piResult);
              
 		return "user/mypage";
 		
