@@ -107,8 +107,6 @@ public class ReviewServiceImpl implements ReviewService {
 			int boardLimit, double bakeryNo, String sort) {
 
 		String orderBy = "r.review_date DESC";
-		System.out.println(orderBy);
-		System.out.println("fsfsfsf");
 
 		if ("highest".equals(sort)) {
 			orderBy = "r.review_rating DESC";
@@ -144,16 +142,11 @@ public class ReviewServiceImpl implements ReviewService {
 	public int editReview(ReviewRequestDto reviewRequestDto, List<MultipartFile> files) {
 		ReviewResponseDto existingReview = reviewMapper.getReviewById(reviewRequestDto.getReviewNo());
 
-		System.out.println();
 		if (existingReview == null) {
 			return 0; // 리뷰가 존재하지 않으면 수정할 수 없음
 		}
 
 		// 1. 리뷰 내용 및 평점 업데이트
-
-		System.out.println(reviewRequestDto.getReviewDetail());
-		System.out.println(reviewRequestDto.getReviewNo());
-		System.out.println(reviewRequestDto.getReviewRating());
 		reviewMapper.updateReview(reviewRequestDto);
 
 		// 2. 새로운 이미지 업로드 처리 (추가된 이미지만 `review_img` 테이블에 저장)
