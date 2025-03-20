@@ -29,11 +29,11 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public String handleValidException(Model model,MethodArgumentNotValidException ex) {
 		Map<String,String> errors = new HashMap<>();
-		for(FieldError error : ex.getBindingResult().getFieldErrors()) {
+		FieldError error =ex.getBindingResult().getFieldError();
 			errors.put(error.getField(), error.getDefaultMessage());
-		}
-		model.addAttribute("error",errors);
 		
+		model.addAttribute("error",errors);
+		    
 		return "common/error";
 		
 	}
