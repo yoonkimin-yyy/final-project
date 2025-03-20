@@ -32,7 +32,7 @@
 	<insert id="loginup" parameterType="kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto">
 	<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
 			SELECT user_info_seq.nextval FROM dual
-		</selectKey>
+	</selectKey>
 	INSERT INTO USER_INFO VALUES(#{userNo},
 								 #{userName},
 								 #{userId},
@@ -110,33 +110,6 @@
         FROM USER_INFO
         WHERE USER_ID = #{userId}
     </select>
-
-
-
-
-
-<!-- <select id="findAddress" parameterType="String" resultMap="addressResultMap">
-    SELECT a.USER_NO, a.user_postcode, a.user_city, a.user_district, a.user_street, a.user_number, a.user_detailaddress
-    FROM ADDRESS a
-    JOIN USER_INFO u ON a.USER_NO = u.USER_NO
-    WHERE u.USER_NO = #{userNo}
-	</select> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </mapper>

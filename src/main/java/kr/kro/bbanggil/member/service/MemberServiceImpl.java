@@ -30,6 +30,7 @@ public class MemberServiceImpl implements MemberService{
         if (!"Y".equals(checkBoxRequestDto.getTermsofuse()) || !"Y".equals(checkBoxRequestDto.getInformation())) {
             return "회원가입에 실패했습니다. 필수 약관에 동의해야 합니다.";
         }
+        
 
         int result = registerMapper.loginup(signupRequestDto);
 
