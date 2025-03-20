@@ -69,14 +69,17 @@
 		   bs.close_time,
 		   ROUND(AVG(r.review_rating),1) AS review_avg,
 		   COUNT(review_no) AS review_count,
-		   mc.category
+		   mc.category,
+		   ba.agree
 		   FROM bakery_info bi
 		LEFT JOIN bakery_schedule bs on bs.bakery_no = bi.bakery_no
 		LEFT JOIN bakery_detail bd on bd.bakery_no = bi.bakery_no
 		LEFT JOIN review r on r.bakery_no = bi.bakery_no
 		LEFT JOIN menu m ON m.BAKERY_NO = bi.BAKERY_NO 
 		LEFT JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO 
+		JOIN bakery_access ba ON ba.bakery_no = bi.bakery_no
 		WHERE day = #{day}
+		AND ba.agree = '승인'
 		AND (bi.bakery_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
    		OR bi.bakery_address LIKE '%' || #{bakerySearchDTO.searchText} || '%'
    		OR mc.category LIKE '%' || #{bakerySearchDTO.searchText} || '%'
@@ -94,7 +97,8 @@
 		   bs."DAY" ,
 		   bs.open_time,
 		   bs.close_time,
-		   mc.category
+		   mc.category,
+		   ba.agree
 		   <choose>
 		   		<when test="orderType=='recent'">
 		   			ORDER BY bi.bakery_no DESC
