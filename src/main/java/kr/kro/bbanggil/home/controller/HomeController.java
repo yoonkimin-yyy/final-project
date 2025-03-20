@@ -3,7 +3,6 @@ package kr.kro.bbanggil.home.controller;
 
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,15 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
-
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
-import kr.kro.bbanggil.common.util.EmailServiceImpl;
+import kr.kro.bbanggil.email.dto.request.SubscriptionRequsetDto;
 import kr.kro.bbanggil.email.scheduler.NewsletterScheduler;
-import kr.kro.bbanggil.subscribe.dto.SubscriptionRequsetDto;
+import kr.kro.bbanggil.email.service.EmailServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/bbanggil")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class HomeController {
 	
@@ -44,6 +42,7 @@ public class HomeController {
 	    }
 
 	    boolean isSuccess = emailService.sendSubscriptionEmail(request.getEmail());
+	    System.out.println(isSuccess);
 
 	    if (isSuccess) {
 	        return ResponseEntity.ok("구독 완료! 확인 이메일을 발송했습니다.");
@@ -79,7 +78,7 @@ public class HomeController {
 		    
 	}
 	
-	@GetMapping("/home")
+	@GetMapping("")
 	public String homePage(Model model) {
 		/*
 		 * 인기 빵집 10개 보여지는 기능

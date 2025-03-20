@@ -1,7 +1,11 @@
 
 <nav class="navigation" th:fragment="NavFragment">
     <div class="nav-scroll">
-        <a href="http://localhost/bakery/list?searchText=&orderType=recent" class="nav-item nav-item-active">전체 빵집</a>
+
+        <a href="/bakery/list?searchText=&orderType=recent" class="nav-item nav-item-active">전체 빵집</a>
+
+        
+
         
         <div class="nav-item dropdown">
             <a href="#" class="nav-link">지역별 빵집</a>
@@ -43,7 +47,7 @@
                 <a th:onclick="|location.href='@{/bakery/list?searchText=%EC%BB%A4%ED%94%BC+%26+%EC%9D%8C%EB%A3%8C&orderType=recent}'|" class="dropdown-item">커피 & 음료</a>
             </div>
     </div>
-            <a th:if="${goOwnerPage}" th:onclick="|location.href='@{/mypage/owner/mypage}'|" class="nav-item">전환</a>
-            <a th:if="${goMyPage}" th:onclick="|location.href='@{/mypage/mypage}'|" class="nav-item">전환</a>
+            <a th:if="${goOwnerPage}" th:onclick="|location.href='@{/register/owner/mypage}'|" class="nav-item">전환</a>
+            <a th:if="${goMyPage}" th:onclick="|location.href='@{/register/mypage}'|" class="nav-item">전환</a>
 </nav>
 

@@ -42,20 +42,14 @@ public class PickupListController {
     						@RequestParam("bakeryNo") int bakeryNo
     						) {	
     	
-    	// 세션 어트리뷰트 = userNo <- list의 매개변수로 받고 써야됨
-    	// 로그인 된 사용자의 빵집 번호 가져오기
-    	//int bakeryNo = 14; //pickupDTO.getBakeryNo(); 기존 번호 53
+    	// 로그인 된 사용자의 빵집 번호 세션에 저장
     	session.setAttribute("bakeryNo", bakeryNo);
     	
-    	// 풀어야됨
         List<PickupBakeryInfoResponseDTO> orderList = pickupServiceImpl.getAllOrders(userNo, bakeryNo);
        
         model.addAttribute("orders",orderList);
         model.addAttribute("bakeryNo",bakeryNo);
-        System.out.println("-------세션 확인------");
-        System.out.println(userNo);
-        System.out.println(bakeryNo);
-        System.out.println("-------세션 확인------");
+        
         
         return "owner/pickup-list";  
     }
@@ -75,8 +69,6 @@ public class PickupListController {
         try {
             // 상태 업데이트 서비스 호출
             boolean isUpdated = pickupServiceImpl.updateOrderStatus(orderNo, status, rejectionReason);
-            System.out.println("qqqqqqqqqqqq");
-            System.out.println(isUpdated);
             
 
             return ResponseEntity.ok(response);

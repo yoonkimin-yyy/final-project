@@ -170,8 +170,8 @@ public class MemberController {
             // 로그인 성공 → 세션에 사용자 정보 저장
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
-            session.setAttribute("role", loginUser.getUserName());
-            return "redirect:/mypage/mypage";  
+            session.setAttribute("role", loginUser.getUserType());
+            return "redirect:/register/mypage";  
         } else {
             session.setAttribute("status", "failed");
             return "redirect:/register/loginin/form";
@@ -192,7 +192,28 @@ public class MemberController {
 		return "redirect:/bbanggil/home";
 	}
     
-    
+    @GetMapping("/mypage")
+	public String myPage(Model model,HttpSession session) {
+    	if(session.getAttribute("role").equals("owner"))
+		model.addAttribute("goOwnerPage",true);
+    	else
+    	model.addAttribute("goOwnerPage",false);
+		return "user/mypage";
+		
+	}
+	
+	@GetMapping("/edit")
+	public String edit() {
+		
+		return "user/edit";
+		
+	}
+	
+	@GetMapping("owner/mypage")
+	public String ownerMypage(Model model) {
+		model.addAttribute("goMyPage",true);
+		return "owner/owner-mypage";
+	}
     
     
     
