@@ -1,11 +1,14 @@
 package kr.kro.bbanggil.member.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.member.mapper.MemberMapper;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -101,6 +104,11 @@ public class MemberServiceImpl implements MemberService{
          }
          return null; // 로그인 실패
      }
+    @Override
+	public List<OwnerMypageResponseDTO> ownerMypage(int userNum) {
+    		
+		return registerMapper.ownerMypage(userNum);
+	}
 }
 
 

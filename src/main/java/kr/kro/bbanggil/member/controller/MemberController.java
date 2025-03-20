@@ -1,5 +1,7 @@
 package kr.kro.bbanggil.member.controller;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 
@@ -199,27 +202,25 @@ public class MemberController {
 		model.addAttribute("goOwnerPage",true);
     	else
     	model.addAttribute("goOwnerPage",false);
+
 		return "user/mypage";
-		
+
 	}
-	
+
 	@GetMapping("/edit")
 	public String edit() {
-		
+
 		return "user/edit";
-		
+
 	}
-	
+
 	@GetMapping("owner/mypage")
-	public String ownerMypage(Model model) {
+	public String ownerMypage(@SessionAttribute("userNum") int userNum,
+							  Model model) {
+		List<OwnerMypageResponseDTO> result =memberService.ownerMypage(userNum); 
+		model.addAttribute("bakeries",result);
 		model.addAttribute("goMyPage",true);
 		return "owner/owner-mypage";
 	}
-    
-    
-    
-    
-    
-    
-    
+
 }

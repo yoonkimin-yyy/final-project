@@ -5,7 +5,16 @@ function submitReview() {
             return label ? label.outerHTML.trim() : "";
         });
     }
-
+	const userNo = document.getElementById("userNum").value; 
+	console.log(userNo);
+	console.log("sdfsfsfs");
+	if (!userNo || userNo === "null") {
+	       alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
+		   window.location.href = window.location.origin + "/register/loginin/form";
+	       return;
+	   }
+	
+	
     const name = document.getElementById("userId").value;
     const rating = document.getElementById("rating").value;
     const content = document.getElementById("content").value;
@@ -17,7 +26,7 @@ function submitReview() {
 
     let formData = new FormData();
 	
-	console.log(bakeryNo);
+	
    
 	
 	const reviewData = {

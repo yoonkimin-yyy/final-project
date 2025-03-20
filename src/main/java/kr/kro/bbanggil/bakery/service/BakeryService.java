@@ -30,6 +30,7 @@ public interface BakeryService {
 
 
 	
+	
 
 	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo) throws Exception;
 
@@ -37,7 +38,7 @@ public interface BakeryService {
 	List<BakeryDto> getBakeriesByRegion(String region);
 	
 	List<BakeryDto> getPopularBakeries();
-	List<BakeryDto> getRecentBakeries();
+	List<BakeryDto> getRecentBakeries(double bakeryNo);
 	List<BakeryDto>getCategoryBakeries(List<BakeryDto> topBakeries);
 	List<BakeryDto> getTopFiveOrders();
 	

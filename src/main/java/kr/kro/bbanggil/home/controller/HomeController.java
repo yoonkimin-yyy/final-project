@@ -79,7 +79,7 @@ public class HomeController {
 	}
 	
 	@GetMapping("")
-	public String homePage(Model model) {
+	public String homePage(@RequestParam(value = "bakeryNo", required = false, defaultValue = "0") double bakeryNo,Model model) {
 		/*
 		 * 인기 빵집 10개 보여지는 기능
 		 */
@@ -89,7 +89,7 @@ public class HomeController {
 		/*
 		 * 최근 오픈빵집 10개 보여지는 기능
 		 */
-		List<BakeryDto> recentBakeries = bakeryService.getRecentBakeries();
+		List<BakeryDto> recentBakeries = bakeryService.getRecentBakeries(bakeryNo);
 		model.addAttribute("recentBakeries", recentBakeries);
 		
 		

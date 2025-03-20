@@ -105,6 +105,15 @@ function closeReviewModal() {
 }
 // ===== 리뷰 작성 버튼 클릭 이벤트 =====
 document.getElementById('openReviewModal')?.addEventListener('click', () => {
+	const userNo = document.getElementById("userNum").value;
+	console.log(userNo);
+	
+	if (!userNo || userNo === "null" || userNo === "") {
+	        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
+			window.location.href = window.location.origin + "/register/loginin/form";
+	        return;
+	    }
+	
     openReviewModal();
 });
 
@@ -116,6 +125,7 @@ const reviewForm = document.getElementById('reviewForm');
 
 // ⭐ 폼 제출 이벤트 추가
    reviewForm.addEventListener("submit", function (e) {
+	
        e.preventDefault();  // 기본 제출 동작 막기 (페이지 새로고침 방지)
        submitReview();      // AJAX 함수 호출
    });
@@ -578,6 +588,15 @@ function updateTagCountsOnEdit(prevTags, newTags) {
 	const checkoutButton = document.querySelector('.checkout-button');
 
 	checkoutButton.addEventListener('click', () => {
+		const userNo = document.getElementById("userNum").value;
+		
+		if (!userNo || userNo === "null") {
+		     alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
+			 window.location.href = window.location.origin + "/register/loginin/form";
+		     return;
+		 }
+
+		
 	    const cartItems = document.querySelectorAll('.cart-item');
 
 	    if (cartItems.length === 0) {
@@ -607,7 +626,18 @@ function updateTagCountsOnEdit(prevTags, newTags) {
 	
 	document.getElementById("orderForm").addEventListener("submit", function(event) {
 	    event.preventDefault(); // 기본 폼 전송 방지
+		const userNo = document.getElementById("userNum").value;
 
+		console.log(userNo);
+		
+		if (!userNo || userNo === "null") {
+		       event.preventDefault(); // 폼 제출 방지
+		       alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
+			   window.location.href = window.location.origin + "/register/loginin/form";
+		       return;
+		   }
+
+		
 	    let cartItems = [];
 
 	    document.querySelectorAll(".cart-items .item").forEach(item => {
@@ -754,6 +784,9 @@ function getBakeryNoFromURL() {
 
 // bakeryNo 값 가져오기
 const bakeryNo = getBakeryNoFromURL();
+
+
+
 
 
 function initKakaoMap() {
