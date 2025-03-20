@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연간 매출</title>
+    <link rel="stylesheet" href="/css/owner/sales/sales-by-year.css">
+</head>
+<body>
+    <div class="container">
+        <h1>연간 매출</h1>
+        
+        <!-- 연도 선택 드롭다운 -->
+        <form action="/sales/annual" method="get">
+		    <label for="year-select">년도 선택:</label>
+		    <select id="year-select" name="year" 
+		            data-available-years="[[${availableYears}]]" 
+		            data-current-year="[[${year}]]">
+		        <th:block th:each="availableYear : ${availableYears}">
+		            <option th:value="${availableYear}" 
+		                    th:text="${availableYear}" 
+		                    th:selected="${availableYear == year}"></option>
+		        </th:block>
+		    </select>
+		    
+		    <!-- bakeryNo 값이 제대로 설정되어야 함 -->
+		    <input type="hidden" name="bakeryNo" th:value="${bakeryNo}"/>
+		    
+		    <button type="submit">확인</button>
+		</form>
+
+
+
+        <h2 th:text="${year} + '년 매출'"></h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="th-css">월</th>
+                    <th class="th-css">매출액</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['1'] != null ? #numbers.formatInteger(monthlySalesMap['1'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>2월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['2'] != null ? #numbers.formatInteger(monthlySalesMap['2'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>3월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['3'] != null ? #numbers.formatInteger(monthlySalesMap['3'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>4월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['4'] != null ? #numbers.formatInteger(monthlySalesMap['4'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>5월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['5'] != null ? #numbers.formatInteger(monthlySalesMap['5'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>6월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['6'] != null ? #numbers.formatInteger(monthlySalesMap['6'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>7월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['7'] != null ? #numbers.formatInteger(monthlySalesMap['7'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>8월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['8'] != null ? #numbers.formatInteger(monthlySalesMap['8'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>9월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['9'] != null ? #numbers.formatInteger(monthlySalesMap['9'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>10월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['10'] != null ? #numbers.formatInteger(monthlySalesMap['10'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>11월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['11'] != null ? #numbers.formatInteger(monthlySalesMap['11'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>12월</td>
+                    <td th:text="${monthlySalesMap != null and monthlySalesMap['12'] != null ? #numbers.formatInteger(monthlySalesMap['12'], 3, 'COMMA') + '원' : '0원'}"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th class="th-css">총 매출액</th>
+                    <th class="th-css">
+                        <span th:text="${totalSales+'원'}"></span>
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script src="/js/owner/sales/sales-by-year.js"></script>
+</body>
+</html>

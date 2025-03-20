@@ -1,11 +1,13 @@
 <header class="header" th:fragment= "HeaderFragment">
         <div class="logo-container">
-            <h1 class="logo-text">이빵 이오</h1>
+            <h1 class="logo-text" th:onclick="|location.href='@{/}'|">이빵 이오</h1>
             <p class="logo-subtext">전국 빵집 탐방 가이드</p>
         </div>
         <div class="nav-buttons">
-            <button class="login-button">로그인</button>
-            <button class="register-button">회원가입</button>
+            <button th:onclick="|location.href='@{/register/loginin/form}'|" th:if="${session.userNum==null}"class="login-button">로그인</button>
+            <button th:onclick="|location.href='@{/register/typeloginup/form}'|" th:if="${session.userNum==null}"class="register-button">회원가입</button>
+            <button th:onclick="|location.href='@{/mypage/mypage}'|" th:if="${session.userNum!=null}"class="register-button">마이페이지</button>
+            <button th:onclick="|location.href='@{/register/logout}'|" th:if="${session.userNum!=null}"class="register-button">로그아웃</button>
         </div>
         <link rel="stylesheet" th:href="@{/css/common/header.css}">
-    </header>
+</header>

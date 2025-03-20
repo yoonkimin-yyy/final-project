@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="/css/common/header.css">
-	    <link rel="stylesheet" href="/css/common/nav.css">
-	    <link rel="stylesheet" href="/css/common/footer.css">
-    	<link rel="stylesheet" th:href="@{/css/owner/mypage/mypage.css}">
-    	<script src="/js/mypage/mypage.js"></script>
-   	</head>
+<head>
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+  	<link rel="stylesheet" th:href="@{/css/owner/mypage/mypage.css}">
+    <script src="/js/owner/mypage/mypagee.js"></script>
+</head>
 <body>
      <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
      <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
@@ -38,6 +36,7 @@
                             <td style="width: 20%;">게시일</td>
                             <!-- <td style="width: 10%;">리뷰✎</td> -->
                             <td style="width: 20%;">일일 사용자수</td>
+                            <td style="width: 10%;">승인여부</td>
                             <td style="width: 10%;" >주문목록</td>
                         </tr>
                     </thead>
@@ -47,7 +46,8 @@
                             <td>성심당 본점</td>
                             <td>2025-03-10</td>
                             <td>110</td>
-                            <td class="no-toggle"><button class="additional-btn no-toggle" >확인</button></td>
+                            <td>대기</td>
+                            <td class="no-toggle"><button class="additional-btn no-toggle" th:onclick="|location.href='@{/pickup/list(bakeryNo=14)}'|">확인</button></td>
                         </tr>
                         <tr class="detail-row">
                             <td colspan="5">
@@ -75,7 +75,7 @@
 							            </tr>
 							        </table>
                                         <div>
-                                            <button class="update-btn" th:onclick="|location.href='@{/bakery/update/form(bakeryNo=1)}'|" type="button">수정</button>
+                                            <button class="update-btn" th:onclick="|location.href='@{/bakery/update/form(bakeryNo=14)}'|" type="button">수정</button>
                                             <button class="delete-btn" type="button">삭제</button>
                                         </div>  
                                     </div>
@@ -87,6 +87,7 @@
                             <td>이빵이오</td>
                             <td>12,000원</td>
                             <td>확인</td>
+                            <td>승인</td>
                             <td><button class="delete-btn">확인</button></td>
                         </tr>
                         <tr class="detail-row">
@@ -177,7 +178,7 @@
                         </tr>
                     </tbody>
                 </table>
-                                <button class="additional-btn" type="button">신청</button>
+                                <button class="additional-btn" type="button" th:onclick="|location.href='@{/bakery/insert/form}'|">신청</button>
             </div>
         </div>
     </div>

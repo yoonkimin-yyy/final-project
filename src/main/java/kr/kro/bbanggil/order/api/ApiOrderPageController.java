@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -47,9 +48,10 @@ public class ApiOrderPageController {
 	@PostMapping("/accountCheck")
 	@ResponseBody
 	public Boolean accountCheck(@RequestParam("totalCount") int totalCount, 
-								 OrderRequestDto orderRequestDto) {
+								OrderRequestDto orderRequestDto,
+								String userId) {
 		
-		return orderService.accountCheck(totalCount, orderRequestDto);
+		return orderService.accountCheck(totalCount, orderRequestDto, userId);
 	}
 	
 	/**
@@ -76,19 +78,21 @@ public class ApiOrderPageController {
 	@ResponseBody
 	public IamportResponse<Payment> validateIamport(@PathVariable("imp_uid") String imp_uid,
 													@RequestBody PaymentRequestDto paymentRequestDto,
-													OrderRequestDto orderRequestDto) 
+													OrderRequestDto orderRequestDto,
+													@SessionAttribute("userId") String userId) 
 	throws IamportResponseException, IOException {
 
-		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto);
+		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userId);
 	}
 	
 	/**
 	 * DB저장
 	 */
 	@PostMapping("/success")
-	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDtoDto) {
+	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDtoDto,
+											@SessionAttribute("userNo") int userNo) {
 		
-		if(orderService.saveOrder(paymentRequestDtoDto)) {
+		if(orderService.saveOrder(paymentRequestDtoDto, userNo)) {
 			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
 		}	
 		
@@ -108,13 +112,14 @@ public class ApiOrderPageController {
 	 * 주문상태 
 	 */
 	@GetMapping("/pickupCheck")
-	public HashMap<String, Object> pickupCheckStatus() {
-		int payNo = orderService.getPayNo();
+	public HashMap<String, Object> pickupCheckStatus(@SessionAttribute("userId") String userId,
+													 @SessionAttribute("userId") int userNo) {
+		int payNo = orderService.getPayNo(userNo);
 		
 		HashMap<String, Object> response = new HashMap<>();
 
 		PickupCheckResponseDto result = orderService.pickupCheckStatus(payNo);
-		List<OrderResponseDto> list = orderService.pickupList(result, payNo);
+		List<OrderResponseDto> list = orderService.pickupList(result, payNo, userId);
 		
 		response.put("result", result);
 		response.put("list", list);

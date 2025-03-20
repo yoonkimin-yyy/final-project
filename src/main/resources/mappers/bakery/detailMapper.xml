@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.kro.bbanggil.bakery.mapper.BakeryMapper">
+
+	<resultMap id="DetailResultMap"
+		type="kr.kro.bbanggil.bakery.dto.BakeryDto">
+
+		<!-- 기본 Bakery 정보 -->
+		<result property="no" column="bakery_no" />
+		<result property="name" column="bakery_name" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+		<result property="region" column="region" />
+		<result property="address" column="bakery_address" />
+		<result property="phone" column="bakery_phone" />
+
+		<!-- BakeryResponseDto와 연관된 정보 (리뷰, 이미지, 메뉴 등) -->
+		<association property="response"
+			javaType="kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto">
+			<result property="reviewRating" column="review_rating" />
+			<result property="createDate" column="created_date" />
+			<result property="totalCount" column="bakery_count" />
+			<result property="menuNo" column="menu_no" />
+			<result property="menuName" column="menu_name" />
+			<result property="menuPrice" column="menu_price" />
+			<result property="menuInfo" column="menu_info" />
+			<result property="categoryName" column="category_no" />
+			<result property="category" column="category" />
+			<result property="imgNo" column="img_no" />
+			<result property="changeName" column="change_name" />
+			<result property="amenity" column="amenity" />
+			<result property="insideInfo" column="inside_info" />
+			<result property="outsideInfo" column="outside_info" />
+			<result property="submissionDate" column="submission_date" />
+			<result property="resourcesPath" column="resources_path" />
+		</association>
+
+
+
+
+
+
+
+
+		<!-- BakeryScheduleDto와 연관된 정보 (요일별 운영시간) -->
+		<collection property="schedule" javaType="java.util.List"
+			ofType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseScheduleDto">
+			<result property="day" column="day" />
+			<result property="openTime" column="open_time" />
+			<result property="closeTime" column="close_time" />
+		</collection>
+
+
+
+
+
+
+	</resultMap>
+
+
+	<select id="findBakeryImages" resultMap="DetailResultMap">
+
+		SELECT
+		bi2.CHANGE_NAME,
+		bi2.IMG_NO,
+		bi2.RESOURCES_PATH ,
+		bi.BAKERY_NO ,
+		bi.BAKERY_NAME ,
+		bi.BAKERY_ADDRESS,
+		bi.BAKERY_PHONE
+		FROM
+		BAKERY_INFO bi
+		JOIN BAKERY_IMAGE
+		bi2
+		ON
+		bi.BAKERY_NO = bi2.BAKERY_NO
+		WHERE
+		BI.BAKERY_NO = #{no}
+
+	</select>
+
+	<select id="findBakeriesInfo" resultMap="DetailResultMap">
+		SELECT
+		bi2.CHANGE_NAME,
+		bi2.IMG_NO,
+		bi2.RESOURCES_PATH ,
+		bi.BAKERY_NO ,
+		bi.BAKERY_NAME ,
+		bi.BAKERY_ADDRESS,
+		bi.BAKERY_PHONE,
+		r.REVIEW_RATING,
+		bs."DAY" ,
+		bs.OPEN_TIME ,
+		bs.CLOSE_TIME
+		FROM
+		BAKERY_INFO bi
+		JOIN BAKERY_IMAGE bi2
+		ON
+		bi.BAKERY_NO = bi2.BAKERY_NO
+		JOIN REVIEW r ON
+		r.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_SCHEDULE bs
+		ON
+		bs.BAKERY_NO = r.BAKERY_NO
+		WHERE
+		BI.BAKERY_NO =
+		#{no}
+	</select>
+
+
+	<select id="getMenuInfo" resultMap="DetailResultMap">
+
+		SELECT
+		m.menu_no,
+		m.menu_name,
+		m.menu_price,
+		m.menu_info,
+		m.bakery_no,
+		m.category_no,
+		mi.change_name,
+		mi.original_name,
+		mi.extension,
+		mi.file_size,
+		mi.local_path,
+		mi.resources_path,
+		mi.folder_name_path
+		FROM MENU m
+		join MENU_IMEGE mi
+		on
+		m.menu_no = mi.menu_no
+
+
+	</select>
+
+	<insert id="insertCart" parameterType="int">
+		INSERT
+		INTO
+		CART(cart_no,
+		user_no)
+		VALUES(cart_seq.nextval,
+		#{userNo})
+	</insert>
+
+	<select id="getCartNoByUserNo" parameterType="int"
+		resultType="int">
+		SELECT
+		cart_no
+		FROM
+		CART
+		WHERE
+		user_no = #{userNo} FETCH FIRST 1
+		ROWS ONLY
+
+	</select>
+
+	<select id="getLastCartNo" resultType="int">
+		SELECT cart_seq.nextval
+		FROM DUAL
+	</select>
+
+
+	<insert id="insertCartInfo">
+		INSERT
+		INTO
+		CART_INFO (list_no,
+		cart_no,
+		menu_no,
+		menu_count)
+		VALUES (cart_info_seq.nextval,
+		#{cartNo},
+		#{menuNo},
+		#{menuCount})
+
+	</insert>
+
+
+	<select id="getBakeryDetail" resultMap="DetailResultMap">
+
+		SELECT
+		bi.BAKERY_NO ,
+		bd.AMENITY ,
+		bd.INSIDE_INFO ,
+		bd.OUTSIDE_INFO ,
+		bd.CREATED_DATE ,
+		bd.SUBMISSION_DATE,
+		BI2.IMG_NO ,
+		BI2.RESOURCES_PATH,
+		BI2.CHANGE_NAME
+		FROM
+		BAKERY_DETAIL bd
+		JOIN BAKERY_INFO bi
+		ON
+		bd.BAKERY_NO = bi.BAKERY_NO
+		JOIN
+		BAKERY_IMAGE bi2
+		ON
+		bi.BAKERY_NO = BI2.BAKERY_NO
+		WHERE
+		bi.BAKERY_NO =
+		#{no}
+
+	</select>
+
+	<select id="findBakeryByNo" resultMap="DetailResultMap">
+
+
+		SELECT
+		bi.LATITUDE ,
+		bi.LONGITUDE ,
+		bi.BAKERY_NAME,
+		bi.BAKERY_NO
+		FROM
+		BAKERY_INFO bi
+		WHERE
+		BAKERY_NO = #{no}
+
+
+	</select>
+
+
+
+
+
+
+
+
+</mapper>

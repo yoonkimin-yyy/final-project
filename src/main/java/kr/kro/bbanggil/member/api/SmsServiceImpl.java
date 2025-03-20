@@ -47,14 +47,14 @@ public class SmsServiceImpl implements SmsService{
        System.out.println("인증번호 [" + code + "] 저장됨. (3분 유효)");
        
        // sms 메세지 작성
-       Message message = new Message();
+       // Message message = new Message();
 //       message.setFrom(fromNumber); 
 //       message.setTo(phoneNumber);
 //       message.setText("인증번호는 [" + code + "] 입니다.");
        System.out.println(code);
        
        // 메세지 발송
-       messageService.sendOne(new SingleMessageSendingRequest(message));
+       // messageService.sendOne(new SingleMessageSendingRequest(message));
 
        return code;
     }

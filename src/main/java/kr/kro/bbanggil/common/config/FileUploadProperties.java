@@ -14,3 +14,4 @@ public class FileUploadProperties {
     private String localPath;
     private String resourcesPath;
 }
+

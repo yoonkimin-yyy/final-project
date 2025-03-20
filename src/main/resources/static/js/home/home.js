@@ -2,6 +2,9 @@ document.querySelector('.subscribe-button').addEventListener('click', function (
 	const emailInput = document.querySelector('.email-input');
 	const subscribedMessage = document.getElementById('subscribed-message');
 
+	console.log(subscribedMessage);
+	
+	
 	if (emailInput.value && emailInput.value.includes('@')) {
 		subscribedMessage.style.display = 'block';
 		emailInput.value = '';
@@ -366,7 +369,7 @@ function updatePopularBakeries(data) {
 
 		slide.classList.add("swiper-slide", "bakery-card");
 		slide.innerHTML = `
-				<img src="${bakery.image ? bakery.image.resourcesPath + '/' + bakery.image.changeName : '/images/default.jpg'}"> 
+				<img src="${bakery.response ? bakery.response.resourcesPath + '/' + bakery.response.changeName : '/images/default.jpg'}"> 
 		            <div class="bakery-info">
 		                <h3 class="bakery-name">${bakery.name}</h3>
 		                <div class="location-container">
@@ -375,11 +378,11 @@ function updatePopularBakeries(data) {
 		                </div>
 		                <div class="rating-container">
 		                    <i class="fas fa-star"></i>
-		                    <span class="rating-text">${bakery.review ? bakery.review.reviewRating.toFixed(1) : '평점 없음'}</span>
+		                    <span class="rating-text">${bakery.response ? bakery.response.reviewRating.toFixed(1) : '평점 없음'}</span>
 		                </div>
 		                <div class="specialty-container">
-		                    <span class="specialty-label">${bakery.menu.categoryName}</span>
-		                    <span class="specialty-text">${bakery.menu.menuName}</span>
+		                    <span class="specialty-label">${bakery.response.categoryName}</span>
+		                    <span class="specialty-text">${bakery.response.menuName}</span>
 		                </div>
 		            </div>
 		        `;
@@ -397,7 +400,7 @@ function updateRecentBakeries(data) {
 
 		slide.classList.add("swiper-slide", "bakery-card");
 		slide.innerHTML = `
-						<img src="${bakery.image ? bakery.image.resourcesPath + '/' + bakery.image.changeName : '/images/default.jpg'}"> 
+						<img src="${bakery.response ? bakery.response.resourcesPath + '/' + bakery.response.changeName : '/images/default.jpg'}"> 
 				            <div class="bakery-info">
 				                <h3 class="bakery-name">${bakery.name}</h3>
 				                <div class="location-container">
@@ -406,11 +409,11 @@ function updateRecentBakeries(data) {
 				                </div>
 				                <div class="open-date-container">
 				                    <i class="fas fa-calendar-alt"></i>
-				                    <span class="open-date-text">${bakery.detail.createDate}</span>
+				                    <span class="open-date-text">${bakery.response.createDate}</span>
 				                </div>
 				                <div class="specialty-container">
-				                    <span class="specialty-label">${bakery.menu.categoryName}</span>
-				                    <span class="specialty-text">${bakery.menu.menuName}</span>
+				                    <span class="specialty-label">${bakery.response.categoryName}</span>
+				                    <span class="specialty-text">${bakery.response.menuName}</span>
 				                </div>
 				            </div>
 				        `;
@@ -418,11 +421,10 @@ function updateRecentBakeries(data) {
 	});
 
 }
-
 document.addEventListener("DOMContentLoaded", function () {
 	var swiper = new Swiper(".swiper-popularBakerySwiper", {
 		slidesPerView: 3,
-		spaceBetween: 20,
+		spaceBetween: 10,
 		loop: true,
 		navigation: {
 			nextEl: ".swiper-button-next",
@@ -435,14 +437,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		autoplay: {        // 자동 재생
 			delay: 3000,
 			disableOnInteraction: false,
+		},
+		breakpoints: {
+			1024: { slidesPerView: 3 },
+			768: { slidesPerView: 2 },
+			480: { slidesPerView: 1 }
 		}
 	});
 });
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
 	var recentBakerySwiper = new Swiper(".recentBakerySwiper", {
 		slidesPerView: 3, // 한 번에 보여줄 카드 개수
-		spaceBetween: 20, // 카드 간격
+		spaceBetween: 10, // 카드 간격
 		loop: true, // 무한 루프
 		navigation: {
 			nextEl: ".recent-next",
