@@ -17,9 +17,9 @@
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
        
     <div class="body-container">
-        <div>
-            <h1 class="error-name" th:text="${status}"></h1>
-            <p class="error-message" th:text="${message}"></p>
+        <div th:each="errors : ${error}">
+            <h1 class="error-name" th:text="${error.key}"></h1>
+            <p class="error-message" th:text="${error.value}"></p>
         </div>
     </div>
 
