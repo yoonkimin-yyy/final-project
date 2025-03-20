@@ -1,8 +1,5 @@
 package kr.kro.bbanggil.bakery.service;
 
-
-
-
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -306,9 +303,9 @@ public class BakeryServiceImpl implements BakeryService{
 	}
 
 	@Override
-	public List<BakeryDto> getRecentBakeries() {
+	public List<BakeryDto> getRecentBakeries(double bakeryNo) {
 
-		return bakeryMapper.getRecentBakeries();
+		return bakeryMapper.getRecentBakeries(bakeryNo);
 	}
 
 	@Override

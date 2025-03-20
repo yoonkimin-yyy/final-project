@@ -173,6 +173,9 @@ public class MemberController {
 			session.setAttribute("userNum", loginUser.getUserNo());
 			session.setAttribute("userId", loginUser.getUserId());
 
+			System.out.println(session.getAttribute("userNum"));
+			
+			
 			session.setAttribute("role", loginUser.getUserType());
 			return "redirect:/";
 

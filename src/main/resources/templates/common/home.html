@@ -133,7 +133,6 @@
         <!-- Swiper 컨테이너 (최근 오픈 빵집) -->
         <div class="swiper recentBakerySwiper">
             <div class="swiper-wrapper">
-
                 <div th:each="bakery : ${recentBakeries}"class="swiper-slide bakery-card">
                     <div class="new-badge">NEW</div>
                     <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">

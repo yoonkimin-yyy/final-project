@@ -5,11 +5,12 @@ function submitReview() {
             return label ? label.outerHTML.trim() : "";
         });
     }
-	const userNo = document.getElementById("userNo").value; 
-	
+	const userNo = document.getElementById("userNum").value; 
+	console.log(userNo);
+	console.log("sdfsfsfs");
 	if (!userNo || userNo === "null") {
 	       alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
-	       window.location.href = "/login"; // 로그인 페이지로 이동
+		   window.location.href = window.location.origin + "/register/loginin/form";
 	       return;
 	   }
 	

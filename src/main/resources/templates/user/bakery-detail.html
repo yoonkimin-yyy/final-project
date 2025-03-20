@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<head th:replace="~{fragments/head :: HeadFragment}"></head>
@@ -175,7 +175,11 @@
                                     th:utext="${review.tagFirst}">
                                 </th:block>
                             </div>
-                            <img th:src="@{${review.resourcesPath} + '/' + ${review.changeName}}" class="review-image">
+                            <th:block th:each="image : ${reviewImages}">
+    <img th:if="${image.resourcesPath != null and image.changeName != null}" 
+         th:src="@{|${image.resourcesPath}/${image.changeName}|}" 
+         class="review-image">
+</th:block>
                             <div class="review-actions">
                                 <button type="button" class="btn btn-edit" onclick="editReview()">수정</a>
                                     <button type="button" class="btn btn-delete" onclick="deleteReview()"
@@ -429,7 +433,7 @@
   
 
 	
-
+	<input type="hidden" id="userNum" th:value="${userNum}" name="userNum">
     <script src="/js/bakery/detail/detail.js"></script>
     <script src="/js/bakery/detail/detailAjax.js"></script>
 
