@@ -171,7 +171,7 @@ public class MemberController {
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
             session.setAttribute("role", loginUser.getUserName());
-            return "redirect:/mypage/mypage";  
+            return "redirect:/";  
         } else {
             session.setAttribute("status", "failed");
             return "redirect:/register/loginin/form";
@@ -189,7 +189,7 @@ public class MemberController {
     @GetMapping("/logout")
 	public String logout(HttpSession session) {
     	session.invalidate();
-		return "redirect:/bbanggil/home";
+		return "redirect:/";
 	}
     
     @GetMapping("/mypage")
