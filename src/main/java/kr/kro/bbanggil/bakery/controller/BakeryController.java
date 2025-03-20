@@ -44,10 +44,7 @@ public class BakeryController {
 	private final BakeryServiceImpl bakeryService;
 	private final ListPageNation pageNation;
 	
-	public BakeryController(BakeryServiceImpl bakeryService, ListPageNation pageNation) {
-		this.bakeryService = bakeryService;
-		this.pageNation = pageNation;
-	}
+
 
 	@GetMapping("/list")
 	public String list(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
@@ -113,7 +110,7 @@ public class BakeryController {
 							   @SessionAttribute(name="userNo", required=false) int userNo,
 							   Model model) throws Exception {
 		BakeryRequestDTO.setTime();
-		service.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
+		bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
 		
 		return "common/home";
 	}
@@ -130,7 +127,7 @@ public class BakeryController {
 		/**
 		 * 가게 정보 가져오는 기능
 		 */
-	    List<BakeryDto> bakeriesInfo = service.getBakeryImages(no); 
+	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
 	    model.addAttribute("bakeriesInfo", bakeriesInfo);
 	    
 	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환

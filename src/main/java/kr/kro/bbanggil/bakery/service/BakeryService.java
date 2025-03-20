@@ -1,39 +1,34 @@
 package kr.kro.bbanggil.bakery.service;
 
-
-import java.util.Map;
-
-import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
-import kr.kro.bbanggil.bakery.util.ListPageNation;
-
-public interface BakeryService {
-	public Map<String, Object> bakeryList(ListPageNation pageNation,
-										  int currentPage,
-										  int postCount,
-										  int pageLimit,
-										  int boardLimit,
-										  String orderType,
-										  BakerySearchDTO bakerySearchDTO);
-	// 빵집 수
-	public int totalCount(BakerySearchDTO bakerySearchDTO);
-	
-	public String getTodayDayOfWeek();
 	
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryInsertRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
-import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
+import kr.kro.bbanggil.bakery.util.ListPageNation;
 
 public interface BakeryService {
 
+	public Map<String, Object> bakeryList(ListPageNation pageNation,
+			  int currentPage,
+			  int postCount,
+			  int pageLimit,
+			  int boardLimit,
+			  String orderType,
+			  BakerySearchDTO bakerySearchDTO);
+// 빵집 수
+	public int totalCount(BakerySearchDTO bakerySearchDTO);
+
+	public String getTodayDayOfWeek();
+	
+	
 
 
 	void bakeryInsert(BakeryInsertRequestDTO bakeryRequestDTO, BakeryInsertImgRequestDTO bakeryImgRequestDTO, int userNo) throws Exception;
