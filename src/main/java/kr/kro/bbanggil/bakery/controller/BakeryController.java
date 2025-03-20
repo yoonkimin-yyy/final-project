@@ -47,6 +47,7 @@ public class BakeryController {
 
 	private final ListPageNation pageNation;
 	
+
 	@GetMapping("/list")
 	public String list(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
 					   @RequestParam(value="orderType", required=false,defaultValue="recent")String orderType,
@@ -230,7 +231,7 @@ public class BakeryController {
 		 * 가게 정보 가져오는 기능
 		 */
 	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
-	    
+
 	    model.addAttribute("bakeriesInfo", bakeriesInfo);
 	    
 	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환

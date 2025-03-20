@@ -1,5 +1,8 @@
 package kr.kro.bbanggil.bakery.service;
 
+
+
+
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -50,7 +53,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class BakeryServiceImpl implements BakeryService{
+public class BakeryServiceImpl implements BakeryService {
 	private final BakeryMapper bakeryMapper;
 	private final FileUploadUtil fileUpload;
 	private final KakaoController kakao;
@@ -131,6 +134,7 @@ public class BakeryServiceImpl implements BakeryService{
             case SUNDAY -> "일";
         };
     }
+
 	
 	/**
 	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
@@ -156,8 +160,10 @@ public class BakeryServiceImpl implements BakeryService{
 									.region(region)
 									.build();
 			
-			bakeryMapper.bakeryInsert(bakeryVO);
-			bakeryRequestDTO.setBakeryNo(bakeryVO.getBakeryNo());
+
+				bakeryMapper.bakeryInsert(bakeryVO);
+				bakeryRequestDTO.setBakeryNo(bakeryVO.getBakeryNo());
+
 				
 			BakeryDetailVO detailVO = BakeryDetailVO.builder()
 									  .amenity(bakeryRequestDTO.getParkingInfo())
@@ -318,6 +324,7 @@ public class BakeryServiceImpl implements BakeryService{
 	public List<BakeryDto> getBakeryImages(double no) {
 
 		return bakeryMapper.findBakeryImages(no);
+
 	}
 	
 	@Override
@@ -411,6 +418,7 @@ public class BakeryServiceImpl implements BakeryService{
 		result.put("outside", bakeryImgRequestDTO.getOutside());
 		result.put("parking", bakeryImgRequestDTO.getParking());
 		return result;
+
 	}
 	
 	@Override
