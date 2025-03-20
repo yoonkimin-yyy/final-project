@@ -48,16 +48,18 @@ import kr.kro.bbanggil.bakery.util.LocationSelectUtil;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.AwsS3Util;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
-public class BakeryServiceImpl implements BakeryService {
+@RequiredArgsConstructor
+public class BakeryServiceImpl implements BakeryService{
 	private final BakeryMapper bakeryMapper;
 	private final FileUploadUtil fileUpload;
 	private final KakaoController kakao;
 	private final LocationSelectUtil locationSelect;
+	private final AwsS3Util s3Upload;
 	private static final Logger logger = LogManager.getLogger(BakeryServiceImpl.class);
 	
 	@Override
@@ -193,7 +195,7 @@ public class BakeryServiceImpl implements BakeryService {
 					
 					if(bakeryImgRequestDTO.checkFile(files)) {
 						for(int i=0;i<files.size();i++) {
-							fileUpload.uploadFile(files.get(i), bakeryRequestDTO.getFileDTO(), "bakery");
+							s3Upload.saveFile(files.get(i),bakeryRequestDTO.getFileDTO());
 							bakeryRequestDTO.setImgLocation(imgLocation);
 							bakeryMapper.bakeryFileUpload(bakeryRequestDTO);
 						}
@@ -244,12 +246,15 @@ public class BakeryServiceImpl implements BakeryService {
 						for(int i=0;i<fileCheck.size();i++) {
 							String fileName = fileCheck.get(i).getChangeName();
 							String localPath = fileCheck.get(i).getLocalPath();
+							String s3FileName = fileCheck.get(i).getChangeName();
+							bakeryMapper.deleteFile(s3FileName);
 							bakeryMapper.deleteFile(fileName);
 							fileUpload.deleteFile(localPath, imgLocation, fileName);
+							s3Upload.deleteImage(s3FileName);
 						}
 						
 						for(int i=0;i<files.size();i++) {
-							fileUpload.uploadFile(files.get(i),bakeryRequestDTO.getFileDTO(), "bakery");
+							s3Upload.saveFile(files.get(i),bakeryRequestDTO.getFileDTO());
 							bakeryRequestDTO.setImgLocation(imgLocation);
 							bakeryMapper.bakeryFileUpload(bakeryRequestDTO);
 						}

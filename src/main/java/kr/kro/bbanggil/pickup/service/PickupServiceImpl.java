@@ -40,14 +40,15 @@ public class PickupServiceImpl implements PickupService{
 	    
 	    if (containsBakeryNo) {
 	        // bakeryNosArray에 bakeryNo가 포함되어 있을 경우 실행
+	    	
 	        List<PickupBakeryInfoResponseDTO> orderList = pickupMapper.findAllOrders(bakeryNo);
 	        
 	        if (orderList == null || orderList.isEmpty()) {
 	            return null;
 	        }
 	        return orderList;
-	    }
-	    throw new PickupException("본인의 가게가 아닙니다.","common/error",HttpStatus.BAD_REQUEST);
+	    } 
+	    	throw new PickupException("본인의 가게가 아닙니다a.","common/error",HttpStatus.BAD_REQUEST);
 	}
     
     // 상태 업데이트

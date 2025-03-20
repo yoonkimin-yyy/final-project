@@ -1,8 +1,11 @@
 package kr.kro.bbanggil.member.service;
 
+import java.util.List;
+
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSigninDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.member.model.dto.response.SigninResponseDto;
 
 public interface MemberService {
@@ -20,5 +23,7 @@ public interface MemberService {
 	public int userEmailCheck(String userEmail); // 이메일 중복 체크
 
 	public MemberRequestSignupDto loginIn(MemberRequestSignupDto memberRequestSignupDto);
+
+	List<OwnerMypageResponseDTO> ownerMypage(int userNum);
 	
 }

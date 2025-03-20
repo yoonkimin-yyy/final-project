@@ -26,6 +26,15 @@
 		<result property="userDetailaddress" column="USER_DETAILADDRESS"></result>
 	</resultMap>
 	
+	<resultMap id="ownerResultMap" type="kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO">
+		<result property="bakeryNo" column="bakery_no"></result>
+		<result property="bakeryName" column="bakery_name"></result>
+		<result property="createdDate" column="submission_date"></result>
+		<result property="bakeryPhone" column="bakery_phone"></result>
+		<result property="bakeryAddress" column="bakery_address"></result>
+		<result property="agree" column="agree"></result>
+	</resultMap>
+	
 
 	
 
@@ -110,6 +119,19 @@
         FROM USER_INFO
         WHERE USER_ID = #{userId}
     </select>
+    
+    <select id="ownerMypage" resultMap="ownerResultMap">
+		SELECT bi.BAKERY_NO,
+			   bi.BAKERY_NAME,
+			   bi.BAKERY_ADDRESS,
+			   bi.BAKERY_PHONE,
+			   ba.AGREE,
+			   bd.SUBMISSION_DATE 
+		FROM BAKERY_INFO bi 
+		JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO =ba.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO  
+		WHERE USER_NO = #{userNum}
+	</select>
 
 
 
