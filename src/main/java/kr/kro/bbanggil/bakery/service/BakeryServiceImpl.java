@@ -240,12 +240,15 @@ public class BakeryServiceImpl implements BakeryService{
 						for(int i=0;i<fileCheck.size();i++) {
 							String fileName = fileCheck.get(i).getChangeName();
 							String localPath = fileCheck.get(i).getLocalPath();
+							String s3FileName = fileCheck.get(i).getChangeName();
+							bakeryMapper.deleteFile(s3FileName);
 							bakeryMapper.deleteFile(fileName);
 							fileUpload.deleteFile(localPath, imgLocation, fileName);
+							s3Upload.deleteImage(s3FileName);
 						}
 						
 						for(int i=0;i<files.size();i++) {
-							fileUpload.uploadFile(files.get(i),bakeryRequestDTO.getFileDTO(), "bakery");
+							s3Upload.saveFile(files.get(i),bakeryRequestDTO.getFileDTO());
 							bakeryRequestDTO.setImgLocation(imgLocation);
 							bakeryMapper.bakeryFileUpload(bakeryRequestDTO);
 						}
