@@ -117,9 +117,13 @@ public class BakeryController {
 	public String bakeryInsert(@ModelAttribute @Valid BakeryRequestDTO BakeryRequestDTO,
 							   @ModelAttribute BakeryImgRequestDTO BakeryImgRequestDTO,
 							   @SessionAttribute("userNum")int userNo,
+							   @SessionAttribute("role") String role,
 							   Model model) throws Exception {
+		System.out.println("에엥");
+		System.out.println(role);
+		System.out.println("엥");
 		BakeryRequestDTO.setTime();
-		bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo);
+		bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo,role);
 		
 		return "common/home";
 	}

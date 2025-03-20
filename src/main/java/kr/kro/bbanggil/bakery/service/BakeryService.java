@@ -28,7 +28,7 @@ public interface BakeryService {
 	public String getTodayDayOfWeek();
 
 
-	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo) throws Exception;
+	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo,String role) throws Exception;
 
 	public void saveBakery(BakeryDto bakery);
 	List<BakeryDto> getBakeriesByRegion(String region);
