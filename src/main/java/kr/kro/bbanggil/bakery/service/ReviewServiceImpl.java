@@ -17,6 +17,7 @@ import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.mapper.ReviewMapper;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
+import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,6 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
 	private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
 	private final ReviewMapper reviewMapper;
 	private final FileUploadUtil fileUploadUtil;
+	private final OrderServiceImpl orderSerivce;
 
 	/*
 	 * 리뷰 작성후 insert service
@@ -41,6 +43,15 @@ public class ReviewServiceImpl implements ReviewService {
 			if (orderExists == 0) {
 				throw new IllegalArgumentException(" 존재하지 않는 ORDER_NO: " + reviewDto.getOrderNo());
 			}
+			
+			// 주문한 사용자인지 확인하는 추가 검증
+			boolean isOrederValid = orderSerivce.isUserOrder(reviewDto.getUserNo(), reviewDto.getOrderNo());        
+			
+			if(!isOrederValid) {
+				throw new IllegalArgumentException("이 주문은 해당 사용자에게 속하지 않습니다.");
+			}
+			
+			
 			// 1. 리뷰 INSERT (먼저 리뷰 데이터 저장)
 			reviewMapper.insertReview(reviewDto);
 			logger.info(" 리뷰 저장 완료 - reviewNo: {}", reviewDto.getReviewNo());
@@ -246,6 +257,12 @@ public class ReviewServiceImpl implements ReviewService {
 		return tagCounts;
 
 	}
+	
+	
+	
+	
+	
+	
 
 	/*
 	 * 태그 개수를 계산하는 헬퍼 메서드

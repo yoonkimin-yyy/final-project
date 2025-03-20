@@ -1,3 +1,6 @@
+
+   
+
 var regionCenters = {
             서울: { lat: 37.5665, lng: 126.9780 },
             경기: { lat: 37.2750, lng: 127.0095 },
@@ -17,38 +20,49 @@ var regionCenters = {
             경남: { lat: 35.4606, lng: 128.2132 },
             제주: { lat: 33.4996, lng: 126.5312 }
         };
-var myPosition;
-var locPosition
-
-navigator.geolocation.getCurrentPosition(function(position) {
-    var lat = position.coords.latitude; // 위도
-    var lng = position.coords.longitude; // 경도
-	var region = document.getElementById('searchText').value.split(" ")[0];
-	var center = regionCenters[region];
-	myPosition = new kakao.maps.LatLng(lat,lng);
-	
-	if(center){
-		locPosition = new kakao.maps.LatLng(center.lat,center.lng);
-	} else {
-		locPosition = myPosition;
-	}
-
-    // 지도에 현재 위치를 표시
-	displayCurrentLocation(locPosition);
-}, function(error) {
-    alert('위치 정보를 가져올 수 없습니다.');
-});
-
 var mapContainer;
 var mapOption ;
 var map ;
+var myPosition;
+var locPosition;
+var lng;
+var lat;
+var region;
+var center;
+var locPosition;
+
+document.addEventListener("DOMContentLoaded", function () {
+	mapContainer = document.getElementById('map'); 
+	lat = 37.3987043; // 위도
+	lng = 126.9207107; // 경도
+	region = document.getElementById('searchText').value.split(" ")[0];
+	myPosition = new kakao.maps.LatLng(lat,lng);
+	center = regionCenters[region]; 
+	console.log(mapContainer)
+	
+	if(center){
+			locPosition = new kakao.maps.LatLng(center.lat,center.lng);
+		} else {
+			locPosition = myPosition;
+		}
+	
+		console.log(locPosition)
+		displayCurrentLocation(locPosition)
+});
+    // 지도에 현재 위치를 표시
+
+
+
+
+
 // 현재 위치 마커 추가가
 function displayCurrentLocation(locPosition) {
 	
+
 	
-    mapContainer = document.getElementById('map'); // 지도를 표시할 div
-	var region = document.getElementById('searchText').value;
-	var center = regionCenters[region];
+	
+	
+    // 지도를 표시할 div
 	mapOption = { 
 	        center: myPosition, // 현재 위치를 중심으로 지도 설정
 	        level: 7 // 확대 레벨
@@ -260,7 +274,7 @@ $(document).ready(function() {
                                 <div class="slide-indicators" id="indicators${index + 11}"></div>
                             </div>
                             <div class="list-item-info">
-                                <a href="">
+                                <a href="/bakery/detail?bakeryNo=${post.bakeryNo}">
                                     <h2 class="list-item-title">${post.bakeryName}</h2>
                                 </a>
                                 <p class="list-item-address">📍<span>${post.bakeryAddress}</span></p>

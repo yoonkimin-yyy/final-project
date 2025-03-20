@@ -30,6 +30,7 @@ public interface BakeryService {
 
 
 	
+	
 
 	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo) throws Exception;
 
