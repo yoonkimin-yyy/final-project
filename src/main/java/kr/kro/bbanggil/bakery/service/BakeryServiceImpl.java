@@ -145,7 +145,7 @@ public class BakeryServiceImpl implements BakeryService{
 	@Transactional(rollbackFor = EXCEPTION.class)
 	public void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo, String role) throws Exception {
 		try {
-			if(role!="owner")
+			if(role.equals("owner"))
 				throw new BakeryException("사장이 아닙니다","common/error",HttpStatus.BAD_REQUEST);
 			
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
@@ -223,6 +223,7 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
 		bakeryUpdateResponseDTO response = bakeryMapper.getBakeryInfo(bakeryNo);
+		System.out.println(response.getBakeryPhone());
 		response.setImgDTO(bakeryMapper.getBakeryImg(bakeryNo));
 		List<BakeryTimeSetDTO> timeDTO = bakeryMapper.getBakerySchedule(bakeryNo);
 		setBakeryOperatingHours(response,timeDTO);

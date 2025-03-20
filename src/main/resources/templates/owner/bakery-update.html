@@ -18,10 +18,13 @@
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
             <div>
-                <label for="imageInput" class="main-photo-upload">+</label>
-                <input type="file" id="imageInput" name="main" multiple style="display: none">
-                <div id="mainPreview"></div>
-
+                 <label for="imageInput" class="main-photo-upload">메인 사진</label>
+                <input type="file" id="imageInput" data-preview-container="mainPreviewContainer" name="main" multiple style="display: none">
+                <div id="mainPreviewContainer" class="preview-container main-preview">
+			        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+			        <img class="preview-img" src="" alt="미리보기 이미지">
+			        <button class="nav-btn next-btn" type="button">&#10095;</button>
+			    </div>
             </div>
         </div>
 
@@ -129,47 +132,69 @@
                 </div>
                 <!-- 실내 사진 섹션 -->
                 <div class="interior-photos" id="interior" style="display: none;">
-                    <h3>실내 전경</h3>
-                    <label for="insideImage" class="photo-upload">사진 추가</label>
-                    <input type="file" id="insideImage" name="inside" multiple style="display: none">
+                    <h3 class="flex">
+	                    <div>실내 전경</div>
+	                    <label for="insideImage" class="photo-upload">사진 추가</label>
+                    </h3>
+                    
+                    <input type="file" id="insideImage" name="inside" data-preview-container="insidePreviewContainer" multiple style="display: none">
+                    <div id="insidePreviewContainer" class="preview-container preview">
+				        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+				        <img class="preview-img img-size" src="" alt="미리보기 이미지">
+				        <button class="nav-btn next-btn" type="button">&#10095;</button>
+				    </div>
                     <div class="photo-description">
-                        <textarea class="description" th:field="*{insideInfo}" placeholder="실내 환경에 대한 설명을 써주세요"></textarea>
-                        </ul>
+                        <textarea class="description" name="insideInfo" id="insideText" oninput="updateCharCount('insideText','insideDisplay')" placeholder="실내 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+                        <p id="insideDisplay">0/500</p>
                     </div>
                 </div>
                 <!-- 실외 사진 섹션 -->
                 <div class="exterior-photos" id="exterior" style="display: none;">
-                    <h3>실외 전경</h3>
-                    <label for="outsideImage" class="photo-upload">사진 추가</label>
-                    <input type="file" id="outsideImage" name="outside" multiple style="display: none">
+                    <h3 class="flex">
+	                    <div>실외 전경</div>
+	                    <label for="outsideImage" class="photo-upload">사진 추가</label>
+                    </h3>
+                    <input type="file" id="outsideImage" data-preview-container="outsidePreviewContainer" name="outside" multiple style="display: none">
+                    <div id="outsidePreviewContainer" class="preview-container preview">
+				        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+				        <img class="preview-img img-size" src="" alt="미리보기 이미지">
+				        <button class="nav-btn next-btn" type="button">&#10095;</button>
+				    </div>
                     <div class="photo-description">
-                        <textarea class="description" th:field="*{outsideInfo}" placeholder="실외 환경에 대한 설명을 써주세요"></textarea>
-                        </ul>
+                        <textarea class="description" name="outsideInfo" id="outsideText" oninput="updateCharCount('outsideText','outsideDisplay')" placeholder="실외 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+                        <p id="outsideDisplay">0/500</p>
                     </div>
                 </div>
                 <!-- 주차 정보 섹션 -->
                 <div class="parking-info" id="parking" style="display: none;">
-                    <h3>주차 안내</h3>
+                    <h3 class="flex">
+                    	<div>주차 안내</div>
+                        <label for="parking-image" class="photo-upload">사진 추가</label>                    
+                    </h3>
                     <div class="parking-content">
-                        <label for="parking-image" class="parking-photo-upload">사진 추가</label>
-                        <input type="file" id="parking-image" name="parking" multiple style="display: none">
+                        <input type="file" id="parking-image" data-preview-container="parkingPreviewContainer" name="parking" multiple style="display: none">
+                        <div id="parkingPreviewContainer" class="preview-container parking-container preview">
+					        <button class="nav-btn prev-btn" type="button">&#10094;</button>
+					        <img class="preview-img parking-preview" src="" alt="미리보기 이미지">
+					        <button class="nav-btn next-btn" type="button">&#10095;</button>
+					    </div>
                         <div class="parking-details">
-                            <textarea class="parking-text" th:field="*{parkingInfo}" placeholder="주차장 정보를 입력해주세요" ;></textarea>
+                            <textarea class="parking-text" name="parkingInfo" id="parkingText" oninput="updateCharCount('parkingText','parkingDisplay')" placeholder="주차장 정보를 입력해주세요" maxlength="500"></textarea>
+                            <p id="parkingDisplay" class="displays">0/500</p>
                         </div>
                     </div>
                 </div>
 
             </div>
-        </div>
-            
             <div>
                 <button class="submit-btn edit-btn" type="submit">제출</button>
                 <button class="cancel-btn edit-btn">취소</button>
             </div>
+        </div>
+            
     </div>
 	</form>
 	
-	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
 </body>
 
 </html>
