@@ -331,7 +331,10 @@ public class BakeryServiceImpl implements BakeryService {
 
 	@Override
 	public List<MenuResponseDto> getMenuInfo(double no){
-		return bakeryMapper.getMenuInfo(no);
+	
+		List<MenuResponseDto> menuList = bakeryMapper.getMenuInfo(no);
+		
+		return menuList;
 	}
 
 	@Override
