@@ -2,11 +2,9 @@
 <html lang="ko">
 
 <head>
-	<head th:replace="~{fragments/head :: HeadFragment}"></head>
-	<link rel="stylesheet" th:href="@{/css/admin/admin.css}">
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="/js/admin/admin-page.js"></script>
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+<link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 
@@ -163,15 +161,16 @@
 						<td th:text="${userLists.size() - iterStat.index}"></td>
 						<td th:text="${list.userId}"></td>
 						<td th:text="${list.userPhoneNum}"></td>
-						<td th:text="${list.userEmail}"></td>
+						<td th:text="${list.userEmail}" id="th:email"></td>
 						<td th:text="${list.userType}"></td>
 						<td th:text="${list.emailConsent}"></td>
-						<td th:if="${list.emailConsent == 'Y'}"><input type="checkbox" name="check1" value="1"
-							onclick="event.stopPropagation();" style="transform: scale(1.5);"></td>
+						<td th:if="${list.emailConsent == 'Y'}"><input
+							type="checkbox" name="check1" value="1" data-email="${list.userEmail}"
+							onclick="event.stopPropagation(); addEmailToModal(event, this);" style="transform: scale(1.5);"></td>
 					</tr>
 					<div class="email-btn-div">
 						<button class="email-btn" id="email-btn">전체선택</button>
-						<button class="email-btn" id="email-btn">email전송</button>
+						<button class="email-btn" id="openModalBtn">email전송</button>
 					</div>
 				</tbody>
 			</table>
@@ -208,6 +207,33 @@
 	</div>
 	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
 
+	<div id="myModal" class="custom-modal-container">
+		<div class="custom-modal-content">
+			<span id="closeBtn" class="custom-close">&times;</span>
+			<h2 style="margin-bottom: 20px;">이메일 전송</h2>
+			<form id="emailForm">
+				<div class="form-group">
+					<label for="email">이메일 주소:</label> <input type="text" id="email"
+						name="email" placeholder="이메일 주소를 입력하세요" required>
+				</div>
+				<div class="form-group">
+					<label for="subject">제목:</label> <input type="text" id="subject"
+						name="subject" placeholder="제목을 입력하세요" required>
+				</div>
+				<div class="form-group">
+					<label for="message">메시지:</label>
+					<textarea id="message" name="message" placeholder="메시지를 입력하세요"
+						required></textarea>
+				</div>
+
+				<button type="submit">전송</button>
+				<button type="button" id="cancelBtn">취소</button>
+			</form>
+		</div>
+	</div>
+
 </body>
+
+<script src="/js/admin/admin-page.js"></script>
 
 </html>
