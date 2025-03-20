@@ -1,3 +1,4 @@
+
 function toggleDetail(clickedRow) {
     const nextRow = clickedRow.nextElementSibling;
 	// 특정 class를 포함하면 함수가 실행되지 않음
@@ -46,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	
 // 리뷰 작성 하기 버튼 (등록 버튼 아님)
+document.addEventListener("DOMContentLoaded", function () {
 const writeBtn = document.getElementById('review-write-btn');
 const textDiv = document.getElementById('review-text-div');
 
@@ -63,6 +65,9 @@ writeBtn.addEventListener('click', () => {
 
 
 })
+
+});
+
     const submitButton = document.querySelector('.text-btn');
     const reviewTextarea = document.querySelector('.review-text-textarea');
     const charCount = document.querySelector('.char-count');
@@ -189,3 +194,4 @@ writeBtn.addEventListener('click', () => {
         });
     }
 });
+

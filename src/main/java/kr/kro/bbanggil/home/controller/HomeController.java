@@ -23,7 +23,7 @@ import kr.kro.bbanggil.email.service.EmailServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/bbanggil")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class HomeController {
 	
@@ -42,6 +42,7 @@ public class HomeController {
 	    }
 
 	    boolean isSuccess = emailService.sendSubscriptionEmail(request.getEmail());
+	    System.out.println(isSuccess);
 
 	    if (isSuccess) {
 	        return ResponseEntity.ok("구독 완료! 확인 이메일을 발송했습니다.");
@@ -77,8 +78,8 @@ public class HomeController {
 		    
 	}
 	
-	@GetMapping("/home")
-	public String homePage(Model model) {
+	@GetMapping("")
+	public String homePage(@RequestParam(value = "bakeryNo", required = false, defaultValue = "0") double bakeryNo,Model model) {
 		/*
 		 * 인기 빵집 10개 보여지는 기능
 		 */
@@ -88,7 +89,7 @@ public class HomeController {
 		/*
 		 * 최근 오픈빵집 10개 보여지는 기능
 		 */
-		List<BakeryDto> recentBakeries = bakeryService.getRecentBakeries();
+		List<BakeryDto> recentBakeries = bakeryService.getRecentBakeries(bakeryNo);
 		model.addAttribute("recentBakeries", recentBakeries);
 		
 		

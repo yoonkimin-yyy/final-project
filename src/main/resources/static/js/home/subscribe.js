@@ -3,28 +3,33 @@ function subscribe() {
     let message = document.getElementById("subscribed-message");
 
     if (!email) {
-        alert(" 이메일을 입력해주세요!");
+        alert("이메일을 입력해주세요!");
         return;
     }
 
-    let formData = new URLSearchParams();
-    formData.append("email", email);
+    // ✅ JSON 형식으로 데이터 변환
+    let formData = JSON.stringify({ email: email });
 
-    fetch("http://localhost:8080/bbanggil/subscribe", {
+    fetch("/subscribe", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json"  // JSON으로 전송
         },
-        body: formData  //  FormData 전송
+        body: formData  //  JSON 형식 데이터 전송
     })
-        .then(response => response.text())
-        .then(data => {
-            message.style.display = "block";
-            message.innerText = data;
-            document.getElementById("email").value = "";
-        })
-        .catch(error => {
-            console.error(" 오류 발생:", error);
-            alert(" 구독 요청 중 오류가 발생했습니다.");
-        });
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        message.style.display = "block";
+        message.innerText = data;
+        document.getElementById("email").value = "";
+    })
+    .catch(error => {
+        console.error("오류 발생:", error);
+        alert("구독 요청 중 오류가 발생했습니다.");
+    });
 }

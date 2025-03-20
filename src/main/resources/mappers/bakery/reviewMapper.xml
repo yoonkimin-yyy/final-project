@@ -137,7 +137,7 @@ WHERE bakery_no = #{bakeryNo}
 
 </select>
 
-<select id="list" resultType="kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto">
+<select id="list" resultMap="ReviewResultMap">
 
 SELECT
 	*
@@ -179,7 +179,7 @@ WHERE
 
 
 
-<select id="getReviewImages" resultType="kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto">
+<select id="getReviewImages" resultMap="ReviewResultMap">
 
 
 	SELECT

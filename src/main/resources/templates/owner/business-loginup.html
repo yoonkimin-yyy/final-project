@@ -70,7 +70,7 @@
                     <div class="loginup-input-div">
                         <label for="phone"></label>
                         <input class="loginup-input-last" type="tel" placeholder="휴대폰번호 (-없이)"
-                                style="border-top: 0px;" id="phone" name="userPhoneNum" required>
+                               maxlength="11" style="border-top: 0px;" id="phone" name="userPhoneNum" required>
                     </div>
                 <div class="error-text" id="birthday-msg"></div>
                 <div class="error-text" id="name-msg"></div>
@@ -80,8 +80,8 @@
                 <input type="hidden" id="token" name="token">
                 <div class="phone-btn-div">
                     <label for="phone-auth"></label>
-                    <input class="phone-auth" type="text" placeholder="인증번호"
-                           id="phone-auth" name="phone-auth" required>
+                   	<input class="phone-auth" type="text" placeholder="인증번호를 입력해주세요"
+	                           id="phone-auth" name="phone-auth" required>
                     <div class="error-text" id="phone-auth-msg"></div>
                 <button id="phone-btn" class="phone-btn" type="button" onclick="sendSMS()">인증번호받기</button>
                 <button id="check-btn" class="phone-btn" type="button" onclick="checkSMS()">인증번호확인</button>

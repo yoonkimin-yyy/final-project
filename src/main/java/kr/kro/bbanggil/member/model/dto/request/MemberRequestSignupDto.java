@@ -57,6 +57,8 @@ public class MemberRequestSignupDto {
 	// 계정 생성일
 	private String createdDate; 
 	
+	
+	
 	// 주소테이블 Dto
 	private MemberRequestAddressDto requestAddressDto = new MemberRequestAddressDto(); 
 	

@@ -39,10 +39,6 @@
 
 
 
-
-
-
-
 		<!-- BakeryScheduleDto와 연관된 정보 (요일별 운영시간) -->
 		<collection property="schedule" javaType="java.util.List"
 			ofType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseScheduleDto">
@@ -109,26 +105,18 @@
 	</select>
 
 
-	<select id="getMenuInfo" resultMap="DetailResultMap">
+	<select id="getMenuInfo" resultType="kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto">
 
 		SELECT
-		m.menu_no,
-		m.menu_name,
-		m.menu_price,
-		m.menu_info,
-		m.bakery_no,
-		m.category_no,
-		mi.change_name,
-		mi.original_name,
-		mi.extension,
-		mi.file_size,
-		mi.local_path,
-		mi.resources_path,
-		mi.folder_name_path
-		FROM MENU m
-		join MENU_IMEGE mi
-		on
-		m.menu_no = mi.menu_no
+	*
+FROM
+	MENU m
+JOIN BAKERY_INFO bi 
+ON
+	bi.BAKERY_NO = m.BAKERY_NO
+WHERE
+	bi.BAKERY_NO = #{no}
+		
 
 
 	</select>

@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nowMsg.textContent = '비밀번호를 입력해 주세요';
         isPass = false;
     }else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(passwordNow.value)) {
-        nowMsg.textContent = '비밀번호는 영문자, 숫자, 특수문자를 포함해 8~20자여야 합니다.';
+        nowMsg.textContent = '비밀번호는 영문자, 숫자, \n 특수문자를 포함해 8~20자여야 합니다.';
         isPass = false;
     } else {
         nowMsg.textContent = '';
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newMsg.textContent = '사용하실 비밀번호를 입력해 주세요';
         isPass = false;
     }else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(passwordChange.value)) {
-        newMsg.textContent = '비밀번호는 영문자, 숫자, 특수문자를 포함해 8~20자여야 합니다.';
+        newMsg.textContent = '비밀번호는 영문자, 숫자, \n 특수문자를 포함해 8~20자여야 합니다.';
         isPass = false;
     } else {
         newMsg.textContent = '';
