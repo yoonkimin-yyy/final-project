@@ -99,7 +99,7 @@
 		   bs.close_time,
 		   mc.category,
 		   ba.agree
-		   <choose>
+		   <choose> 
 		   		<when test="orderType=='recent'">
 		   			ORDER BY bi.bakery_no DESC
 		   		</when>
