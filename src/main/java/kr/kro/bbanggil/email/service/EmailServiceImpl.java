@@ -35,6 +35,8 @@ public class EmailServiceImpl implements EmailService {
 			sendEmail(toEmail, subject, body);
 			logger.info(" 이메일 발송 성공: {}", toEmail);
 			return true; // 이메일 발송 성공 시 true 반환
+			
+			
 
 		} catch (Exception e) {
 			logger.error("❌ 이메일 발송 실패: {}, 오류 메시지: {}", toEmail, e.getMessage(), e);

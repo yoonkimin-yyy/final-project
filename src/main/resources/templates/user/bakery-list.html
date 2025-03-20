@@ -74,7 +74,7 @@
                 <div class="slide-indicators" th:id="indicators + ${iterStat.index+1}"></div>
             </div>
             <div class="list-item-info">
-                <a href="">
+                <a th:href="@{/bakery/detail/{bakeryNo}(bakeryNo=${post.bakeryNo})}"	>
                     <h2 class="list-item-title" th:text="${post.bakeryName}"></h2>
                 </a>
                 <p class="list-item-address">📍<span th:text="${post.bakeryAddress}"></span></p>

@@ -146,4 +146,19 @@ public class OrderServiceImpl implements OrderService {
 		return null;
 	}
 
+	/*
+	 * 사용자가 해당 주문의 주인인지 확인
+	 */
+	@Override
+	public boolean isUserOrder(Integer userNo, Integer orderNo) {
+		
+		return orderMapper.countByUserAndOrder(userNo, orderNo) > 0;
+	}
+	
+	
+	
+	
+	
+	
+	
 }

@@ -1,5 +1,6 @@
 package kr.kro.bbanggil.bakery.service;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,8 @@ public interface BakeryService {
 	
 	public String getTodayDayOfWeek();
 
+
+	
 
 	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo) throws Exception;
 

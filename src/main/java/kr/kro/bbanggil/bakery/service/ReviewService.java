@@ -32,4 +32,9 @@ public interface ReviewService {
 	
 	Map<String,Integer> getTagCounts(double bakeryNo);
 	
+
+	
+	
+	
+	
 }

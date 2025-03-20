@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
-import kr.kro.bbanggil.bakery.dto.kakaoPlace.KakaoPlaceDto;
+import kr.kro.bbanggil.bakery.dto.response.KakaoPlaceResponseDto;
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
 import lombok.RequiredArgsConstructor;
 
@@ -63,11 +63,11 @@ public class KakaoMapApiController {
 		
 		
 		// JSON을 List<KakaoPlaceDto>로 변환
-		 List<KakaoPlaceDto> places = objectMapper.readValue(documents.toString(), new TypeReference<List<KakaoPlaceDto>>() {});
+		 List<KakaoPlaceResponseDto> places = objectMapper.readValue(documents.toString(), new TypeReference<List<KakaoPlaceResponseDto>>() {});
 		
 		 System.out.println(places.size());
 		 
-		 for(KakaoPlaceDto place : places) {
+		 for(KakaoPlaceResponseDto place : places) {
 			
 			 if(place.getAddressName().contains(region)) {
 				 BakeryDto bakery = new BakeryDto();
