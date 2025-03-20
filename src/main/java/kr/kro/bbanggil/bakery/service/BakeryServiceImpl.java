@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import groovy.transform.Undefined.EXCEPTION;
+import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.api.KakaoController;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
@@ -144,12 +145,16 @@ public class BakeryServiceImpl implements BakeryService{
 	/**
 	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
 	 * address : 받아온 주소를 " "기준으로 잘라서 배열에 넣어두는 변수
+	 * @param role 
 	 * @throws Exception 
 	 */
 	@Override
 	@Transactional(rollbackFor = EXCEPTION.class)
-	public void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo) throws Exception {
+	public void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo, String role) throws Exception {
 		try {
+			if(role.equals("owner"))
+				throw new BakeryException("사장이 아닙니다","common/error",HttpStatus.BAD_REQUEST);
+			
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
 				
 			String[] address = bakeryRequestDTO.getBakeryAddress().split(" ");
@@ -227,6 +232,7 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
 		bakeryUpdateResponseDTO response = bakeryMapper.getBakeryInfo(bakeryNo);
+		System.out.println(response.getBakeryPhone());
 		response.setImgDTO(bakeryMapper.getBakeryImg(bakeryNo));
 		List<BakeryTimeSetDTO> timeDTO = bakeryMapper.getBakerySchedule(bakeryNo);
 		setBakeryOperatingHours(response,timeDTO);
@@ -342,7 +348,10 @@ public class BakeryServiceImpl implements BakeryService{
 
 	@Override
 	public List<MenuResponseDto> getMenuInfo(double no){
-		return bakeryMapper.getMenuInfo(no);
+	
+		List<MenuResponseDto> menuList = bakeryMapper.getMenuInfo(no);
+		
+		return menuList;
 	}
 
 	@Override
