@@ -1,7 +1,11 @@
 package kr.kro.bbanggil.common.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,9 +27,12 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public String handleValidException(Model model) {
-		model.addAttribute("message","Validation(유효성검증) 오류!!!");
-		model.addAttribute("status",HttpStatus.BAD_REQUEST);
+	public String handleValidException(Model model,MethodArgumentNotValidException ex) {
+		Map<String,String> errors = new HashMap<>();
+		for(FieldError error : ex.getBindingResult().getFieldErrors()) {
+			errors.put(error.getField(), error.getDefaultMessage());
+		}
+		model.addAttribute("error",errors);
 		
 		return "common/error";
 		
