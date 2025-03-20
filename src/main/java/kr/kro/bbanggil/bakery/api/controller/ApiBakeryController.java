@@ -33,8 +33,8 @@ public class ApiBakeryController {
 			int postCount = bakeryService.totalCount(bakerySearchDTO);
 			int pageLimit = 5;
 			int boardLimit = 10;
+			System.out.println("에이젝스");
 			Map<String, Object> result = bakeryService.bakeryList(pageNation,currentPage,postCount,pageLimit,boardLimit,orderType,bakerySearchDTO);
-			
 			PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
 			
 			List<BakeryInfoDTO> postsResult = (List<BakeryInfoDTO>) result.get("posts");

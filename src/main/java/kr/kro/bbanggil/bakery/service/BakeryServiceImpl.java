@@ -81,17 +81,23 @@ public class BakeryServiceImpl implements BakeryService {
 		
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		
-		System.out.println(pi.getLimit());
-		System.out.println(pi.getOffset());
+		System.out.println("day : " + getTodayDayOfWeek());
+		System.out.println("bakerySearchDTO.getSearchText" + bakerySearchDTO.getSearchText());
+		
+		System.out.println("bakerySearchDTO.getKeyword1()"+bakerySearchDTO.getKeyword1());
+		System.out.println("bakerySearchDTO.getKeyword2()"+bakerySearchDTO.getKeyword2());
+		System.out.println("orderType : " + orderType);
+		System.out.println("offset = "+pi.getOffset());
+		System.out.println("boardLimit = aaa"+pi.getBoardLimit());
 		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
 															getTodayDayOfWeek(),
 															orderType,
 															bakerySearchDTO);
 		
-		for(BakeryInfoDTO item : posts) {
+		for(BakeryInfoDTO item : posts)
+		{
 			System.out.println(item.getBakeryName());
 		}
- 		
 		List<List<BakeryInfoDTO>> images = new ArrayList<>();
 		
 		for (int i = 0; i < posts.size(); i++) {

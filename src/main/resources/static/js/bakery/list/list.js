@@ -214,7 +214,7 @@ $(document).ready(function() {
         if (isLoading) return; // 이미 로딩 중이면 중복 실행 방지
         isLoading = true; 
         console.log("Loading more posts...");
-		console.log(currentPage)
+		console.log("현재페이지"+currentPage)
         $('#loading').show(); // 로딩 표시
 
         $.ajax({
