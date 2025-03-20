@@ -105,6 +105,15 @@ function closeReviewModal() {
 }
 // ===== 리뷰 작성 버튼 클릭 이벤트 =====
 document.getElementById('openReviewModal')?.addEventListener('click', () => {
+	const userNo = document.getElementById("userNum").value;
+	console.log(userNo);
+	
+	if (!userNo || userNo === "null" || userNo === "") {
+	        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
+			window.location.href = window.location.origin + "/register/loginin/form";
+	        return;
+	    }
+	
     openReviewModal();
 });
 
@@ -579,11 +588,11 @@ function updateTagCountsOnEdit(prevTags, newTags) {
 	const checkoutButton = document.querySelector('.checkout-button');
 
 	checkoutButton.addEventListener('click', () => {
-		const userNo = document.getElementById("userNo").value;
+		const userNo = document.getElementById("userNum").value;
 		
 		if (!userNo || userNo === "null") {
 		     alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-		     window.location.href = "/login"; 
+			 window.location.href = window.location.origin + "/register/loginin/form";
 		     return;
 		 }
 
@@ -617,13 +626,14 @@ function updateTagCountsOnEdit(prevTags, newTags) {
 	
 	document.getElementById("orderForm").addEventListener("submit", function(event) {
 	    event.preventDefault(); // 기본 폼 전송 방지
-		const userNo = document.getElementById("userNo").value;
+		const userNo = document.getElementById("userNum").value;
 
+		console.log(userNo);
 		
 		if (!userNo || userNo === "null") {
 		       event.preventDefault(); // 폼 제출 방지
 		       alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-		       window.location.href = "/login"; // 로그인 페이지로 이동
+			   window.location.href = window.location.origin + "/register/loginin/form";
 		       return;
 		   }
 
@@ -774,6 +784,9 @@ function getBakeryNoFromURL() {
 
 // bakeryNo 값 가져오기
 const bakeryNo = getBakeryNoFromURL();
+
+
+
 
 
 function initKakaoMap() {

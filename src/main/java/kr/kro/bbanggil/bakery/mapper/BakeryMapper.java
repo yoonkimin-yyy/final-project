@@ -62,7 +62,7 @@ public interface BakeryMapper {
 	List<BakeryDto> getBakeriesByRegion(@Param("region") String region); // 지역에 따른 빵집 마커 select
 	
 	List<BakeryDto> getPopularBakeries(); // 인기빵집 select
-	List<BakeryDto> getRecentBakeries();
+	List<BakeryDto> getRecentBakeries(@Param("bakeryNo") double bakeryNo);
 	List<BakeryDto>getCategoryBakeries(@Param("categoryNames") List<String> categoryName);
 	List<BakeryDto> getTopFiveOrders(); 
 	
