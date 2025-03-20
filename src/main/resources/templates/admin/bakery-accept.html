@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+<link rel="stylesheet" th:href="@{/css/admin/user-detail.css}">
+<link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+<link rel="stylesheet" th:href="@{/css/admin/bakery-accpet.css}">
+</head>
+
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+
+<body>
+	<form th:action="@{/admin/bakery/update}" method="post" id="bakeryForm">
+		<input type="hidden" name="action" id="actionInput"> <input
+			type="hidden" name="listNum" th:value="${listNum}">
+		<div class="containers">
+			<h1 style="text-align: center;">신청정보</h1>
+			<table>
+				<tr>
+					<th>신청번호</th>
+					<td th:text="${listNum}"></td>
+				</tr>
+				<tr>
+					<th>유저 ID</th>
+					<td th:text="${result.userId}"></td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td th:text="${result.userName}"></td>
+				</tr>
+				<tr>
+					<th>핸드폰번호</th>
+					<td th:text="${result.userPhoneNum}"></td>
+				</tr>
+				<tr>
+					<th>사업자번호</th>
+					<td>빨리해주세요 전주영님</td>
+				</tr>
+				<tr>
+					<th>가게명</th>
+					<td th:text="${result.bakeryName}"></td>
+				</tr>
+				<tr>
+					<th>가게주소</th>
+					<td th:text="${result.bakeryAddress}"></td>
+				</tr>
+				<tr>
+					<th>가게사진</th>
+					<td><img th:sc="@{/uploads/bakery/c481cfe7-7cr98-4f7d-862e-67f70dae25d0.webp}"></img></td>
+				</tr>
+				<tr>
+					<th>메뉴</th>
+					<td><button id="openModalBtn">메뉴보기</button></td>
+				</tr>
+				<tr>
+					<th>실내정보</th>
+					<td th:text="${result.insideInfo}"></td>
+				</tr>
+				<tr>
+					<th>실외정보</th>
+					<td th:text="${result.outsideInfo}"></td>
+				</tr>
+				<tr>
+					<th>주차장</th>
+					<td th:text="${result.amenity}"></td>
+				</tr>
+			</table>
+
+			<div id="reject-reason" class="reject-reason">
+				<label for="reason">거절 사유:</label>
+				<textarea id="reason" name="rejectReason"
+					placeholder="거절 사유를 입력하세요..."></textarea>
+			</div>
+
+			<div class="btn-container">
+				<button class="btn edit-btn" onclick="handleAction('승인')">승인</button>
+				<button class="btn delete-btn" onclick="handleAction('거절')">거절</button>
+				<button id="back-btn" onclick="goBack()">뒤로가기</button>
+			</div>
+		</div>
+	</form>
+
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span id="closeBtn" class="close">&times;</span>
+			<h2>모달 창 내용</h2>
+			<p>이곳은 모달 창 내용입니다!</p>
+			<button onclick="alert('모달에서 확인!')">확인</button>
+		</div>
+	</div>
+
+</body>
+
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
+<script src="/js/admin/bakery-accept.js"></script>
+
+</html>

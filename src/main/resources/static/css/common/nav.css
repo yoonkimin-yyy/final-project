@@ -2,7 +2,6 @@
     padding: 12px 0;
     background-color: #fff;
     border-bottom: 1px solid #eee;
-    overflow-x: auto;
 }
 
 .nav-scroll {
@@ -33,4 +32,46 @@
 }
 .nav-buttons {
     display: flex;
+}
+
+
+/* 드롭다운 css */
+.dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        min-width: 150px;
+        z-index: 1000;
+    }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-item {
+        display: block;
+        padding: 10px;
+        color: black;
+        text-decoration: none;
+    }
+    .dropdown-item:hover {
+        background-color: #f0f0f0;
+    }
+
+.change{
+	background-color: #fff;
+	border : 0;
+}
+a{
+	text-decoration : none;
+	color: inherit;
+}
+*{
+	margin:0;
+	padding:0;
+	box-sizing :border-box;
 }

@@ -56,29 +56,98 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+	const fileInputs = document.querySelectorAll("input[type=file]");
+	        const previewMap = {}; // 각 input 별 이미지 리스트 저장
+
+	        fileInputs.forEach(input => {
+	            const previewContainerId = input.getAttribute("data-preview-container");
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const previewImage = previewContainer.querySelector(".preview-img");
+	            const prevBtn = previewContainer.querySelector(".prev-btn");
+	            const nextBtn = previewContainer.querySelector(".next-btn");
+
+	            previewMap[previewContainerId] = { images: [], currentIndex: 0 };
+
+	            input.addEventListener("change", function (event) {
+	                handleFileChange(event.target, previewContainerId);
+	            });
+
+	            prevBtn.addEventListener("click", () => changeImage(previewContainerId, -1));
+	            nextBtn.addEventListener("click", () => changeImage(previewContainerId, 1));
+	           
+	        });
+
+	        function handleFileChange(inputElement, previewContainerId) {
+	            const files = inputElement.files;
+	            if (files.length === 0) return;
+
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const previewImage = previewContainer.querySelector(".preview-img");
+	            const prevBtn = previewContainer.querySelector(".prev-btn");
+	            const nextBtn = previewContainer.querySelector(".next-btn");
+
+	            previewMap[previewContainerId].images = [];
+	            previewMap[previewContainerId].currentIndex = 0;
+
+	            Array.from(files).forEach(file => {
+	                const reader = new FileReader();
+	                reader.onload = function (e) {
+	                    previewMap[previewContainerId].images.push(e.target.result);
+	                    if (previewMap[previewContainerId].images.length === 1) {
+	                        previewImage.src = e.target.result;
+	                        previewImage.style.display = "block";
+	                        updateButtons(previewContainerId);
+	                    }
+	                };
+	                reader.readAsDataURL(file);
+	            });
+	        }
+
+	        function changeImage(previewContainerId, direction) {
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const previewImage = previewContainer.querySelector(".preview-img");
+	            let data = previewMap[previewContainerId];
+
+	            if (!data.images.length) return;
+
+	            data.currentIndex += direction;
+	            if (data.currentIndex < 0) data.currentIndex = 0;
+	            if (data.currentIndex >= data.images.length) data.currentIndex = data.images.length - 1;
+
+	            previewImage.src = data.images[data.currentIndex];
+	            updateButtons(previewContainerId);
+	        }
+
+	        function updateButtons(previewContainerId) {
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const prevBtn = previewContainer.querySelector(".prev-btn");
+	            const nextBtn = previewContainer.querySelector(".next-btn");
+	            let data = previewMap[previewContainerId];
+				console.log(data.currentIndex);
+
+	            /*prevBtn.style.display = data.currentIndex > 0 ? "block" : "none";
+	            nextBtn.style.display = data.currentIndex < data.images.length - 1 ? "block" : "none";*/
+	        }
 });
 
 function openUpdateMenu() {
     window.open("/bakery/menu/insert/form", "_blank", "width=600, height=400, top=100, left=100");
 }
 
-function previewImages(event, previewId) {
-            const previewContainer = document.getElementById(previewId);
-            previewContainer.innerHTML = ''; // 기존 이미지 초기화
-            const files = event.target.files;
+function updateCharCount(textareaId, displayId) {
+	
+            let textarea = document.getElementById(textareaId);
+            let charCount = textarea.value.length // textarea의 글자수 가져오기
+            let maxLength = 500; // 최대 글자수
+            let charCountDisplay = document.getElementById(displayId);
+            
+            // 글자수와 최대 글자수를 업데이트
+            charCountDisplay.textContent = charCount + '/' + maxLength;
 
-            for (const file of files) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '150px';
-                    img.style.margin = '5px';
-                    previewContainer.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+            // 글자수가 최대 길이를 넘지 않도록 제한
+            if (charCount > maxLength) {
+                textarea.value = textarea.value.substring(0, maxLength);
             }
         }
 
-
-
+		   

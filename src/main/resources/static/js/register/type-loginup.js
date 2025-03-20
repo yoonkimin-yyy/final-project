@@ -1,13 +1,13 @@
-    const typeUser = document.querySelector('.type-user');
-    const typeBusiness = document.querySelector('.type-business');
-    const typeBtn = document.querySelectorAll('.type-btn');
+document.addEventListener("DOMContentLoaded", function () {
+    const userButton = document.getElementById('loginup-btn');
+    const businessButton = document.getElementById('businessloginup-btn');
 
-    typeBtn.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            if (btn.textContent === '일반 회원가입') {
-                location.href = './checkbox.html';
-            } else {
-                location.href = './checkbox.html';
-            }
-        });
-    });
+});
+function typeUser() {
+	const userButton = document.getElementById('loginup-btn');
+	location.href = '/register/checkbox?type=user'
+}
+function typeBusiness() {
+	const businessButton = document.getElementById('businessloginup-btn');
+	location.href = '/register/checkbox?type=business'
+}

@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>빵지순례 - 전국 빵집 탐방 가이드</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/css/common/header.css">
-    <link rel="stylesheet" href="/css/common/nav.css">
-    <link rel="stylesheet" href="/css/home/home.css">
-    <link rel="stylesheet" href="/css/common/footer.css">
-    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <link rel="stylesheet" th:href="@{/css/register/business-loginup.css}">
     <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
@@ -23,29 +15,23 @@
 
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-    	<link rel="stylesheet" th:href="@{/css/register/checkbox.css}">
-    	<script src="/js/register/checkbox.js"></script>
-   	</head>
-    	<link rel="stylesheet" th:href="@{/css/register/business-loginup.css}">
-    	<script src="/js/register/business-loginup.js"></script>
-</head>
-    <main>
+<main>
+    <form autocomplete="off" class="loginup-form" action="/register/businessloginup" method="post">
         <div class="loginup-container">
             <h2>회원가입 (사업자)</h2>
-            <form autocomplete="off" class="loginup-form" action="/loginup" method="post">
                 <div class="form-group">
                     <div class="loginup-input-div">
                     <div class="loginup-id">
                         <label for="userid"></label>
                         <input class="loginup-input-id" type="text" placeholder="아이디"
-                               id="userid" name="userid" required>
-                        <button class="id-check-btn" type="button">중복확인</button>
+                               id="userid" name="userId" required>
+                        <button class="id-check-btn" type="button" id="id-check-btn">중복확인</button>
                     </div>
                     </div>
                     <div class="loginup-input-div">
                         <label for="password"></label>
                         <input class="loginup-input-first" type="password" placeholder="비밀번호"
-                               id="password" name="password" required>
+                               id="password" name="userPassword" required>
                     </div>
                     <div class="loginup-input-div">
                         <label for="password-confirm"></label>
@@ -60,7 +46,8 @@
                     <div class="business-input-div">
                         <label for="business-number"></label>
                         <input class="business-number" type="text" placeholder="사업자번호(-없이)"
-                               id="business-number" name="business-number" required>
+                               id="business-number" name="businessNoDto.businessNo" required>
+                        <button type="button" class="business-btn" id="business-btn" onclick="corp_chk();">사업자번호<br>확인</button>
                     </div>
                     <div class="error-text" id="business-msg"></div>
                 </div>
@@ -68,22 +55,22 @@
                     <div class="loginup-input-div">
                         <label style="margin-left: 3px;" for="birthdate">생년월일</label>
                         <input class="loginup-input-first" type="date" 
-                               id="birthdate" name="birthdate" required>
+                               id="birthdate" name="userBirthDate" required>
                     </div>
                     <div class="loginup-input-div">
                         <label for="username"></label>
                         <input class="loginup-input" type="text" placeholder="이름"
-                               id="username" name="username" required>
+                               id="username" name="userName" required>
                     </div>
                     <div class="loginup-input-div">
                         <label for="email"></label>
                         <input class="loginup-input" type="email" placeholder="이메일"
-                               id="email" name="email" required>
+                               id="email" name="userEmail" required>
                     </div>
                     <div class="loginup-input-div">
                         <label for="phone"></label>
                         <input class="loginup-input-last" type="tel" placeholder="휴대폰번호 (-없이)"
-                                style="border-top: 0px;" id="phone" name="phone" required>
+                                style="border-top: 0px;" id="phone" name="userPhoneNum" required>
                     </div>
                 <div class="error-text" id="birthday-msg"></div>
                 <div class="error-text" id="name-msg"></div>
@@ -96,19 +83,20 @@
                     <input class="phone-auth" type="text" placeholder="인증번호"
                            id="phone-auth" name="phone-auth" required>
                     <div class="error-text" id="phone-auth-msg"></div>
-                <button class="phone-btn" type="button">인증번호받기</button>
+                <button id="phone-btn" class="phone-btn" type="button" onclick="sendSMS()">인증번호받기</button>
+                <button id="check-btn" class="phone-btn" type="button" onclick="checkSMS()">인증번호확인</button>
                 </div>
                 <div class="loginup-btn-div">
-                    <button class="loginup-btn" type="button">가입하기</button>
+                    <button class="loginup-btn" type="submit">가입하기</button>
                 </div>
             </div>
             <div class="loginup-link">
-                <a href="./loginup.html">일반회원가입하기</a>
+                <a href="/register/loginup/form">일반회원가입하기</a>
             </div>
-            </form>
-        </div>
-    </main>
+	</form>
+</main>
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
-    <script src="./business-loginup.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/register/business-loginup.js"></script>
 </body>
 </html>

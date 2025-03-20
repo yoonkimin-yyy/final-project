@@ -2,16 +2,18 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
     <link rel="stylesheet" th:href="@{/css/owner/menu/insert/insert.css}">
-    <title>메뉴 추가</title>
 </head>
 
 <body>
-    <form id="insertForm" th:action="@{/bakery/menu/insert}" method="post" enctype="multipart/form-data">
+	<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+	
+	
+    <form id="insertForm" th:action="@{/bakery/img/insert}" method="post" enctype="multipart/form-data" >
         <label for="menuImage" class="menu-image">+</label>
-        <input type="file" id="menuImage" name="menuImage" style="display: none;" multiple>
+        <input type="file" id="menuImage" name="menuImage" style="display: none;" multiple accept="image/*">
         <div class="menu-info">
             <input type="text" id="menuName" name="menuName" placeholder="메뉴명">
             <input type="text" id="menuPrice" name="menuPrice" placeholder="가격">
@@ -25,6 +27,7 @@
         </div>
         <button class="add-to-menu" type="submit">메뉴추가</button>
     </form>
+    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
     <script src="/js/owner/menu/insert/insert.js"></script>
 </body>
 

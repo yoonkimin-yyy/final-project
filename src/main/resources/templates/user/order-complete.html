@@ -2,12 +2,8 @@
 <html>
 
 <head>
-    <title>주문완료</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
     <link rel="stylesheet" th:href="@{/css/order/order-complete.css}">
-	<link rel="stylesheet" href="/css/common/footer.css">
-	<link rel="stylesheet" href="/css/common/nav.css">
-	<link rel="stylesheet" href="/css/common/header.css">
 </head>
 
 <header th:replace="~{fragments/header :: HeaderFragment}"></header>
@@ -58,11 +54,11 @@
         </div>
         
         <div class="button-container">
-            <button class="nav-button home-button" onclick="window.location.href='/'">
+            <button class="nav-button home-button" th:onclick="|location.href='@{/bbanggil/home}'|">
                 <i class="fas fa-home"></i>
                 홈으로 가기
             </button>
-            <button class="nav-button mypage-button" onclick="window.location.href='/mypage'">
+            <button class="nav-button mypage-button" th:onclick="|location.href='@{/mypage}'|">
                 <i class="fas fa-user"></i>
                 마이페이지
             </button>

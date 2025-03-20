@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import kr.kro.bbanggil.bakery.exception.BakeryException;
+import kr.kro.bbanggil.order.exception.OrderException;
+import kr.kro.bbanggil.pickup.exception.PickupException;
 
 
 @ControllerAdvice
@@ -22,11 +24,27 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public String handleValidException(Model model) {
-		model.addAttribute("message","Validation(유효성검증)ㄴ 오류!!!");
+		model.addAttribute("message","Validation(유효성검증) 오류!!!");
 		model.addAttribute("status",HttpStatus.BAD_REQUEST);
 		
 		return "common/error";
 		
 	}
 	
+	@ExceptionHandler(OrderException.class)
+	public String handleOrderException(OrderException oe, Model model) {
+		model.addAttribute("message", oe.getMessage());
+		model.addAttribute("status", oe.getStatus().value());
+		
+		return oe.getPath();
+	}
+	
+	
+	@ExceptionHandler(PickupException.class)
+	public String handlePickupException(PickupException oe, Model model) {
+		model.addAttribute("message", oe.getMessage());
+		model.addAttribute("status", oe.getStatus().value());
+		
+		return oe.getPath();
+	}
 }
