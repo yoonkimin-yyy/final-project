@@ -134,5 +134,20 @@ function openUpdateMenu() {
     window.open("/bakery/menu/insert/form", "_blank", "width=600, height=400, top=100, left=100");
 }
 
+function updateCharCount(textareaId, displayId) {
+	
+            let textarea = document.getElementById(textareaId);
+            let charCount = textarea.value.length // textarea의 글자수 가져오기
+            let maxLength = 500; // 최대 글자수
+            let charCountDisplay = document.getElementById(displayId);
+            
+            // 글자수와 최대 글자수를 업데이트
+            charCountDisplay.textContent = charCount + '/' + maxLength;
+
+            // 글자수가 최대 길이를 넘지 않도록 제한
+            if (charCount > maxLength) {
+                textarea.value = textarea.value.substring(0, maxLength);
+            }
+        }
 
 		   

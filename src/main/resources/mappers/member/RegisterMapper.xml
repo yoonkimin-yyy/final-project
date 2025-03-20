@@ -105,7 +105,8 @@
 		  SELECT USER_NO,
                	 USER_ID,
                	 USER_NAME,
-               	 USER_PASSWORD
+               	 USER_PASSWORD,
+               	 USER_TYPE
         FROM USER_INFO
         WHERE USER_ID = #{userId}
     </select>

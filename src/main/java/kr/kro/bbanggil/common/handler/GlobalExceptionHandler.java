@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.order.exception.OrderException;
+import kr.kro.bbanggil.pickup.exception.PickupException;
 
 
 @ControllerAdvice
@@ -32,6 +33,15 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(OrderException.class)
 	public String handleOrderException(OrderException oe, Model model) {
+		model.addAttribute("message", oe.getMessage());
+		model.addAttribute("status", oe.getStatus().value());
+		
+		return oe.getPath();
+	}
+	
+	
+	@ExceptionHandler(PickupException.class)
+	public String handlePickupException(PickupException oe, Model model) {
 		model.addAttribute("message", oe.getMessage());
 		model.addAttribute("status", oe.getStatus().value());
 		

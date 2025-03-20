@@ -1,17 +1,14 @@
 package kr.kro.bbanggil.pickup.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.pickup.exception.PickupException;
 import kr.kro.bbanggil.pickup.mapper.PickupMapper;
 import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;
-import kr.kro.bbanggil.pickup.response.dto.PickupMenuResponseDTO;
-import kr.kro.bbanggil.pickup.response.dto.PickupPaymentResponseDTO;
-import kr.kro.bbanggil.pickup.response.dto.PickupPaymentResponseDTO;
 
 
 
@@ -28,7 +25,7 @@ public class PickupServiceImpl implements PickupService{
 	public List<PickupBakeryInfoResponseDTO> getAllOrders(int userNo, int bakeryNo) {
 	    List<Integer> result = pickupMapper.getBakeryNoByUserNo(userNo);
 	    if (result.isEmpty()) {
-	        return null;
+	        throw new PickupException("소유한 가게가 없습니다.","common/error",HttpStatus.BAD_REQUEST);
 	    }
 	    
 	    int[] bakeryNosArray = result.stream().mapToInt(Integer::intValue).toArray();
@@ -50,7 +47,7 @@ public class PickupServiceImpl implements PickupService{
 	        }
 	        return orderList;
 	    }
-	    return null;
+	    throw new PickupException("본인의 가게가 아닙니다.","common/error",HttpStatus.BAD_REQUEST);
 	}
     
     // 상태 업데이트
