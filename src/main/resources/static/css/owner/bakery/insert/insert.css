@@ -207,13 +207,10 @@ body {
 	display: flex;
     justify-content : center;
     align-items : center;
-    position : absolute;
     height: 50px;
     width: 150px;
     border: 2px solid rgb(202, 156, 50);
     border-radius: 10px;
-    top :1035px;
-    left : 510px;
 }
 .parking-text{
     width: 300px;
@@ -308,3 +305,8 @@ body {
 .nav-btn:hover { background-color: rgba(0, 0, 0, 0.8); }
 .prev-btn { left: 10px; }
 .next-btn { right: 10px; }
+.flex{
+	display:flex;
+	align-items:center;
+	gap : 10px;
+}
