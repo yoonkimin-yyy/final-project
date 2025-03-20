@@ -13,6 +13,7 @@
     const authButton = document.getElementById('phone-btn');
     const submitButton = document.querySelector('.loginup-btn');
     const checkButton = document.getElementById('check-btn');
+	const postcodeBtn = document.getElementById('postcode-btn');
 
     const idMsg = document.getElementById('id-msg');
     const passwordMsg = document.getElementById('password-msg');
@@ -46,12 +47,12 @@
             isIdValid = false;
             return false;
         }
-        if (!/^[a-zA-Z0-9]{5,20}$/.test(getId)) {
-            $("#id-msg").css("color", "red").text("아이디는 영문자와 숫자 조합으로 5~20자여야 합니다.");
-            isIdValid = false;
-            return false;
-        }
-
+		if (!/^(?=.*[a-z])(?=.*\d)[a-z0-9]{5,20}$/.test(getId)) {
+		    $("#id-msg").css("color", "red").text("아이디는 영문 소문자와 숫자, 5~20자로 입력해야 합니다.");
+		    isIdValid = false;
+		    return false;
+		}
+		
         // 유효성 검사 통과
         $("#id-msg").text("");
         isIdValid = true;
@@ -92,14 +93,68 @@
             }
         });
     }
+	
+	// 비밀번호 유효성검사, 비밀번호 확인
+	function validatePassword() {
+	    const password = passwordInput.value;
+	    const passwordConfirm = passwordConfirmInput.value;
+	    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
 
+	    // 비밀번호 유효성 검사
+	    if (password.trim() === '') {
+	        passwordMsg.textContent = '* 비밀번호는 필수 입력 항목입니다.';
+	        passwordMsg.style.color = 'red';
+	    } else if (!passwordRegex.test(password)) {
+	        passwordMsg.textContent = '비밀번호는 영문자, 숫자, 특수문자를 포함해 8~20자여야 합니다.';
+	        passwordMsg.style.color = 'red';
+	    } else {
+	        passwordMsg.textContent = '사용 가능한 비밀번호입니다.';
+	        passwordMsg.style.color = 'green';
+	    }
+
+	    // 비밀번호 확인 검사
+	    if (passwordConfirm.trim() !== '' && password !== passwordConfirm) {
+	        passwordConfirmMsg.textContent = '비밀번호가 일치하지 않습니다.';
+	        passwordConfirmMsg.style.color = 'red';
+	    } else if (passwordConfirm.trim() !== '') {
+	        passwordConfirmMsg.textContent = '비밀번호가 일치합니다.';
+	        passwordConfirmMsg.style.color = 'green';
+	    } else {
+	        passwordConfirmMsg.textContent = '';
+	    }
+	}
+
+	// 비밀번호 입력할 때마다 검사 실행 
+	passwordInput.addEventListener('input', validatePassword);
+	passwordConfirmInput.addEventListener('input', validatePassword);
+	
+	// 이름 실시간 유효성 검사
+	function validateName() {
+	    const name = nameInput.value.trim();
+	    const nameRegex = /^[가-힣]{2,10}$/; // 한글 2~10자
+
+	    if (name === '') {
+	        nameMsg.textContent = '* 이름은 필수 입력 항목입니다.';
+	        nameMsg.style.color = 'red';
+	    } else if (!nameRegex.test(name)) {
+	        nameMsg.textContent = '이름은 한글만 가능하며 2자 이상, 10자 이하여야 합니다.';
+	        nameMsg.style.color = 'red';
+	    } else {
+	        nameMsg.textContent = '올바른 이름 형식입니다.';
+	        nameMsg.style.color = 'green';
+	    }
+	}
+
+	// 입력할 때마다 검사 실행
+	nameInput.addEventListener('input', validateName);
+	
 	// 이메일 유효성 검사 및 중복 체크 함수 
 	async function validateAndCheckEmail() {
 	    const userEmail = document.getElementById("email").value.trim();
 	    const emailMsg = document.getElementById("email-msg");
 	    const authButton = document.getElementById("phone-btn"); 
 
-	    // 이메일 유효성 검사 
+	    // 이메일 실시간 유효성 검사 
 	    if (userEmail === "") {
 	        emailMsg.style.color = "red";
 	        emailMsg.textContent = "* 이메일은 필수 입력 항목입니다.";
@@ -150,17 +205,34 @@
         $("#id-check-btn").click(checkId);  // 중복 체크 버튼 클릭 시 실행
         $("#userid").on("input", validateId); //  아이디 입력 시 유효성 검사 실행
     });
+	
+	// 핸드폰 번호 실시간 유효성 검사
+	function validatePhone() {
+	    const phoneNumber = phoneInput.value.trim();
+	    const phoneRegex = /^010\d{4}\d{4}$/;
 
+	    if (phoneNumber === '') {
+	        phoneMsg.textContent = '* 휴대폰 번호는 필수 입력 항목입니다.';
+	        phoneMsg.style.color = 'red';
+	    } else if (!phoneRegex.test(phoneNumber)) {
+	        phoneMsg.textContent = '휴대폰 번호는 010을 포함한 숫자 11자리로 입력해주세요.';
+	        phoneMsg.style.color = 'red';
+	    } else {
+	        phoneMsg.textContent = '번호 인증을 진행해주세요';
+	        phoneMsg.style.color = 'green';
+	    }
+	}
 
+	// 입력할 때마다 검사 실행
+	phoneInput.addEventListener('input', validatePhone);
 
+	// 인증번호 받기 버튼 눌렀을때 유효성 검사
     authButton.addEventListener('click', () => {
         // 유효성 검사 실행
         if (!validateForm()) {
-            alert("입력 필수 항목을 모두 채워주세요!");
             return;
         }
         if (!isIdChecked) {
-            alert("아이디 중복 체크는 필수입니다.");
             return false;
         }
 
@@ -176,6 +248,7 @@
             birthdateInput.setAttribute('readonly', true);
             nameInput.setAttribute('readonly', true);
             phoneInput.setAttribute('readonly', true);
+			postcodeBtn.disabled = true;
             authInput.style.display = 'block';
             authButton.textContent = '인증번호 재요청';
             submitButton.style.display = 'none';
@@ -190,7 +263,7 @@
         if (idInput.value.trim() === '') {
             idMsg.textContent = '* 아이디는 필수 입력 항목입니다.';
             isValid = false;
-        } else if (!/^[a-zA-Z0-9]{5,20}$/.test(idInput.value)) {
+        } else if (!/^(?=.*[a-z])(?=.*\d)[a-z0-9]{5,20}$/.test(idInput.value)) {
             idMsg.textContent = '아이디는 영문자와 숫자 조합으로 5~20자여야 합니다.';
             isValid = false;
         } else {
@@ -273,9 +346,6 @@
         return isValid;
     }
 
-
-
-
     // 가입하기 버튼
     submitButton.addEventListener('click', (event) => {
         const inputText = document.getElementById('sample6_address');
@@ -297,9 +367,6 @@
         document.getElementById('district').value = district;
         document.getElementById('street').value = street;
         document.getElementById('number').value = number;
-
-        alert('회원가입이 완료되었습니다!');
-		submitButton.submit();
     });
 
 // 주소 api
@@ -368,7 +435,13 @@ function sendSMS() {
     if (!phoneNumber) {
         phoneMsg.text("전화번호를 입력하세요.").css("color", "red");
         return;
-    }
+	}else if(!validateForm()) {
+		alert("입력하신 내용을 확인해 주세요.")
+		return;
+	}else if (!isIdChecked) {
+		alert("아이디 중복 체크는 필수 입니다!")
+	    return;
+	}
 
     phoneMsg.text(""); // 오류 메시지 초기화
 
@@ -378,8 +451,8 @@ function sendSMS() {
         contentType: "application/json",
         data: JSON.stringify({ phoneNumber: phoneNumber }),
         success: function (response) {
-            alert(response);
             phoneMsg.text("인증번호가 전송되었습니다.").css("color", "green");
+            alert(response);
 
 			checkButton.style.display = 'block';
         },
@@ -422,6 +495,7 @@ function checkSMS() {
             $("#phone-btn").hide();
 			checkButton.style.display = 'none';
 			submitButton.style.display = 'block';
+			authInput.style.display = 'none';
         },
         error: function (xhr) {
             alert("인증 실패");
