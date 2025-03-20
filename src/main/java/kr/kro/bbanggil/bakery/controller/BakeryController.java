@@ -137,6 +137,7 @@ public class BakeryController {
 	public String getBakeryImages(@RequestParam(value = "bakeryNo", required = false) double no,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
 			@RequestParam(value = "sort" ,defaultValue= "latest") String sort,
+			@SessionAttribute(name ="userNo", required = false)Integer userNo,
 			Model model) {
 
 		/**
@@ -191,16 +192,14 @@ public class BakeryController {
 		model.addAttribute("tagCounts", tagCounts);
 		model.addAttribute("bakeryNo", no);
 		
-		
-		
-		
+		model.addAttribute("userNo", userNo);
 		
 		
 		return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 	}
 
 	@PostMapping("/cart/add")
-	public String addCart(@RequestParam("userNo") int userNo, @RequestParam("orderData") String orderData) {
+	public String addCart(@SessionAttribute(name = "userNo", required = false) Integer userNo, @RequestParam("orderData") String orderData) {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();

@@ -31,5 +31,7 @@ public interface OrderService {
 	public PickupCheckResponseDto pickupCheckStatus(int payNo);
 
 	public int getPayNo(int userNo);
+	
+	public boolean isUserOrder(Integer userNo, Integer orderNo);
 
 }
