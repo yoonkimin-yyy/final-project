@@ -3,15 +3,13 @@
 
 <head>
 	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+	<script src="/js/owner/bakery/insert/insert.js" defer></script>
     <link rel="stylesheet" th:href="@{/css/owner/menu/insert/insert.css}">
 </head>
 
 <body>
-	<header th:replace="~{fragments/header :: HeaderFragment}"></header>
-	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-	
-	
-    <form id="insertForm" th:action="@{/bakery/img/insert}" method="post" enctype="multipart/form-data" >
+    <form id="insertForm" th:action="@{/bakery/menu/insert}" method="post" enctype="multipart/form-data" >
+    <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
         <label for="menuImage" class="menu-image">+</label>
         <input type="file" id="menuImage" name="menuImage" style="display: none;" multiple accept="image/*">
         <div class="menu-info">
@@ -27,7 +25,6 @@
         </div>
         <button class="add-to-menu" type="submit">메뉴추가</button>
     </form>
-    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
     <script src="/js/owner/menu/insert/insert.js"></script>
 </body>
 

@@ -17,7 +17,6 @@ function toggleDetail(clickedRow) {
         }
     }
 }
-function openUpdateMenu(bakeryNo) {
-	const url = `/bakery/menu/insert/form?bakeryNo=${bakeryNo}`;
-	    window.open(url, "_blank", "width=600, height=400, top=100, left=100");
+function openUpdateMenu() {
+    window.open("/bakery/menu/insert/form", "_blank", "width=600, height=400, top=100, left=100");
 }

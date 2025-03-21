@@ -36,9 +36,12 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
+import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
@@ -143,9 +146,9 @@ public class BakeryServiceImpl implements BakeryService{
 	 */
 	@Override
 	@Transactional(rollbackFor = EXCEPTION.class)
-	public void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo, String role) throws Exception {
+	public int bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo, String role) throws Exception {
 		try {
-			if(role.equals("owner"))
+			if(!role.equals("owner"))
 				throw new BakeryException("사장이 아닙니다","common/error",HttpStatus.BAD_REQUEST);
 			
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
@@ -205,7 +208,7 @@ public class BakeryServiceImpl implements BakeryService{
 					}
 				}
 				bakeryMapper.setBakery(bakeryRequestDTO.getBakeryNo(),userNo);	
-			
+			return bakeryRequestDTO.getBakeryNo();
 				
 		} catch (Exception e) {
 			
@@ -440,6 +443,30 @@ public class BakeryServiceImpl implements BakeryService{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public List<CategoryResponseDTO> getCategory() {
+		return bakeryMapper.getCategory();
+	}
+	@Override
+	public void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file) {
+		
+		try {
+			s3Upload.saveFile(file, menuDTO.getFileDTO());
+			bakeryMapper.menuInsert(menuDTO, bakeryNo);
+			bakeryMapper.menuFileUpload(menuDTO);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public List<MenuResponseDto> getMenuList(int bakeryNo) {
+			return bakeryMapper.getMenuList(bakeryNo);
+	}
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
+		return bakeryMapper.bakeryInfo(bakeryNo);
 	}
 
 }
