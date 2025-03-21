@@ -102,7 +102,7 @@ GROUP BY
 	</select>
 
 
-	<select id="getMenuInfo" resultType="kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto">
+	<select id="getMenuInfo" resultMap="DetailResultMap">
 
 		SELECT
 	*
@@ -111,9 +111,8 @@ FROM
 JOIN BAKERY_INFO bi 
 ON
 	bi.BAKERY_NO = m.BAKERY_NO
-	JOIN MENU_IMEGE mi 
-ON
-mi.MENU_NO = m.MENU_NO
+join BAKERY_IMAGE bi2
+ON bi.BAKERY_NO = bi2.BAKERY_NO 
 WHERE
 	bi.BAKERY_NO = #{no}
 		

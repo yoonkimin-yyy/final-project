@@ -216,7 +216,8 @@ public class BakeryController {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		
+		System.out.println(userNo);
+		System.out.println("📌 orderData (raw JSON): " + orderData); // 문자열로 넘어온 JSON
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();
 		
 		  try {
@@ -231,7 +232,7 @@ public class BakeryController {
 		
 		bakeryService.addCart(userNo, menuDtoList);
 
-		return "user/order-page";
+		return "redirect:/order/page";
 	}
 
 	@GetMapping("/kakao")
