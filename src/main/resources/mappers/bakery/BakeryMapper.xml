@@ -27,16 +27,7 @@
 		<result property="end" column="close_time"></result>
 	</resultMap>
 
-	<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
-		SELECT bi.BAKERY_NO,
-		bi.BAKERY_NAME,
-		bi.BAKERY_ADDRESS,
-		bd.AMENITY,
-		bd.INSIDE_INFO,
-		bd.OUTSIDE_INFO,
-		bd.CREATED_DATE
-		FROM BAKERY_INFO bi
-</select>
+	
 
 	
 	<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
@@ -54,6 +45,7 @@
 		WHERE bi.bakery_no =
 		${bakeryNo}
 	</select>
+	
 	<select id="getBakeryImg" resultMap="bakeryImgResultMap">
 		SELECT CHANGE_NAME,
 		FOLDER_NAME_PATH
@@ -128,7 +120,7 @@
 		'')
 	</insert>
 	<insert id="bakeryInsert">
-		<selectKey resultType="int" keyProperty="bakeryNo"
+		<selectKey resultType="int" keyProperty="bakeryNo">
 			order="BEFORE">
 			SELECT bakery_seq.nextval from dual
 		</selectKey>
