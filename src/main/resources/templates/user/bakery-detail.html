@@ -110,7 +110,7 @@
                 </div>
                 <!-- 메뉴 리스트 -->
                 <div class="menu-list active" id="menu">
-                    <div class="menu-item" th:each="menu : ${menuList}">
+                    <div class="menu-item" th:each="menu : ${menuList}" th:attr="data-menu-no=${menu.menuNo}">
                         <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}"
                             alt="메뉴 이미지" class="menu-image" width="100">
                         <div class="menu-info">

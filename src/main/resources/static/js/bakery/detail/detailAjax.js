@@ -30,7 +30,7 @@ function submitReview() {
    
 	
 	const reviewData = {
-	    userNo: 1,
+	    userNo: userNo,
 	    bakeryNo: bakeryNo,
 	    reviewDetail: content,
 	    reviewRating: rating,
