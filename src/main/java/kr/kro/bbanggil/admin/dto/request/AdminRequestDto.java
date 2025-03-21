@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminRequestDto {
 	
-	private String rejectReason;
+	private String address;
+	private String title;
+	private String content;
 	
 }

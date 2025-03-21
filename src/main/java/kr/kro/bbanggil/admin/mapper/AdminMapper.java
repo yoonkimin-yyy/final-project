@@ -12,10 +12,14 @@ public interface AdminMapper {
 
 	List<AdminResponseDto> subList();
 
+	List<AdminResponseDto> bakeryList();
+
+	List<AdminResponseDto> userId();
+	
 	AdminResponseDto acceptList(int listNum);
 
-	void update(@Param("action") String action, 
+	void update(@Param("action") String action,
 				@Param("listNum") int listNum,
 				@Param("rejectReason") String rejectReason);
-
+	
 }
