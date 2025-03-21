@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -210,20 +211,24 @@ public class BakeryController {
 	@PostMapping("/cart/add")
 	public String addCart( HttpSession session,@RequestParam("orderData") String orderData) {
 		
-		System.out.println("dfsfsfsfs!!!!");
-		Integer userNo = (Integer) session.getAttribute("userNum");
 		
-		System.out.println(userNo);
+		Integer userNo = (Integer) session.getAttribute("userNum");
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		
-		System.out.println("📌 orderData (raw JSON): " + orderData); // 문자열로 넘어온 JSON
-		
-		
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();
 		
+		  try {
+		        //  배열로 먼저 파싱하고 리스트로 변환
+		        MenuDetailRequestDto[] dtoArray = objectMapper.readValue(orderData, MenuDetailRequestDto[].class);
+		        menuDtoList = Arrays.asList(dtoArray);
+		    } catch (Exception e) {
+		        e.printStackTrace(); // 파싱 에러 로그
+		    }
+		
 
+		
 		bakeryService.addCart(userNo, menuDtoList);
 
 		return "user/order-page";
@@ -239,8 +244,7 @@ public class BakeryController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		
-		 	System.out.println("🔍 가져온 빵집 정보: " + bakery);
-	        System.out.println("🔍 가져온 Response 객체: " + bakery.getResponse());
+		 	
 		
 		return ResponseEntity.ok(bakery);
 	}
@@ -257,6 +261,7 @@ public class BakeryController {
 	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
 
 	    model.addAttribute("bakeriesInfo", bakeriesInfo);
+	    
 	    
 	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 	}
