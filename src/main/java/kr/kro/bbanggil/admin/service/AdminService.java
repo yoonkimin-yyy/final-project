@@ -2,6 +2,7 @@ package kr.kro.bbanggil.admin.service;
 
 import java.util.List;
 
+import kr.kro.bbanggil.admin.dto.request.AdminRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 
 public interface AdminService {
@@ -15,5 +16,7 @@ public interface AdminService {
 	AdminResponseDto acceptList(int listNum);
 
 	void update(String action, int listNum, String rejectReason);
+
+	void sendEmail(AdminRequestDto adminReqeustDto);
 
 }

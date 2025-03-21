@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.kro.bbanggil.admin.dto.request.AdminRequestDto;
+import kr.kro.bbanggil.admin.service.AdminService;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -14,13 +15,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class APiAdminController {
 	
+	private final AdminService adminService;
+	
 	@PostMapping("/sendEmail")
 	@ResponseBody
 	public String sendEmail(@RequestBody AdminRequestDto adminReqeustDto) {
 		
-		System.out.println(adminReqeustDto.getAddress());
-		System.out.println(adminReqeustDto.getAddress());
-		System.out.println(adminReqeustDto.getAddress());
+		adminService.sendEmail(adminReqeustDto);
 		
 		return "ok";
 	}
