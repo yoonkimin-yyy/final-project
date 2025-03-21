@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.bakery.mapper.BakeryMapper">
+
 	<resultMap id="bakeryInfoResultMap"
 		type="kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO">
 		<result property="bakeryNo" column="bakery_no"></result>
@@ -35,6 +36,20 @@
 		bd.OUTSIDE_INFO,
 		bd.CREATED_DATE
 		FROM BAKERY_INFO bi
+</select>
+
+	
+	<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
+		SELECT bi.BAKERY_NO,
+			   bi.BAKERY_NAME,
+			   bi.BAKERY_ADDRESS,
+			   bi.BAKERY_PHONE,
+			   bd.AMENITY,
+			   bd.INSIDE_INFO,
+			   bd.OUTSIDE_INFO,
+			   bd.CREATED_DATE 
+		FROM BAKERY_INFO bi 
+
 		JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
 		WHERE bi.bakery_no =
 		${bakeryNo}
