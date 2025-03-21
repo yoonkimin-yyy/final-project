@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  							"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "kr.kro.bbanggil.bakery.mapper.BakeryMapper">
+
+
+<resultMap id = "BakeryInfoDTO" type = "kr.kro.bbanggil.bakery.dto.BakeryInfoDTO">
+	<result property="bakeryNo" column="bakery_no"></result>
+	<result property="bakeryName" column="bakery_name"></result>
+	<result property="bakeryAddress" column="bakery_address"></result>
+	<result property="bakeryPhone" column="bakery_phone"></result>
+	<result property="bakeryLat" column="latitude"></result>
+	<result property="bakeryLog" column="longitude"></result>
+	<result property="bakeryRegion" column="region"></result>
+	<result property="reviewCount" column="review_count"></result>
+	
+	<association property="bakeryDetailDTO" javaType="kr.kro.bbanggil.bakery.dto.BakeryDetailDTO">
+		<result property = "bakeryNo" column="bakery_no"></result>
+		<result property="bakeryExp" column="bakery_exp"></result>
+		<result property="bakeryAmenity" column="AMENITY"></result>
+		<result property = "bakeryInsideInfo" column="inside_info"></result>
+		<result property = "bakeryOutSideInfo" column="outside_info"></result>
+		<result property = "bakeryCreatedDate" column="created_date"></result>
+		<result property = "bakerySubmissionDate" column="submission_date"></result>		
+	</association>
+	<association property="bakeryReviewDTO" javaType="kr.kro.bbanggil.bakery.dto.BakeryReviewDTO">
+		<result property="reviewNo" column="review_no"></result>
+		<result property="orderNo" column="order_no"></result>
+		<result property="userNo" column="user_no"></result>
+		<result property="reviewDetail" column="review_detail"></result>
+		<result property="reviewRating" column="review_avg"></result>
+		<result property="reviewDate" column="review_date"></result>
+		<result property="bakeryNo" column="bakery_no"></result>
+	</association>
+	<association property="bakeryScheduleDTO" javaType="kr.kro.bbanggil.bakery.dto.BakeryScheduleDTO">
+		<result property="scheduleNo" column="schdule_no"></result>	
+		<result property="bakeryNo" column="bakery_no"></result>	
+		<result property="bakeryDay" column="day"></result>	
+		<result property="bakeryOpenTime" column="open_time"></result>	
+		<result property="bakeryCloseTime" column="close_time"></result>	
+	</association>
+	<association property="bakeryImageDTO" javaType="kr.kro.bbanggil.bakery.dto.BakeryImageDTO">
+		<result property="bakeryImgNo" column="img_no"></result>	
+		<result property="changeName" column="change_name"></result>	
+		<result property="originalName" column="original_name"></result>	
+		<result property="extension" column="extension"></result>	
+		<result property="localPath" column="local_path"></result>	
+		<result property="resourcesPath" column="resources_path"></result>	
+		<result property="folderNamePath" column="folder_name_path"></result>	
+		<result property="position" column="position"></result>	
+		<result property="bakeryNo" column="bakery_no"></result>	
+	</association>
+</resultMap>
+
+<select id="totalCount">
+	SELECT COUNT(*) FROM bakery_info bi
+</select>
+<!-- 리스트 정보  -->
+<select id="bakeryList" resultMap="BakeryInfoDTO">
+	SELECT bi.bakery_no,
+		   bi.bakery_name,
+		   bi.bakery_address,
+		   bi.latitude,
+		   bi.longitude,
+		   bi.region,
+		   bd.amenity,
+		   bs."DAY",
+		   bs.open_time,
+		   bs.close_time,
+		   ROUND(AVG(r.review_rating),1) AS review_avg,
+		   COUNT(DISTINCT r.review_no) AS review_count,
+		   LISTAGG(DISTINCT mc.category, ', ') WITHIN GROUP (ORDER BY mc.category) AS category_list,
+		   LISTAGG(DISTINCT m.MENU_NAME, ', ') WITHIN GROUP (ORDER BY m.MENU_NAME) AS menu_list
+	FROM bakery_info bi
+	LEFT JOIN bakery_schedule bs ON bs.bakery_no = bi.bakery_no
+	LEFT JOIN bakery_detail bd ON bd.bakery_no = bi.bakery_no
+	LEFT JOIN review r ON r.bakery_no = bi.bakery_no
+	LEFT JOIN menu m ON m.BAKERY_NO = bi.BAKERY_NO 
+	LEFT JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO 
+	JOIN bakery_access ba ON ba.bakery_no = bi.bakery_no
+	WHERE ba.agree = '승인'
+	AND bs."DAY" = #{day}  <!-- ✅ 요일 필터를 OR 조건 바깥으로 이동 -->
+	AND (
+		bi.bakery_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
+		OR bi.bakery_address LIKE '%' || #{bakerySearchDTO.searchText} || '%'
+		OR mc.category LIKE '%' || #{bakerySearchDTO.searchText} || '%'
+		OR m.menu_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
+		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword1} || '%' 
+		    AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword2} || '%')
+		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword2} || '%' 
+		    AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword1} || '%')
+	)
+	GROUP BY bi.bakery_no,
+		     bi.bakery_name,
+		     bi.bakery_address,
+		     bi.latitude,
+		     bi.longitude,
+		     bi.region,
+		     bd.amenity,
+		     bs."DAY",
+		     bs.open_time,
+		     bs.close_time
+	<choose> 
+		<when test="orderType == 'recent'">
+			ORDER BY bi.bakery_no DESC
+		</when>
+		<when test="orderType == 'popular'">
+			ORDER BY review_count DESC
+		</when>
+		<when test="orderType == 'rating'">
+			ORDER BY review_avg ASC
+		</when>
+		<otherwise>
+			ORDER BY bi.bakery_no DESC
+		</otherwise>
+	</choose>
+	OFFSET ${pi.offset} ROWS FETCH NEXT ${pi.boardLimit} ROWS ONLY
+</select>
+
+
+<select id="bakeryImage" resultMap="BakeryInfoDTO">
+	SELECT 
+    * 
+	FROM bakery_info bi
+	join bakery_image bi2 ON bi2.bakery_no = bi.bakery_no
+	WHERE bi.bakery_no = #{bakeryNo} 
+</select>
+
+
+
+
+
+</mapper>

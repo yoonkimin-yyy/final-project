@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.kro.bbanggil.bakery.mapper.ReviewMapper">
+
+
+<resultMap id="ReviewResultMap"
+	type="kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto">
+	<result property="reviewNo" column="review_no"></result>
+	<result property="userNo" column="user_no"></result>
+	<result property="userId" column="user_id"></result>
+	<result property="reviewRating" column="review_rating"></result>
+	<result property="reviewDetail" column="review_detail"></result>
+	<result property="changeName" column="change_name"></result>
+	<result property="resourcesPath" column="resources_path"></result>
+	<result property="localPath" column="local_path"></result>
+	<result property="imgNo" column="img_no"></result>
+	<result property="bakeryNo" column="bakery_no"></result>
+	<result property="tagFirst" column="tag_first"></result>
+	<result property="tagSecond" column="tag_second"></result>
+	<result property="tagThird" column="tag_third"></result>
+	<result property="tagForth" column="tag_forth"></result>
+	<result property="tagFive" column="tag_five"></result>
+</resultMap>
+
+
+
+
+<select id="getLatestBakeryNo" resultType="int">
+    SELECT BAKERY_NO 
+    FROM BAKERY 
+    ORDER BY BAKERY_NO DESC 
+    FETCH FIRST 1 ROW ONLY
+</select>
+
+
+<select id="checkOrderExists" resultType="int">
+    SELECT COUNT(*) FROM ORDER_INFO WHERE ORDER_NO = #{orderNo}
+</select>
+
+
+
+<insert id="insertReview" parameterType="kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto" useGeneratedKeys="true" keyProperty="reviewNo">
+    <selectKey keyProperty="reviewNo" resultType="int" order="BEFORE">
+        SELECT review_seq.nextval FROM DUAL
+    </selectKey>
+
+INSERT
+	INTO
+	REVIEW
+VALUES(#{reviewNo},
+#{orderNo},
+#{userNo},
+#{reviewDetail},
+#{reviewRating},
+SYSDATE,
+#{bakeryNo})
+
+
+</insert>
+
+<select id="findCartNoByUserNo">
+
+SELECT
+	CART_NO
+FROM
+	CART c
+WHERE
+	user_no = #{userNo}
+
+</select>
+
+<select id="findOrderNobyCartNo">
+SELECT
+	ORDER_NO
+FROM
+	ORDER_INFO oi
+WHERE
+	CART_NO = #{cartNo}
+
+</select>
+
+
+<insert id="insertReviewImage">
+
+   INSERT
+	INTO
+	REVIEW_IMG (img_no,
+	review_no,
+	change_name,
+	original_name,
+	extension,
+	file_size,
+	local_path,
+	resources_path,
+	folder_name_path)
+VALUES (img_seq.nextval,
+#{reviewNo},
+#{changeName},
+#{originalName}, 
+#{extension},
+#{size},
+#{localPath},
+#{localResourcePath},
+#{folderNamePath})
+   
+
+</insert>
+
+
+<insert id="insertReviewTag">
+
+INSERT
+	INTO
+	REVIEW_TAG_NAME (tag_no,
+	review_no,
+	tag_first,
+	tag_second,
+	tag_third,
+	tag_forth,
+	tag_five)
+VALUES (review_tag_seq.nextval,
+#{reviewNo},
+#{tagFirst, jdbcType=VARCHAR},
+#{tagSecond, jdbcType=VARCHAR},
+#{tagThird, jdbcType=VARCHAR},
+#{tagForth, jdbcType=VARCHAR},
+#{tagFive,jdbcType=VARCHAR })
+
+</insert>
+
+
+<select id="getTotalCount" resultType="int">
+
+SELECT COUNT(*) FROM REVIEW 
+WHERE bakery_no = #{bakeryNo}
+
+</select>
+
+<select id="list" resultMap="ReviewResultMap">
+
+SELECT
+	*
+FROM
+	(
+	SELECT
+		ui.user_no,
+		ui.user_id,
+		r.review_no,
+		r.review_detail,
+		r.review_rating,
+		r.review_date,
+		MAX(rtn.tag_first) AS tag_first,
+		MAX(rtn.tag_second) AS tag_second,
+		MAX(rtn.tag_third) AS tag_third,
+		MAX(rtn.tag_forth) AS tag_forth,
+		MAX(rtn.tag_five) AS tag_five,
+		ROW_NUMBER() OVER (
+		ORDER BY ${orderBy}) AS rn
+	FROM
+		REVIEW r
+	JOIN USER_INFO ui ON
+		r.USER_NO = ui.USER_NO
+	JOIN BAKERY_INFO bi ON
+		bi.bakery_no = r.bakery_no
+	LEFT JOIN REVIEW_IMG ri ON
+		r.REVIEW_NO = ri.REVIEW_NO  
+	LEFT JOIN REVIEW_TAG_NAME rtn ON
+		r.REVIEW_NO = rtn.REVIEW_NO 
+	WHERE
+		bi.bakery_no = #{bakeryNo}
+	GROUP BY
+		ui.user_no, ui.user_id, r.review_no, r.review_detail, r.review_rating, r.review_date
+)
+WHERE
+	rn BETWEEN #{pi.offset} AND #{pi.limit}
+
+</select>
+
+
+
+<select id="getReviewImages" resultMap="ReviewResultMap">
+
+
+	SELECT
+	ri.IMG_NO ,
+	ri.CHANGE_NAME ,
+	ri.RESOURCES_PATH
+	FROM REVIEW_IMG ri
+	JOIN REVIEW r
+	ON ri.REVIEW_NO = r.REVIEW_NO
+	JOIN BAKERY_INFO bi
+	ON bi.BAKERY_NO = r.BAKERY_NO
+	WHERE bi.BAKERY_NO = #{bakeryNo}
+
+
+</select>
+
+<select id="getReviewById" resultType="kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto">
+
+ SELECT
+        r.REVIEW_NO,
+        r.USER_NO,
+        r.REVIEW_DETAIL,
+        r.REVIEW_RATING,
+        r.REVIEW_DATE,
+        ri.CHANGE_NAME AS changeName,  
+        ri.IMG_NO,
+       	ri.RESOURCES_PATH
+    FROM
+        REVIEW r
+    LEFT JOIN REVIEW_IMG ri  
+    ON
+        r.REVIEW_NO = ri.REVIEW_NO
+    WHERE
+        r.REVIEW_NO = #{reviewNo}
+	FETCH FIRST 1 ROWS ONLY
+
+</select>
+
+
+<update id= "updateReview">
+	UPDATE review
+	SET
+	review_detail = #{reviewDetail},
+	review_rating = #{reviewRating},
+	review_date = sysdate
+	WHERE review_no = #{reviewNo}
+</update>
+
+
+<insert id="insertReviewImages">
+    INSERT INTO review_img (img_no, review_no, change_name, original_name, extension, file_size, local_path, resources_path, folder_name_path)
+    VALUES 
+    <foreach collection="reviewImages" item="image" separator=",">
+        (REVIEW_IMAGE_SEQ.NEXTVAL, #{reviewNo}, #{image.changeName}, #{image.originalName}, #{image.extension}, #{image.size}, 
+        #{image.localPath}, #{image.localResourcePath}, #{image.folderNamePath})
+    </foreach>
+</insert>
+
+
+<select id="getFileInfoByReviewNo" resultMap="ReviewResultMap">
+
+
+SELECT
+	r.USER_NO ,
+	ri.IMG_NO ,
+	ri.CHANGE_NAME ,
+	ri.LOCAL_PATH,
+	ri.RESOURCES_PATH 
+FROM
+	REVIEW r
+JOIN REVIEW_IMG ri ON
+	r.REVIEW_NO = ri.REVIEW_NO
+WHERE
+	 r.user_no = 1
+	
+
+
+</select>
+
+<delete id="deleteTag">
+DELETE FROM review_tag_name 
+where review_no = #{reviewNo}
+
+
+
+</delete>
+
+<delete id="deleteReviewImages">
+
+DELETE FROM REVIEW_IMG where review_no = #{reviewNo}
+
+</delete>
+
+<delete id="deleteReview">
+
+DELETE FROM REVIEW WHERE review_no = #{reviewNo}
+</delete>
+
+
+
+<select id="getTagCounts" resultMap ="ReviewResultMap">
+
+ SELECT 
+        r.review_no,
+        rtn.tag_first,
+        rtn.tag_second,
+        rtn.tag_third,
+        rtn.tag_forth,
+        rtn.tag_five
+    FROM REVIEW r
+    JOIN REVIEW_TAG_NAME rtn ON r.review_no = rtn.review_no
+    WHERE r.bakery_no = #{bakeryNo}
+
+
+
+
+
+</select>
+
+
+
+
+</mapper>

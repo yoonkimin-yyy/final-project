@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>빵지순례 - 전국 빵집 탐방 가이드</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/css/common/header.css">
-    <link rel="stylesheet" href="/css/common/nav.css">
-    <link rel="stylesheet" href="/css/home/home.css">
-    <link rel="stylesheet" href="/css/common/footer.css">
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
     <link rel="stylesheet" th:href="@{/css/register/loginin.css}">
     <!-- Swiper CSS -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -37,8 +30,8 @@
 	                    <input class="login-input" type="password" placeholder="Password"
 	                           id="password" name="userPassword" required>
 	                </div>
-	                <div class="error-text">
-					    <p th:if="${status == 'failed'}" style="color: red;">아이디 또는 비밀번호가 잘못되었습니다.</p>
+	                <div th:if="${loginError}" style="color: red; font-size: 13px; margin-bottom: 10px;">
+					    <p th:text="${loginError}"></p>
 					</div>
 		            <div class="login-btn-div">
 		                <button class="login-btn" type="submit">로그인</button>

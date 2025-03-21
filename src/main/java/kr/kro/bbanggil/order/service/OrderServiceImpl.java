@@ -1,6 +1,5 @@
 package kr.kro.bbanggil.order.service;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,18 +31,18 @@ public class OrderServiceImpl implements OrderService {
 	 * 장바구니 출력
 	 */
 	@Override
-	public List<OrderResponseDto> list() {
+	public List<OrderResponseDto> list(String userId) {
 
-		return orderMapper.list();
+		return orderMapper.list(userId);
 	}
 
 	/**
 	 * 가격검증
 	 */
 	@Override
-	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto) {
+	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto, String userId) {
 
-		return orderMapper.calculate(orderRequestDto) == totalCount ? true : false;
+		return orderMapper.calculate(orderRequestDto, userId) == totalCount ? true : false;
 	}
 
 	/**
@@ -51,9 +50,9 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public IamportResponse<Payment> validateIamport(String imp_uid, PaymentRequestDto paymentRequestDto,
-			OrderRequestDto orderRequestDto) {
+													OrderRequestDto orderRequestDto, String userId) {
 
-		int dbTotalPrice = orderMapper.calculate(orderRequestDto);
+		int dbTotalPrice = orderMapper.calculate(orderRequestDto, userId);
 
 		if (dbTotalPrice == paymentRequestDto.getAccount()) {
 			try {
@@ -74,11 +73,11 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	@Transactional(rollbackFor = { Exception.class })
-	public boolean saveOrder(PaymentRequestDto paymentRequestDto) {
+	public boolean saveOrder(PaymentRequestDto paymentRequestDto, int userNo) {
 		try {
 			orderMapper.save(paymentRequestDto);
 
-			int cartNo = orderMapper.findcart();
+			int cartNo = orderMapper.findcart(userNo);
 			int payNo = orderMapper.findpay(paymentRequestDto.getMerchantUid());
 
 			orderMapper.orderInfo(cartNo, payNo);
@@ -109,8 +108,8 @@ public class OrderServiceImpl implements OrderService {
 	/**
 	 * payNo 가져오는 메서드
 	 */
-	public int getPayNo() {
-		return orderMapper.pickupPay();
+	public int getPayNo(int userNo) {
+		return orderMapper.pickupPay(userNo);
 	}
 
 	/**
@@ -127,13 +126,13 @@ public class OrderServiceImpl implements OrderService {
 	 * @param payNo 결제 번호
 	 */
 	@Transactional(rollbackFor = {Exception.class})
-	public List<OrderResponseDto> pickupList(PickupCheckResponseDto result, int payNo) {
+	public List<OrderResponseDto> pickupList(PickupCheckResponseDto result, int payNo, String userId) {
 		try {
 			String pickupStatus = result.getPickupStatus();
 
 			switch (pickupStatus) {
 			case "승인":
-				List<OrderResponseDto> list = orderMapper.list();
+				List<OrderResponseDto> list = orderMapper.list(userId);
 				return list;
 			case "거절":
 				String imp = orderMapper.refund(payNo);
@@ -147,4 +146,19 @@ public class OrderServiceImpl implements OrderService {
 		return null;
 	}
 
+	/*
+	 * 사용자가 해당 주문의 주인인지 확인
+	 */
+	@Override
+	public boolean isUserOrder(Integer userNo, Integer orderNo) {
+		
+		return orderMapper.countByUserAndOrder(userNo, orderNo) > 0;
+	}
+	
+	
+	
+	
+	
+	
+	
 }

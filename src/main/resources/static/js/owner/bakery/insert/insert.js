@@ -55,85 +55,99 @@ document.addEventListener("DOMContentLoaded", function () {
             daysTable.style.display = 'none';
         }
     });
-	
-		const fileInputs = document.querySelectorAll("input[type=file]");
-        const previewMap = {}; // 각 input 별 이미지 리스트 저장
 
-        fileInputs.forEach(input => {
-            const previewContainerId = input.getAttribute("data-preview-container");
-            const previewContainer = document.getElementById(previewContainerId);
-            const previewImage = previewContainer.querySelector(".preview-img");
-            const prevBtn = previewContainer.querySelector(".prev-btn");
-            const nextBtn = previewContainer.querySelector(".next-btn");
+	const fileInputs = document.querySelectorAll("input[type=file]");
+	        const previewMap = {}; // 각 input 별 이미지 리스트 저장
 
-            previewMap[previewContainerId] = { images: [], currentIndex: 0 };
+	        fileInputs.forEach(input => {
+	            const previewContainerId = input.getAttribute("data-preview-container");
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const previewImage = previewContainer.querySelector(".preview-img");
+	            const prevBtn = previewContainer.querySelector(".prev-btn");
+	            const nextBtn = previewContainer.querySelector(".next-btn");
 
-            input.addEventListener("change", function (event) {
-                handleFileChange(event.target, previewContainerId);
-            });
+	            previewMap[previewContainerId] = { images: [], currentIndex: 0 };
 
-            prevBtn.addEventListener("click", () => changeImage(previewContainerId, -1));
-            nextBtn.addEventListener("click", () => changeImage(previewContainerId, 1));
-           
-        });
+	            input.addEventListener("change", function (event) {
+	                handleFileChange(event.target, previewContainerId);
+	            });
 
-        function handleFileChange(inputElement, previewContainerId) {
-            const files = inputElement.files;
-            if (files.length === 0) return;
+	            prevBtn.addEventListener("click", () => changeImage(previewContainerId, -1));
+	            nextBtn.addEventListener("click", () => changeImage(previewContainerId, 1));
+	           
+	        });
 
-            const previewContainer = document.getElementById(previewContainerId);
-            const previewImage = previewContainer.querySelector(".preview-img");
-            const prevBtn = previewContainer.querySelector(".prev-btn");
-            const nextBtn = previewContainer.querySelector(".next-btn");
+	        function handleFileChange(inputElement, previewContainerId) {
+	            const files = inputElement.files;
+	            if (files.length === 0) return;
 
-            previewMap[previewContainerId].images = [];
-            previewMap[previewContainerId].currentIndex = 0;
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const previewImage = previewContainer.querySelector(".preview-img");
+	            const prevBtn = previewContainer.querySelector(".prev-btn");
+	            const nextBtn = previewContainer.querySelector(".next-btn");
 
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    previewMap[previewContainerId].images.push(e.target.result);
-                    if (previewMap[previewContainerId].images.length === 1) {
-                        previewImage.src = e.target.result;
-                        previewImage.style.display = "block";
-                        updateButtons(previewContainerId);
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-        }
+	            previewMap[previewContainerId].images = [];
+	            previewMap[previewContainerId].currentIndex = 0;
 
-        function changeImage(previewContainerId, direction) {
-            const previewContainer = document.getElementById(previewContainerId);
-            const previewImage = previewContainer.querySelector(".preview-img");
-            let data = previewMap[previewContainerId];
+	            Array.from(files).forEach(file => {
+	                const reader = new FileReader();
+	                reader.onload = function (e) {
+	                    previewMap[previewContainerId].images.push(e.target.result);
+	                    if (previewMap[previewContainerId].images.length === 1) {
+	                        previewImage.src = e.target.result;
+	                        previewImage.style.display = "block";
+	                        updateButtons(previewContainerId);
+	                    }
+	                };
+	                reader.readAsDataURL(file);
+	            });
+	        }
 
-            if (!data.images.length) return;
+	        function changeImage(previewContainerId, direction) {
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const previewImage = previewContainer.querySelector(".preview-img");
+	            let data = previewMap[previewContainerId];
 
-            data.currentIndex += direction;
-            if (data.currentIndex < 0) data.currentIndex = 0;
-            if (data.currentIndex >= data.images.length) data.currentIndex = data.images.length - 1;
+	            if (!data.images.length) return;
 
-            previewImage.src = data.images[data.currentIndex];
-            updateButtons(previewContainerId);
-        }
+	            data.currentIndex += direction;
+	            if (data.currentIndex < 0) data.currentIndex = 0;
+	            if (data.currentIndex >= data.images.length) data.currentIndex = data.images.length - 1;
 
-        function updateButtons(previewContainerId) {
-            const previewContainer = document.getElementById(previewContainerId);
-            const prevBtn = previewContainer.querySelector(".prev-btn");
-            const nextBtn = previewContainer.querySelector(".next-btn");
-            let data = previewMap[previewContainerId];
-			console.log(data.currentIndex);
+	            previewImage.src = data.images[data.currentIndex];
+	            updateButtons(previewContainerId);
+	        }
 
-            /*prevBtn.style.display = data.currentIndex > 0 ? "block" : "none";
-            nextBtn.style.display = data.currentIndex < data.images.length - 1 ? "block" : "none";*/
-        }
+	        function updateButtons(previewContainerId) {
+	            const previewContainer = document.getElementById(previewContainerId);
+	            const prevBtn = previewContainer.querySelector(".prev-btn");
+	            const nextBtn = previewContainer.querySelector(".next-btn");
+	            let data = previewMap[previewContainerId];
+				console.log(data.currentIndex);
 
+	            /*prevBtn.style.display = data.currentIndex > 0 ? "block" : "none";
+	            nextBtn.style.display = data.currentIndex < data.images.length - 1 ? "block" : "none";*/
+	        }
 });
 
 function openUpdateMenu() {
     window.open("/bakery/menu/insert/form", "_blank", "width=600, height=400, top=100, left=100");
 }
 
+function updateCharCount(textareaId, displayId) {
+	
+            let textarea = document.getElementById(textareaId);
+            let charCount = textarea.value.length // textarea의 글자수 가져오기
+            let maxLength = 500; // 최대 글자수
+            let charCountDisplay = document.getElementById(displayId);
+            
+            // 글자수와 최대 글자수를 업데이트
+            charCountDisplay.textContent = charCount + '/' + maxLength;
+
+            // 글자수가 최대 길이를 넘지 않도록 제한
+            if (charCount > maxLength) {
+                textarea.value = textarea.value.substring(0, maxLength);
+            }
+        }
 
 		   

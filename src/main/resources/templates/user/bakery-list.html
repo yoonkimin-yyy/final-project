@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>빵지순례 - 전국 빵집 탐방 가이드</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/css/common/header.css">
-    <link rel="stylesheet" href="/css/common/nav.css">
-    <link rel="stylesheet" href="/css/common/footer.css">
+<head>
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
 
     
     <!-- Swiper CSS -->
@@ -18,9 +12,9 @@
     	<link rel="stylesheet" th:href="@{/css/bakery/list/list.css}">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     	<script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
-    	<script src="/js/bakery/list/list.js"></script>
+    	
 		<!-- <script src="/js/bakery/list/listMap.js"></script> -->	
-   	</head>
+</head>
 <body>
     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
     <nav class="nav" th:replace="~{fragments/nav :: NavFragment}"></nav>
@@ -80,7 +74,7 @@
                 <div class="slide-indicators" th:id="indicators + ${iterStat.index+1}"></div>
             </div>
             <div class="list-item-info">
-                <a href="">
+                <a th:href="@{/bakery/detail(bakeryNo=${post.bakeryNo})}">
                     <h2 class="list-item-title" th:text="${post.bakeryName}"></h2>
                 </a>
                 <p class="list-item-address">📍<span th:text="${post.bakeryAddress}"></span></p>
@@ -99,6 +93,6 @@
 
 
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
-
+<script src="/js/bakery/list/list.js"></script>
 </body>
 </html>

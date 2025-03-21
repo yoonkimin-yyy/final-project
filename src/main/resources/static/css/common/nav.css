@@ -66,4 +66,18 @@
 	background-color: #fff;
 	border : 0;
 }
-
+a{
+	text-decoration : none;
+	color: inherit;
+}
+*{
+	margin:0;
+	padding:0;
+	box-sizing :border-box;
+}
+.nav-item:hover,
+.dropdown:hover .dropdown-menu,
+.dropdown-item:hover,
+button:hover {
+    cursor: pointer;
+}

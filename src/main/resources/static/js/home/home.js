@@ -2,6 +2,9 @@ document.querySelector('.subscribe-button').addEventListener('click', function (
 	const emailInput = document.querySelector('.email-input');
 	const subscribedMessage = document.getElementById('subscribed-message');
 
+	console.log(subscribedMessage);
+	
+	
 	if (emailInput.value && emailInput.value.includes('@')) {
 		subscribedMessage.style.display = 'block';
 		emailInput.value = '';
@@ -21,7 +24,7 @@ regionButtons.forEach(button => {
 
 		var region = this.getAttribute("data-region");
 
-		fetchBakeries(region);
+		fetchBakeriesByRegion(region);
 	});
 });
 
@@ -55,304 +58,217 @@ buttons.forEach(button => {
 	});
 });
 
-//  한글 → 영어 매핑
-const regionMap = {
-	"서울": "seoul",
-	"경기": "gyeonggi",
-	"인천": "incheon",
-	"부산": "busan",
-	"대구": "daegu",
-	"광주": "gwangju",
-	"대전": "daejeon",
-	"울산": "ulsan",
-	"세종": "sejong",
-	"강원": "gangwon",
-	"충북": "chungbuk",
-	"충남": "chungnam",
-	"전북": "jeonbuk",
-	"전남": "jeonnam",
-	"경북": "gyeongbuk",
-	"경남": "gyeongnam",
-	"제주": "jeju"
+
+
+
+// ✅ 지역별 중심 좌표 (한글 기준)
+const regionCenters = {
+    "서울": { lat: 37.5665, lng: 126.9780 },
+    "경기": { lat: 37.2750, lng: 127.0095 },
+    "인천": { lat: 37.4563, lng: 126.7052 },
+    "부산": { lat: 35.1796, lng: 129.0756 },
+    "대구": { lat: 35.8714, lng: 128.6014 },
+    "광주": { lat: 35.1595, lng: 126.8526 },
+    "대전": { lat: 36.3504, lng: 127.3845 },
+    "울산": { lat: 35.5384, lng: 129.3114 },
+    "세종": { lat: 36.4801, lng: 127.2890 },
+    "강원": { lat: 37.8854, lng: 127.7298 },
+    "충북": { lat: 36.6357, lng: 127.4912 },
+    "충남": { lat: 36.5184, lng: 126.8000 },
+    "전북": { lat: 35.7175, lng: 127.1530 },
+    "전남": { lat: 34.8679, lng: 126.9910 },
+    "경북": { lat: 36.5760, lng: 128.5056 },
+    "경남": { lat: 35.4606, lng: 128.2132 },
+    "제주": { lat: 33.4996, lng: 126.5312 }
 };
 
+let map;
+let markers = [];
 
-const reverseRegionMap = {};
-for (let key in regionMap) {
-	reverseRegionMap[regionMap[key]] = key;
-}
-
-
-//  Kakao 지도 초기화 및 지역별 중심 좌표 설정
-var map;
-var markers = [];
-
-//  지역별 중심 좌표 설정
-var regionCenters = {
-	seoul: { lat: 37.5665, lng: 126.9780 },
-	gyeonggi: { lat: 37.2750, lng: 127.0095 },
-	incheon: { lat: 37.4563, lng: 126.7052 },
-	busan: { lat: 35.1796, lng: 129.0756 },
-	daegu: { lat: 35.8714, lng: 128.6014 },
-	gwangju: { lat: 35.1595, lng: 126.8526 },
-	daejeon: { lat: 36.3504, lng: 127.3845 },
-	ulsan: { lat: 35.5384, lng: 129.3114 },
-	sejong: { lat: 36.4801, lng: 127.2890 },
-	gangwon: { lat: 37.8854, lng: 127.7298 },
-	chungbuk: { lat: 36.6357, lng: 127.4912 },
-	chungnam: { lat: 36.5184, lng: 126.8000 },
-	jeonbuk: { lat: 35.7175, lng: 127.1530 },
-	jeonnam: { lat: 34.8679, lng: 126.9910 },
-	gyeongbuk: { lat: 36.5760, lng: 128.5056 },
-	gyeongnam: { lat: 35.4606, lng: 128.2132 },
-	jeju: { lat: 33.4996, lng: 126.5312 }
-};
-
-
-function moveToRegion(region) {
-
-	let englishRegion = regionMap[region];
-
-	var center = regionCenters[englishRegion];
-
-
-	if (center) {
-		map.setCenter(new kakao.maps.LatLng(center.lat, center.lng)); // ✅ 지도 중심 이동
-		map.setLevel(8);  //  지도 줌 레벨 설정 (7은 도시 수준)
-	} else {
-		console.warn("해당 지역의 중심 좌표가 없습니다.");
-	}
-}
-
-
-//  기본적으로 서울 지역 데이터 로드
-document.addEventListener("DOMContentLoaded", function () {
-
-	moveToRegion("서울"); //  기본값 한글로 설정
-});
-
-
-//  지역 버튼 클릭 이벤트 추가
-document.querySelectorAll(".region-button").forEach(button => {
-	button.addEventListener("click", function () {
-		var region = this.getAttribute("data-region");
-
-		//  버튼 활성화 효과
-		document.querySelectorAll(".region-button").forEach(btn => btn.classList.remove("region-button-active"));
-		this.classList.add("region-button-active");
-		moveToRegion(region);
-	});
-});
-
-
-var mapContainer = document.getElementById('map'); // 지도 컨테이너
-        var mapOptions = {
-            center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 중심 좌표 (서울)
-            level: 9 // 확대 수준
-        };
-
-        // ✅ 지도 생성
-        var map = new kakao.maps.Map(mapContainer, mapOptions);
-        var markers = []; // ✅ 현재 지도에 표시된 마커 저장 배열
-
-        // ✅ 지역별 중심 좌표 설정
-        var regionCenters = {
-            seoul: { lat: 37.5665, lng: 126.9780 },
-            gyeonggi: { lat: 37.2750, lng: 127.0095 },
-            incheon: { lat: 37.4563, lng: 126.7052 },
-            busan: { lat: 35.1796, lng: 129.0756 },
-            daegu: { lat: 35.8714, lng: 128.6014 },
-            gwangju: { lat: 35.1595, lng: 126.8526 },
-            daejeon: { lat: 36.3504, lng: 127.3845 },
-            ulsan: { lat: 35.5384, lng: 129.3114 },
-            sejong: { lat: 36.4801, lng: 127.2890 },
-            gangwon: { lat: 37.8854, lng: 127.7298 },
-            chungbuk: { lat: 36.6357, lng: 127.4912 },
-            chungnam: { lat: 36.5184, lng: 126.8000 },
-            jeonbuk: { lat: 35.7175, lng: 127.1530 },
-            jeonnam: { lat: 34.8679, lng: 126.9910 },
-            gyeongbuk: { lat: 36.5760, lng: 128.5056 },
-            gyeongnam: { lat: 35.4606, lng: 128.2132 },
-            jeju: { lat: 33.4996, lng: 126.5312 }
-        };
-
-        // ✅ 빵집 데이터 (카카오 API 대체 가능)
-        var bakeryData = {
-            seoul: [
-                { name: "서울 빵집1", lat: 37.5665, lng: 126.9780 },
-                { name: "서울 빵집2", lat: 37.5700, lng: 126.9820 }
-            ],
-            busan: [
-                { name: "부산 빵집1", lat: 35.1796, lng: 129.0756 },
-                { name: "부산 빵집2", lat: 35.1805, lng: 129.0720 }
-            ],
-            jeju: [
-                { name: "제주 빵집1", lat: 33.4996, lng: 126.5312 },
-                { name: "제주 빵집2", lat: 33.5020, lng: 126.5375 }
-            ]
-        };
-
-        // ✅ 마커 추가 함수
-        function addMarkers(region) {
-            markers.forEach(marker => marker.setMap(null)); // 기존 마커 제거
-            markers = [];
-
-            var bakeries = bakeryData[region] || [];
-            bakeries.forEach(bakery => {
-                var marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(bakery.lat, bakery.lng),
-                    map: map
-                });
-
-                var infoWindow = new kakao.maps.InfoWindow({
-                    content: `<div style="padding:5px;">${bakery.name}</div>`
-                });
-
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    infoWindow.open(map, marker);
-                });
-
-                markers.push(marker);
-            });
-        }
-
-        // ✅ 지역 버튼 클릭 시 지도 이동 + 마커 변경
-        document.querySelectorAll(".region-button").forEach(button => {
-            button.addEventListener("click", () => {
-                var region = button.getAttribute("data-region");
-
-                document.querySelectorAll(".region-button").forEach(btn => btn.classList.remove("region-button-active"));
-                button.classList.add("region-button-active");
-                var center = regionCenters[region];
-				console.log(center)
-                if (center) {
-                    map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
-                    map.setLevel(7);
-                }
-
-                addMarkers(region);
-            });
-        });
-
-        // ✅ 기본적으로 서울 마커 표시
-        addMarkers("seoul");
-
-        
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var swiper = new Swiper(".swiper-popularBakerySwiper", {
-                slidesPerView: 3, // 한 번에 보여줄 카드 개수
-                spaceBetween: 20, // 카드 간격
-                loop: true, // 무한 루프
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                breakpoints: {
-                    1024: { slidesPerView: 3 },
-                    768: { slidesPerView: 2 },
-                    480: { slidesPerView: 1 }
-                }
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var recentBakerySwiper = new Swiper(".recentBakerySwiper", {
-                slidesPerView: 3, // 한 번에 보여줄 카드 개수
-                spaceBetween: 20, // 카드 간격
-                loop: true, // 무한 루프
-                navigation: {
-                    nextEl: ".recent-next",
-                    prevEl: ".recent-prev",
-                },
-                pagination: {
-                    el: ".recent-pagination",
-                    clickable: true,
-                },
-                breakpoints: {
-                    1024: { slidesPerView: 3 },
-                    768: { slidesPerView: 2 },
-                    480: { slidesPerView: 1 }
-                }
-            });
-        });
-
-//  Kakao 지도 초기화 함수
+// ✅ Kakao 지도 초기화
 function initMap() {
-
-
-
-	var mapContainer = document.getElementById('map');
-	var mapOptions = {
-		center: new kakao.maps.LatLng(regionCenters.seoul.lat, regionCenters.seoul.lng),
-		level: 9
-	};
-	map = new kakao.maps.Map(mapContainer, mapOptions);
+    const mapContainer = document.getElementById('map');
+    const mapOptions = {
+        center: new kakao.maps.LatLng(regionCenters["서울"].lat, regionCenters["서울"].lng),
+        level: 9
+    };
+    map = new kakao.maps.Map(mapContainer, mapOptions);
 }
 
-// ✅ 지도 업데이트 (마커 추가 + 지도 이동)
+// ✅ 지도 중심 이동
+function moveToRegion(region) {
+    const center = regionCenters[region];
+    if (center) {
+        map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
+        map.setLevel(7);
+    } else {
+        console.warn("중심 좌표 없음:", region);
+    }
+}
+
+
+// ✅ 지도 마커 업데이트
 function updateMap(region, bakeries) {
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
 
-	// ✅ 기존 마커 제거
-	markers.forEach(marker => marker.setMap(null));
-	markers = [];
+    const center = regionCenters[region];
+    if (center) {
+        map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
+        map.setLevel(10);
+    }
 
-	// ✅ 지도 중심 이동
-	var center = regionCenters[region];
-	if (center) {
-		map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
-		map.setLevel(7);
-	}
-	let addedPlaces = new Set();
+    const addedPlaces = new Set();
 
-	// ✅ 새로운 마커 추가
-	bakeries.forEach(bakery => {
-		var position = new kakao.maps.LatLng(bakery.latitude, bakery.longitude);
+    bakeries.forEach(bakery => {
+        if (addedPlaces.has(bakery.name)) return;
+        addedPlaces.add(bakery.name);
 
-		var imageSrc = "/img/common/bread.png"
-		var imageSize = new kakao.maps.Size(30, 30);
-		var imageOption = { offset: new kakao.maps.Point(20, 40) };
-		var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+        const position = new kakao.maps.LatLng(bakery.latitude, bakery.longitude);
+        const marker = new kakao.maps.Marker({
+            position: position,
+            map: map,
+            image: new kakao.maps.MarkerImage(
+                "/img/common/bread.png",
+                new kakao.maps.Size(30, 30),
+                { offset: new kakao.maps.Point(20, 40) }
+            )
+        });
 
-		if (addedPlaces.has(bakery.name)) return;
-		addedPlaces.add(bakery.name);
+        const content = `
+            <div style="padding:10px; width: 250px; font-size: 14px;">
+                <strong style="font-size: 16px;">🍞 ${bakery.name}</strong><br>
+                📍 <span>${bakery.address}</span><br>
+                <button onclick="viewDetails('${bakery.name}')" 
+                    style="margin-top: 5px; padding: 5px; border: none; background: #ffcc00; cursor: pointer;">
+                    상세보기
+                </button>
+            </div>
+        `;
 
-		var marker = new kakao.maps.Marker({ position: position, map: map, image: markerImage });
+        const infoWindow = new kakao.maps.InfoWindow({ content: content });
+        kakao.maps.event.addListener(marker, 'click', () => {
+            infoWindow.open(map, marker);
+        });
 
-		var content = `
-				       <div style="padding:10px; width: 250px; font-size: 14px;">
-				           <strong style="font-size: 16px;">🍞 ${bakery.name}</strong><br>
-				           📍 <span>${bakery.address}</span><br>
-				           <button onclick="viewDetails('${bakery.name}')" 
-				               style="margin-top: 5px; padding: 5px; border: none; background: #ffcc00; cursor: pointer;">
-				               상세보기
-				           </button>
-				       </div>
-				   `;
-
-		var infoWindow = new kakao.maps.InfoWindow({ content: content });
-		kakao.maps.event.addListener(marker, 'click', function () {
-			infoWindow.open(map, marker);
-		});
-
-		markers.push(marker);
-	});
+        markers.push(marker);
+    });
 }
 
-//  Kakao 지도 API가 로드된 후 `initMap()` 실행
-if (window.kakao && window.kakao.maps) {
-	initMap();
-} else {
-	document.addEventListener("DOMContentLoaded", function () {
-		kakao.maps.load(initMap);
-	});
+// ✅ 버튼 클릭 이벤트 (한 번만 등록)
+document.querySelectorAll(".region-button").forEach(button => {
+    button.addEventListener("click", () => {
+        const region = button.getAttribute("data-region");
+
+        document.querySelectorAll(".region-button").forEach(btn => btn.classList.remove("region-button-active"));
+        button.classList.add("region-button-active");
+
+        moveToRegion(region);
+        fetchBakeriesByRegion(region);
+    });
+});
+
+// ✅ 기본값: 서울
+document.addEventListener("DOMContentLoaded", function () {
+    initMap();
+    moveToRegion("서울");
+    fetchBakeriesByRegion("서울");
+});
+
+// ✅ 지역 버튼에 개수 표시 (옵션)
+function updateRegionButton(region, count, unit) {
+    const button = document.querySelector(`[data-region="${region}"]`);
+    if (button) {
+        let countSpan = button.querySelector(".count");
+        if (!countSpan) {
+            countSpan = document.createElement("span");
+            countSpan.classList.add("count");
+            button.appendChild(countSpan);
+        }
+        countSpan.textContent = `${count}${unit}`;
+    }
+}
+
+// ✅ 상세보기 클릭 시 이동 (예시)
+function viewDetails(bakeryName) {
+    window.location.href = `/bbanggil/bakery/detail?name=${encodeURIComponent(bakeryName)}`;
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    var swiper = new Swiper(".swiper-popularBakerySwiper", {
+        slidesPerView: 3, // 한 번에 보여줄 카드 개수
+        spaceBetween: 20, // 카드 간격
+        loop: true, // 무한 루프
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        breakpoints: {
+            1024: { slidesPerView: 3 },
+            768: { slidesPerView: 2 },
+            480: { slidesPerView: 1 }
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var recentBakerySwiper = new Swiper(".recentBakerySwiper", {
+        slidesPerView: 3, // 한 번에 보여줄 카드 개수
+        spaceBetween: 20, // 카드 간격
+        loop: true, // 무한 루프
+        navigation: {
+            nextEl: ".recent-next",
+            prevEl: ".recent-prev",
+        },
+        pagination: {
+            el: ".recent-pagination",
+            clickable: true,
+        },
+        breakpoints: {
+            1024: { slidesPerView: 3 },
+            768: { slidesPerView: 2 },
+            480: { slidesPerView: 1 }
+        }
+    });
+});
 
 // 인기 빵집
 function updatePopularBakeries(data) {
@@ -366,7 +282,7 @@ function updatePopularBakeries(data) {
 
 		slide.classList.add("swiper-slide", "bakery-card");
 		slide.innerHTML = `
-				<img src="${bakery.image ? bakery.image.resourcesPath + '/' + bakery.image.changeName : '/images/default.jpg'}"> 
+				<img src="${bakery.response ? bakery.response.resourcesPath + '/' + bakery.response.changeName : '/images/default.jpg'}"> 
 		            <div class="bakery-info">
 		                <h3 class="bakery-name">${bakery.name}</h3>
 		                <div class="location-container">
@@ -375,11 +291,11 @@ function updatePopularBakeries(data) {
 		                </div>
 		                <div class="rating-container">
 		                    <i class="fas fa-star"></i>
-		                    <span class="rating-text">${bakery.review ? bakery.review.reviewRating.toFixed(1) : '평점 없음'}</span>
+		                    <span class="rating-text">${bakery.response ? bakery.response.reviewRating.toFixed(1) : '평점 없음'}</span>
 		                </div>
 		                <div class="specialty-container">
-		                    <span class="specialty-label">${bakery.menu.categoryName}</span>
-		                    <span class="specialty-text">${bakery.menu.menuName}</span>
+		                    <span class="specialty-label">${bakery.response.categoryName}</span>
+		                    <span class="specialty-text">${bakery.response.menuName}</span>
 		                </div>
 		            </div>
 		        `;
@@ -397,7 +313,7 @@ function updateRecentBakeries(data) {
 
 		slide.classList.add("swiper-slide", "bakery-card");
 		slide.innerHTML = `
-						<img src="${bakery.image ? bakery.image.resourcesPath + '/' + bakery.image.changeName : '/images/default.jpg'}"> 
+						<img src="${bakery.response ? bakery.response.resourcesPath + '/' + bakery.response.changeName : '/images/default.jpg'}"> 
 				            <div class="bakery-info">
 				                <h3 class="bakery-name">${bakery.name}</h3>
 				                <div class="location-container">
@@ -406,11 +322,11 @@ function updateRecentBakeries(data) {
 				                </div>
 				                <div class="open-date-container">
 				                    <i class="fas fa-calendar-alt"></i>
-				                    <span class="open-date-text">${bakery.detail.createDate}</span>
+				                    <span class="open-date-text">${bakery.response.createDate}</span>
 				                </div>
 				                <div class="specialty-container">
-				                    <span class="specialty-label">${bakery.menu.categoryName}</span>
-				                    <span class="specialty-text">${bakery.menu.menuName}</span>
+				                    <span class="specialty-label">${bakery.response.categoryName}</span>
+				                    <span class="specialty-text">${bakery.response.menuName}</span>
 				                </div>
 				            </div>
 				        `;
@@ -418,11 +334,10 @@ function updateRecentBakeries(data) {
 	});
 
 }
-
 document.addEventListener("DOMContentLoaded", function () {
 	var swiper = new Swiper(".swiper-popularBakerySwiper", {
 		slidesPerView: 3,
-		spaceBetween: 20,
+		spaceBetween: 10,
 		loop: true,
 		navigation: {
 			nextEl: ".swiper-button-next",
@@ -435,14 +350,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		autoplay: {        // 자동 재생
 			delay: 3000,
 			disableOnInteraction: false,
+		},
+		breakpoints: {
+			1024: { slidesPerView: 3 },
+			768: { slidesPerView: 2 },
+			480: { slidesPerView: 1 }
 		}
 	});
 });
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
 	var recentBakerySwiper = new Swiper(".recentBakerySwiper", {
 		slidesPerView: 3, // 한 번에 보여줄 카드 개수
-		spaceBetween: 20, // 카드 간격
+		spaceBetween: 10, // 카드 간격
 		loop: true, // 무한 루프
 		navigation: {
 			nextEl: ".recent-next",

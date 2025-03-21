@@ -1,11 +1,14 @@
 package kr.kro.bbanggil.member.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.member.mapper.MemberMapper;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -24,16 +27,13 @@ public class MemberServiceImpl implements MemberService{
     // 일반유저 회원가입
     @Override
     public String loginup(MemberRequestSignupDto signupRequestDto, MemberRequestCheckBoxDto checkBoxRequestDto) {
-    	System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
-    	System.out.println("인코딩 전 비밀번호 : "+ signupRequestDto.getUserPassword());
-    	System.out.println(signupRequestDto.getUserId());
-    	System.out.println(signupRequestDto.getUserName());
         signupRequestDto.setUserPassword(passwordEncoder.encode(signupRequestDto.getUserPassword()));
         
         // 필수 동의 항목 검증 (DB에 'N'이 들어가지 않도록 방지)
         if (!"Y".equals(checkBoxRequestDto.getTermsofuse()) || !"Y".equals(checkBoxRequestDto.getInformation())) {
             return "회원가입에 실패했습니다. 필수 약관에 동의해야 합니다.";
         }
+        
 
         int result = registerMapper.loginup(signupRequestDto);
 
@@ -50,7 +50,6 @@ public class MemberServiceImpl implements MemberService{
     // 사업자 회원가입
     @Override
     public String businessloginup(MemberRequestSignupDto signupRequestDto, MemberRequestCheckBoxDto checkBoxRequestDto) {
-    	System.out.println("인코딩 전 비밀번호 : "+signupRequestDto.getUserPassword());
     	signupRequestDto.setUserPassword(passwordEncoder.encode(signupRequestDto.getUserPassword()));
         
 
@@ -95,18 +94,8 @@ public class MemberServiceImpl implements MemberService{
     public MemberRequestSignupDto loginIn(MemberRequestSignupDto memberRequestSignupDto) {
     	
     	MemberRequestSignupDto loginUser = registerMapper.loginIn(memberRequestSignupDto);
-    	 System.out.println(loginUser.getUserName());
-    	 System.out.println(loginUser.getUserId());
-    	 System.out.println(loginUser.getUserPassword());
-    	 System.out.println(memberRequestSignupDto.getUserName());
     	 System.out.println(memberRequestSignupDto.getUserPassword());
     	
-    	 String aa = "asd123";
-    	 String ss = passwordEncoder.encode(aa);
-    	 System.out.println(passwordEncoder.matches(aa,ss));
-    	 System.out.println("--------------------");
-    	 
-
          if (loginUser != null) {
              // 2. 비밀번호 검증 (암호화된 비밀번호와 입력된 비밀번호 비교)
              if (passwordEncoder.matches(memberRequestSignupDto.getUserPassword(),loginUser.getUserPassword())) {
@@ -115,6 +104,11 @@ public class MemberServiceImpl implements MemberService{
          }
          return null; // 로그인 실패
      }
+    @Override
+	public List<OwnerMypageResponseDTO> ownerMypage(int userNum) {
+    		
+		return registerMapper.ownerMypage(userNum);
+	}
 }
 
 

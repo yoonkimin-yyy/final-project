@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>빵지순례 - 전국 빵집 탐방 가이드</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/css/common/header.css">
     <link rel="stylesheet" href="/css/common/nav.css">
     <link rel="stylesheet" href="/css/home/home.css">
     <link rel="stylesheet" href="/css/common/footer.css">
+    <link rel="stylesheet" th:href="@{/css/mypage/edit.css}">
+    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=2045fd709630069561aae06c882734cc&libraries=services"></script>
+
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+
     <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
@@ -21,13 +28,14 @@
 
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+
    	</head>
     	<link rel="stylesheet" th:href="@{/css/mypage/edit.css}">
+
     	<script src="/js/mypage/edit.js"></script>
-</head>
 <main>
 <div class="info-div">   
-    <form class="info-form">
+	<form class="info-form">
         <div class="mypageInfo">
             <div class="info-correction">
                 <div class="info-title">
@@ -51,7 +59,7 @@
                 </div>
             </div>
         </div>
-    </form>
+	</form>
     <form class="info-form">
         <div class="mypageInfo">
             <div class="info-change">
@@ -95,11 +103,9 @@
                                 <button class="addr-btn" id="addr-btn" type="button">변경하기</button>
                             </div>
                         </div>
-
                     </div>
-                </div>
-            </div>
-        </div>
+        	</div>
+    	</div>
     </form>
 </div> 
 </main>

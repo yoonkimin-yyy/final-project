@@ -3,7 +3,6 @@ package kr.kro.bbanggil.home.controller;
 
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,18 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
-
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
-import kr.kro.bbanggil.common.util.EmailServiceImpl;
+import kr.kro.bbanggil.email.dto.request.SubscriptionRequsetDto;
 import kr.kro.bbanggil.email.scheduler.NewsletterScheduler;
-import kr.kro.bbanggil.subscribe.dto.SubscriptionRequsetDto;
+import kr.kro.bbanggil.email.service.EmailServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/bbanggil")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class HomeController {
 	
@@ -44,6 +43,7 @@ public class HomeController {
 	    }
 
 	    boolean isSuccess = emailService.sendSubscriptionEmail(request.getEmail());
+	    System.out.println(isSuccess);
 
 	    if (isSuccess) {
 	        return ResponseEntity.ok("구독 완료! 확인 이메일을 발송했습니다.");
@@ -67,20 +67,8 @@ public class HomeController {
 		return "admin/newsLetter";
 	}
 	
-	/**
-	 * 카카오 api를 이용하여 region과 query를 이용하여 데이터 db에 주입 받는 기능
-	 */
-	@GetMapping("/bakeries")
-	public ResponseEntity<List<BakeryDto>> getBakeriesByRegion(@RequestParam("region") String region){
-
-		  List<BakeryDto> bakeries = bakeryService.getBakeriesByRegion(region);
-		    
-		  return ResponseEntity.ok(bakeries);
-		    
-	}
-	
-	@GetMapping("/home")
-	public String homePage(Model model) {
+	@GetMapping("")
+	public String homePage(@RequestParam(value = "bakeryNo", required = false, defaultValue = "0") double bakeryNo,Model model) {
 		/*
 		 * 인기 빵집 10개 보여지는 기능
 		 */
@@ -90,7 +78,7 @@ public class HomeController {
 		/*
 		 * 최근 오픈빵집 10개 보여지는 기능
 		 */
-		List<BakeryDto> recentBakeries = bakeryService.getRecentBakeries();
+		List<BakeryDto> recentBakeries = bakeryService.getRecentBakeries(bakeryNo);
 		model.addAttribute("recentBakeries", recentBakeries);
 		
 		
@@ -111,7 +99,13 @@ public class HomeController {
 		return "common/home";
 	}
 	
-	
+	@GetMapping("by-region")
+	@ResponseBody
+	public List<BakeryDto> getBakeriesByRegion(@RequestParam("region") String region){
+		
+		return bakeryService.getBakeriesByRegion(region);
+		
+	}
 	
 	
 	
