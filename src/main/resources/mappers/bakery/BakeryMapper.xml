@@ -26,6 +26,7 @@
 		<result property="start" column="open_time"></result>
 		<result property="end" column="close_time"></result>
 	</resultMap>
+
 		<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
 			SELECT bi.BAKERY_NO,
 			bi.BAKERY_NAME,
@@ -219,6 +220,4 @@
 			#{region} || '%'
 
 		</select>
-
-
 </mapper>

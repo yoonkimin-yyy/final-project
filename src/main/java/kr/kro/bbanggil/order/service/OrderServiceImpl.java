@@ -80,6 +80,9 @@ public class OrderServiceImpl implements OrderService {
 			int cartNo = orderMapper.findcart(userNo);
 			int payNo = orderMapper.findpay(paymentRequestDto.getMerchantUid());
 
+			System.out.println("fsfsfsfsf!");
+			System.out.println(cartNo);
+			
 			orderMapper.orderInfo(cartNo, payNo);
 			orderMapper.pickupCheck(payNo);
 

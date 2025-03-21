@@ -77,35 +77,32 @@
 	</select>
 
 	<select id="findBakeriesInfo" resultMap="DetailResultMap">
-		SELECT
-		bi2.CHANGE_NAME,
-		bi2.IMG_NO,
-		bi2.RESOURCES_PATH ,
-		bi.BAKERY_NO ,
-		bi.BAKERY_NAME ,
-		bi.BAKERY_ADDRESS,
-		bi.BAKERY_PHONE,
-		r.REVIEW_RATING,
-		bs."DAY" ,
-		bs.OPEN_TIME ,
-		bs.CLOSE_TIME
-		FROM
-		BAKERY_INFO bi
-		JOIN BAKERY_IMAGE bi2
-		ON
-		bi.BAKERY_NO = bi2.BAKERY_NO
-		JOIN REVIEW r ON
-		r.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_SCHEDULE bs
-		ON
-		bs.BAKERY_NO = r.BAKERY_NO
-		WHERE
-		BI.BAKERY_NO =
-		#{no}
+SELECT
+    bi.BAKERY_NAME,
+    bi.BAKERY_NO,
+    bi.BAKERY_ADDRESS,
+    bi.BAKERY_PHONE,
+    bi2.IMG_NO,
+    bi2.CHANGE_NAME,
+    bi2.RESOURCES_PATH,
+    NVL(ROUND(AVG(r.REVIEW_RATING), 1), 0) AS REVIEW_RATING  
+FROM BAKERY_INFO bi
+JOIN BAKERY_IMAGE bi2 ON bi.BAKERY_NO = bi2.BAKERY_NO
+JOIN BAKERY_SCHEDULE bs ON bi2.BAKERY_NO = bs.BAKERY_NO
+LEFT JOIN REVIEW r ON bi.BAKERY_NO = r.BAKERY_NO  
+WHERE bi.BAKERY_NO = #{no}
+GROUP BY
+    bi.BAKERY_NAME,
+    bi.BAKERY_NO,
+    bi.BAKERY_ADDRESS,
+    bi.BAKERY_PHONE,
+    bi2.IMG_NO,
+    bi2.CHANGE_NAME,
+    bi2.RESOURCES_PATH
 	</select>
 
 
-	<select id="getMenuInfo" resultType="kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto">
+	<select id="getMenuInfo" resultMap="DetailResultMap">
 
 		SELECT
 	*
@@ -114,9 +111,8 @@ FROM
 JOIN BAKERY_INFO bi 
 ON
 	bi.BAKERY_NO = m.BAKERY_NO
-JOIN MENU_IMEGE mi 
-ON
-mi.MENU_NO = m.MENU_NO	
+join BAKERY_IMAGE bi2
+ON bi.BAKERY_NO = bi2.BAKERY_NO 
 WHERE
 	bi.BAKERY_NO = #{no}
 		
