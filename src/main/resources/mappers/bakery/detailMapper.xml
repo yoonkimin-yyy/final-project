@@ -132,32 +132,27 @@ WHERE
 	<select id="getCartNoByUserNo" parameterType="int"
 		resultType="int">
 		SELECT
-		cart_no
+			cart_no
 		FROM
-		CART
+			CART
 		WHERE
-		user_no = #{userNo} FETCH FIRST 1
-		ROWS ONLY
+			user_no = #{userNo} 
+		ORDER BY cart_no DESC
+		FETCH FIRST 1 ROWS ONLY
 
 	</select>
-
-	<select id="getLastCartNo" resultType="int">
-		SELECT cart_seq.nextval
-		FROM DUAL
-	</select>
-
 
 	<insert id="insertCartInfo">
 		INSERT
 		INTO
 		CART_INFO (list_no,
-		cart_no,
-		menu_no,
-		menu_count)
+					cart_no,
+					menu_no,
+					menu_count)
 		VALUES (cart_info_seq.nextval,
-		#{cartNo},
-		#{menuNo},
-		#{menuCount})
+				#{cartNo},
+				#{menuNo},
+				#{menuCount})
 
 	</insert>
 

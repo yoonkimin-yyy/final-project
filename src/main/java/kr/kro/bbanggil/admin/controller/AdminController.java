@@ -20,6 +20,11 @@ import lombok.AllArgsConstructor;
 public class AdminController {
 
 	private final AdminService adminService;
+	
+	@GetMapping("/login")
+	public String adminLoginForm() {
+		return "admin/admin-login";
+	}
 
 	@GetMapping("/form")
 	public String adminForm(Model model) {

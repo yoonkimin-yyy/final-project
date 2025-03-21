@@ -13,7 +13,7 @@ import kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto;
 
 public interface OrderService {
 	
-	public List<OrderResponseDto> list(String userId);  
+	public List<OrderResponseDto> list(int userNo);  
 
 	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto, String userId);
 
@@ -26,7 +26,7 @@ public interface OrderService {
 
 	public IamportResponse<Payment> cancelPayment(String imp_uid);
 	
-	public List<OrderResponseDto> pickupList(PickupCheckResponseDto result, int payNo, String userId);
+	public List<OrderResponseDto> pickupList(PickupCheckResponseDto result, int payNo, int userNo);
 	
 	public PickupCheckResponseDto pickupCheckStatus(int payNo);
 

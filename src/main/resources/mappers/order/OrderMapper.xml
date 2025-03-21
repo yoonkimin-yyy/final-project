@@ -30,13 +30,22 @@
 		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
 		FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
+		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
+		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
+		WHERE c.CART_NO = (SELECT max(cart_no) FROM CART c 
+						   WHERE USER_NO = #{userNo})
+		ORDER BY ci.LIST_NO DESC
+
+		<!-- SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
+		FROM CART_INFO ci 
+		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN ORDER_INFO oi ON OI.CART_NO = c.CART_NO 
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
 		WHERE oi.CART_NO = (SELECT max(oi.cart_no) FROM ORDER_INFO oi
 						    JOIN cart c ON oi.CART_NO = c.CART_NO 
-					        WHERE user_no = #{userId})
-		ORDER BY oi.pay_no DESC
+					        WHERE user_no = #{userNo})
+		ORDER BY oi.pay_no DESC -->
 	</select>
 	
 	<select id="calculate" resultType="int">
@@ -115,31 +124,23 @@
 	
 	
 	<select id="countByUserAndOrder">
-SELECT
-	c.CART_NO ,
-	oi.ORDER_NO ,
-	oi.PAY_NO ,
-	ui.USER_NO ,
-	ui.USER_ID
-FROM
-	CART c
-JOIN ORDER_INFO oi 
-  ON
-	c.CART_NO = oi.CART_NO
-JOIN USER_INFO ui 
-  ON
-	c.USER_NO = UI.USER_NO
-WHERE
-	ui.USER_NO = #{userNo}
-	AND oi.ORDER_NO = #{orderNo}
+	SELECT
+		c.CART_NO ,
+		oi.ORDER_NO ,
+		oi.PAY_NO ,
+		ui.USER_NO ,
+		ui.USER_ID
+	FROM
+		CART c
+	JOIN ORDER_INFO oi 
+	  ON
+		c.CART_NO = oi.CART_NO
+	JOIN USER_INFO ui 
+	  ON
+		c.USER_NO = UI.USER_NO
+	WHERE
+		ui.USER_NO = #{userNo}
+		AND oi.ORDER_NO = #{orderNo}
 	</select>
-	
-	
-	
-	
-	
-	
-	
-	
 	
 </mapper>

@@ -77,7 +77,6 @@ public interface BakeryMapper {
 	
 	void insertCartInfo(@Param("cartNo") int cartNo,@Param("menuNo") int menuNo, @Param("menuCount") int menuCount);
 	Integer getCartNoByUserNo(int userNo);
-	Integer getLastCartNo();
 	void insertCart(int userNo);
 	BakeryDto findBakeryByNo(@Param("no")double bakeryNo);
 	

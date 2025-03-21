@@ -2,10 +2,11 @@ package kr.kro.bbanggil.admin.service;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.Email;
-import kr.kro.bbanggil.admin.dto.request.AdminRequestDto;
+import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
 import kr.kro.bbanggil.email.service.EmailServiceImpl;
@@ -44,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void sendEmail(AdminRequestDto adminRequestDto) {
+	public void sendEmail(AdminEmailRequestDto adminRequestDto) {
 
 		String[] addresses = adminRequestDto.getAddress().split("\\s*,\\s*"); // 정규식
 		String title = adminRequestDto.getTitle();
