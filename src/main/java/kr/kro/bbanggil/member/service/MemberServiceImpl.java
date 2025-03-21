@@ -94,7 +94,6 @@ public class MemberServiceImpl implements MemberService{
     public MemberRequestSignupDto loginIn(MemberRequestSignupDto memberRequestSignupDto) {
     	
     	MemberRequestSignupDto loginUser = registerMapper.loginIn(memberRequestSignupDto);
-    	 System.out.println(memberRequestSignupDto.getUserPassword());
     	
          if (loginUser != null) {
              // 2. 비밀번호 검증 (암호화된 비밀번호와 입력된 비밀번호 비교)
