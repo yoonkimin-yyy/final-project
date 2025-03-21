@@ -27,37 +27,8 @@
 		<result property="end" column="close_time"></result>
 	</resultMap>
 
-	<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
-		SELECT bi.BAKERY_NO,
-		bi.BAKERY_NAME,
-		bi.BAKERY_ADDRESS,
-		bd.AMENITY,
-		bd.INSIDE_INFO,
-		bd.OUTSIDE_INFO,
-		bd.CREATED_DATE
-		FROM BAKERY_INFO bi
+	
 
-<resultMap id="bakeryInfoResultMap" type="kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO">
-	<result property="bakeryNo" column="bakery_no"></result>
-	<result property="bakeryName" column="bakery_name"></result>
-	<result property="bakeryPhone" column="bakery_phone"></result>
-	<result property="bakeryAddress" column="bakery_address"></result>
-	<result property="createdDate" column="created_date"></result>
-	<result property="insideInfo" column="inside_info"></result>
-	<result property="outsideInfo" column="outside_info"></result>
-	<result property="parkingInfo" column="amenity"></result>
-</resultMap>
-
-<resultMap id="bakeryImgResultMap" type="kr.kro.bbanggil.bakery.dto.request.FileRequestDTO">
-	<result property="changeName" column="change_name"></result>
-	<result property="folderNamePath" column="folder_name_path"></result>
-</resultMap>
-
-<resultMap id="bakeryScheduleResultMap" type="kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO">
-	<result property="day" column="day"></result>
-	<result property="start" column="open_time"></result>
-	<result property="end" column="close_time"></result>
-</resultMap>
 	
 	<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
 		SELECT bi.BAKERY_NO,
@@ -74,6 +45,7 @@
 		WHERE bi.bakery_no =
 		${bakeryNo}
 	</select>
+	
 	<select id="getBakeryImg" resultMap="bakeryImgResultMap">
 		SELECT CHANGE_NAME,
 		FOLDER_NAME_PATH
@@ -148,7 +120,7 @@
 		'')
 	</insert>
 	<insert id="bakeryInsert">
-		<selectKey resultType="int" keyProperty="bakeryNo"
+		<selectKey resultType="int" keyProperty="bakeryNo">
 			order="BEFORE">
 			SELECT bakery_seq.nextval from dual
 		</selectKey>

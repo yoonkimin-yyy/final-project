@@ -524,7 +524,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
             const menuItem = button.closest('.menu-item');
             const name = menuItem.querySelector('.menu-name').textContent;
             const price = parseInt(menuItem.querySelector('.menu-price').textContent.replace(/[^0-9]/g, ''));
-            
+			const menuNo = menuItem.getAttribute('data-menu-no');
             // 장바구니에 같은 상품이 있는지 확인
             const existingItem = Array.from(cartItems.children).find(item => 
                 item.querySelector('.cart-item-name')?.textContent === name
@@ -544,6 +544,8 @@ function updateTagCountsOnEdit(prevTags, newTags) {
                 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
+				itemDiv.setAttribute('data-menu-no', menuNo);
+				
                 itemDiv.innerHTML = `
                     <div class="cart-item-info">
                         <span class="cart-item-name">${name}</span>
@@ -606,14 +608,14 @@ function updateTagCountsOnEdit(prevTags, newTags) {
 	   
 		Array.from(cartItems).forEach(item => {
 		        const menuNo = item.getAttribute("data-menu-no");
-		        const quantityText = item.querySelector(".item-quantity")?.innerText ?? "0개";
+		        const quantityText = item.querySelector(".quantity")?.innerText ?? "0개";
 		        const quantity = parseInt(quantityText.replace("개", "").trim());
 
 		
 
 	        orderList.push({
 	            menuNo: parseInt(menuNo),
-	            quantity: parseInt(quantity)
+	            menuCount: parseInt(quantity)
 	        });
 	    });
 
