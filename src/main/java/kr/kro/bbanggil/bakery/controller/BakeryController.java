@@ -1,9 +1,11 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.type.TypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
@@ -206,12 +210,25 @@ public class BakeryController {
 
 	@PostMapping("/cart/add")
 	public String addCart( HttpSession session,@RequestParam("orderData") String orderData) {
-
+		
+		
 		Integer userNo = (Integer) session.getAttribute("userNum");
 		
 		ObjectMapper objectMapper = new ObjectMapper();
+		
+		
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();
+		
+		  try {
+		        //  배열로 먼저 파싱하고 리스트로 변환
+		        MenuDetailRequestDto[] dtoArray = objectMapper.readValue(orderData, MenuDetailRequestDto[].class);
+		        menuDtoList = Arrays.asList(dtoArray);
+		    } catch (Exception e) {
+		        e.printStackTrace(); // 파싱 에러 로그
+		    }
+		
 
+		
 		bakeryService.addCart(userNo, menuDtoList);
 
 		return "user/order-page";
@@ -226,24 +243,28 @@ public class BakeryController {
 		if (bakery == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		
+		 	
+		
 		return ResponseEntity.ok(bakery);
 	}
 
 
 
 	
-//	@GetMapping("/detail/{bakeryNo}")
-//	public String getBakeryImages(@PathVariable("bakeryNo") double no, Model model) {
-//		
-//		/**
-//		 * 가게 정보 가져오는 기능
-//		 */
-//	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
-//
-//	    model.addAttribute("bakeriesInfo", bakeriesInfo);
-//	    
-//	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
-//	}
+	@GetMapping("/detail/{bakeryNo}")
+	public String getBakeryImages(@PathVariable("bakeryNo") double no, Model model) {
+		
+		/**
+		 * 가게 정보 가져오는 기능
+		 */
+	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
+
+	    model.addAttribute("bakeriesInfo", bakeriesInfo);
+	    
+	    
+	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
+	}
 	
 	@GetMapping("/update/form")
 	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false) Integer bakeryNo,Model model) {

@@ -31,7 +31,7 @@ public class EmailServiceImpl implements EmailService {
 		try {
 			String subject = "구독 완료 안내";
 			String body = "<h1>구독이 완료되었습니다!</h1><p>이제부터 정기적인 뉴스레터를 받아보실 수 있습니다.</p>";
-
+			
 			sendEmail(toEmail, subject, body);
 			logger.info(" 이메일 발송 성공: {}", toEmail);
 			return true; // 이메일 발송 성공 시 true 반환
@@ -58,7 +58,7 @@ public class EmailServiceImpl implements EmailService {
 	/**
 	 * 이메일만 보내는 기능
 	 */
-	private void sendEmail(String toEmail, String subject, String body) {
+	public void sendEmail(String toEmail, String subject, String body) {
 
 		try {
 			MimeMessage message = mailSender.createMimeMessage();

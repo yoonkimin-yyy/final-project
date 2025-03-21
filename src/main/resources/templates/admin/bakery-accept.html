@@ -48,7 +48,27 @@
 				</tr>
 				<tr>
 					<th>가게사진</th>
-					<td><img th:sc="@{/uploads/bakery/c481cfe7-7cr98-4f7d-862e-67f70dae25d0.webp}"></img></td>
+					<td>
+						<!-- 이미지 슬라이드 컨테이너 -->
+						<div class="image-slider">
+							<div class="slider-container">
+								<th:block th:each="imgPath : ${result.bakeryImgPath}">
+									<div class="slide">
+										<img
+											th:src="@{${imgPath.resourcesPath} + '/' + ${imgPath.changeName}}"
+											width="300px" height="300px"/>
+									</div>
+								</th:block>
+							</div>
+							<!-- 슬라이드 이전 버튼 -->
+							<button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+							<!-- 슬라이드 다음 버튼 -->
+							<button class="next" onclick="moveSlide(1)">&#10095;</button>
+						</div>
+					</td>
+					<!-- <td><img th:each="imgPath : ${result.bakeryImgPath}"
+						th:src="@{${imgPath.resourcesPath} + '/' + ${imgPath.changeName}}"
+						width="300px" /></td> -->
 				</tr>
 				<tr>
 					<th>메뉴</th>

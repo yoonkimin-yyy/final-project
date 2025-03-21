@@ -25,14 +25,19 @@ public class AdminController {
 	public String adminForm(Model model) {
 		
 		List<AdminResponseDto> sublist = adminService.subList();
+		List<AdminResponseDto> bakeryList = adminService.bakeryList();
+		List<AdminResponseDto> userList = adminService.userList();
 		
 		model.addAttribute("sublists", sublist);
+		model.addAttribute("bakeryLists", bakeryList);
+		model.addAttribute("userLists", userList);
 
 		return "admin/admin-page";
 	}
 
 	@GetMapping("/bakery/detail")
 	public String bakeryDetailForm() {
+		
 		return "admin/bakery-detail";
 	}
 
@@ -46,11 +51,6 @@ public class AdminController {
 								   Model model) {
 		
 		AdminResponseDto result = adminService.acceptList(listNum);
-		
-		for(int i=0; i<result.getBakeryImgPath().size(); i++) {
-			System.out.println(result.getBakeryImgPath().get(i).getResourcesPath());
-			System.out.println(result.getBakeryImgPath().get(i).getChangeName());
-		}
 		
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
@@ -68,7 +68,8 @@ public class AdminController {
 		
 		String message = ("승인".equals(action) ? "승인" : "거절") + " 완료되었습니다.";
 		
-	    return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
+	    return "<script>alert('" + message + "'); "
+	    		+ "window.location.href='/admin/form';</script>";
 	}
 	
 }
