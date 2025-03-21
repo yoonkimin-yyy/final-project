@@ -49,9 +49,9 @@ public class ApiOrderPageController {
 	@ResponseBody
 	public Boolean accountCheck(@RequestParam("totalCount") int totalCount, 
 								OrderRequestDto orderRequestDto,
-								String userId) {
+								String userNum) {
 		
-		return orderService.accountCheck(totalCount, orderRequestDto, userId);
+		return orderService.accountCheck(totalCount, orderRequestDto, userNum);
 	}
 	
 	/**
@@ -79,10 +79,10 @@ public class ApiOrderPageController {
 	public IamportResponse<Payment> validateIamport(@PathVariable("imp_uid") String imp_uid,
 													@RequestBody PaymentRequestDto paymentRequestDto,
 													OrderRequestDto orderRequestDto,
-													@SessionAttribute("userId") String userId) 
+													@SessionAttribute("userNum") String userNum) 
 	throws IamportResponseException, IOException {
 
-		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userId);
+		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userNum);
 	}
 	
 	/**
@@ -90,9 +90,9 @@ public class ApiOrderPageController {
 	 */
 	@PostMapping("/success")
 	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDtoDto,
-											@SessionAttribute("userNo") int userNo) {
+											@SessionAttribute("userNum") int userNum) {
 		
-		if(orderService.saveOrder(paymentRequestDtoDto, userNo)) {
+		if(orderService.saveOrder(paymentRequestDtoDto, userNum)) {
 			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
 		}	
 		
@@ -113,13 +113,13 @@ public class ApiOrderPageController {
 	 */
 	@GetMapping("/pickupCheck")
 	public HashMap<String, Object> pickupCheckStatus(@SessionAttribute("userId") String userId,
-													 @SessionAttribute("userId") int userNo) {
+													 @SessionAttribute("userNum") int userNo) {
 		int payNo = orderService.getPayNo(userNo);
 		
 		HashMap<String, Object> response = new HashMap<>();
 
 		PickupCheckResponseDto result = orderService.pickupCheckStatus(payNo);
-		List<OrderResponseDto> list = orderService.pickupList(result, payNo, userId);
+		List<OrderResponseDto> list = orderService.pickupList(result, payNo, userNo);
 		
 		response.put("result", result);
 		response.put("list", list);

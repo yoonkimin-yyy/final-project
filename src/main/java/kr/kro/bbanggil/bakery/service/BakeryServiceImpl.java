@@ -357,19 +357,10 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public void addCart(int userNo, List<MenuDetailRequestDto> menuDto) {
 
+
+		bakeryMapper.insertCart(userNo);
 		Integer cartNo = bakeryMapper.getCartNoByUserNo(userNo);
-
-	
-		
-		
-		if (cartNo == null) {
-			bakeryMapper.insertCart(userNo);
-			cartNo = bakeryMapper.getLastCartNo();
-		}
-
 		for (MenuDetailRequestDto item : menuDto) {
-			System.out.println("-0-------");
-			System.out.println(cartNo);
 			bakeryMapper.insertCartInfo(cartNo, item.getMenuNo(), item.getMenuCount());
 		}
 
