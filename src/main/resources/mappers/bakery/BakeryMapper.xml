@@ -37,7 +37,6 @@
 			bd.OUTSIDE_INFO,
 			bd.CREATED_DATE
 			FROM BAKERY_INFO bi
-
 			JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
 			WHERE
 			bi.bakery_no =
@@ -58,7 +57,7 @@
 		</select>
 
 		<insert id="menuInsert">
-			<selectKey resultType="int" keyProperty="menuNo"
+			<selectKey resultType="int" keyProperty="menuRequestDTO.menuNo"
 				order="BEFORE">
 				SELECT menu_seq.nextval from dual
 			</selectKey>
@@ -70,7 +69,7 @@
 			#{menuRequestDTO.menuCategory})
 		</insert>
 		<insert id="menuFileUpload">
-			INSERT INTO menu_image
+			INSERT INTO menu_imege
 			VALUES(menu_img_seq.nextval,
 			#{fileDTO.changeName},
 			#{fileDTO.originalName},
@@ -81,6 +80,7 @@
 			#{fileDTO.folderNamePath},
 			#{menuNo})
 		</insert>
+		
 		<insert id="imgInsert">
 			INSERT INTO menu_imege
 			VALUES(menu_img_seq.nextval,
@@ -101,6 +101,31 @@
 			category
 			FROM
 			menu_category
+		</select>
+		<select id="getMenuList">
+			SELECT menu_name AS menuName,
+				   MENU_PRICE AS menuPrice,
+				   MENU_INFO AS menuInfo,
+				   CATEGORY AS category,
+				   CHANGE_NAME AS changeName,
+	   			   RESOURCES_PATH AS resourcePath
+			FROM MENU m 
+			JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO
+			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
+			WHERE BAKERY_NO = ${bakeryNo}
+		</select>
+		<select id="bakeryInfo" >
+			SELECT bi.BAKERY_NAME AS bakeryName,
+				   bi.BAKERY_ADDRESS AS bakeryAddress,
+				   bi.BAKERY_PHONE AS bakeryPhone,
+				   bd.INSIDE_INFO AS insideInfo,
+				   bd.OUTSIDE_INFO AS outsideInfo,
+				   bd.AMENITY AS parkingInfo,
+				   ba.AGREE
+			FROM BAKERY_INFO bi
+			JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
+			JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO
+			WHERE bi.BAKERY_NO = ${bakeryNo}	
 		</select>
 
 		<insert id="bakeryFileUpload">

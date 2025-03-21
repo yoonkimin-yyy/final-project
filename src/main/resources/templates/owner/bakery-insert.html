@@ -12,7 +12,6 @@
 <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
      <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 	<form th:action="@{/bakery/insert}" method="Post" enctype="multipart/form-data">
-	
     <div class="container">
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
@@ -185,12 +184,12 @@
                 </div>
 
             </div>
-        </div>
-            
             <div>
                 <button class="submit-btn edit-btn" type="submit">제출</button>
                 <button class="cancel-btn edit-btn">취소</button>
             </div>
+        </div>
+            
     </div>
 	</form>
 </body>
