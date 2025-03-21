@@ -105,7 +105,7 @@
                     </div>
                     <div class="info-item">
                         <i class="fas fa-calendar"></i>
-                        <input type="text" th:field="*{createdDate}" placeholder="창립일or오픈일(선택)">
+                        <input type="date" th:field="*{createdDate}" placeholder="창립일or오픈일(선택)">
                     </div>
                 </div>
             </div>
@@ -117,7 +117,6 @@
             <div class="tabs">
                 <div class="tab-buttons">
                     <button type="button" class="tab-button active" data-tab="menu">메뉴</button>
-                    <button type="button" class="tab-button" data-tab="reviews">리뷰</button>
                     <button type="button" class="tab-button" data-tab="interior">실내</button>
                     <button type="button" class="tab-button" data-tab="exterior">실외</button>
                     <button type="button" class="tab-button" data-tab="parking">주차</button>
@@ -144,8 +143,8 @@
 				        <button class="nav-btn next-btn" type="button">&#10095;</button>
 				    </div>
                     <div class="photo-description">
-                        <textarea class="description" name="insideInfo" id="insideText" oninput="updateCharCount('insideText','insideDisplay')" placeholder="실내 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
-                        <p id="insideDisplay">0/500</p>
+                        <textarea class="description" th:field="*{insideInfo}" id="insideText" oninput="updateCharCount('insideText','insideDisplay')" placeholder="실내 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+                        <p id="insideDisplay"></p>
                     </div>
                 </div>
                 <!-- 실외 사진 섹션 -->
@@ -161,8 +160,8 @@
 				        <button class="nav-btn next-btn" type="button">&#10095;</button>
 				    </div>
                     <div class="photo-description">
-                        <textarea class="description" name="outsideInfo" id="outsideText" oninput="updateCharCount('outsideText','outsideDisplay')" placeholder="실외 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
-                        <p id="outsideDisplay">0/500</p>
+                        <textarea class="description" th:field="*{outsideInfo}" id="outsideText" oninput="updateCharCount('outsideText','outsideDisplay')" placeholder="실외 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+                        <p id="outsideDisplay"></p>
                     </div>
                 </div>
                 <!-- 주차 정보 섹션 -->
@@ -179,8 +178,8 @@
 					        <button class="nav-btn next-btn" type="button">&#10095;</button>
 					    </div>
                         <div class="parking-details">
-                            <textarea class="parking-text" name="parkingInfo" id="parkingText" oninput="updateCharCount('parkingText','parkingDisplay')" placeholder="주차장 정보를 입력해주세요" maxlength="500"></textarea>
-                            <p id="parkingDisplay" class="displays">0/500</p>
+                            <textarea class="parking-text" th:field="*{parkingInfo}" id="parkingText" oninput="updateCharCount('parkingText','parkingDisplay')" placeholder="주차장 정보를 입력해주세요" maxlength="500"></textarea>
+                            <p id="parkingDisplay" class="displays"></p>
                         </div>
                     </div>
                 </div>
