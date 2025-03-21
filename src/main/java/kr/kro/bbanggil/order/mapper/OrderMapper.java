@@ -37,6 +37,6 @@ public interface OrderMapper {
 
 	String refund(int payNo);
 	
-	int countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
+	Integer countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
 
 }

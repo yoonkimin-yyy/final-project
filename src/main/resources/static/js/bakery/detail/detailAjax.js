@@ -82,6 +82,7 @@ function fetchBakeryData(bakeryNo, callback) {
     }
 
     bakeryNo = parseFloat(bakeryNo); // String → double 변환
+	console.log(bakeryNo);
 
     fetch(`/bakery/kakao?bakeryNo=${bakeryNo}`)  // Query Parameter 방식
         .then(response => {

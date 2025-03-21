@@ -2,188 +2,218 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.bakery.mapper.BakeryMapper">
-<resultMap id="bakeryInfoResultMap" type="kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO">
-	<result property="bakeryNo" column="bakery_no"></result>
-	<result property="bakeryName" column="bakery_name"></result>
-	<result property="bakeryAddress" column="bakery_address"></result>
-	<result property="createdDate" column="created_date"></result>
-	<result property="insideInfo" column="inside_info"></result>
-	<result property="outsideInfo" column="outside_info"></result>
-	<result property="parkingInfo" column="amenity"></result>
-</resultMap>
+	<resultMap id="bakeryInfoResultMap"
+		type="kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO">
+		<result property="bakeryNo" column="bakery_no"></result>
+		<result property="bakeryName" column="bakery_name"></result>
+		<result property="bakeryAddress" column="bakery_address"></result>
+		<result property="createdDate" column="created_date"></result>
+		<result property="insideInfo" column="inside_info"></result>
+		<result property="outsideInfo" column="outside_info"></result>
+		<result property="parkingInfo" column="amenity"></result>
+	</resultMap>
 
-<resultMap id="bakeryImgResultMap" type="kr.kro.bbanggil.bakery.dto.request.FileRequestDTO">
-	<result property="changeName" column="change_name"></result>
-	<result property="folderNamePath" column="folder_name_path"></result>
-</resultMap>
+	<resultMap id="bakeryImgResultMap"
+		type="kr.kro.bbanggil.bakery.dto.request.FileRequestDTO">
+		<result property="changeName" column="change_name"></result>
+		<result property="folderNamePath" column="folder_name_path"></result>
+	</resultMap>
 
-<resultMap id="bakeryScheduleResultMap" type="kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO">
-	<result property="day" column="day"></result>
-	<result property="start" column="open_time"></result>
-	<result property="end" column="close_time"></result>
-</resultMap>
-	
+	<resultMap id="bakeryScheduleResultMap"
+		type="kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO">
+		<result property="day" column="day"></result>
+		<result property="start" column="open_time"></result>
+		<result property="end" column="close_time"></result>
+	</resultMap>
+
 	<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
 		SELECT bi.BAKERY_NO,
-			   bi.BAKERY_NAME,
-			   bi.BAKERY_ADDRESS,
-			   bd.AMENITY,
-			   bd.INSIDE_INFO,
-			   bd.OUTSIDE_INFO,
-			   bd.CREATED_DATE 
-		FROM BAKERY_INFO bi 
+		bi.BAKERY_NAME,
+		bi.BAKERY_ADDRESS,
+		bd.AMENITY,
+		bd.INSIDE_INFO,
+		bd.OUTSIDE_INFO,
+		bd.CREATED_DATE
+		FROM BAKERY_INFO bi
 		JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
-		WHERE bi.bakery_no = ${bakeryNo}
+		WHERE bi.bakery_no =
+		${bakeryNo}
 	</select>
 	<select id="getBakeryImg" resultMap="bakeryImgResultMap">
-	SELECT CHANGE_NAME,
-		   FOLDER_NAME_PATH
-	FROM BAKERY_IMAGE bi
-	WHERE bakery_no = ${bakeryNo}
+		SELECT CHANGE_NAME,
+		FOLDER_NAME_PATH
+		FROM BAKERY_IMAGE bi
+		WHERE bakery_no = ${bakeryNo}
 	</select>
 
-	<select id="getBakerySchedule" resultMap="bakeryScheduleResultMap">
-	SELECT day,open_time,close_time
-	FROM BAKERY_SCHEDULE bs
-	WHERE bakery_no =${bakeryNo}
+	<select id="getBakerySchedule"
+		resultMap="bakeryScheduleResultMap">
+		SELECT day,open_time,close_time
+		FROM BAKERY_SCHEDULE bs
+		WHERE bakery_no =${bakeryNo}
 	</select>
 
 	<insert id="menuInsert">
-	<selectKey resultType="int" keyProperty="menuNo" order="BEFORE">
-		SELECT menu_seq.nextval from dual
-	</selectKey>
+		<selectKey resultType="int" keyProperty="menuNo"
+			order="BEFORE">
+			SELECT menu_seq.nextval from dual
+		</selectKey>
 		INSERT INTO menu VALUES(#{menuRequestDTO.menuNo},
-								#{menuRequestDTO.menuName},
-								#{menuRequestDTO.menuPrice},
-								#{menuRequestDTO.menuPopulity},
-								#{bakeryNo},
-								#{menuRequestDTO.menuCategory})
+		#{menuRequestDTO.menuName},
+		#{menuRequestDTO.menuPrice},
+		#{menuRequestDTO.menuPopulity},
+		#{bakeryNo},
+		#{menuRequestDTO.menuCategory})
 	</insert>
 	<insert id="menuFileUpload">
-	INSERT INTO menu_image
+		INSERT INTO menu_image
 		VALUES(menu_img_seq.nextval,
-			   #{fileDTO.changeName},
-			   #{fileDTO.originalName},
-			   #{fileDTO.extension},
-			   #{fileDTO.size},
-			   #{fileDTO.localPath},
-			   #{fileDTO.localResourcePath},
-			   #{fileDTO.folderNamePath},
-			   #{menuNo})
+		#{fileDTO.changeName},
+		#{fileDTO.originalName},
+		#{fileDTO.extension},
+		#{fileDTO.size},
+		#{fileDTO.localPath},
+		#{fileDTO.localResourcePath},
+		#{fileDTO.folderNamePath},
+		#{menuNo})
 	</insert>
 	<insert id="imgInsert">
-	INSERT INTO menu_imege
+		INSERT INTO menu_imege
 		VALUES(menu_img_seq.nextval,
-			   #{changeName},
-			   #{originalName},
-			   #{extension},
-			   #{size},
-			   #{localPath},
-			   #{localResourcePath},
-			   #{folderNamePath},
-			   56)
+		#{changeName},
+		#{originalName},
+		#{extension},
+		#{size},
+		#{localPath},
+		#{localResourcePath},
+		#{folderNamePath},
+		56)
 	</insert>
-	
-	
-	
+
+
+
 	<select id="getCategory">
 		SELECT category_no AS categoryNo,
-			   category
+		category
 		FROM menu_category
 	</select>
-	
+
 	<insert id="bakeryFileUpload">
 		INSERT INTO bakery_Image
 		VALUES(img_seq.nextval,
-			   #{fileDTO.changeName},
-			   #{fileDTO.originalName},
-			   #{fileDTO.extension},
-			   #{fileDTO.size},
-			   #{fileDTO.localPath},
-			   #{fileDTO.localResourcePath},
-			   #{fileDTO.folderNamePath},
-			   #{imgLocation},
-			   #{bakeryNo},
-			   '')
+		#{fileDTO.changeName},
+		#{fileDTO.originalName},
+		#{fileDTO.extension},
+		#{fileDTO.size},
+		#{fileDTO.localPath},
+		#{fileDTO.localResourcePath},
+		#{fileDTO.folderNamePath},
+		#{imgLocation},
+		#{bakeryNo},
+		'')
 	</insert>
 	<insert id="bakeryInsert">
-		<selectKey resultType="int" keyProperty="bakeryNo" order="BEFORE">
+		<selectKey resultType="int" keyProperty="bakeryNo"
+			order="BEFORE">
 			SELECT bakery_seq.nextval from dual
 		</selectKey>
-			INSERT INTO bakery_info
-			VALUES(#{bakeryNo},
-				   #{bakeryName},
-				   #{bakeryAddress},
-				   #{bakeryPhone},
-				   #{latitude},
-				   #{longitude},
-				   #{region})
+		INSERT INTO bakery_info
+		VALUES(#{bakeryNo},
+		#{bakeryName},
+		#{bakeryAddress},
+		#{bakeryPhone},
+		#{latitude},
+		#{longitude},
+		#{region})
 	</insert>
 	<insert id="bakeryDetailInsert">
 		INSERT INTO bakery_detail
 		VALUES(#{bakeryNo},
-			   #{amenity},
-			   #{insideInfo},
-			   #{outsideInfo},
-			   #{createdDate},
-			   sysdate)
+		#{amenity},
+		#{insideInfo},
+		#{outsideInfo},
+		#{createdDate},
+		sysdate)
 	</insert>
 	<insert id="bakeryScheduleInsert">
 		INSERT INTO bakery_schedule
 		VALUES(schedule_seq.nextval,
-			   #{bakeryNo},
-			   #{timeDTO.day},
-			   #{timeDTO.start},
-			   #{timeDTO.end})
+		#{bakeryNo},
+		#{timeDTO.day},
+		#{timeDTO.start},
+		#{timeDTO.end})
 	</insert>
 	<insert id="setBakery">
 		INSERT INTO bakery_access
 		VALUES(#{bakeryNo},
-			   '대기',
-			   #{userNo},
-			   '',
-			   '')
+		'대기',
+		#{userNo},
+		'',
+		'')
 	</insert>
 	<select id="requestUserNo">
-		SELECT user_no FROM BAKERY_INFO bi 
-		JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO 
+		SELECT user_no FROM BAKERY_INFO bi
+		JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO
 		WHERE ba.BAKERY_NO = ${bakeryNo}
 	</select>
 	<select id="getFileInfo">
 		SELECT change_name AS changeName,
-			   local_path AS localPath
+		local_path AS localPath
 		FROM bakery_image
 		WHERE 'position' = '${imgLocation}'
 	</select>
 	<delete id="deleteFile">
 		DELETE FROM bakery_image
-		where change_name = ${fileName}
+		where change_name =
+		${fileName}
 	</delete>
-	
+
 	<update id="bakeryUpdate">
 		UPDATE bakery_info
 		SET bakery_name = #{bakeryName},
-			bakery_address = #{bakeryAddress},
-			bakery_phone = #{bakeryPhone}
+		bakery_address = #{bakeryAddress},
+		bakery_phone = #{bakeryPhone}
 		WHERE bakery_no = #{bakeryNo}
 	</update>
 	<update id="bakeryDetailUpdate">
 		UPDATE bakery_detail
 		set amenity = #{parkingInfo},
-			inside_info = #{insideInfo},
-			outside_info = #{outsideInfo}
+		inside_info = #{insideInfo},
+		outside_info = #{outsideInfo}
 		WHERE bakery_no = #{bakeryNo}
 	</update>
 	<update id="bakeryScheduleUpdate">
 		UPDATE bakery_Schedule
-		set open_time = #{timeDTO.start},
-			close_time= #{timeDTO.end}
+		set open_time =
+		#{timeDTO.start},
+		close_time= #{timeDTO.end}
 		WHERE bakery_no = #{bakeryNo}
 		AND day = #{timeDTO.day}
 	</update>
 	<update id="bakeryAccessUpdate">
 		UPDATE bakery_Access
 		SET agree = '대기'
-		WHERE bakery_no = #{bakeryNo}
+		WHERE bakery_no =
+		#{bakeryNo}
 	</update>
+
+
+	<select id="getBakeriesByRegion">
+
+		SELECT
+		*
+		FROM
+		BAKERY_INFO bi
+		WHERE
+		region LIKE '%' || #{region} || '%'
+
+
+	</select>
+
+
+
+
+
+
+
 </mapper>

@@ -166,6 +166,9 @@ WHERE
 	<select id="getBakeryDetail" resultMap="DetailResultMap">
 
 		SELECT
+		bi.bakery_address,
+		bi.bakery_name,
+		bi.bakery_phone,
 		bi.BAKERY_NO ,
 		bd.AMENITY ,
 		bd.INSIDE_INFO ,

@@ -826,6 +826,8 @@ function initKakaoMap() {
     });
 }
 
+
+
 // 페이지 로드 후 지도 초기화 실행
 document.addEventListener("DOMContentLoaded", initKakaoMap);
 

@@ -226,24 +226,28 @@ public class BakeryController {
 		if (bakery == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		
+		 	System.out.println("🔍 가져온 빵집 정보: " + bakery);
+	        System.out.println("🔍 가져온 Response 객체: " + bakery.getResponse());
+		
 		return ResponseEntity.ok(bakery);
 	}
 
 
 
 	
-//	@GetMapping("/detail/{bakeryNo}")
-//	public String getBakeryImages(@PathVariable("bakeryNo") double no, Model model) {
-//		
-//		/**
-//		 * 가게 정보 가져오는 기능
-//		 */
-//	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
-//
-//	    model.addAttribute("bakeriesInfo", bakeriesInfo);
-//	    
-//	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
-//	}
+	@GetMapping("/detail/{bakeryNo}")
+	public String getBakeryImages(@PathVariable("bakeryNo") double no, Model model) {
+		
+		/**
+		 * 가게 정보 가져오는 기능
+		 */
+	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
+
+	    model.addAttribute("bakeriesInfo", bakeriesInfo);
+	    
+	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
+	}
 	
 	@GetMapping("/update/form")
 	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false) Integer bakeryNo,Model model) {

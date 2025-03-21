@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
@@ -66,18 +67,6 @@ public class HomeController {
 		return "admin/newsLetter";
 	}
 	
-	/**
-	 * 카카오 api를 이용하여 region과 query를 이용하여 데이터 db에 주입 받는 기능
-	 */
-	@GetMapping("/bakeries")
-	public ResponseEntity<List<BakeryDto>> getBakeriesByRegion(@RequestParam("region") String region){
-
-		  List<BakeryDto> bakeries = bakeryService.getBakeriesByRegion(region);
-		    
-		  return ResponseEntity.ok(bakeries);
-		    
-	}
-	
 	@GetMapping("")
 	public String homePage(@RequestParam(value = "bakeryNo", required = false, defaultValue = "0") double bakeryNo,Model model) {
 		/*
@@ -109,6 +98,19 @@ public class HomeController {
 		
 		return "common/home";
 	}
+	
+	@GetMapping("by-region")
+	@ResponseBody
+	public List<BakeryDto> getBakeriesByRegion(@RequestParam("region") String region){
+		
+		return bakeryService.getBakeriesByRegion(region);
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	
