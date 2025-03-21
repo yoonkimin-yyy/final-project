@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <head th:replace="~{fragments/head :: HeadFragment}"></head>
-<link rel="stylesheet" th:href="@{/css/register/loginin.css}">
+<link rel="stylesheet" th:href="@{/css/admin/admin-login.css}">
 <!-- Swiper CSS -->
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -16,10 +16,10 @@
 	<!-- 네비게이션 메뉴 -->
 	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 	<main>
-		<form autocomplete="off" action="/register/loginin" method="post">
+		<form autocomplete="off" action="/admin/loginin" method="post">
 			<div class="login-container">
 				<div class="login-h2">
-					<h2>관리자로그인</h2>
+					<h2>관리자</h2>
 					<img src="/img/common/이빵이.png" style="width: 100px" alt="">
 				</div>
 				<div class="form-group">
@@ -37,16 +37,6 @@
 				</div>
 				<div class="login-btn-div">
 					<button class="login-btn" type="submit">로그인</button>
-					<p>- 간편 로그인 -</p>
-					<button class="login-snsbtn">카카오 로그인</button>
-					<button class="login-snsbtn">네이버 로그인</button>
-					<button class="login-snsbtn">구글 로그인</button>
-				</div>
-				<div class="login-link">
-					<a th:href="@{/register/findidpw}" class="login-find">아이디/비밀번호
-						찾기</a>
-					<p>|</p>
-					<a th:href="@{/register/typeloginup/form}" class="loginup">회원가입</a>
 				</div>
 			</div>
 		</form>
