@@ -16,6 +16,7 @@ import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.mapper.ReviewMapper;
+import kr.kro.bbanggil.common.util.AwsS3Util;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
 import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
 	private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
 	private final ReviewMapper reviewMapper;
 	private final FileUploadUtil fileUploadUtil;
+	private final AwsS3Util util;
 	private final OrderServiceImpl orderSerivce;
 
 	/*
@@ -66,8 +68,10 @@ public class ReviewServiceImpl implements ReviewService {
 						FileRequestDTO fileRequestDto = new FileRequestDTO();
 						fileRequestDto.setReviewNo(reviewDto.getReviewNo());
 						System.out.println(fileRequestDto.getReviewNo());
-						fileUploadUtil.uploadFile(file, fileRequestDto, "bakery"); // 개별 파일 업로드
+						
 
+						util.saveFile(file, fileRequestDto);
+						
 						// 리뷰이미지 정보 리뷰 이미지 테이블에 저장
 						reviewMapper.insertReviewImage(fileRequestDto);
 
@@ -168,7 +172,7 @@ public class ReviewServiceImpl implements ReviewService {
 			for (MultipartFile file : files) {
 				FileRequestDTO fileRequestDto = new FileRequestDTO();
 				try {
-					fileUploadUtil.uploadFile(file, fileRequestDto, "bakery");
+					util.saveFile(file, fileRequestDto);
 				} catch (IOException e) {
 					e.printStackTrace();
 					continue; // 파일 하나 업로드 실패해도 다른 파일 업로드 계속 진행
@@ -197,37 +201,31 @@ public class ReviewServiceImpl implements ReviewService {
 			System.out.println("파일 데이터가 없거나 사용자 번호 불일치!");
 			return 0;
 		}
-		try {
-			// 파일이 있을 경우 삭제 (여러 개의 파일 가능)
-			if (fileName != null && !fileName.equals("none")) {
-				for (ReviewResponseDto fileData : fileDataList) {
-					if (fileData.getLocalPath() != null) {
-						String localPath = fileData.getLocalPath();
-						fileUploadUtil.deleteFile(localPath, "bakery", fileName);
-					}
+		// 파일이 있을 경우 삭제 (여러 개의 파일 가능)
+		if (fileName != null && !fileName.equals("none")) {
+			for (ReviewResponseDto fileData : fileDataList) {
+				if (fileData.getLocalPath() != null) {
+					String localPath = fileData.getLocalPath();
+					util.deleteImage(fileData.getChangeName());
 				}
-			} else {
-				System.out.println(" 파일 없이 리뷰 삭제 진행");
 			}
-
-			// 태그 삭제
-			reviewMapper.deleteTag(reviewNo);
-			System.out.println(" 태그 삭제 완료");
-
-			// 이미지 삭제
-			reviewMapper.deleteReviewImages(reviewNo);
-			System.out.println(" 이미지 삭제 완료");
-
-			// 리뷰 삭제
-			int result = reviewMapper.deleteReview(reviewNo);
-			System.out.println(" 리뷰 삭제 완료 - 결과: " + result);
-
-			return result;
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			return 0;
+		} else {
+			System.out.println(" 파일 없이 리뷰 삭제 진행");
 		}
+
+		// 태그 삭제
+		reviewMapper.deleteTag(reviewNo);
+		System.out.println(" 태그 삭제 완료");
+
+		// 이미지 삭제
+		reviewMapper.deleteReviewImages(reviewNo);
+		System.out.println(" 이미지 삭제 완료");
+
+		// 리뷰 삭제
+		int result = reviewMapper.deleteReview(reviewNo);
+		System.out.println(" 리뷰 삭제 완료 - 결과: " + result);
+
+		return result;
 
 	}
 

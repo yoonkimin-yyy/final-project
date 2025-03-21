@@ -55,14 +55,6 @@
 
 	</insert>
 
-	<select id="getBakeriesByRegion" resultMap="BakeryResultMap"
-		parameterType="string">
-
-		SELECT *
-		FROM bakery_info
-		WHERE region =
-		#{region}
-	</select>
 
 	<select id="getPopularBakeries" resultMap="BakeryResultMap">
 
@@ -94,6 +86,7 @@
 	<select id="getRecentBakeries" resultMap="BakeryResultMap">
 
 	SELECT
+	bi.bakery_no,
 	bi.BAKERY_NAME ,
 	bi.BAKERY_ADDRESS ,
 	bd.CREATED_DATE ,

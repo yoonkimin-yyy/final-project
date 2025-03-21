@@ -114,6 +114,9 @@ FROM
 JOIN BAKERY_INFO bi 
 ON
 	bi.BAKERY_NO = m.BAKERY_NO
+JOIN MENU_IMEGE mi 
+ON
+mi.MENU_NO = m.MENU_NO	
 WHERE
 	bi.BAKERY_NO = #{no}
 		
@@ -166,6 +169,9 @@ WHERE
 	<select id="getBakeryDetail" resultMap="DetailResultMap">
 
 		SELECT
+		bi.bakery_address,
+		bi.bakery_name,
+		bi.bakery_phone,
 		bi.BAKERY_NO ,
 		bd.AMENITY ,
 		bd.INSIDE_INFO ,

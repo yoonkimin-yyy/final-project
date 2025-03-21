@@ -33,6 +33,7 @@ public interface BakeryService {
 	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo,String role) throws Exception;
   
 	public void saveBakery(BakeryDto bakery);
+	
 	List<BakeryDto> getBakeriesByRegion(String region);
 	
 	List<BakeryDto> getPopularBakeries();

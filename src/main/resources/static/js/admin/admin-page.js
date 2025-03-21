@@ -147,6 +147,11 @@ closeBtn.onclick = function() {
     modal.style.display = "none";
 }
 
+cancelBtn.onclick = function() {
+	//event.preventDefault();
+    modal.style.display = "none";
+}
+
 // 모달 외부 클릭 시 닫기
 window.onclick = function(event) {
 	//event.preventDefault();
@@ -179,16 +184,13 @@ document.getElementById('submitBtn').addEventListener('click', function(event) {
 		data: JSON.stringify(emailInfo),
 		contentType: "application/json"
 	}).then(function (res) {
-		if (res) {
-			console.log('카카카');
+		if(res) {
+			alert('보내기성공!');
+			modal.style.display = "none";
 		}
 	}).catch(function (err) {
-		consoel.log('시시시시시');
+		alert('실패!');
 	});
-	
-	
-	
-	
 
     // 추가적인 이메일 전송 코드 작성...
 }); //document.getElementById('submitBtn').addEventListener('click', function(event) {
