@@ -10,8 +10,11 @@
 <body>
     <form id="insertForm" th:action="@{/bakery/menu/insert}" method="post" enctype="multipart/form-data" >
     <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
-        <label for="menuImage" class="menu-image">+</label>
-        <input type="file" id="menuImage" name="menuImage" style="display: none;" multiple accept="image/*">
+        <div id="mainPreviewContainer" class="preview-container main-preview">
+			        <img class="preview-img" id="imagePreview" src="" alt="미리보기 이미지">
+			    </div>
+        <label for="imageUpload" class="menu-image">메뉴 추가</label>
+        <input type="file" id="imageUpload" name="menuImage" style="display: none;" multiple accept="image/*">
         <div class="menu-info">
             <input type="text" id="menuName" name="menuName" placeholder="메뉴명">
             <input type="text" id="menuPrice" name="menuPrice" placeholder="가격">
