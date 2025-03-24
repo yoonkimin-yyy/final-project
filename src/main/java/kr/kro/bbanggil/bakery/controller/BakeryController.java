@@ -2,7 +2,6 @@ package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -122,6 +121,7 @@ public class BakeryController {
 							   @SessionAttribute("userNum")int userNo,
 							   @SessionAttribute("role") String role,
 							   Model model) throws Exception {
+		BakeryRequestDTO.setTime();
 		int bakeryNo = bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo,role);
 		model.addAttribute("no",bakeryNo);
 		return "redirect:/bakery/menu/list/form?no="+bakeryNo;
@@ -137,6 +137,7 @@ public class BakeryController {
 			 ) {
    {
 		
+    
 		/*
 		 * 세션에서 userNum 가져오기
 		 */
@@ -325,8 +326,9 @@ public class BakeryController {
 	
 	@GetMapping("menu/list/form")
 	public String menuListForm(@RequestParam("no")int bakeryNo, Model model) {
-		List<MenuResponseDto> result = bakeryService.getMenuList(bakeryNo);
-		model.addAttribute("menu",result);
+		Map<String,Object> result = bakeryService.getMenuList(bakeryNo);
+		model.addAttribute("menu",result.get("list"));
+		model.addAttribute("bakery",result.get("bakery"));
 		model.addAttribute("no",bakeryNo);
 		return "/owner/menu-list";
 	}

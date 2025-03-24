@@ -9,6 +9,8 @@
 		<result property="userId" column="USER_Id"></result>
 		<result property="userPhoneNum" column="USER_PHONENUM"></result>
 		<result property="userEmail" column="USER_EMAIL"></result>
+		<result property="userBirthdate" column="USER_BIRTHDATE"></result>
+		<result property="userCreatedate" column="CREATED_DATE"></result>
 		<result property="userType" column="USER_TYPE"></result>
 		<result property="agreeEmail" column="AGREE_EMAIL"></result>
 		<result property="bakeryName" column="BAKERY_NAME"></result>
@@ -166,12 +168,37 @@ sysdate)
 		ORDER BY bi.BAKERY_NO DESC
 	</select>
 	
-	<select id="userId" resultMap="adminMap">
+	<select id="bakeryDetailList" resultMap="adminMap">
+		SELECT * FROM (
+			SELECT * FROM (
+			SELECT ROWNUM AS rn, f.* FROM (
+				SELECT * FROM BAKERY_ACCESS ba
+				JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+				JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+				JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+				WHERE ba.AGREE = '승인'
+				ORDER BY bi.BAKERY_NO)f)
+			WHERE rn = #{listNum})m
+		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = m.BAKERY_NO	
+	</select>
+	
+	<select id="userList" resultMap="adminMap">
 		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, 
 			   ui.USER_TYPE, a.AGREE_EMAIL
 		FROM USER_INFO ui 
 		JOIN AGREE a ON ui.USER_NO = a.USER_NO 
 		ORDER BY ui.USER_NO DESC
 	</select>
-		
+	
+	<select id="userDetailList" resultMap="adminMap">
+		SELECT * FROM (
+			SELECT ROWNUM AS rn, f.* FROM (
+							SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, ui.USER_TYPE, 
+								   a.AGREE_EMAIL, ui.CREATED_DATE, ui.USER_NAME, ui.USER_BIRTHDATE
+							FROM USER_INFO ui 
+							JOIN AGREE a ON ui.USER_NO = a.USER_NO 
+							ORDER BY ui.USER_NO)f)m
+			WHERE rn = #{listNum}
+	</select>
+	
 </mapper>

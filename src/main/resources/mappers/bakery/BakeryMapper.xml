@@ -108,11 +108,16 @@
 				   MENU_INFO AS menuInfo,
 				   CATEGORY AS category,
 				   CHANGE_NAME AS changeName,
-	   			   RESOURCES_PATH AS resourcePath
+	   			   RESOURCES_PATH AS resourcesPath
 			FROM MENU m 
 			JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO
 			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
 			WHERE BAKERY_NO = ${bakeryNo}
+		</select>
+		<select id="getBakeryName">
+			SELECT bakery_Name AS bakeryName 
+			from bakery_Info
+			where bakery_no = ${bakeryNo}
 		</select>
 		<select id="bakeryInfo" >
 			SELECT bi.BAKERY_NAME AS bakeryName,

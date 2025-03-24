@@ -47,11 +47,12 @@ public class ApiOrderPageController {
 	 */
 	@PostMapping("/accountCheck")
 	@ResponseBody
-	public Boolean accountCheck(@RequestParam("totalCount") int totalCount, 
-								OrderRequestDto orderRequestDto,
-								String userNum) {
+	public Boolean accountCheck(@RequestParam("totalCount") int totalCount,
+								@SessionAttribute("userNum") int userNo) {
 		
-		return orderService.accountCheck(totalCount, orderRequestDto, userNum);
+		logger.info(":::::::ApiOrderControllerUserNo:::::::", userNo);
+		
+		return orderService.accountCheck(totalCount, userNo);
 	}
 	
 	/**
@@ -79,20 +80,20 @@ public class ApiOrderPageController {
 	public IamportResponse<Payment> validateIamport(@PathVariable("imp_uid") String imp_uid,
 													@RequestBody PaymentRequestDto paymentRequestDto,
 													OrderRequestDto orderRequestDto,
-													@SessionAttribute("userNum") String userNum) 
+													@SessionAttribute("userNum") int userNo) 
 	throws IamportResponseException, IOException {
 
-		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userNum);
+		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userNo);
 	}
 	
 	/**
 	 * DB저장
 	 */
 	@PostMapping("/success")
-	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDtoDto,
-											@SessionAttribute("userNum") int userNum) {
+	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDto,
+											@SessionAttribute("userNum") int userNo) {
 		
-		if(orderService.saveOrder(paymentRequestDtoDto, userNum)) {
+		if(orderService.saveOrder(paymentRequestDto, userNo)) {
 			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
 		}	
 		

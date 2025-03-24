@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
@@ -19,6 +20,7 @@ import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
+import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -32,7 +34,7 @@ public class AdminController {
 	public String adminLoginForm() {
 		return "admin/admin-login";
 	}
-
+	
 	@GetMapping("/form")
 	public String adminForm(Model model) {
 
@@ -49,13 +51,24 @@ public class AdminController {
 	}
 
 	@GetMapping("/bakery/detail")
-	public String bakeryDetailForm() {
+	public String bakeryDetailForm(@RequestParam("listNum") int listNum,
+			   					   Model model) {
 		
+		AdminResponseDto result = adminService.bakeryDetailList(listNum);
+		
+		model.addAttribute("result", result);
+
 		return "admin/bakery-detail";
 	}
 
 	@GetMapping("/user/detail")
-	public String userDetailForm() {
+	public String userDetailForm(@RequestParam("listNum") int listNum,
+								 Model model) {
+		
+		AdminResponseDto result = adminService.userDetailList(listNum);
+		
+		model.addAttribute("result", result);
+		
 		return "admin/user-detail";
 	}
 
