@@ -31,13 +31,17 @@ input {
             border: 1px solid #c6872f;
             border-radius: 5px;
             cursor: pointer;
-            width: 560px;
-            height: 180px;
-            font-size: 45px;
+            width: 100px;
+            height: 40px;
+            font-size: 20px;
             margin: 10px;
         }
         .menu-populity{
             margin: 10px;
             height: 30px;
             width: 300px;
+        }
+        .preview-img{
+        	height : 300px;
+        	width: 400px;
         }

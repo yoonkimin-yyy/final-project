@@ -18,4 +18,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }).catch(error => console.error("Error:", error));
         };
+		
+		const fileInput = document.getElementById("imageUpload");
+			    const previewImage = document.getElementById("imagePreview");
+
+			    fileInput.addEventListener("change", function () {
+			        handleFileChange(this);
+			    });
+
+			    function handleFileChange(inputElement) {
+			        const file = inputElement.files[0]; // 하나의 파일만 선택 가능
+			        if (!file) return;
+
+			        const reader = new FileReader();
+			        reader.onload = function (e) {
+			            previewImage.src = e.target.result;
+			            previewImage.style.display = "block"; // 이미지 표시
+			        };
+			        reader.readAsDataURL(file);
+			    }
     });

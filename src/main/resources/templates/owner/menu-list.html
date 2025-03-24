@@ -27,7 +27,7 @@
             </div>
         </div>
             <div class="mypage-order">
-                <p>🍞 <span th:text="${no}"></span>번 가게 메뉴 🍞</p>
+                <p>🍞 <span th:text="${bakery}"></span> 가게 메뉴 🍞</p>
                 <table class="mypage-table">
                     <thead class="mypage-table-head">
                         <tr >
@@ -45,7 +45,7 @@
                         <tr class="tbody-tr" th:each="menu,iterStat : ${menu}">
                             <td th:text="${iterStat.index+1}"></td>
                             <td><img th:src="@{{resourcesPath}/{changeName}
-							   (resourcesPath=${menu.resourcePath},
+							   (resourcesPath=${menu.resourcesPath},
 								changeName=${menu.changeName})}" class="menu-img" alt="사진없음"></td>
                             <td th:text="${menu.menuName}"></td>
                             <td th:text="${menu.menuPrice}"></td>

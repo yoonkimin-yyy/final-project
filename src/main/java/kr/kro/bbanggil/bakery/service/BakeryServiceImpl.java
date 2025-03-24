@@ -456,8 +456,13 @@ public class BakeryServiceImpl implements BakeryService{
 		}
 	}
 	@Override
-	public List<MenuResponseDto> getMenuList(int bakeryNo) {
-			return bakeryMapper.getMenuList(bakeryNo);
+	public Map<String,Object> getMenuList(int bakeryNo) {
+		List<MenuResponseDto> menuList = bakeryMapper.getMenuList(bakeryNo);
+		String bakery = bakeryMapper.getBakeryName(bakeryNo);
+		Map<String,Object> result = new HashMap<>();
+		result.put("bakery", bakery);
+		result.put("list", menuList);
+			return result;
 	}
 
 	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {

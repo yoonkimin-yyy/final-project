@@ -128,6 +128,8 @@ public interface BakeryMapper {
 
 	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
 
+	public String getBakeryName(int bakeryNo);
+
 	
 
 }

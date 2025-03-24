@@ -66,7 +66,7 @@ public interface BakeryService {
 	List<CategoryResponseDTO> getCategory();
 	
 	
-	List<MenuResponseDto> getMenuList(int bakeryNo);
+	Map<String, Object> getMenuList(int bakeryNo);
 	
 	void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file);
 
