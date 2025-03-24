@@ -1,33 +1,25 @@
-//  AJAX로 지역별 빵집 데이터 가져오기
-function fetchBakeries(region) {
+function fetchBakeriesByRegion() {
+    const activeRegionButton = document.querySelector(".region-button-active");
+    if (!activeRegionButton) return;
 
-    const queries = ["빵집", "디저트", "카페", "케이크", "마카롱"]; // ✅ 자동 검색 키워드 목록
+    const region = activeRegionButton.getAttribute("data-region");
 
-    var activeRegionButton = document.querySelector(".region-button-active");
-    if (!activeRegionButton) {
-        return;
-    }
-
-    var region = activeRegionButton.getAttribute("data-region");
-
-    queries.forEach(query => {
-
-        $.ajax({
-            url: "/bbanggil/bakeries",
-            type: "GET",
-            data: { query: query, region: region },
-            dataType: "json",
-            success: function (data) {
-                updateMap(region, data);  //  가져온 데이터로 지도 업데이트
-                updateRegionButton(region, data.length, "개");  //  버튼에 빵집 개수 업데이트
-
-            },
-            error: function (error) {
-                console.error("AJAX 요청 실패:", error);
-            }
-        });
+    $.ajax({
+        url: "/by-region",
+        type: "GET",
+        data: { region: region },
+        dataType: "json",
+        success: function (data) {
+            updateMap(region, data);  // 지도 업데이트
+            updateRegionButton(region, data.length, "개"); // 버튼 개수 업데이트
+        },
+        error: function (error) {
+            console.error("빵집 데이터 조회 실패:", error);
+        }
     });
 }
+
+
 
 //  지역 버튼에 빵집 개수 표시
 function updateRegionButton(region, count) {

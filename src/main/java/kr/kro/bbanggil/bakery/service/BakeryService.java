@@ -11,11 +11,14 @@ import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
+import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 
 public interface BakeryService {
+
 	public Map<String, Object> bakeryList(ListPageNation pageNation,
 			  int currentPage,
 			  int postCount,
@@ -28,16 +31,14 @@ public interface BakeryService {
 	
 	public String getTodayDayOfWeek();
 
-
-	
-
-	void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo) throws Exception;
-
+	public int bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo,String role) throws Exception;
+  
 	public void saveBakery(BakeryDto bakery);
+	
 	List<BakeryDto> getBakeriesByRegion(String region);
 	
 	List<BakeryDto> getPopularBakeries();
-	List<BakeryDto> getRecentBakeries();
+	List<BakeryDto> getRecentBakeries(double bakeryNo);
 	List<BakeryDto>getCategoryBakeries(List<BakeryDto> topBakeries);
 	List<BakeryDto> getTopFiveOrders();
 	
@@ -61,6 +62,13 @@ public interface BakeryService {
 	void bakeryUpdate(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo);
 
 	void imgInsert(MultipartFile file);
+	
+	List<CategoryResponseDTO> getCategory();
+	
+	
+	Map<String, Object> getMenuList(int bakeryNo);
+	
+	void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file);
 
 	
 	

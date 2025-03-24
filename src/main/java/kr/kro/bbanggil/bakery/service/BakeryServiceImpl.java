@@ -1,8 +1,5 @@
 package kr.kro.bbanggil.bakery.service;
 
-
-
-
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -28,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import groovy.transform.Undefined.EXCEPTION;
+import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.api.KakaoController;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
@@ -38,9 +36,12 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
+import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
@@ -48,16 +49,18 @@ import kr.kro.bbanggil.bakery.util.LocationSelectUtil;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.AwsS3Util;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
-public class BakeryServiceImpl implements BakeryService {
+@RequiredArgsConstructor
+public class BakeryServiceImpl implements BakeryService{
 	private final BakeryMapper bakeryMapper;
 	private final FileUploadUtil fileUpload;
 	private final KakaoController kakao;
 	private final LocationSelectUtil locationSelect;
+	private final AwsS3Util s3Upload;
 	private static final Logger logger = LogManager.getLogger(BakeryServiceImpl.class);
 	
 	@Override
@@ -115,6 +118,7 @@ public class BakeryServiceImpl implements BakeryService {
 	}
 	
 
+	
 	//오늘 요일 구하기
 	@Override
 	public String getTodayDayOfWeek() {
@@ -134,17 +138,19 @@ public class BakeryServiceImpl implements BakeryService {
             case SUNDAY -> "일";
         };
     }
-
-	
 	/**
 	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
 	 * address : 받아온 주소를 " "기준으로 잘라서 배열에 넣어두는 변수
+	 * @param role 
 	 * @throws Exception 
 	 */
 	@Override
 	@Transactional(rollbackFor = EXCEPTION.class)
-	public void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo) throws Exception {
+	public int bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo, String role) throws Exception {
 		try {
+			if(!role.equals("owner"))
+				throw new BakeryException("사장이 아닙니다","common/error",HttpStatus.BAD_REQUEST);
+			
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
 				
 			String[] address = bakeryRequestDTO.getBakeryAddress().split(" ");
@@ -193,7 +199,7 @@ public class BakeryServiceImpl implements BakeryService {
 					
 					if(bakeryImgRequestDTO.checkFile(files)) {
 						for(int i=0;i<files.size();i++) {
-							fileUpload.uploadFile(files.get(i), bakeryRequestDTO.getFileDTO(), "bakery");
+							s3Upload.saveFile(files.get(i),bakeryRequestDTO.getFileDTO());
 							bakeryRequestDTO.setImgLocation(imgLocation);
 							bakeryMapper.bakeryFileUpload(bakeryRequestDTO);
 						}
@@ -202,7 +208,7 @@ public class BakeryServiceImpl implements BakeryService {
 					}
 				}
 				bakeryMapper.setBakery(bakeryRequestDTO.getBakeryNo(),userNo);	
-			
+			return bakeryRequestDTO.getBakeryNo();
 				
 		} catch (Exception e) {
 			
@@ -222,6 +228,7 @@ public class BakeryServiceImpl implements BakeryService {
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
 		bakeryUpdateResponseDTO response = bakeryMapper.getBakeryInfo(bakeryNo);
+		System.out.println(response.getBakeryPhone());
 		response.setImgDTO(bakeryMapper.getBakeryImg(bakeryNo));
 		List<BakeryTimeSetDTO> timeDTO = bakeryMapper.getBakerySchedule(bakeryNo);
 		setBakeryOperatingHours(response,timeDTO);
@@ -244,12 +251,15 @@ public class BakeryServiceImpl implements BakeryService {
 						for(int i=0;i<fileCheck.size();i++) {
 							String fileName = fileCheck.get(i).getChangeName();
 							String localPath = fileCheck.get(i).getLocalPath();
+							String s3FileName = fileCheck.get(i).getChangeName();
+							bakeryMapper.deleteFile(s3FileName);
 							bakeryMapper.deleteFile(fileName);
 							fileUpload.deleteFile(localPath, imgLocation, fileName);
+							s3Upload.deleteImage(s3FileName);
 						}
 						
 						for(int i=0;i<files.size();i++) {
-							fileUpload.uploadFile(files.get(i),bakeryRequestDTO.getFileDTO(), "bakery");
+							s3Upload.saveFile(files.get(i),bakeryRequestDTO.getFileDTO());
 							bakeryRequestDTO.setImgLocation(imgLocation);
 							bakeryMapper.bakeryFileUpload(bakeryRequestDTO);
 						}
@@ -301,9 +311,9 @@ public class BakeryServiceImpl implements BakeryService {
 	}
 
 	@Override
-	public List<BakeryDto> getRecentBakeries() {
+	public List<BakeryDto> getRecentBakeries(double bakeryNo) {
 
-		return bakeryMapper.getRecentBakeries();
+		return bakeryMapper.getRecentBakeries(bakeryNo);
 	}
 
 	@Override
@@ -334,19 +344,17 @@ public class BakeryServiceImpl implements BakeryService {
 
 	@Override
 	public List<MenuResponseDto> getMenuInfo(double no){
-		return bakeryMapper.getMenuInfo(no);
+	
+		List<MenuResponseDto> menuList = bakeryMapper.getMenuInfo(no);
+		return menuList;
 	}
 
 	@Override
 	public void addCart(int userNo, List<MenuDetailRequestDto> menuDto) {
 
+
+		bakeryMapper.insertCart(userNo);
 		Integer cartNo = bakeryMapper.getCartNoByUserNo(userNo);
-
-		if (cartNo == null) {
-			bakeryMapper.insertCart(userNo);
-			cartNo = bakeryMapper.getLastCartNo();
-		}
-
 		for (MenuDetailRequestDto item : menuDto) {
 			bakeryMapper.insertCartInfo(cartNo, item.getMenuNo(), item.getMenuCount());
 		}
@@ -430,6 +438,35 @@ public class BakeryServiceImpl implements BakeryService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public List<CategoryResponseDTO> getCategory() {
+		return bakeryMapper.getCategory();
+	}
+	@Override
+	public void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file) {
+		
+		try {
+			s3Upload.saveFile(file, menuDTO.getFileDTO());
+			bakeryMapper.menuInsert(menuDTO, bakeryNo);
+			bakeryMapper.menuFileUpload(menuDTO);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public Map<String,Object> getMenuList(int bakeryNo) {
+		List<MenuResponseDto> menuList = bakeryMapper.getMenuList(bakeryNo);
+		String bakery = bakeryMapper.getBakeryName(bakeryNo);
+		Map<String,Object> result = new HashMap<>();
+		result.put("bakery", bakery);
+		result.put("list", menuList);
+			return result;
+	}
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
+		return bakeryMapper.bakeryInfo(bakeryNo);
 	}
 
 }

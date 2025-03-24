@@ -36,13 +36,6 @@
 			<result property="resourcesPath" column="resources_path" />
 		</association>
 
-
-
-
-
-
-
-
 		<!-- BakeryScheduleDto와 연관된 정보 (요일별 운영시간) -->
 		<collection property="schedule" javaType="java.util.List"
 			ofType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseScheduleDto">
@@ -50,13 +43,23 @@
 			<result property="openTime" column="open_time" />
 			<result property="closeTime" column="close_time" />
 		</collection>
-
-
-
-
-
-
+		
 	</resultMap>
+		
+		
+		<resultMap id="MenuResultMap"
+			type="kr.kro.bbanggil.bakery.dto.response.MenuResponseDto">
+			<result property="resourcesPath" column="resources_path" />
+			<result property="menuNo" column="menu_no" />
+			<result property="menuName" column="menu_name" />
+			<result property="menuPrice" column="menu_price" />
+			<result property="menuInfo" column="menu_info" />
+			<result property="categoryName" column="category_no" />
+			<result property="category" column="category" />
+			<result property="imgNo" column="img_no" />
+			<result property="changeName" column="change_name" />
+	</resultMap>
+		
 
 
 	<select id="findBakeryImages" resultMap="DetailResultMap">
@@ -81,55 +84,46 @@
 	</select>
 
 	<select id="findBakeriesInfo" resultMap="DetailResultMap">
-		SELECT
-		bi2.CHANGE_NAME,
-		bi2.IMG_NO,
-		bi2.RESOURCES_PATH ,
-		bi.BAKERY_NO ,
-		bi.BAKERY_NAME ,
-		bi.BAKERY_ADDRESS,
-		bi.BAKERY_PHONE,
-		r.REVIEW_RATING,
-		bs."DAY" ,
-		bs.OPEN_TIME ,
-		bs.CLOSE_TIME
-		FROM
-		BAKERY_INFO bi
-		JOIN BAKERY_IMAGE bi2
-		ON
-		bi.BAKERY_NO = bi2.BAKERY_NO
-		JOIN REVIEW r ON
-		r.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_SCHEDULE bs
-		ON
-		bs.BAKERY_NO = r.BAKERY_NO
-		WHERE
-		BI.BAKERY_NO =
-		#{no}
+SELECT
+    bi.BAKERY_NAME,
+    bi.BAKERY_NO,
+    bi.BAKERY_ADDRESS,
+    bi.BAKERY_PHONE,
+    bi2.IMG_NO,
+    bi2.CHANGE_NAME,
+    bi2.RESOURCES_PATH,
+    NVL(ROUND(AVG(r.REVIEW_RATING), 1), 0) AS REVIEW_RATING  
+FROM BAKERY_INFO bi
+JOIN BAKERY_IMAGE bi2 ON bi.BAKERY_NO = bi2.BAKERY_NO
+JOIN BAKERY_SCHEDULE bs ON bi2.BAKERY_NO = bs.BAKERY_NO
+LEFT JOIN REVIEW r ON bi.BAKERY_NO = r.BAKERY_NO  
+WHERE bi.BAKERY_NO = #{no}
+GROUP BY
+    bi.BAKERY_NAME,
+    bi.BAKERY_NO,
+    bi.BAKERY_ADDRESS,
+    bi.BAKERY_PHONE,
+    bi2.IMG_NO,
+    bi2.CHANGE_NAME,
+    bi2.RESOURCES_PATH
 	</select>
 
 
-	<select id="getMenuInfo" resultMap="DetailResultMap">
-
+	<select id="getMenuInfo" resultMap="MenuResultMap">
 		SELECT
-		m.menu_no,
-		m.menu_name,
-		m.menu_price,
-		m.menu_info,
-		m.bakery_no,
-		m.category_no,
-		mi.change_name,
-		mi.original_name,
-		mi.extension,
-		mi.file_size,
-		mi.local_path,
-		mi.resources_path,
-		mi.folder_name_path
-		FROM MENU m
-		join MENU_IMEGE mi
-		on
-		m.menu_no = mi.menu_no
-
+		m.MENU_NO,
+		m.MENU_NAME ,
+		m.MENU_PRICE ,
+		m.MENU_INFO ,
+		mi.IMG_NO ,
+		mi.CHANGE_NAME ,
+		mi.RESOURCES_PATH ,
+		bi.BAKERY_NO 
+		FROM BAKERY_INFO bi 
+		LEFT JOIN MENU m ON BI.BAKERY_NO = M.BAKERY_NO 
+		LEFT JOIN MENU_IMEGE mi 
+		ON MI.MENU_NO = M.MENU_NO 
+		WHERE BI.BAKERY_NO = #{no}
 
 	</select>
 
@@ -145,32 +139,27 @@
 	<select id="getCartNoByUserNo" parameterType="int"
 		resultType="int">
 		SELECT
-		cart_no
+			cart_no
 		FROM
-		CART
+			CART
 		WHERE
-		user_no = #{userNo} FETCH FIRST 1
-		ROWS ONLY
+			user_no = #{userNo} 
+		ORDER BY cart_no DESC
+		FETCH FIRST 1 ROWS ONLY
 
 	</select>
-
-	<select id="getLastCartNo" resultType="int">
-		SELECT cart_seq.nextval
-		FROM DUAL
-	</select>
-
 
 	<insert id="insertCartInfo">
 		INSERT
 		INTO
 		CART_INFO (list_no,
-		cart_no,
-		menu_no,
-		menu_count)
+					cart_no,
+					menu_no,
+					menu_count)
 		VALUES (cart_info_seq.nextval,
-		#{cartNo},
-		#{menuNo},
-		#{menuCount})
+				#{cartNo},
+				#{menuNo},
+				#{menuCount})
 
 	</insert>
 
@@ -178,6 +167,9 @@
 	<select id="getBakeryDetail" resultMap="DetailResultMap">
 
 		SELECT
+		bi.bakery_address,
+		bi.bakery_name,
+		bi.bakery_phone,
 		bi.BAKERY_NO ,
 		bd.AMENITY ,
 		bd.INSIDE_INFO ,

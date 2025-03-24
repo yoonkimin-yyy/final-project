@@ -29,7 +29,30 @@ document.addEventListener('DOMContentLoaded', () => {
 	            checkbox.checked = checkAll.checked;
 	            updateCheckboxValue(checkbox); // Y/N 값도 함께 변경
 	        });
+
 	    });
+	}
+	
+	// 개별 체크박스 클릭 시 전체 동의 체크 해제
+	allCheckBoxes.forEach((checkbox) => {
+	    checkbox.addEventListener('change', () => {
+	        // 개별 체크박스 변경 시 값 업데이트
+	        updateCheckboxValue(checkbox);
+
+	        // 하나라도 해제되면 전체 동의 체크 해제
+	        if (!checkbox.checked) {
+	            checkAll.checked = false;
+	        } 
+	        // 모든 개별 체크박스가 체크된 경우 전체 동의도 체크
+	        else if ([...allCheckBoxes].every(cb => cb.checked)) {
+	            checkAll.checked = true;
+	        }
+	    });
+	});
+
+	// Y/N 값 변경 함수
+	function updateCheckboxValue(checkbox) {
+	    checkbox.value = checkbox.checked ? 'Y' : 'N';
 	}
 
 	// 이메일,SMS 체크박스를 배열로 선언

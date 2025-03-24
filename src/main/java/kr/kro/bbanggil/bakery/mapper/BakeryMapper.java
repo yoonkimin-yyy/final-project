@@ -17,6 +17,7 @@ import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
@@ -62,7 +63,7 @@ public interface BakeryMapper {
 	List<BakeryDto> getBakeriesByRegion(@Param("region") String region); // 지역에 따른 빵집 마커 select
 	
 	List<BakeryDto> getPopularBakeries(); // 인기빵집 select
-	List<BakeryDto> getRecentBakeries();
+	List<BakeryDto> getRecentBakeries(@Param("bakeryNo") double bakeryNo);
 	List<BakeryDto>getCategoryBakeries(@Param("categoryNames") List<String> categoryName);
 	List<BakeryDto> getTopFiveOrders(); 
 	
@@ -75,9 +76,8 @@ public interface BakeryMapper {
 
 	
 	
-	void insertCartInfo(int cartNo, int menuNo, int menuCount);
+	void insertCartInfo(@Param("cartNo") int cartNo,@Param("menuNo") int menuNo, @Param("menuCount") int menuCount);
 	Integer getCartNoByUserNo(int userNo);
-	Integer getLastCartNo();
 	void insertCart(int userNo);
 	BakeryDto findBakeryByNo(@Param("no")double bakeryNo);
 	
@@ -122,8 +122,14 @@ public interface BakeryMapper {
 
 
 	void bakeryAccessUpdate(BakeryRequestDTO bakeryRequestDTO);
-	
-	
+
+
+	public List<MenuResponseDto> getMenuList(int bakeryNo);
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
+
+	public String getBakeryName(int bakeryNo);
+
 	
 
 }

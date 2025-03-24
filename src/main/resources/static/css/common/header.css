@@ -43,3 +43,6 @@
     font-weight: 500;
     cursor: pointer;
 }
+.logo-text:hover{
+	cursor: pointer;
+}
