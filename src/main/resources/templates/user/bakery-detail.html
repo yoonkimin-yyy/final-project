@@ -131,6 +131,7 @@
                     </div>
                 </div>
                 <!-- 리뷰 섹션 -->
+                
                 <div id="reviews">
 				    <div class="review" th:each="review : ${reviews}" th:attr="data-review-no=${review.reviewNo}">
 				        <div class="review-report">
@@ -331,64 +332,7 @@
             </div>
         </div>
     </div>
-    <!-- 모달 추가 (body 태그 끝나기 전에 추가) -->
-    <div id="reviewModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeReviewModal()">&times;</span>
-            <h2>리뷰 작성</h2>
-            <form id="reviewForm">
-                <div class="form-group">
-                    <label for="userId">아이디</label> <input type="text" id="userId" required>
-                </div>
-                <div class="form-group">
-                    <label>평점</label>
-                    <div class="star-rating">
-                        <div class="stars">
-                            <i class="far fa-star" data-rating="1"></i> <i class="far fa-star" data-rating="2"></i> <i
-                                class="far fa-star" data-rating="3"></i> <i class="far fa-star" data-rating="4"></i> <i
-                                class="far fa-star" data-rating="5"></i>
-                        </div>
-                        <span class="rating-value">0</span> <input type="hidden" id="rating" name="rating" value="0"
-                            required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="content">리뷰 내용</label>
-                    <textarea id="content" required></textarea>
-                    <label>리뷰 태그 선택</label>
-                    <div class="review-tags">
-                        <input type="checkbox" id="tag1" class="tag-checkbox"> <label for="tag1" class="tag-label">
-                            <span class="tag-icon">🍞</span> <span class="tag-text">빵이 맛있어요</span>
-                        </label> <input type="checkbox" id="tag2" class="tag-checkbox"> <label for="tag2"
-                            class="tag-label"> <span class="tag-icon">😊</span> <span class="tag-text">친절해요</span>
-                        </label> <input type="checkbox" id="tag3" class="tag-checkbox"> <label for="tag3"
-                            class="tag-label"> <span class="tag-icon">👶</span> <span class="tag-text">아이와 가기 좋아요</span>
-                        </label> <input type="checkbox" id="tag4" class="tag-checkbox"> <label for="tag4"
-                            class="tag-label"> <span class="tag-icon">✨</span> <span class="tag-text">매장이 청결해요</span>
-                        </label> <input type="checkbox" id="tag5" class="tag-checkbox"> <label for="tag5"
-                            class="tag-label"> <span class="tag-icon">🌟</span> <span class="tag-text">특별한 메뉴가
-                                있어요</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="images">사진 첨부</label>
-                    <div class="image-upload-container">
-                        <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
-                        <div class="image-preview-container" id="preview"></div>
-                        <button type="button" class="image-upload-btn">
-                            <i class="fas fa-camera"></i> 사진 추가
-                        </button>
-                    </div>
-                </div>
-                <div class="form-group button-group">
-                    <button type="button" class="submit-review" id="reviewSubmitBtn"
-                        onclick="submitReview()">등록하기</button>
-                    <button type="button" class="cancel-review" onclick="closeReviewModal()">취소</button>
-                </div>
-            </form>
-        </div>
-    </div>
+   
     <input type="hidden" id="bakeryNo">
     <input type="hidden" id="reviewNo">
 

@@ -65,7 +65,7 @@ public class BakeryController {
 		int postCount = bakeryService.totalCount(bakerySearchDTO);
 		int pageLimit = 5;
 		int boardLimit = 10;
-		System.out.println("현재페이지 = " + currentPage);
+		
 		
 		Map<String,Object> result = bakeryService.bakeryList(pageNation,
 															currentPage,
@@ -76,7 +76,7 @@ public class BakeryController {
 															bakerySearchDTO);
 		
 		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
-		System.out.println(piResult.getCurrentPage());
+		
 		
 		List<BakeryInfoDTO> postsResult = (List<BakeryInfoDTO>) result.get("posts");
 		List<List<BakeryInfoDTO>> imagesResult = (List<List<BakeryInfoDTO>>) result.get("images");

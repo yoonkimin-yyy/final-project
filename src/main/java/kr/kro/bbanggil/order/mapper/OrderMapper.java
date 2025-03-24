@@ -2,6 +2,7 @@ package kr.kro.bbanggil.order.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
 import java.util.List;
 
@@ -36,5 +37,9 @@ public interface OrderMapper {
 	String refund(int payNo);
 	
 	Integer countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
+
+	int selectOrderCount();
+
+	List<OrderResponseDto> selectPagedOrders(PageResponseDto pi);
 
 }

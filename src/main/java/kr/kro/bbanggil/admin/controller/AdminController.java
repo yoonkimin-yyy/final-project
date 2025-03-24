@@ -2,13 +2,11 @@ package kr.kro.bbanggil.admin.controller;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +17,11 @@ import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.PaginationUtil;
+import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
+import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -27,6 +30,7 @@ import lombok.AllArgsConstructor;
 public class AdminController {
 
 	private final AdminService adminService;
+	private final OrderServiceImpl orderService;
 	
 	@GetMapping("/login")
 	public String adminLoginForm() {
@@ -88,16 +92,6 @@ public class AdminController {
 		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
 	}
 
-	@GetMapping("/inquiry-write")
-	public String inquiryWriteForm() {
-		return "admin/admin-inquiry";
-	}
-
-	@GetMapping("/inquiry-list")
-	public String inquiryListForm() {
-		return "admin/admin-inquiry-list";
-	}
-
 	/*
 	 * 문의 등록 처리
 	 */
@@ -134,6 +128,28 @@ public class AdminController {
 			adminService.saveAnswer(inquiryReplyDto);
 			
 			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
+	}
+	@GetMapping("/order")
+	public String orderList() {
+		return "admin/admin-order-list";
+	}
+	
+	@GetMapping("/order/list")
+	public String getOrderList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,Model model) {
+		
+		
+		int listCount = orderService.getOrderCount(); // 전체 주문수
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		PageResponseDto pi = PaginationUtil.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		List<OrderResponseDto> orderList = orderService.getPagedOrders(pi);
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("pi", pi);
+		
+		
+		return "admin/admin-order-list";
 	}
 	
 
