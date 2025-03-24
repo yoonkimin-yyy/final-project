@@ -132,7 +132,6 @@ public class ReviewController {
 								Model model		) {
 		model.addAttribute("reviewNo", reviewNo);
 		
-		reviewService
 		
 		
 		// 잘 가져옴
