@@ -40,4 +40,7 @@ public interface ReviewService {
 	public int byIdCheck(int userNo, double bakeryNo);
 	
 	public List<Integer> reviewCheck(int bakeryNo);
+
+
+	public void reviewReport(int userNo, int reviewNo);
 }
