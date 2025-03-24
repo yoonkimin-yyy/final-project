@@ -30,9 +30,8 @@ public class OrderPageController {
      * 장바구니에 담은 빵 출력
 	 */
 	@GetMapping("/page")
-	public String order(@SessionAttribute("userId") String userId, Model model) { 
-		
-		List<OrderResponseDto> result = orderService.list(userId);
+	public String order(@SessionAttribute("userNum") int userNo, Model model) { 
+		List<OrderResponseDto> result = orderService.list(userNo);
 		
 		model.addAttribute("results", result);
 		

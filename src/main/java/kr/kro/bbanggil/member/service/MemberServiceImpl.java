@@ -1,11 +1,14 @@
 package kr.kro.bbanggil.member.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.member.mapper.MemberMapper;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -30,6 +33,7 @@ public class MemberServiceImpl implements MemberService{
         if (!"Y".equals(checkBoxRequestDto.getTermsofuse()) || !"Y".equals(checkBoxRequestDto.getInformation())) {
             return "회원가입에 실패했습니다. 필수 약관에 동의해야 합니다.";
         }
+        
 
         int result = registerMapper.loginup(signupRequestDto);
 
@@ -100,6 +104,11 @@ public class MemberServiceImpl implements MemberService{
          }
          return null; // 로그인 실패
      }
+    @Override
+	public List<OwnerMypageResponseDTO> ownerMypage(int userNum) {
+    		
+		return registerMapper.ownerMypage(userNum);
+	}
 }
 
 

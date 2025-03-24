@@ -1,19 +1,21 @@
-document.getElementById("insertForm").addEventListener('submit', function (event) {
-        event.preventDefault(); // 기본 제출 방지
+document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("insertForm");
+        form.onsubmit = function (event) {
+            event.preventDefault(); // 기본 제출 방지
 
-        const formData = new FormData(this);
+            // FormData 객체 생성
+            const formData = new FormData(form);
 
-        fetch(this.action, {
-            method: this.method,
-            body: formData
-        })
-        .then(response => response.json()) // JSON 응답 처리
-        .then(data => {
-            if (data.message === "success") {
-                window.close(); // 서버가 정상적으로 처리했을 때 창 닫기
-            } else {
-                alert("메뉴 추가 실패");
-            }
-        })
-        .catch(error => {console.error("오류 발생:", error)});
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    window.opener.location.reload(); // 부모창 새로고침
+                    window.close(); // 현재 창 닫기
+                } else {
+                    alert("메뉴 추가에 실패했습니다.");
+                }
+            }).catch(error => console.error("Error:", error));
+        };
     });

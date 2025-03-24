@@ -55,14 +55,6 @@
 
 	</insert>
 
-	<select id="getBakeriesByRegion" resultMap="BakeryResultMap"
-		parameterType="string">
-
-		SELECT *
-		FROM bakery_info
-		WHERE region =
-		#{region}
-	</select>
 
 	<select id="getPopularBakeries" resultMap="BakeryResultMap">
 
@@ -93,39 +85,29 @@
 
 	<select id="getRecentBakeries" resultMap="BakeryResultMap">
 
-		SELECT
-		bi.BAKERY_NAME,
-		bi.BAKERY_ADDRESS,
-		bd.CREATED_DATE ,
-		m.MENU_NAME ,
-		BI2.IMG_NO ,
-		BI2.RESOURCES_PATH ,
-		BI2.CHANGE_NAME
-		FROM
-		BAKERY_INFO bi
-		JOIN
-		BAKERY_DETAIL bd
-		ON
-		bi.BAKERY_NO = bd.BAKERY_NO
-		JOIN MENU m
-		ON
-		m.BAKERY_NO
-		= bi.BAKERY_NO
-		JOIN BAKERY_IMAGE bi2
-		ON
-		bi2.BAKERY_NO = bi.BAKERY_NO
-		GROUP BY
-		bi.BAKERY_NAME ,
-		bi.BAKERY_ADDRESS
-		,
-		bd.CREATED_DATE ,
-		m.MENU_NAME ,
-		BI2.IMG_NO ,
-		BI2.RESOURCES_PATH ,
-		BI2.CHANGE_NAME
-		ORDER BY
-		bd.CREATED_DATE ASC
-		FETCH FIRST 10 ROWS ONLY
+	SELECT
+	bi.bakery_no,
+	bi.BAKERY_NAME ,
+	bi.BAKERY_ADDRESS ,
+	bd.CREATED_DATE ,
+	m.MENU_NAME,
+	BI2.IMG_NO ,
+	BI2.RESOURCES_PATH ,
+	BI2.CHANGE_NAME
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_DETAIL bd 
+ON
+	bi.BAKERY_NO = bd.BAKERY_NO
+JOIN MENU m 
+ON
+	bd.BAKERY_NO = m.BAKERY_NO
+JOIN BAKERY_IMAGE bi2 
+ON
+	bi2.BAKERY_NO = m.BAKERY_NO
+ORDER BY
+	bd.CREATED_DATE 
+	
 
 
 

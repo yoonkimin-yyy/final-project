@@ -14,10 +14,8 @@ import kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto;
 
 @Mapper
 public interface OrderMapper {
-
-
 	
-	List<OrderResponseDto> list(String userId);
+	List<OrderResponseDto> list(int userNo);
 	
 	int calculate(@Param("OrderRequestDto")OrderRequestDto orderRequestDto, @Param("userId")String userId);
 	
@@ -36,5 +34,7 @@ public interface OrderMapper {
 	PickupCheckResponseDto pickupStatus(int payNo);
 
 	String refund(int payNo);
+	
+	Integer countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
 
 }

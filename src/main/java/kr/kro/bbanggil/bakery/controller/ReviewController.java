@@ -35,8 +35,15 @@ public class ReviewController {
 	 */
 	@PostMapping("/write")
 	public ResponseEntity<String> writeReview(@RequestPart("reviewDto") ReviewRequestDto reviewDto, // JSON 데이터 받기
-			@RequestPart(value = "reviewImage", required = false) List<MultipartFile> reviewImage // 이미지 받기
-	) {
+			@RequestPart(value = "reviewImage", required = false) List<MultipartFile> reviewImage, // 이미지 받기
+	HttpSession session) {
+		
+		String userId =(String) session.getAttribute("userId");
+		Integer userNo = (Integer) session.getAttribute("userNum");
+		
+		reviewDto.setUserNo(userNo);
+		reviewDto.setUserId(userId);
+		
 		reviewDto.setReviewImage(reviewImage);
 
 		reviewService.writeReview(reviewDto); // 리뷰 저장

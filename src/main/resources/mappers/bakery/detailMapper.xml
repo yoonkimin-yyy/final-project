@@ -39,10 +39,6 @@
 
 
 
-
-
-
-
 		<!-- BakeryScheduleDto와 연관된 정보 (요일별 운영시간) -->
 		<collection property="schedule" javaType="java.util.List"
 			ofType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseScheduleDto">
@@ -81,54 +77,45 @@
 	</select>
 
 	<select id="findBakeriesInfo" resultMap="DetailResultMap">
-		SELECT
-		bi2.CHANGE_NAME,
-		bi2.IMG_NO,
-		bi2.RESOURCES_PATH ,
-		bi.BAKERY_NO ,
-		bi.BAKERY_NAME ,
-		bi.BAKERY_ADDRESS,
-		bi.BAKERY_PHONE,
-		r.REVIEW_RATING,
-		bs."DAY" ,
-		bs.OPEN_TIME ,
-		bs.CLOSE_TIME
-		FROM
-		BAKERY_INFO bi
-		JOIN BAKERY_IMAGE bi2
-		ON
-		bi.BAKERY_NO = bi2.BAKERY_NO
-		JOIN REVIEW r ON
-		r.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_SCHEDULE bs
-		ON
-		bs.BAKERY_NO = r.BAKERY_NO
-		WHERE
-		BI.BAKERY_NO =
-		#{no}
+SELECT
+    bi.BAKERY_NAME,
+    bi.BAKERY_NO,
+    bi.BAKERY_ADDRESS,
+    bi.BAKERY_PHONE,
+    bi2.IMG_NO,
+    bi2.CHANGE_NAME,
+    bi2.RESOURCES_PATH,
+    NVL(ROUND(AVG(r.REVIEW_RATING), 1), 0) AS REVIEW_RATING  
+FROM BAKERY_INFO bi
+JOIN BAKERY_IMAGE bi2 ON bi.BAKERY_NO = bi2.BAKERY_NO
+JOIN BAKERY_SCHEDULE bs ON bi2.BAKERY_NO = bs.BAKERY_NO
+LEFT JOIN REVIEW r ON bi.BAKERY_NO = r.BAKERY_NO  
+WHERE bi.BAKERY_NO = #{no}
+GROUP BY
+    bi.BAKERY_NAME,
+    bi.BAKERY_NO,
+    bi.BAKERY_ADDRESS,
+    bi.BAKERY_PHONE,
+    bi2.IMG_NO,
+    bi2.CHANGE_NAME,
+    bi2.RESOURCES_PATH
 	</select>
 
 
 	<select id="getMenuInfo" resultMap="DetailResultMap">
 
 		SELECT
-		m.menu_no,
-		m.menu_name,
-		m.menu_price,
-		m.menu_info,
-		m.bakery_no,
-		m.category_no,
-		mi.change_name,
-		mi.original_name,
-		mi.extension,
-		mi.file_size,
-		mi.local_path,
-		mi.resources_path,
-		mi.folder_name_path
-		FROM MENU m
-		join MENU_IMEGE mi
-		on
-		m.menu_no = mi.menu_no
+	*
+FROM
+	MENU m
+JOIN BAKERY_INFO bi 
+ON
+	bi.BAKERY_NO = m.BAKERY_NO
+join BAKERY_IMAGE bi2
+ON bi.BAKERY_NO = bi2.BAKERY_NO 
+WHERE
+	bi.BAKERY_NO = #{no}
+		
 
 
 	</select>
@@ -145,32 +132,27 @@
 	<select id="getCartNoByUserNo" parameterType="int"
 		resultType="int">
 		SELECT
-		cart_no
+			cart_no
 		FROM
-		CART
+			CART
 		WHERE
-		user_no = #{userNo} FETCH FIRST 1
-		ROWS ONLY
+			user_no = #{userNo} 
+		ORDER BY cart_no DESC
+		FETCH FIRST 1 ROWS ONLY
 
 	</select>
-
-	<select id="getLastCartNo" resultType="int">
-		SELECT cart_seq.nextval
-		FROM DUAL
-	</select>
-
 
 	<insert id="insertCartInfo">
 		INSERT
 		INTO
 		CART_INFO (list_no,
-		cart_no,
-		menu_no,
-		menu_count)
+					cart_no,
+					menu_no,
+					menu_count)
 		VALUES (cart_info_seq.nextval,
-		#{cartNo},
-		#{menuNo},
-		#{menuCount})
+				#{cartNo},
+				#{menuNo},
+				#{menuCount})
 
 	</insert>
 
@@ -178,6 +160,9 @@
 	<select id="getBakeryDetail" resultMap="DetailResultMap">
 
 		SELECT
+		bi.bakery_address,
+		bi.bakery_name,
+		bi.bakery_phone,
 		bi.BAKERY_NO ,
 		bd.AMENITY ,
 		bd.INSIDE_INFO ,

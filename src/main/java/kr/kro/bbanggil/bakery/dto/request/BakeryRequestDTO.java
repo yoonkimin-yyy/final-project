@@ -14,21 +14,21 @@ import lombok.Setter;
 @Valid
 public class BakeryRequestDTO {
 	
-	@Pattern(regexp="^[가-힣a-zA-Z\\s]{2,10}$", message="특수문자는 불가능합니다.")
+	@Pattern(regexp="^[0-9가-힣a-zA-Z\\s]{2,30}$", message="한글,숫자,영어 소문자, 영어 대문자, 띄어쓰기만 가능합니다.특수문자는 불가능합니다.")
 	private String bakeryName;
 	
 	@NotBlank(message = "주소는 비어있으면 안됩니다")
 	private String bakeryAddress;
 	
-	@Pattern(regexp="\\d{3}-\\d{3,4}-\\d{4}", message="전화번호 형식이 올바르지 않습니다.")
+	@Pattern(regexp="^\\d{10,12}$", message="전화번호 형식이 올바르지 않습니다. -없이 숫자만 입력해야합니다")
 	private String bakeryPhone;
 	
 	private String createdDate;
 	
-	@NotBlank(message ="내부 정보는 비어있으면 안됩니다.")
+	@NotBlank(message ="가게 내부 정보는 비어있으면 안됩니다.")
 	private String insideInfo;
 	
-	@NotBlank(message ="외부 정보는 비어있으면 안됩니다.")
+	@NotBlank(message ="가게 외부 정보는 비어있으면 안됩니다.")
 	private String outsideInfo;
 	
 	@NotBlank(message ="주차장 정보는 비어있으면 안됩니다.")

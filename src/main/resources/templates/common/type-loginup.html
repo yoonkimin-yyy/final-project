@@ -7,6 +7,7 @@
 
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    	<link rel="stylesheet" th:href="@{/css/register/type-loginup.css}">
 </head>
 <body>
     <!-- 헤더 및 네비게이션 -->
@@ -14,12 +15,7 @@
 
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-    	<link rel="stylesheet" th:href="@{/css/register/checkbox.css}">
-    	<script src="/js/register/checkbox.js"></script>
-   	</head>
-    	<link rel="stylesheet" th:href="@{/css/register/type-loginup.css}">
     	<script src="/js/register/type-loginup.js"></script>
-</head>
     <main>
     <div class="type-container">
         <h2>회원가입</h2>
@@ -32,7 +28,7 @@
             </div>
         </div>
         <div>
-            <p>이미 회원이신가요? <a href="/register/loginin">로그인</a></p>
+            <p>이미 회원이신가요? <a href="/register/loginin/form">로그인</a></p>
         </div>
     </div>
     </main>
