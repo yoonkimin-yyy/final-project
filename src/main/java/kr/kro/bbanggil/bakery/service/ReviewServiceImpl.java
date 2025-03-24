@@ -333,5 +333,10 @@ public class ReviewServiceImpl implements ReviewService {
         }
     	return reviewNoList;
     }
+    
+    @Override
+    public void reviewReport(int userNo, int reviewNo) {
+    	reviewMapper
+    }
 	
 }
