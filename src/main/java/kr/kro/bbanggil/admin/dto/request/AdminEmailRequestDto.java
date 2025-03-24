@@ -5,8 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class AdminRequestDto {
+public class AdminEmailRequestDto {
 	
-	private String rejectReason;
+	private String address;
+	private String title;
+	private String content;
 	
 }

@@ -17,6 +17,7 @@ import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
@@ -77,7 +78,6 @@ public interface BakeryMapper {
 	
 	void insertCartInfo(@Param("cartNo") int cartNo,@Param("menuNo") int menuNo, @Param("menuCount") int menuCount);
 	Integer getCartNoByUserNo(int userNo);
-	Integer getLastCartNo();
 	void insertCart(int userNo);
 	BakeryDto findBakeryByNo(@Param("no")double bakeryNo);
 	
@@ -122,6 +122,11 @@ public interface BakeryMapper {
 
 
 	void bakeryAccessUpdate(BakeryRequestDTO bakeryRequestDTO);
+
+
+	public List<MenuResponseDto> getMenuList(int bakeryNo);
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
 
 	
 

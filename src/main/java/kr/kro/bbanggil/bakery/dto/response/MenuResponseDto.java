@@ -17,6 +17,7 @@ public class MenuResponseDto {
 	private  String menuInfo;
 	private int bakeryNo;
 	private int categoryNo;
+	private String category;
 	
 	
 	

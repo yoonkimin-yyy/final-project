@@ -27,19 +27,30 @@ import lombok.AllArgsConstructor;
 public class AdminController {
 
 	private final AdminService adminService;
+	
+	@GetMapping("/login")
+	public String adminLoginForm() {
+		return "admin/admin-login";
+	}
 
 	@GetMapping("/form")
 	public String adminForm(Model model) {
 
 		List<AdminResponseDto> sublist = adminService.subList();
 
+		List<AdminResponseDto> bakeryList = adminService.bakeryList();
+		List<AdminResponseDto> userList = adminService.userList();
+		
 		model.addAttribute("sublists", sublist);
+		model.addAttribute("bakeryLists", bakeryList);
+		model.addAttribute("userLists", userList);
 
 		return "admin/admin-page";
 	}
 
 	@GetMapping("/bakery/detail")
 	public String bakeryDetailForm() {
+		
 		return "admin/bakery-detail";
 	}
 
@@ -58,6 +69,7 @@ public class AdminController {
 			System.out.println(result.getBakeryImgPath().get(i).getChangeName());
 		}
 
+		
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
 
