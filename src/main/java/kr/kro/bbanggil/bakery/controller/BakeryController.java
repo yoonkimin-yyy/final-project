@@ -132,8 +132,7 @@ public class BakeryController {
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
 			@RequestParam(value = "sort" ,defaultValue= "latest") String sort,
 			Model model,
-			HttpSession session,
-			@SessionAttribute("userNum") int userNo
+			HttpSession session
 			 ) {
     
 		/*
@@ -161,11 +160,10 @@ public class BakeryController {
 		}
 		model.addAttribute("reviewReplies",reviewReplies);
 		
-		
+		int userNo = (int) session.getAttribute("userNum");
 		
 		
 		// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
-		session.setAttribute("bakeryNo", no);
 		int resultValue = reviewService.byIdCheck(userNo,no);
 			if(resultValue == 0) {
 				int bakeryNoInt = (int) no;

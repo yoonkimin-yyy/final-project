@@ -8,18 +8,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
+import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
+import kr.kro.bbanggil.pickup.exception.PickupException;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -86,7 +90,7 @@ public class ReviewController {
 	
 	// 사장님 리뷰 답글
 	@PostMapping("/reply")
-	public String riviewReply(@RequestParam("reviewNo") int reviewNo,
+	public String reiewReply(@RequestParam("reviewNo") int reviewNo,
 								@RequestParam("bakeryNo") Double bakeryNoDouble,
 								@RequestParam("replyText") String reviewReply,
 								@RequestParam("userNum") int userNo,
@@ -97,6 +101,7 @@ public class ReviewController {
 		int bakeryNo = bakeryNoDouble.intValue();
 		session.setAttribute("userNum", userNo);
 		
+		
 
 		// 서비스에 답글 등록 요청
 		reviewService.insertReply(reviewNo, bakeryNo, reviewReply,userNo);
@@ -104,7 +109,40 @@ public class ReviewController {
 		return "redirect:/bakery/detail?bakeryNo=" + bakeryNo;
 	}
 	
+	@GetMapping("/report/form")
+	public String reviewReportForm(@RequestParam("reviewNo") int reviewNo,
+									//@RequestParam("userNum") int userNo,
+									HttpSession session,
+									Model model) {
+		//if(session.getAttribute("userNo") == null) {
+			//throw new BakeryException("로그인 후 신고가 가능합니다.","common/error",HttpStatus.BAD_REQUEST);
+		//}
+		model.addAttribute("reviewNo", reviewNo);
+		//session.setAttribute("userNo", userNo);
+		int userNo = 33;
+		session.setAttribute("userNo", userNo);
+		
+		return "user/review-report";
+	}
 	
+	@PostMapping("/report")
+	public String reviewReport(@RequestParam("reviewNo") int reviewNo,
+					@SessionAttribute(name = "userNo", required = false) int userNo,
+								HttpSession session,
+								Model model		) {
+		model.addAttribute("reviewNo", reviewNo);
+		
+		reviewService
+		
+		
+		// 잘 가져옴
+		System.out.println("=====");
+		System.out.println(reviewNo);
+		System.out.println(userNo);
+		System.out.println("=====");
+		return "user/review-report";
+	}
+		
 	
 	
 }
