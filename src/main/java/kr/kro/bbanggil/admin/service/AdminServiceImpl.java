@@ -31,14 +31,24 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public List<AdminResponseDto> userList() {
-		return adminMapper.userId();
+		return adminMapper.userList();
 	}
 
+	@Override
+	public AdminResponseDto bakeryDetailList(int listNum) {
+		return adminMapper.bakeryDetailList(listNum);
+	}
+	
+	@Override
+	public AdminResponseDto userDetailList(int listNum) {
+		return adminMapper.userDetailList(listNum);
+	}
+	
 	@Override
 	public AdminResponseDto acceptList(int listNum) {
 		return adminMapper.acceptList(listNum);
 	}
-
+	
 	@Override
 	public void update(String action, int listNum, String rejectReason) {
 		adminMapper.update(action, listNum, rejectReason);

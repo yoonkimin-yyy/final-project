@@ -13,8 +13,12 @@ public interface AdminService {
 
 	List<AdminResponseDto> userList();
 	
+	AdminResponseDto bakeryDetailList(int listNum);
+	
+	AdminResponseDto userDetailList(int listNum);
+	
 	AdminResponseDto acceptList(int listNum);
-
+	
 	void update(String action, int listNum, String rejectReason);
 
 	void sendEmail(AdminEmailRequestDto adminReqeustDto);
