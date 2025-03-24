@@ -55,7 +55,13 @@ public class AdminController {
 	}
 
 	@GetMapping("/user/detail")
-	public String userDetailForm() {
+	public String userDetailForm(@RequestParam("listNum") int listNum,
+								 Model model) {
+		
+		AdminResponseDto result = adminService.userDetailList(listNum);
+		
+		model.addAttribute("result", result);
+		
 		return "admin/user-detail";
 	}
 	

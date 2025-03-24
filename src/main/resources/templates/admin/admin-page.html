@@ -157,7 +157,7 @@
 				</thead>
 				<tbody>
 					<tr id="user1" th:each="list, iterStat : ${userLists}"
-						th:attr="onclick=|location.href='/admin/user/detail?listNum=${sublists.size() - iterStat.index}'|">
+						th:attr="onclick=|location.href='/admin/user/detail?listNum=${userLists.size() - iterStat.index}'|">
 						<td th:text="${userLists.size() - iterStat.index}"></td>
 						<td th:text="${list.userId}"></td>
 						<td th:text="${list.userPhoneNum}"></td>

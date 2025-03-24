@@ -14,9 +14,11 @@ public interface AdminMapper {
 
 	List<AdminResponseDto> bakeryList();
 
-	List<AdminResponseDto> userId();
+	List<AdminResponseDto> userList();
 	
 	AdminResponseDto bakeryDetailList(int listNum);
+	
+	AdminResponseDto userDetailList(int listNum);
 	
 	AdminResponseDto acceptList(int listNum);
 
