@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
@@ -75,7 +77,25 @@ public class ReviewController {
 
 	}
 	
-	
+	// 사장님 리뷰 답글
+	@PostMapping("/reply")
+	public String riviewReply(@RequestParam("reviewNo") int reviewNo,
+								@RequestParam("bakeryNo") Double bakeryNoDouble,
+								@RequestParam("replyText") String reviewReply,
+								@RequestParam("userNum") int userNo,
+								HttpSession session,
+								Model model) {
+		
+		// 빵집 번호를 int로 변경
+		int bakeryNo = bakeryNoDouble.intValue();
+		session.setAttribute("userNum", userNo);
+		
+
+		// 서비스에 답글 등록 요청
+		reviewService.insertReply(reviewNo, bakeryNo, reviewReply,userNo);
+
+		return "redirect:/bakery/detail?bakeryNo=" + bakeryNo;
+	}
 	
 	
 	

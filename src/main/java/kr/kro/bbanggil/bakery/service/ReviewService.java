@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
@@ -32,4 +33,11 @@ public interface ReviewService {
 	
 	Map<String,Integer> getTagCounts(double bakeryNo);
 	
+	int[] insertReply(int reviewNo, int bakeryNo, String reviewReply, int userNo);
+	
+	public List<ReviewResponseDto> getReviewReplies(Double bakeryNo);
+	
+	public int byIdCheck(int userNo, double bakeryNo);
+	
+	public List<Integer> reviewCheck(int bakeryNo);
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,8 +16,10 @@ import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
+import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.mapper.ReviewMapper;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
+import kr.kro.bbanggil.pickup.exception.PickupException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
 	private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
 	private final ReviewMapper reviewMapper;
 	private final FileUploadUtil fileUploadUtil;
+	
 
 	/*
 	 * 리뷰 작성후 insert service
@@ -249,4 +253,85 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	// 리뷰 답글 등록
+    @Override
+    public int[] insertReply(int reviewNo, int bakeryNo, String reviewReply, int userNo) {
+    	List<Integer> result = reviewMapper.getBakeryNoByUserNo(userNo);
+	    if (result.isEmpty()) {
+	        throw new PickupException("소유한 가게가 없습니다.","common/error",HttpStatus.BAD_REQUEST);
+	    }
+	    
+	    int[] bakeryNosArray = result.stream().mapToInt(Integer::intValue).toArray();
+	    
+	    
+	    
+	    boolean containsBakeryNo = false;
+	    for (int n : bakeryNosArray) {
+	        if (n == bakeryNo) {
+	            containsBakeryNo = true;
+	            break;
+	        }
+	    }
+	    
+	    
+	    if (containsBakeryNo) {
+	        // bakeryNosArray에 bakeryNo가 포함되어 있을 경우 실행
+	    	reviewMapper.insertReviewReply(reviewNo, userNo, reviewReply);
+	    	return bakeryNosArray;
+	    	
+	    } 
+	    
+	    throw new PickupException("본인의 가게가 아닙니다.","common/error",HttpStatus.BAD_REQUEST);
+	    
+    }
+    
+    
+    // bakeryNo에 해당하는 리뷰 답글 목록을 가져오는 메소드
+    @Override
+    public List<ReviewResponseDto> getReviewReplies(Double bakeryNo) {
+    	
+    	int bakeryNoInt = bakeryNo.intValue();
+        return reviewMapper.selectReviewRepliesByBakeryNo(bakeryNoInt);
+    }
+    
+    // 로그인 한 사용자가 해당 빵집을 소유하고 있는지
+    @Override
+    public int byIdCheck(int userNo, double bakeryNo) {
+        // 사용자에 대한 bakery 번호 목록 가져오기
+        List<Integer> result = reviewMapper.getBakeryNoByUserNo(userNo);
+        
+        int bakeryNoInt = (int) bakeryNo;
+        
+        int resultValue;
+        // List<Integer>를 int[]로 변환
+        int[] bakeryNoArray = result.stream().mapToInt(Integer::intValue).toArray();
+        
+        // bakeryNo가 bakeryNoArray에 포함되어 있는지 확인
+        boolean containsBakeryNo = false;
+        for (int n : bakeryNoArray) {
+            if (n == bakeryNoInt) {
+                containsBakeryNo = true;
+                break;
+            }
+        }
+        
+        if (containsBakeryNo) {
+        	resultValue = bakeryNoInt;
+            return resultValue;
+        }
+        
+        return 0;
+    }
+    
+    @Override
+    public List<Integer> reviewCheck(int bakeryNo) {
+    	List<ReviewResponseDto> reviewList = reviewMapper.reviewCheck(bakeryNo);  // reviewMapper에서 ReviewResponseDto 객체 목록을 반환
+        List<Integer> reviewNoList = new ArrayList<>();
+
+        for (ReviewResponseDto review : reviewList) {
+            reviewNoList.add(review.getReviewNo());  // ReviewResponseDto에서 review_no를 추출해서 Integer 목록에 추가
+        }
+    	return reviewNoList;
+    }
+	
 }

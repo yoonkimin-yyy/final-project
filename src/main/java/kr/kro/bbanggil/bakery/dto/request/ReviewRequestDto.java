@@ -28,6 +28,9 @@ public class ReviewRequestDto {
     private String tagForth;
     private String tagFive;
     
+    // 사장님 답글
+    private String reviewReply;
+    
     
     
 }

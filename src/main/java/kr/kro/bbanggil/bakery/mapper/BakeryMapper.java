@@ -122,7 +122,8 @@ public interface BakeryMapper {
 
 
 	void bakeryAccessUpdate(BakeryRequestDTO bakeryRequestDTO);
-
+	
+	
 	
 
 }
