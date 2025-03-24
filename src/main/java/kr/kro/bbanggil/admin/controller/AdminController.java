@@ -39,7 +39,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
-
+		
 		return "admin/admin-page";
 	}
 

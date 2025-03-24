@@ -49,6 +49,9 @@ window.onclick = function(event) {
 let currentIndex = 0;
 
 function moveSlide(step) {
+	
+	event.preventDefault();
+	
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
 
