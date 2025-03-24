@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PickupSalesResponseDTO {
 
+	
 	private String year;
 	private String month;
 	private int totalSales;

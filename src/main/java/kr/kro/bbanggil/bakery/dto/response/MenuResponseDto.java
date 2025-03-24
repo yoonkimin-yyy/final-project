@@ -1,10 +1,12 @@
 package kr.kro.bbanggil.bakery.dto.response;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class MenuResponseDto {
 
 	
@@ -15,6 +17,7 @@ public class MenuResponseDto {
 	private  String menuInfo;
 	private int bakeryNo;
 	private int categoryNo;
+	private String category;
 	
 	
 	
@@ -23,9 +26,10 @@ public class MenuResponseDto {
 	private String extension;
 	private Long fileSize;
 	private String localPath;
-	private String resourcePath;
-	private String foldenamePath;
+	private String resourcesPath ;
+	String foldenamePath;
 	
+	private int imgNo;
 	
 	
 	

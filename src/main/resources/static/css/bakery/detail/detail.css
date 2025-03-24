@@ -1046,6 +1046,136 @@
 	justify-content:center;
 }
 
+/* 여기부터 리뷰 답글, 신고 */
+/* 리뷰 신고 */
+.review-report {
+    display: flex;
+    justify-content: right;
+}
+.review-report-img {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+/* 리뷰 답글 */
+.review-reply-div {
+    display: inline;
+    display: flex;
+    justify-content: right;
+}
+.review-reply-btn {
+    margin-top: 5px;
+    background-color: #FF6B6B;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    margin-bottom: 10px;
+}
+
+/* 리뷰 답글 버튼 클릭시 */
+
+/* reply-box로 시작하는 모든 요소에 대해 스타일 적용 */
+[id^="reply-box-"] {
+    opacity: 0;  /* 처음에는 보이지 않도록 설정 */
+    visibility: hidden;  /* 요소를 숨긴 상태로 설정 */
+    height: 0;  /* 높이를 0으로 설정 */
+    overflow: hidden;
+    position: relative;
+    transition: height 0.3s ease-out, opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+/* 'reply-box-'로 시작하는 모든 요소에 .show 클래스가 있을 때 */
+[id^="reply-box-"].show {
+    opacity: 1;
+    visibility: visible;
+    height: 240px;
+}
+
+.reply-button-div {
+    display: flex;
+    justify-content: right;
+}
+
+/* .submit-reply 클래스에 대한 스타일 */
+[id^="submit-reply-"] {
+    margin-top: 10px;
+    background-color: #FF6B6B;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    margin-bottom: 10px;
+}
+
+/* .reply-text 클래스에 대한 스타일 */
+[id^="reply-text-"] {
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+    font-family: Arial, sans-serif;
+    color: #333;
+    box-sizing: border-box; /* 패딩과 테두리를 너비에 포함시킴 */
+}
+
+.review-reply-main-div {
+    display: flex;
+    justify-content: right;
+}
+
+.review-reply-sub-div {
+    position: relative;
+    padding: 15px 15px;
+    background-color: #f0f0f0; /* 말풍선 배경색 */
+    border-radius: 15px; /* 둥근 모서리 */
+    font-size: 16px; /* 글자 크기 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  
+  .review-reply-sub-div::after {
+    content: "";
+    position: absolute;
+    top: -30px; /* 말풍선 아래쪽 */
+    left: 20%; /* 화면 가운데로 설정 */
+    transform: translateX(-50%); /* 가운데 정렬 */
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent transparent #f0f0f0 transparent;
+  }
+
+  .review-reply-header {
+    display: flex;
+    justify-content: right;
+  }
+  .review-reply-date-div {
+    display: flex;
+    justify-content: right;
+  }
+  
+  .review-reply-date {
+    color: #666;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+/* 여기까지 리뷰 작성, 신고 */
+
 
 
 

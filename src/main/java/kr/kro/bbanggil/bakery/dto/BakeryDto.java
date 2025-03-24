@@ -6,6 +6,7 @@ import java.util.List;
 
 import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.BakeryResponseScheduleDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +28,7 @@ public class BakeryDto {
     
     private BakeryDetailResponseDto  response = new BakeryDetailResponseDto();
     private List<BakeryResponseScheduleDto> schedule = new ArrayList<>();
-  
+    
     
 }
 

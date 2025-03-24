@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<head th:replace="~{fragments/head :: HeadFragment}"></head>
-  	<link rel="stylesheet" th:href="@{/css/owner/mypage/mypage.css}">
-    <script src="/js/owner/mypage/mypagee.js"></script>
-</head>
+    <head>
+       	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+    	<link rel="stylesheet" th:href="@{/css/owner/menu/list.css}">
+    	<script src="/js/owner/menu/list.js"></script>
+   	</head>
 <body>
      <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
      <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 <main>
+	<input type="hidden" name="bakeryNo" th:value="${no}">
     <div class="mypage-container">
         <div class="mypage-title">
             <h1>마이페이지</h1>
@@ -26,33 +27,34 @@
             </div>
         </div>
             <div class="mypage-order">
-                <p>🍞 가게내역 🍞</p>
+                <p>🍞 <span th:text="${no}"></span>번 가게 메뉴 🍞</p>
                 <table class="mypage-table">
                     <thead class="mypage-table-head">
-                        <tr>
+                        <tr >
                             <td style="width: 5%;">번호</td>
-                            <td style="width: 20%;">가게이름</td>
+                            <td style="width: 20%;" >메뉴 사진</td>
+                            <td style="width: 20%;">메뉴이름</td>
                             <!-- <td style="width: 30%;">메뉴</td> -->
-                            <td style="width: 20%;">게시일</td>
+                            <td style="width: 10%;">가격</td>
                             <!-- <td style="width: 10%;">리뷰✎</td> -->
-                            <td style="width: 20%;">일일 사용자수</td>
-                            <td style="width: 10%;">승인여부</td>
-                            <td style="width: 10%;" >주문목록</td>
+                            <td style="width: 10%;">카테고리</td>
+                            <td style="width: 10%;">일반/인기</td>
                         </tr>
                     </thead>
                     <tbody class="mypage-table-body">
-                        <tr class="tbody-tr" th:onclick="|location.href='@{/bakery/info/form(bakeryNo=${bakery.bakeryNo})}'|" th:each="bakery,iterStat :${bakeries}" th:data-bakery-no="${bakery.bakeryNo}">
+                        <tr class="tbody-tr" th:each="menu,iterStat : ${menu}">
                             <td th:text="${iterStat.index+1}"></td>
-                            <td th:text="${bakery.bakeryName}"></td>
-                            <td th:text="${bakery.createdDate}"></td>
-                            <td>0</td>
-                            <td th:text="${bakery.agree}"></td>
-                            <td class="no-toggle"><button class="additional-btn no-toggle" th:onclick="|location.href='@{/pickup/list(bakeryNo=${bakery.bakeryNo})}'|">확인</button></td>
+                            <td><img th:src="@{{resourcesPath}/{changeName}
+							   (resourcesPath=${menu.resourcePath},
+								changeName=${menu.changeName})}" class="menu-img" alt="사진없음"></td>
+                            <td th:text="${menu.menuName}"></td>
+                            <td th:text="${menu.menuPrice}"></td>
+                            <td th:text="${menu.category}"></td>
+                            <td th:text="${menu.menuInfo}"></td>
                         </tr>
-                        
                     </tbody>
                 </table>
-                                <button class="additional-btn" type="button" th:onclick="|location.href='@{/bakery/insert/form}'|">신청</button>
+                <button class="btn" th:attr="onclick='openUpdateMenu(' + ${no} + ')'">메뉴 추가</button>
             </div>
         </div>
     </div>

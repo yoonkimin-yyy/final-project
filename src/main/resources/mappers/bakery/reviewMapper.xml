@@ -21,6 +21,8 @@
 	<result property="tagThird" column="tag_third"></result>
 	<result property="tagForth" column="tag_forth"></result>
 	<result property="tagFive" column="tag_five"></result>
+	<result property="reviewReply" column="review_reply"></result>
+	<result property="reviewReplyDate" column="review_reply_date"></result>	
 </resultMap>
 
 
@@ -299,7 +301,42 @@ DELETE FROM REVIEW WHERE review_no = #{reviewNo}
 
 </select>
 
+<select id="getBakeryNoByUserNo" 
+	        resultType="java.lang.Integer"
+	        parameterType="int" 
+	        >
+	    SELECT bakery_no 
+	    FROM bakery_access 
+	    WHERE user_no = #{userNo}
+</select>
 
+<insert id="insertReviewReply">
+
+   INSERT 
+   		INTO
+   		review_reply (review_reply_no, review_no, user_no, review_reply, review_reply_date)
+   		VALUES (review_reply_seq.nextval, #{reviewNo}, #{userNo}, #{reviewReply}, sysdate)
+</insert>
+
+<!-- bakeryNo에 해당하는 리뷰 답글 조회 -->
+    <select id="selectReviewRepliesByBakeryNo" resultMap="ReviewResultMap">
+        SELECT 
+        	r.review_no,
+        	rr.review_reply,
+        	rr.review_reply_date
+        FROM review r
+        JOIN review_reply rr ON r.review_no = rr.review_no
+        WHERE bakery_no = #{bakeryNo}
+    </select>
+    
+    <select id="reviewCheck" resultMap="ReviewResultMap">
+        SELECT 
+        	r.review_no
+        FROM review r
+        JOIN review_reply rr ON r.review_no = rr.review_no
+        WHERE bakery_no = #{bakeryNo}
+        AND rr.review_reply IS not NULL
+    </select>
 
 
 </mapper>

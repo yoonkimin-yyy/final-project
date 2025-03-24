@@ -61,7 +61,19 @@ public interface ReviewMapper {
 	List<ReviewResponseDto> getTagCounts(@Param("bakeryNo")double bakeryNo);
 	
 	
+	// 세션에 있는 userNo로 bakeryNo 찾기
+	public List<Integer> getBakeryNoByUserNo(int userNo);
 	
-	
+	// 리뷰 답글 삽입
+    public void insertReviewReply(@Param("reviewNo") int reviewNo,
+                           @Param("userNo") int userNo,
+                           @Param("reviewReply") String reviewReply
+                           );
+    
+    
+    // bakeryNo로 리뷰 답글을 가져오는 메소드
+    List<ReviewResponseDto> selectReviewRepliesByBakeryNo(@Param("bakeryNo")int bakeryNo);
+    
+    List<ReviewResponseDto> reviewCheck(@Param("bakeryNo") int bakeryNo );
 	
 }

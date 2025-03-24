@@ -23,31 +23,42 @@
         </div> -->
         <table>
             <tr>
-                <th>사용자 이름</th>
-                <td></td>
+                <th>유저 ID</th>
+                <td th:text="${result.userId}"></td>
             </tr>
             <tr>
-                <th>사용자 ID</th>
-                <td></td>
+                <th>이름</th>
+                <td th:text="${result.userName}"></td>
             </tr>
             <tr>
                 <th>연락처</th>
+                <td th:text="${result.userPhoneNum}"></td>
+            </tr>
+            <tr>
+                <th>사업자번호</th>
                 <td></td>
             </tr>
             <tr>
-                <th>사업자</th>
-                <td>010-0000-0000</td>
+                <th>가게명</th>
+                <td th:text="${result.bakeryName}"></td>
             </tr>
             <tr>
-                <th>가게 설명</th>
-                <td>우리가게 정상영업 합니다</td>
+                <th>가게주소</th>
+                <td th:text="${result.bakeryAddress}"></td>
             </tr>
             <tr>
-                <th>편의 정보</th>
-                <td>잘 찾아보면 뭔가있음</td>
-            </tr>
+					<th>실내정보</th>
+					<td th:text="${result.insideInfo}"></td>
+				</tr>
+				<tr>
+					<th>실외정보</th>
+					<td th:text="${result.outsideInfo}"></td>
+				</tr>
+				<tr>
+					<th>주차장</th>
+					<td th:text="${result.amenity}"></td>
+				</tr>
         </table>
-
 
     </div>
     <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
