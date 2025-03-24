@@ -119,13 +119,13 @@
                 </div>
                 <!-- 메뉴 리스트 -->
                 <div class="menu-list active" id="menu">
-                    <div class="menu-item" th:each="menu : ${menuList}" th:attr="data-menu-no=${menu.response.menuNo}">
-                        <img th:src="@{${menu.response.resourcesPath} + '/' + ${menu.response.changeName}}" alt="메뉴 이미지"
+                    <div class="menu-item" th:each="menu : ${menuList}" th:attr="data-menu-no=${menu.menuNo}">
+                        <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}" alt="메뉴 이미지"
                             class="menu-image" width="100">
                         <div class="menu-info">
-                            <div class="menu-name" th:text="${menu.response.menuName}">크로아상</div>
-                            <div class="menu-description" th:text="${menu.response.menuInfo}">바삭한 정통 프랑스 크로아상</div>
-                            <div class="menu-price" th:text="${menu.response.menuPrice}">4,500원</div>
+                            <div class="menu-name" th:text="${menu.menuName}">크로아상</div>
+                            <div class="menu-description" th:text="${menu.menuInfo}">바삭한 정통 프랑스 크로아상</div>
+                            <div class="menu-price" th:text="${menu.menuPrice}">4,500원</div>
                         </div>
                         <button class="add-to-cart">담기</button>
                     </div>

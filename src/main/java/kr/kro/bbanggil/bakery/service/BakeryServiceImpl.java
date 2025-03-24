@@ -346,7 +346,6 @@ public class BakeryServiceImpl implements BakeryService{
 	public List<MenuResponseDto> getMenuInfo(double no){
 	
 		List<MenuResponseDto> menuList = bakeryMapper.getMenuInfo(no);
-		
 		return menuList;
 	}
 

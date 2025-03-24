@@ -220,6 +220,10 @@ public class BakeryController {
 		List<MenuResponseDto> menuList = bakeryService.getMenuInfo(no);
 		model.addAttribute("menuList", menuList);
 
+		
+		System.out.println(menuList.size());
+		
+		
 		/*
 		 * 편의정보, 실내사진, 외부 사진 보여지는 기능
 		 */
