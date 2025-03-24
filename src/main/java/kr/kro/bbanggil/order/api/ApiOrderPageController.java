@@ -50,6 +50,8 @@ public class ApiOrderPageController {
 	public Boolean accountCheck(@RequestParam("totalCount") int totalCount,
 								@SessionAttribute("userNum") int userNo) {
 		
+		logger.info(":::::::ApiOrderControllerUserNo:::::::", userNo);
+		
 		return orderService.accountCheck(totalCount, userNo);
 	}
 	

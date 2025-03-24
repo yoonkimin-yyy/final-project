@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public boolean accountCheck(int totalCount, int userNo) {
-
+		
 		return orderMapper.calculate(userNo) == totalCount ? true : false;
 	}
 

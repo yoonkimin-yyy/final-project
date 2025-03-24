@@ -94,6 +94,13 @@
 		ORDER BY bi.BAKERY_NO DESC
 	</select>
 	
+	<!-- <select id="bakeryDetailList" resultMap="amdinMap">
+		
+	
+	
+	
+	</select> -->
+	
 	<select id="userId" resultMap="adminMap">
 		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, 
 			   ui.USER_TYPE, a.AGREE_EMAIL

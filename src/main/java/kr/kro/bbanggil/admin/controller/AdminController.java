@@ -44,7 +44,10 @@ public class AdminController {
 	}
 
 	@GetMapping("/bakery/detail")
-	public String bakeryDetailForm() {
+	public String bakeryDetailForm(@RequestParam("listNum") int listNum,
+			   					   Model model) {
+		
+		AdminResponseDto result = adminService.bakeryDetailList(listNum);
 		
 		return "admin/bakery-detail";
 	}
