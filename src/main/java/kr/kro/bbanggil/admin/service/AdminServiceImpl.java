@@ -7,13 +7,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
-=======
 import jakarta.validation.constraints.Email;
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
->>>>>>> 44d6a0e0c72f2b4a2a2fa346f94a5bc2ebe65166
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
@@ -32,8 +29,6 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.subList();
 	}
 
-<<<<<<< HEAD
-=======
 	@Override
 	public List<AdminResponseDto> bakeryList() {
 		return adminMapper.bakeryList();
@@ -44,7 +39,6 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.userId();
 	}
 
->>>>>>> 44d6a0e0c72f2b4a2a2fa346f94a5bc2ebe65166
 	@Override
 	public AdminResponseDto acceptList(int listNum) {
 		return adminMapper.acceptList(listNum);
@@ -56,7 +50,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public void saveInquiry(InquiryRequestDto inquiryRequestDto) {
 
 		String userType = adminMapper.getUserType(inquiryRequestDto.getUserNo());
@@ -85,8 +78,8 @@ public class AdminServiceImpl implements AdminService {
 
 	    // 문의 상태 "답변 완료"로 변경
 	    adminMapper.updateInquiryStatusToAnswered(inquiryReplyDto.getInquiryNo());
-	
-=======
+	} 
+	@Override
 	public void sendEmail(AdminEmailRequestDto adminRequestDto) {
 
 		String[] addresses = adminRequestDto.getAddress().split("\\s*,\\s*"); // 정규식
@@ -98,6 +91,5 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 
->>>>>>> 44d6a0e0c72f2b4a2a2fa346f94a5bc2ebe65166
-}
+
 }

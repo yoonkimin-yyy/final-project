@@ -83,7 +83,6 @@
 		)
 	</update>
 	
-<<<<<<< HEAD
 	<select id="getUserType" resultType="String" parameterType="java.lang.Integer">
 		SELECT
 	USER_TYPE
@@ -154,10 +153,8 @@ sysdate)
 	SET IS_ANSWERED = 'Y'
 	where inquiry_no = #{inquiryNo}
 	
-	
-	
 	</update>
-=======
+	
 	<select id="bakeryList" resultMap="adminMap">
 		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
 			   bi.BAKERY_NAME, bi.BAKERY_ADDRESS 
@@ -177,5 +174,4 @@ sysdate)
 		ORDER BY ui.USER_NO DESC
 	</select>
 		
->>>>>>> 44d6a0e0c72f2b4a2a2fa346f94a5bc2ebe65166
 </mapper>
