@@ -1,0 +1,93 @@
+  body {
+      background-color: #FFF8E7;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      min-height: 100vh;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .admin-inquiry-form {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(160, 109, 69, 0.1);
+      border: 2px solid #D4A26F;
+      max-width: 600px;
+      width: 100%;
+      margin-bottom :100px;
+      margin-top:100px;
+      margin-left:600px;
+    }
+
+    .admin-inquiry-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .admin-inquiry-header i {
+      font-size: 32px;
+      color: #D4A26F;
+    }
+
+    .admin-inquiry-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #8B5E3C;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    .admin-inquiry-subtitle {
+      font-size: 14px;
+      color: #A67C52;
+    }
+
+    .admin-inquiry-field {
+      margin-bottom: 20px;
+    }
+
+    .admin-inquiry-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .admin-inquiry-input {
+      width: 100%;
+      background-color: #FFF8E7;
+      border: 1px solid #D4A26F;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    .admin-inquiry-input:focus {
+      border-color: #C28B55;
+      background-color: #fff;
+      outline: none;
+    }
+
+    .message-input {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .admin-inquiry-submit-btn {
+      width: 100%;
+      background-color: #D4A26F;
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    .admin-inquiry-submit-btn:hover {
+      background-color: #C28B55;
+    }

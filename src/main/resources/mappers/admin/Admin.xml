@@ -75,4 +75,78 @@
 		WHERE rn = #{listNum} 
 		)
 	</update>
+	
+	<select id="getUserType" resultType="String" parameterType="java.lang.Integer">
+		SELECT
+	USER_TYPE
+FROM
+	USER_INFO
+WHERE
+	USER_NO = #{userNo}
+	
+	</select>
+	
+	<insert id="insertInquiry">
+	  INSERT INTO INQUIRY (
+        INQUIRY_NO,
+        USER_NO,
+        INQUIRY_TITLE,
+        INQUIRY_CONTENT,
+        CREATE_DATE,
+        IS_ANSWERED
+    ) VALUES (
+        INQUIRY_SEQ.NEXTVAL,
+        #{userNo},
+        #{inquiryTitle},
+        #{inquiryContent},
+        SYSDATE,
+        'N'
+    )
+	
+	</insert>
+	<select id="selectInquiryList" resultType="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
+	
+SELECT
+    i.INQUIRY_NO,
+    i.INQUIRY_TITLE,
+    i.INQUIRY_CONTENT,
+    i.IS_ANSWERED,
+    i.CREATE_DATE,
+    ui.USER_NAME,
+    ui.USER_NO,
+    ir.REPLY_CONTENT,
+    ir.REPLY_DATE
+FROM INQUIRY i
+JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
+LEFT JOIN INQUIRY_REPLY ir ON i.INQUIRY_NO = ir.INQUIRY_NO
+ORDER BY i.CREATE_DATE DESC
+	</select>
+	
+	
+	
+	<insert id="insertInquiryReply">
+INSERT
+	INTO
+	INQUIRY_REPLY (
+      REPLY_NO,
+	INQUIRY_NO,
+	ADMIN_NO,
+	REPLY_CONTENT,
+	REPLY_DATE)
+VALUES(inquiry_reply_seq.nextval,
+#{inquiryNo},
+#{adminNo},
+#{replyContent},
+sysdate)
+	</insert>
+	
+	<update id="updateInquiryStatusToAnswered">
+	
+	UPDATE INQUIRY
+	SET IS_ANSWERED = 'Y'
+	where inquiry_no = #{inquiryNo}
+	
+	
+	
+	</update>
 </mapper>
