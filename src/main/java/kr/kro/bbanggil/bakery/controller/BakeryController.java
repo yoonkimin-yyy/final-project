@@ -2,8 +2,10 @@ package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -129,8 +131,11 @@ public class BakeryController {
 	public String getBakeryImages(@RequestParam(value = "bakeryNo", required = false) double no,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
 			@RequestParam(value = "sort" ,defaultValue= "latest") String sort,
+			Model model,
 			HttpSession session,
-			Model model) {
+			@SessionAttribute("userNum") int userNo
+			 ) {
+  ) {
 		
 		/*
 		 * 세션에서 userNum 가져오기
@@ -145,6 +150,48 @@ public class BakeryController {
 
 		List<BakeryDto> getBakeriesInfo = bakeryService.getBakeriesInfo(no);
 		model.addAttribute("getBakeriesInfo", getBakeriesInfo);
+		
+		
+		
+		// 빵집 번호로 사장님 답글 가져오기
+		List<ReviewResponseDto> reviewReplies = reviewService.getReviewReplies(no);
+		if(reviewReplies.size() < 10) {
+			ReviewResponseDto dto = new ReviewResponseDto();
+			dto.setReviewNo(0);
+			reviewReplies.add(dto);
+		}
+		model.addAttribute("reviewReplies",reviewReplies);
+		
+		
+		
+		
+		// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
+		session.setAttribute("bakeryNo", no);
+		int resultValue = reviewService.byIdCheck(userNo,no);
+			if(resultValue == 0) {
+				int bakeryNoInt = (int) no;
+				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
+				model.addAttribute("bakeryNoValue", resultValue);
+			} else {
+				int bakeryNoInt = (int) no;
+				List<Integer> reviewCheck = reviewService.reviewCheck(bakeryNoInt);
+				int[] reviewCheckArray = reviewCheck.stream().mapToInt(Integer::intValue).toArray();
+				
+				
+				List<Integer> reviewNoCheck = Arrays.stream(reviewCheckArray)
+                        .boxed() // int[] → List<Integer> 변환
+                        .collect(Collectors.toList());
+				
+				model.addAttribute("reviewNoCheck",reviewNoCheck);
+				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
+				model.addAttribute("bakeryNoValue", resultValue);
+				model.addAttribute("reviewCheck", reviewCheck);
+				
+			}
+		
+		
+		
+		
 
 		// 리뷰 리스트 pagination
 		int pageLimit = 5;
@@ -156,11 +203,16 @@ public class BakeryController {
 
 		Map<String, Object> result = reviewService.list(pageInfo, currentPage, totalReviews, pageLimit, reviewLimit,
 				no, sort);
-
+		
+		
+		
+		
 		model.addAttribute("pi", pageInfo);
 		model.addAttribute("reviews", result.get("reviews"));
 		model.addAttribute("bakeryNo", no);
 		model.addAttribute("sort", sort);
+		
+		
 
 		/**
 		 * 메뉴 리스트 보여주는 기능
@@ -180,7 +232,7 @@ public class BakeryController {
 		 */
 		List<ReviewResponseDto> reviewImages = reviewService.getReviewImages(no);
 		model.addAttribute("reviewImages", reviewImages);
-
+		
 		
 		Map<String, Integer> tagCounts = reviewService.getTagCounts(no);
 		

@@ -7,11 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
 public class ReviewResponseDto {
 	
+	@Setter
 	private int reviewNo;
 	private int userNo;  // 리뷰 작성자 no
 	private String userId;
@@ -45,6 +47,8 @@ public class ReviewResponseDto {
 	    if (tagFive != null && !tagFive.isEmpty()) tags.add(tagFive);
 	    return tags;
 	}
+	private String reviewReply;
+	private String reviewReplyDate;
 	
 		
 }

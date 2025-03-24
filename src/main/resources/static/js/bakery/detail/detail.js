@@ -795,6 +795,8 @@ function initKakaoMap() {
             map.panTo(markerPosition);
         });
     });
+	
+	
 }
 
 
@@ -864,4 +866,39 @@ kakao.maps.load(function () {
 
    
 });
+
+// 리뷰 답글 관련 코드
+function submitReplyBtn(){
+    const Btn = document.getElementById('reply-text').value;
+    console.log(Btn);
+
+    if(Btn === ""){
+        alert("내용을 입력해주세요");
+        return;
+    } else {
+        alert("답글이 등록되었습니다.");
+    }
+}
+
+
+// 리뷰 답글 버튼 클릭시
+function showReplyForm(reviewNo) {
+    var replyBox = document.getElementById('reply-box-' + reviewNo);
+
+	
+    // replyBox가 존재하는지 확인
+    if (replyBox) {
+        replyBox.classList.toggle('show');
+    } else {
+        console.error('답글 박스가 존재하지 않습니다. reviewNo:', reviewNo);
+    }
+}
+
+
+// 리뷰 신고 창 열기
+function reviewReport() {
+    window.open('../reviewreport.html', '팝업 창', 'width=600, height=400');
+}
+
+
 

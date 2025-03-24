@@ -123,6 +123,7 @@ public interface BakeryMapper {
 
 	void bakeryAccessUpdate(BakeryRequestDTO bakeryRequestDTO);
 
+
 	public List<MenuResponseDto> getMenuList(int bakeryNo);
 
 	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
