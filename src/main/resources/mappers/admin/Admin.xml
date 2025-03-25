@@ -12,6 +12,7 @@
 		<result property="userBirthdate" column="USER_BIRTHDATE"></result>
 		<result property="userCreatedate" column="CREATED_DATE"></result>
 		<result property="userType" column="USER_TYPE"></result>
+		<result property="userBusinessNo" column="USER_BUSINESSNO"></result>
 		<result property="agreeEmail" column="AGREE_EMAIL"></result>
 		<result property="bakeryName" column="BAKERY_NAME"></result>
 		<result property="bakeryNo" column="BAKERY_NO"></result>
@@ -49,21 +50,11 @@
 				JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
 				JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
 				JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+				
 				ORDER BY bi.BAKERY_NO)f)
 			WHERE rn = #{listNum})m
 		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = m.BAKERY_NO
 	</select>
-	
-	<!-- <select id="acceptList" resultMap="adminMap">
-		SELECT * FROM (
-		SELECT ROWNUM AS rn, f.* FROM (
-		SELECT * FROM BAKERY_ACCESS ba
-		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
-		ORDER BY bd.SUBMISSION_DATE)f)
-		WHERE rn = #{listNum}
-	</select> -->
 	
 	<update id="update">
 		UPDATE BAKERY_ACCESS 
