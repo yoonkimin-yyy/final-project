@@ -58,7 +58,7 @@ public class EmailServiceImpl implements EmailService {
 	/**
 	 * 이메일만 보내는 기능
 	 */
-	private void sendEmail(String toEmail, String subject, String body) {
+	public void sendEmail(String toEmail, String subject, String body) {
 
 		try {
 			MimeMessage message = mailSender.createMimeMessage();

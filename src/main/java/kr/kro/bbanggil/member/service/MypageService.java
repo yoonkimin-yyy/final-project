@@ -2,7 +2,7 @@ package kr.kro.bbanggil.member.service;
 
 import java.util.Map;
 
-import kr.kro.bbanggil.mypage.util.MypagePagination;
+import kr.kro.bbanggil.member.util.MypagePagination;
 
 public interface MypageService {
 	
