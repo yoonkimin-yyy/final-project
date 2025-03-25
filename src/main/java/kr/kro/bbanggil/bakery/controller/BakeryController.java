@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,8 +31,10 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.MenuUpdateRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
@@ -365,5 +368,28 @@ public class BakeryController {
 		return "/owner/bakery-info";
 	}
 	
-
+	@PostMapping("/menu/delete")
+	public String menuDelete(@RequestParam("menuNo") int menuNo,
+							 @RequestParam("no")int no,
+							 RedirectAttributes redirectAttributes) {
+		bakeryService.menuDelete(menuNo);
+		redirectAttributes.addAttribute("no", no);
+		return "redirect:/bakery/menu/list/form";
+	}
+	@GetMapping("/menu/update/form")
+	public String menuUpdateForm(@RequestParam("menuNo") int menuNo,
+								 Model model) {
+		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail(menuNo);
+		
+		model.addAttribute("menu",menuDTO);
+		model.addAttribute("menuNo",menuNo);
+		return "/owner/menu-update";
+	}
+	@PostMapping("/menu/update")
+	public String menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file) {
+		bakeryService.updateMenu(menuDTO,file);
+		return "/owner/menu-list";
+	}
 }
+

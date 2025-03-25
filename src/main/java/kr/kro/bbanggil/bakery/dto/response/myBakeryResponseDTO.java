@@ -13,4 +13,5 @@ public class myBakeryResponseDTO {
 	private String OutsideInfo;
 	private String ParkingInfo;
 	private String agree;
+	private String reject;
 }

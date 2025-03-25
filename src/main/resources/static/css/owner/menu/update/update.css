@@ -1,0 +1,47 @@
+input {
+            margin: 10px;
+            height: 30px;
+            width: 300px;
+        }
+        textarea {
+            margin: 10px;
+            width: 560px;
+            height: 60px;
+        }
+        .menu-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .add-to-menu {
+            margin: 10px;
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            height: fit-content;
+        }
+        .menu-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #c6872f;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+            height: 40px;
+            font-size: 20px;
+            margin: 10px;
+        }
+        .menu-populity{
+            margin: 10px;
+            height: 30px;
+            width: 300px;
+        }
+        .preview-img{
+        	height : 300px;
+        	width: 400px;
+        }

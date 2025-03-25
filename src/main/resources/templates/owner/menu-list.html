@@ -34,11 +34,10 @@
                             <td style="width: 5%;">번호</td>
                             <td style="width: 20%;" >메뉴 사진</td>
                             <td style="width: 20%;">메뉴이름</td>
-                            <!-- <td style="width: 30%;">메뉴</td> -->
                             <td style="width: 10%;">가격</td>
-                            <!-- <td style="width: 10%;">리뷰✎</td> -->
                             <td style="width: 10%;">카테고리</td>
                             <td style="width: 10%;">일반/인기</td>
+                            <td style="width: 15%;">수정/삭제</td>
                         </tr>
                     </thead>
                     <tbody class="mypage-table-body">
@@ -51,10 +50,18 @@
                             <td th:text="${menu.menuPrice}"></td>
                             <td th:text="${menu.category}"></td>
                             <td th:text="${menu.menuInfo}"></td>
+                            <td>
+	                            	<button class="btn" type="button" th:attr="onclick='openUpdateMenu(' + ${menu.menuNo} + ')'">수정</button>
+	                           		<form id="deleteForm" th:action="@{/bakery/menu/delete}" method="post" class="inline">
+			                            <input type="hidden" name="menuNo" th:value="${menu.menuNo}">
+			                            <input type="hidden" name="no" th:value="${no}">
+			                            <button class="btn" type="button" onclick="confirmDelete(this)">삭제</button>
+	                            	</form>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn" th:attr="onclick='openUpdateMenu(' + ${no} + ')'">메뉴 추가</button>
+                <button class="btn" th:attr="onclick='openInsertMenu(' + ${no} + ')'">메뉴 추가</button>
             </div>
         </div>
     </div>
