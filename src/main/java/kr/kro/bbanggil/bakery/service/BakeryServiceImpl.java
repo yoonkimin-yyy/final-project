@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import groovy.transform.Undefined.EXCEPTION;
-import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.api.KakaoController;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
@@ -40,6 +39,7 @@ import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
@@ -236,6 +236,7 @@ public class BakeryServiceImpl implements BakeryService{
 	}
 	
 	@Override
+	@Transactional
 	public void bakeryUpdate(BakeryRequestDTO bakeryRequestDTO,
 			   				 BakeryImgRequestDTO bakeryImgRequestDTO,
 			   				 int userNo) {
@@ -444,6 +445,7 @@ public class BakeryServiceImpl implements BakeryService{
 		return bakeryMapper.getCategory();
 	}
 	@Override
+	@Transactional
 	public void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file) {
 		
 		try {
@@ -467,6 +469,39 @@ public class BakeryServiceImpl implements BakeryService{
 
 	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
 		return bakeryMapper.bakeryInfo(bakeryNo);
+	}
+	@Override
+	public void menuDelete(int menuNo) {
+		String changeName = bakeryMapper.getMenuImgInfo(menuNo);
+		if(changeName!=null) {
+			bakeryMapper.deleteMenuImg(changeName);
+		}
+		bakeryMapper.menuDelete(menuNo);
+		logger.warn("{}번 메뉴 삭제됨", menuNo);
+	}
+	@Override
+	public MenuUpdateResponseDTO getMenuDetail(int menuNo) {
+		MenuUpdateResponseDTO menuDTO = bakeryMapper.getMenuUpdate(menuNo);
+		menuDTO.getMenuCategory().addAll(bakeryMapper.getCategory());
+		return menuDTO;
+	}
+	@Override
+	public void updateMenu(MenuRequestDTO menuDTO, MultipartFile file) {
+		try {
+			FileResponseDTO fileDTO = bakeryMapper.getMenuImg(menuDTO.getMenuNo());
+			if(file!=null&&!file.isEmpty()) {
+				if(fileDTO!=null) {
+					s3Upload.deleteImage(fileDTO.getChangeName());
+					bakeryMapper.deleteMenuImg(fileDTO.getChangeName());
+				}
+					s3Upload.saveFile(file,menuDTO.getFileDTO());
+					bakeryMapper.menuFileUpload(menuDTO);
+					bakeryMapper.menuUpdate(menuDTO);
+			}
+		
+		} catch (IOException e) {
+			throw new BakeryException("메뉴 수정 실패","common/error",HttpStatus.NOT_ACCEPTABLE);
+		}
 	}
 
 }
