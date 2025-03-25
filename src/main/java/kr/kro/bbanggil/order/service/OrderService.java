@@ -15,12 +15,12 @@ public interface OrderService {
 	
 	public List<OrderResponseDto> list(int userNo);  
 
-	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto, String userId);
+	public boolean accountCheck(int totalCount, int userNo);
 
 	public IamportResponse<Payment> validateIamport(String imp_uid, 
 													PaymentRequestDto paymentRequestDto, 
 													OrderRequestDto orderRequestDto,
-													String userId);
+													int userNo);
 
 	public boolean saveOrder(PaymentRequestDto paymentRequestDto, int userNo);
 

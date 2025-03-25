@@ -2,6 +2,8 @@ package kr.kro.bbanggil.admin.dto.response;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +16,9 @@ public class AdminResponseDto {
 	private String userId;
 	private String userPhoneNum;
 	private String userEmail;
+	private String userBirthdate;
 	private String userType;
+	private String userCreatedate;
 	private String agreeEmail;
 	private String bakeryNo;
 	private String bakeryName;

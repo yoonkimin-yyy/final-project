@@ -130,11 +130,13 @@ public class BakeryController {
 	@GetMapping("/detail")
 	public String getBakeryImages(@RequestParam(value = "bakeryNo", required = false) double no,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-			@RequestParam(value = "sort" ,defaultValue= "latest") String sort,
+			@RequestParam(value = "sort" , defaultValue= "latest") String sort,
 			Model model,
 			HttpSession session
 			 ) {
+   {
 		
+    
 		/*
 		 * 세션에서 userNum 가져오기
 		 */
@@ -257,10 +259,10 @@ public class BakeryController {
 		model.addAttribute("userNum", userNum);
 		
 		
-		
-		
-		
 		return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
+		
+   }
+		
 	}
 
 	@PostMapping("/cart/add")

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>문의 작성</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    body {
+      background-color: #FFF8E7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      min-height: 100vh;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .admin-inquiry-form {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(160, 109, 69, 0.1);
+      border: 2px solid #D4A26F;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .admin-inquiry-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .admin-inquiry-header i {
+      font-size: 32px;
+      color: #D4A26F;
+    }
+
+    .admin-inquiry-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #8B5E3C;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    .admin-inquiry-subtitle {
+      font-size: 14px;
+      color: #A67C52;
+    }
+
+    .admin-inquiry-field {
+      margin-bottom: 20px;
+    }
+
+    .admin-inquiry-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .admin-inquiry-input {
+      width: 100%;
+      background-color: #FFF8E7;
+      border: 1px solid #D4A26F;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    .admin-inquiry-input:focus {
+      border-color: #C28B55;
+      background-color: #fff;
+      outline: none;
+    }
+
+    .message-input {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .admin-inquiry-submit-btn {
+      width: 100%;
+      background-color: #D4A26F;
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    .admin-inquiry-submit-btn:hover {
+      background-color: #C28B55;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-inquiry-form">
+    <div class="admin-inquiry-header">
+      <i class="fas fa-bread-slice"></i>
+      <h1 class="admin-inquiry-title">문의 작성</h1>
+      <p class="admin-inquiry-subtitle">궁금한 점이 있다면 아래 양식에 맞춰 작성해주세요.</p>
+    </div>
+    <form id="contactForm">
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="name">이름</label>
+        <input type="text" id="name" class="admin-inquiry-input" required />
+      </div>
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="email">이메일</label>
+        <input type="email" id="email" class="admin-inquiry-input" required />
+      </div>
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="subject">제목</label>
+        <input type="text" id="subject" class="admin-inquiry-input" required />
+      </div>
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="message">문의내용</label>
+        <textarea id="message" class="admin-inquiry-input message-input" required></textarea>
+      </div>
+      <button type="submit" class="admin-inquiry-submit-btn">문의하기</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      alert("문의가 등록되었습니다!\n관리자가 확인 후 답변드릴 예정입니다.");
+      this.reset();
+
+      // 문의 리스트 페이지로 이동 가능 (예: window.location.href = "/inquiry/list" )
+    });
+  </script>
+</body>
+</html>
