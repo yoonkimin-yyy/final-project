@@ -41,4 +41,6 @@ public interface ReviewService {
 	
 	public List<Integer> reviewCheck(int bakeryNo);
 
+
+	public void reviewReport(int userNo, int reviewNo);
 }

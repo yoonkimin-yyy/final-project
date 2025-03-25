@@ -41,9 +41,9 @@ public class OrderServiceImpl implements OrderService {
 	 * 가격검증
 	 */
 	@Override
-	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto, String userId) {
-
-		return orderMapper.calculate(orderRequestDto, userId) == totalCount ? true : false;
+	public boolean accountCheck(int totalCount, int userNo) {
+		
+		return orderMapper.calculate(userNo) == totalCount ? true : false;
 	}
 
 	/**
@@ -51,10 +51,10 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public IamportResponse<Payment> validateIamport(String imp_uid, PaymentRequestDto paymentRequestDto,
-													OrderRequestDto orderRequestDto, String userId) {
-
-		int dbTotalPrice = orderMapper.calculate(orderRequestDto, userId);
-
+													OrderRequestDto orderRequestDto, int userNo) {
+		
+		int dbTotalPrice = orderMapper.calculate(userNo);
+		
 		if (dbTotalPrice == paymentRequestDto.getAccount()) {
 			try {
 				IamportResponse<Payment> payment = iamportClient.paymentByImpUid(imp_uid);
@@ -75,15 +75,13 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional(rollbackFor = { Exception.class })
 	public boolean saveOrder(PaymentRequestDto paymentRequestDto, int userNo) {
+
 		try {
 			orderMapper.save(paymentRequestDto);
 
 			int cartNo = orderMapper.findcart(userNo);
 			int payNo = orderMapper.findpay(paymentRequestDto.getMerchantUid());
 
-			System.out.println("fsfsfsfsf!");
-			System.out.println(cartNo);
-			
 			orderMapper.orderInfo(cartNo, payNo);
 			orderMapper.pickupCheck(payNo);
 

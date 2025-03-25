@@ -18,7 +18,7 @@ public interface OrderMapper {
 	
 	List<OrderResponseDto> list(int userNo);
 	
-	int calculate(@Param("OrderRequestDto")OrderRequestDto orderRequestDto, @Param("userId")String userId);
+	int calculate(int userNo);
 	
 	void save(PaymentRequestDto paymentRequsetDto);
 

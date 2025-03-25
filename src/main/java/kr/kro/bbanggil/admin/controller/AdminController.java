@@ -18,10 +18,10 @@ import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
-import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.order.service.OrderServiceImpl;
+import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -36,7 +36,7 @@ public class AdminController {
 	public String adminLoginForm() {
 		return "admin/admin-login";
 	}
-
+	
 	@GetMapping("/form")
 	public String adminForm(Model model) {
 
@@ -53,13 +53,24 @@ public class AdminController {
 	}
 
 	@GetMapping("/bakery/detail")
-	public String bakeryDetailForm() {
+	public String bakeryDetailForm(@RequestParam("listNum") int listNum,
+			   					   Model model) {
 		
+		AdminResponseDto result = adminService.bakeryDetailList(listNum);
+		
+		model.addAttribute("result", result);
+
 		return "admin/bakery-detail";
 	}
 
 	@GetMapping("/user/detail")
-	public String userDetailForm() {
+	public String userDetailForm(@RequestParam("listNum") int listNum,
+								 Model model) {
+		
+		AdminResponseDto result = adminService.userDetailList(listNum);
+		
+		model.addAttribute("result", result);
+		
 		return "admin/user-detail";
 	}
 

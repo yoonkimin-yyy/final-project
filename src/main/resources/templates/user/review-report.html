@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팝업 페이지</title>
+    <link rel="stylesheet" href="/css/bakery/detail/review-report.css">
+</head>
+<body>
+	<form th:action="@{/review/report(reviewNo=${reviewNo})}" method="post">
+	    <div class="popup-content">
+	        <h2>신고 접수</h2>
+	        <textarea name="" id="" placeholder="신고할 내용을 입력해주세요."></textarea>
+	        <button type="submit">제출</button>
+	        <button onclick="window.close()">닫기</button>
+	    </div>
+    </form>
+</body>
+</html>
