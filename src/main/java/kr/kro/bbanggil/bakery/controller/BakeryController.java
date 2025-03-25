@@ -225,8 +225,14 @@ public class BakeryController {
 		List<MenuResponseDto> menuList = bakeryService.getMenuInfo(no);
 		model.addAttribute("menuList", menuList);
 
-		
+		for (MenuResponseDto menu : menuList) {
+		    System.out.println("메뉴 번호: " + menu.getMenuNo());
+		    System.out.println("메뉴 이름: " + menu.getMenuName());
+		    System.out.println("메뉴 가격: " + menu.getResourcesPath());
+		    System.out.println("----------------------");
+		}
 		System.out.println(menuList.size());
+		System.out.println("=====");
 		
 		
 		/*
