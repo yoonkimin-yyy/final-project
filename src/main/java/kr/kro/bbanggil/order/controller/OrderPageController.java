@@ -34,7 +34,12 @@ public class OrderPageController {
 		List<OrderResponseDto> result = orderService.list(userNo);
 		
 		model.addAttribute("results", result);
-		
+		for(OrderResponseDto item : result) {
+			System.out.println("오더 컨트롤러 시스아웃");
+			System.out.println(item.getMenuName());
+			System.out.println(item.getMenuCount());
+			System.out.println(item.getMenuPrice());
+		}
 		return "user/order-page";
 	}
 

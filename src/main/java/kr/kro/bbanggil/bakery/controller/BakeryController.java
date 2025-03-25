@@ -172,10 +172,6 @@ public class BakeryController {
 				int bakeryNoInt = (int) no;
 				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
 				model.addAttribute("bakeryNoValue", resultValue);
-				System.out.println("====");
-				System.out.println(bakeryNoInt);
-				System.out.println(resultValue);
-				System.out.println("====");
 			} else {
 				int bakeryNoInt = (int) no;
 				List<Integer> reviewCheck = reviewService.reviewCheck(bakeryNoInt);
@@ -225,14 +221,7 @@ public class BakeryController {
 		List<MenuResponseDto> menuList = bakeryService.getMenuInfo(no);
 		model.addAttribute("menuList", menuList);
 
-		for (MenuResponseDto menu : menuList) {
-		    System.out.println("메뉴 번호: " + menu.getMenuNo());
-		    System.out.println("메뉴 이름: " + menu.getMenuName());
-		    System.out.println("메뉴 가격: " + menu.getResourcesPath());
-		    System.out.println("----------------------");
-		}
-		System.out.println(menuList.size());
-		System.out.println("=====");
+		
 		
 		
 		/*
@@ -275,10 +264,18 @@ public class BakeryController {
 		
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();
 		
+		
+		
 		  try {
 		        //  배열로 먼저 파싱하고 리스트로 변환
 		        MenuDetailRequestDto[] dtoArray = objectMapper.readValue(orderData, MenuDetailRequestDto[].class);
 		        menuDtoList = Arrays.asList(dtoArray);
+		        for(MenuDetailRequestDto item : menuDtoList) {
+					System.out.println("메뉴 뭐시기 확인");
+					System.out.println(item.getMenuName());
+					System.out.println(item.getMenuCount());
+					System.out.println(item.getMenuPrice());
+				}
 		    } catch (Exception e) {
 		        e.printStackTrace(); // 파싱 에러 로그
 		    }
