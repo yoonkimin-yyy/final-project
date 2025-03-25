@@ -130,13 +130,13 @@
                 </div>
                 <!-- 메뉴 리스트 -->
                 <div class="menu-list active" id="menu">
-                    <div class="menu-item" th:each="bakery : ${menuList}">
-                        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
+                    <div class="menu-item" th:each="menu : ${menuList}" >
+                        <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}"
                             alt="메뉴 이미지" class="menu-image" width="100">
                         <div class="menu-info">
-                            <div class="menu-name" th:text="${bakery.response.menuName}">크로아상</div>
-                            <div class="menu-description" th:text="${bakery.response.menuInfo}">바삭한 정통 프랑스 크로아상</div>
-                            <div class="menu-price" th:text="${bakery.response.menuPrice}">4,500원</div>
+                            <div class="menu-name" th:text="${menu.menuName}">크로아상</div>
+                            <div class="menu-description" th:text="${menu.menuInfo}">바삭한 정통 프랑스 크로아상</div>
+                            <div class="menu-price" th:text="${menu.menuPrice}">4,500원</div>
                         </div>
                         <button class="add-to-cart">담기</button>
                     </div>
@@ -209,7 +209,7 @@
 					        </div>
 							<div class="review-reply-div">
 					            <button class="review-reply-btn"  
-					            	th:if="${bakeryNoUrlValue == bakeryNoValue and not #lists.contains(reviewNoCheck, review.reviewNo)}" 
+					            	th:if="${bakeryNoUrlValue == bakeryNoValue and (reviewNoCheck != null and not #lists.contains(reviewNoCheck, review.reviewNo))}" 
 					            	th:id="'reply-button-'+${review.reviewNo}"
 					                th:attr="onclick=|showReplyForm(${review.reviewNo})|">
 					                <i class="fas fa-pen"></i>답글 작성

@@ -162,15 +162,20 @@ public class BakeryController {
 		}
 		model.addAttribute("reviewReplies",reviewReplies);
 		
-		int userNo = (int) session.getAttribute("userNum");
 		
 		
 		// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
-		int resultValue = reviewService.byIdCheck(userNo,no);
+		if(session.getAttribute("userNum") != null) {
+			int userNo = (int) userNum;
+			int resultValue = reviewService.byIdCheck(userNo,no);
 			if(resultValue == 0) {
 				int bakeryNoInt = (int) no;
 				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
 				model.addAttribute("bakeryNoValue", resultValue);
+				System.out.println("====");
+				System.out.println(bakeryNoInt);
+				System.out.println(resultValue);
+				System.out.println("====");
 			} else {
 				int bakeryNoInt = (int) no;
 				List<Integer> reviewCheck = reviewService.reviewCheck(bakeryNoInt);
@@ -178,8 +183,8 @@ public class BakeryController {
 				
 				
 				List<Integer> reviewNoCheck = Arrays.stream(reviewCheckArray)
-                        .boxed() // int[] → List<Integer> 변환
-                        .collect(Collectors.toList());
+						.boxed() // int[] → List<Integer> 변환
+						.collect(Collectors.toList());
 				
 				model.addAttribute("reviewNoCheck",reviewNoCheck);
 				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
@@ -187,6 +192,7 @@ public class BakeryController {
 				model.addAttribute("reviewCheck", reviewCheck);
 				
 			}
+		}
 		
 		
 		
