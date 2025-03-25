@@ -103,7 +103,8 @@
 			menu_category
 		</select>
 		<select id="getMenuList">
-			SELECT menu_name AS menuName,
+			SELECT m.menu_no AS menuNo,
+				   menu_name AS menuName,
 				   MENU_PRICE AS menuPrice,
 				   MENU_INFO AS menuInfo,
 				   CATEGORY AS category,
@@ -113,12 +114,25 @@
 			JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO
 			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
 			WHERE BAKERY_NO = ${bakeryNo}
+			ORDER BY m.menu_no DESC
 		</select>
 		<select id="getBakeryName">
 			SELECT bakery_Name AS bakeryName 
 			from bakery_Info
 			where bakery_no = ${bakeryNo}
 		</select>
+		<select id="getMenuImgInfo" resultType="String">
+			SELECT change_name FROM menu_imege
+			WHERE menu_no = ${menuNo}
+		</select>
+		<delete id="menuDelete">
+			DELETE FROM menu
+			where menu_no = #{menuNo}
+		</delete>
+		<delete id="deleteMenuImg">
+			DELETE FROM menu_imege
+			where change_name = #{changeName}
+		</delete>
 		<select id="bakeryInfo" >
 			SELECT bi.BAKERY_NAME AS bakeryName,
 				   bi.BAKERY_ADDRESS AS bakeryAddress,

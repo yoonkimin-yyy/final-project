@@ -69,6 +69,8 @@ public interface BakeryService {
 	Map<String, Object> getMenuList(int bakeryNo);
 	
 	void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file);
+	
+	void menuDelete(int bakeryNo);
 
 	
 	

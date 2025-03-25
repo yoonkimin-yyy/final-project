@@ -21,3 +21,12 @@ function openUpdateMenu(bakeryNo) {
 	const url = `/bakery/menu/insert/form?bakeryNo=${bakeryNo}`;
 	    window.open(url, "_blank", "width=600, height=400, top=100, left=100");
 }
+
+function confirmDelete(button) {
+    let form = button.closest('form'); // 현재 클릭된 버튼의 부모 폼 찾기
+    let menuNo = form.querySelector('input[name="menuNo"]').value; // 폼 내 menuNo 가져오기
+
+    if (confirm(`정말 삭제하시겠습니까?`)) {
+        form.submit();
+    }
+}

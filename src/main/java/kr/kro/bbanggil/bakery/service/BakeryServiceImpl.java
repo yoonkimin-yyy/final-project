@@ -40,6 +40,7 @@ import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
@@ -467,6 +468,20 @@ public class BakeryServiceImpl implements BakeryService{
 
 	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
 		return bakeryMapper.bakeryInfo(bakeryNo);
+	}
+	@Override
+	public void menuDelete(int menuNo) {
+		String changeName = bakeryMapper.getMenuImgInfo(menuNo);
+		if(changeName!=null) {
+			bakeryMapper.deleteMenuImg(changeName);
+		}
+		bakeryMapper.menuDelete(menuNo);
+		logger.warn("{}번 메뉴 삭제됨", menuNo);
+	}
+
+	public MenuUpdateResponseDTO getMenuDetail() {
+		
+		return null;
 	}
 
 }

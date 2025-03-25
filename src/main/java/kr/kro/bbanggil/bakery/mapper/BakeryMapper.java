@@ -130,6 +130,12 @@ public interface BakeryMapper {
 
 	public String getBakeryName(int bakeryNo);
 
+	public void menuDelete(int bakeryNo);
+
+	public String getMenuImgInfo(int menuNo);
+
+	public void deleteMenuImg(String changeName);
+
 	
 
 }
