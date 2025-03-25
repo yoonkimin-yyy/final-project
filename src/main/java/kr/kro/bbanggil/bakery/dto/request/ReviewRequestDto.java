@@ -31,6 +31,7 @@ public class ReviewRequestDto {
     
     // 사장님 답글
     private String reviewReply;
+    private String reviewReportDetail;
     
     
     
