@@ -270,12 +270,7 @@ public class BakeryController {
 		        //  배열로 먼저 파싱하고 리스트로 변환
 		        MenuDetailRequestDto[] dtoArray = objectMapper.readValue(orderData, MenuDetailRequestDto[].class);
 		        menuDtoList = Arrays.asList(dtoArray);
-		        for(MenuDetailRequestDto item : menuDtoList) {
-					System.out.println("메뉴 뭐시기 확인");
-					System.out.println(item.getMenuName());
-					System.out.println(item.getMenuCount());
-					System.out.println(item.getMenuPrice());
-				}
+		        
 		    } catch (Exception e) {
 		        e.printStackTrace(); // 파싱 에러 로그
 		    }
