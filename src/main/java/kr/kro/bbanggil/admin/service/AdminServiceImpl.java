@@ -40,23 +40,23 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public AdminResponseDto bakeryDetailList(int listNum) {
-		return adminMapper.bakeryDetailList(listNum);
+	public AdminResponseDto bakeryDetailList(int bakeryNo, int userNo) {
+		return adminMapper.bakeryDetailList(bakeryNo, userNo);
 	}
 	
 	@Override
-	public AdminResponseDto userDetailList(int listNum) {
-		return adminMapper.userDetailList(listNum);
+	public AdminResponseDto userDetailList(int userNo) {
+		return adminMapper.userDetailList(userNo);
 	}
 	
 	@Override
-	public AdminResponseDto acceptList(int listNum) {
-		return adminMapper.acceptList(listNum);
+	public AdminResponseDto acceptList(int bakeryNo, int userNo) {
+		return adminMapper.acceptList(bakeryNo, userNo);
 	}
 	
 	@Override
-	public void update(String action, int listNum, String rejectReason) {
-		adminMapper.update(action, listNum, rejectReason);
+	public void update(String action, int bakeryNo, String rejectReason) {
+		adminMapper.update(action, bakeryNo, rejectReason);
 	}
 
 	@Override

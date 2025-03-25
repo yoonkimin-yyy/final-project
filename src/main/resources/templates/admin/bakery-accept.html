@@ -14,7 +14,7 @@
 <body>
 	<form th:action="@{/admin/bakery/update}" method="post" id="bakeryForm">
 		<input type="hidden" name="action" id="actionInput"> <input
-			type="hidden" name="listNum" th:value="${listNum}">
+			type="hidden" name="bakeryNo" th:value="${result.bakeryNo}">
 		<div class="containers">
 			<h1 style="text-align: center;">신청정보</h1>
 			<table>
@@ -36,7 +36,7 @@
 				</tr>
 				<tr>
 					<th>사업자번호</th>
-					<td>빨리해주세요 전주영님</td>
+					<td th:text="${result.userBusinessNo}"></td>
 				</tr>
 				<tr>
 					<th>가게명</th>
@@ -105,7 +105,6 @@
 			<span id="closeBtn" class="close">&times;</span>
 			<h2>모달 창 내용</h2>
 			<p>이곳은 모달 창 내용입니다!</p>
-			<button onclick="alert('모달에서 확인!')">확인</button>
 		</div>
 	</div>
 
