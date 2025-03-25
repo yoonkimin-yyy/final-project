@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
@@ -41,4 +40,6 @@ public interface ReviewService {
 	
 	public List<Integer> reviewCheck(int bakeryNo);
 
+
+	public void reviewReport(ReviewRequestDto reviewDTO, int userNo);
 }

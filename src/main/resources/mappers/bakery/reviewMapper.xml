@@ -23,6 +23,7 @@
 	<result property="tagFive" column="tag_five"></result>
 	<result property="reviewReply" column="review_reply"></result>
 	<result property="reviewReplyDate" column="review_reply_date"></result>	
+	<result property="reviewReportDetail" column="report_detail"></result>	
 </resultMap>
 
 
@@ -337,6 +338,16 @@ DELETE FROM REVIEW WHERE review_no = #{reviewNo}
         WHERE bakery_no = #{bakeryNo}
         AND rr.review_reply IS not NULL
     </select>
+    
+    <insert id="reviewReport">
+
+	   INSERT 
+	   		INTO
+	   		review_report (report_no, user_no, review_no, report_detail, report_date)
+	   		VALUES (review_report_seq.nextval, #{userNo}, #{reviewNo}, #{reviewReportDetail}, sysdate)
+	</insert>
+    
+    
 
 
 </mapper>

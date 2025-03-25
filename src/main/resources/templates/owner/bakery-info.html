@@ -59,6 +59,10 @@
                         	<th>신청상태</th>
                         	<td th:text="${bakery.agree}"></td>
                         </tr>
+                        <tr th:if="${bakery.reject!=null}">
+                        	<th>거절사유</th>
+                        	<td th:text="${bakery.reject}"></td>
+                        </tr>
                     </tbody>
                 </table>
             <button class="btn" th:onclick="|location.href='@{/bakery/menu/list/form(no=${no})}'|">메뉴 등록</button>

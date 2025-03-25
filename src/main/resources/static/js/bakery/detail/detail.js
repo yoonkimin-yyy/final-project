@@ -895,10 +895,6 @@ function showReplyForm(reviewNo) {
 }
 
 
-// 리뷰 신고 창 열기
-function reviewReport() {
-    window.open('../reviewreport.html', '팝업 창', 'width=600, height=400');
-}
 
 
 
