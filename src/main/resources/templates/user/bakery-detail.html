@@ -79,8 +79,8 @@
                         <div class="hours-detail" style="display: none;">
                             <th:block th:each="schedule : ${bakery.schedule}">
                                 <div class="hours-item">
-                                    <span class="day" th:text="${schedule.day}">월요일</span> <span class="time"
-                                        th:text="|${schedule.openTime} - ${schedule.closeTime}|">07:00 - 22:00</span>
+                                    <span class="day" th:text="${schedule.day}"></span> <span class="time"
+                                        th:text="|${schedule.openTime} - ${schedule.closeTime}|"></span>
                                 </div>
                             </th:block>
                         </div>
@@ -359,6 +359,7 @@
     
     <input type="hidden" id="bakeryNo">
     <input type="hidden" id="reviewNo">
+    <input type="hidden" id="userNum" value="session.userNum">
 
     <!-- 모달 추가 (body 태그 끝나기 전에 추가) -->
     <div id="reviewModal" class="modal">
