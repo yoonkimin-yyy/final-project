@@ -7,9 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.member.util.MypagePagination;
 import kr.kro.bbanggil.mypage.mapper.MypageMapper;
 import kr.kro.bbanggil.mypage.model.dto.response.MypagePageInfoDto;
-import kr.kro.bbanggil.mypage.util.MypagePagination;
 import lombok.AllArgsConstructor;
 
 @Service
