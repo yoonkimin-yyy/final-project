@@ -125,6 +125,20 @@
 			SELECT change_name FROM menu_imege
 			WHERE menu_no = ${menuNo}
 		</select>
+		<select id="getMenuImg">
+			SELECT change_name AS changeName,
+				   resources_path AS resourcesPath
+			FROM menu_imege
+			WHERE menu_no=${menuNo}
+		</select>
+		<update id="menuUpdate">
+			UPDATE menu
+			SET menu_name = #{menuName},
+				menu_price = #{menuPrice},
+				menu_Info = #{menuPopulity},
+				category_no = #{menuCategory}
+			WHERE menu_no = #{menuNo}
+		</update>
 		<delete id="menuDelete">
 			DELETE FROM menu
 			where menu_no = #{menuNo}
@@ -133,6 +147,18 @@
 			DELETE FROM menu_imege
 			where change_name = #{changeName}
 		</delete>
+		<select id="getMenuUpdate">
+			SELECT menu_name AS menuName,
+				   menu_price AS menuPrice,
+				   menu_info AS populity,
+				   change_name AS changeName,
+				   resources_path AS resourcesPath,
+				   category
+			FROM MENU m
+			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO
+			JOIN MENU_CATEGORY mc ON mc.CATEGORY_NO = m.CATEGORY_NO
+			WHERE m.menu_no = ${menuNo}
+		</select>
 		<select id="bakeryInfo" >
 			SELECT bi.BAKERY_NAME AS bakeryName,
 				   bi.BAKERY_ADDRESS AS bakeryAddress,

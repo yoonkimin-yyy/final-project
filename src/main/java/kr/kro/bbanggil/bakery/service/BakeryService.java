@@ -14,6 +14,7 @@ import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 
@@ -71,6 +72,10 @@ public interface BakeryService {
 	void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file);
 	
 	void menuDelete(int bakeryNo);
+	
+	MenuUpdateResponseDTO getMenuDetail(int menuNo);
+	
+	void updateMenu(MenuRequestDTO menuDTO, MultipartFile file);
 
 	
 	

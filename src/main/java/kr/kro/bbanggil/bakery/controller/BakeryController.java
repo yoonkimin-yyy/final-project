@@ -31,6 +31,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.request.MenuUpdateRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
@@ -364,11 +365,19 @@ public class BakeryController {
 		return "redirect:/bakery/menu/list/form";
 	}
 	@GetMapping("/menu/update/form")
-	public String menuUpdateForm(Model model) {
-		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail();
+	public String menuUpdateForm(@RequestParam("menuNo") int menuNo,
+								 Model model) {
+		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail(menuNo);
 		
 		model.addAttribute("menu",menuDTO);
+		model.addAttribute("menuNo",menuNo);
 		return "/owner/menu-update";
 	}
-
+	@PostMapping("/menu/update")
+	public String menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file) {
+		bakeryService.updateMenu(menuDTO,file);
+		return "/owner/menu-list";
+	}
 }
+

@@ -15,6 +15,7 @@ import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
@@ -135,6 +136,12 @@ public interface BakeryMapper {
 	public String getMenuImgInfo(int menuNo);
 
 	public void deleteMenuImg(String changeName);
+
+	public MenuUpdateResponseDTO getMenuUpdate(int menuNo);
+
+	public FileResponseDTO getMenuImg(int menuNo);
+
+	public void menuUpdate(MenuRequestDTO menuDTO);
 
 	
 
