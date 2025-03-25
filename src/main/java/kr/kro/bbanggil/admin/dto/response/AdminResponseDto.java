@@ -1,9 +1,6 @@
 package kr.kro.bbanggil.admin.dto.response;
 
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

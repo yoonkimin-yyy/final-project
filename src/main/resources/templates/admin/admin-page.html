@@ -130,7 +130,7 @@
 				</thead>
 				<tbody>
 					<tr id="user1" th:each="list, iterStat : ${bakeryLists}"
-						th:attr="onclick=|location.href='/admin/bakery/detail?listNum=${bakeryLists.size() - iterStat.index}'|">
+						th:attr="onclick=|location.href='/admin/bakery/detail?bakeryNo=${list.bakeryNo}&userNo=${list.userNo}'|">
 						<td th:text="${bakeryLists.size() - iterStat.index}"></td>
 						<td th:text="${list.bakeryName}"></td>
 						<td th:text="${list.userId}"></td>
@@ -157,7 +157,7 @@
 				</thead>
 				<tbody>
 					<tr id="user1" th:each="list, iterStat : ${userLists}"
-						th:attr="onclick=|location.href='/admin/user/detail?listNum=${userLists.size() - iterStat.index}'|">
+						th:attr="onclick=|location.href='/admin/user/detail?userNo=${list.userNo}'|">
 						<td th:text="${userLists.size() - iterStat.index}"></td>
 						<td th:text="${list.userId}"></td>
 						<td th:text="${list.userPhoneNum}"></td>
@@ -192,7 +192,7 @@
 				</thead>
 				<tbody>
 					<tr id="user1" th:each="list, iterStat : ${sublists}"
-						th:attr="onclick=|location.href='/admin/bakery/accept?listNum=${sublists.size() - iterStat.index}'|">
+						th:attr="onclick=|location.href='/admin/bakery/accept?listNum=${sublists.size() - iterStat.index}&bakeryNo=${list.bakeryNo}&userNo=${list.userNo}'|">
 						<td th:text="${sublists.size() - iterStat.index}"></td>
 						<td th:text="${list.userId}"></td>
 						<td th:text="${list.userPhoneNum}"></td>

@@ -16,14 +16,16 @@ public interface AdminMapper {
 
 	List<AdminResponseDto> userList();
 	
-	AdminResponseDto bakeryDetailList(int listNum);
+	AdminResponseDto bakeryDetailList(@Param("bakeryNo") int bakeryNo, 
+		    						  @Param("userNo") int userNo);
 	
-	AdminResponseDto userDetailList(int listNum);
+	AdminResponseDto userDetailList(int userNo);
 	
-	AdminResponseDto acceptList(int listNum);
+	AdminResponseDto acceptList(@Param("bakeryNo") int bakeryNo, 
+							    @Param("userNo") int userNo);
 
 	void update(@Param("action") String action,
-				@Param("listNum") int listNum,
+				@Param("bakeryNo") int listNum,
 				@Param("rejectReason") String rejectReason);
 
 }

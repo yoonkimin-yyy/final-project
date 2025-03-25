@@ -43,7 +43,8 @@
             </tr>
             <tr>
                 <th>사업자번호</th>
-                <td></td>
+                <td th:if="${result.userBusinessNo != null}" th:text="${result.userBusinessNo}"></td>
+                <td th:if="${result.userBusinessNo == null}">-</td>
             </tr>
         </table>
 
