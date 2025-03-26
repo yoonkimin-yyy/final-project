@@ -15,8 +15,10 @@ import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.bakery.vo.BakeryInfoVO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
@@ -75,9 +77,8 @@ public interface BakeryMapper {
 
 	
 	
-	void insertCartInfo(int cartNo, int menuNo, int menuCount);
+	void insertCartInfo(@Param("cartNo") int cartNo,@Param("menuNo") int menuNo, @Param("menuCount") int menuCount);
 	Integer getCartNoByUserNo(int userNo);
-	Integer getLastCartNo();
 	void insertCart(int userNo);
 	BakeryDto findBakeryByNo(@Param("no")double bakeryNo);
 	
@@ -122,6 +123,34 @@ public interface BakeryMapper {
 
 
 	void bakeryAccessUpdate(BakeryRequestDTO bakeryRequestDTO);
+
+
+	public List<MenuResponseDto> getMenuList(int bakeryNo);
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
+
+	public String getBakeryName(int bakeryNo);
+
+	public void menuDelete(int bakeryNo);
+
+	public String getMenuImgInfo(int menuNo);
+
+	public void deleteMenuImg(String changeName);
+
+	public MenuUpdateResponseDTO getMenuUpdate(int menuNo);
+
+	public FileResponseDTO getMenuImg(int menuNo);
+
+	public void menuUpdate(MenuRequestDTO menuDTO);
+
+	public void UserCountInsert(int bakeryNo);
+
+	public int getUserCountBybakeryNo(int bakeryNo);
+
+	public void updateUserCount(@Param("bakeryNo")int bakeryNo,
+								@Param("count")int count);
+
+	public void resetDailyVisitCount();
 
 	
 

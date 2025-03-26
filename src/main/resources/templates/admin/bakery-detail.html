@@ -9,12 +9,9 @@
 <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 <body>
-    <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
-    <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-
     <div class="containers">
         <h2>빵집 상세 정보</h2>
-        <div class="detail">
+        <!-- <div class="detail">
             <div class="box">
                 <h1>주문량</h1>
                 <div class="text-size">345</div>
@@ -23,30 +20,45 @@
                 <h1>매출순위테스트</h1>
                 <div class="text-size">3</div>
             </div>
-        </div>
+        </div> -->
         <table>
             <tr>
-                <th>상호명</th>
-                <td>20205</td>
+                <th>유저 ID</th>
+                <td th:text="${result.userId}"></td>
             </tr>
             <tr>
-                <th>사용자 ID</th>
-                <td>20255503</td>
+                <th>이름</th>
+                <td th:text="${result.userName}"></td>
             </tr>
             <tr>
                 <th>연락처</th>
-                <td>010-0000-0000</td>
+                <td th:text="${result.userPhoneNum}"></td>
             </tr>
             <tr>
-                <th>가게 설명</th>
-                <td>우리가게 정상영업 합니다</td>
+                <th>사업자번호</th>
+                <td th:text="${result.userBusinessNo}"></td>
             </tr>
             <tr>
-                <th>편의 정보</th>
-                <td>잘 찾아보면 뭔가있음</td>
+                <th>가게명</th>
+                <td th:text="${result.bakeryName}"></td>
             </tr>
+            <tr>
+                <th>가게주소</th>
+                <td th:text="${result.bakeryAddress}"></td>
+            </tr>
+            <tr>
+					<th>실내정보</th>
+					<td th:text="${result.insideInfo}"></td>
+				</tr>
+				<tr>
+					<th>실외정보</th>
+					<td th:text="${result.outsideInfo}"></td>
+				</tr>
+				<tr>
+					<th>주차장</th>
+					<td th:text="${result.amenity}"></td>
+				</tr>
         </table>
-
 
     </div>
     <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>

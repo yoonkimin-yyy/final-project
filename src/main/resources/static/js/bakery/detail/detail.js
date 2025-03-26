@@ -107,7 +107,8 @@ function closeReviewModal() {
 document.getElementById('openReviewModal')?.addEventListener('click', () => {
 	const userNo = document.getElementById("userNum").value;
 	console.log(userNo);
-	
+	const orderNo = parseInt(document.getElementById("orderNo").value);
+	console.log(orderNo);
 	if (!userNo || userNo === "null" || userNo === "") {
 	        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
 			window.location.href = window.location.origin + "/register/loginin/form";
@@ -524,7 +525,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
             const menuItem = button.closest('.menu-item');
             const name = menuItem.querySelector('.menu-name').textContent;
             const price = parseInt(menuItem.querySelector('.menu-price').textContent.replace(/[^0-9]/g, ''));
-            
+			const menuNo = menuItem.getAttribute('data-menu-no');
             // 장바구니에 같은 상품이 있는지 확인
             const existingItem = Array.from(cartItems.children).find(item => 
                 item.querySelector('.cart-item-name')?.textContent === name
@@ -544,6 +545,8 @@ function updateTagCountsOnEdit(prevTags, newTags) {
                 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
+				itemDiv.setAttribute('data-menu-no', menuNo);
+				
                 itemDiv.innerHTML = `
                     <div class="cart-item-info">
                         <span class="cart-item-name">${name}</span>
@@ -583,80 +586,49 @@ function updateTagCountsOnEdit(prevTags, newTags) {
         });
     });
 	
-	
-	
 	const checkoutButton = document.querySelector('.checkout-button');
 
-	checkoutButton.addEventListener('click', () => {
-		const userNo = document.getElementById("userNum").value;
-		
-		if (!userNo || userNo === "null") {
-		     alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-			 window.location.href = window.location.origin + "/register/loginin/form";
-		     return;
-		 }
+	checkoutButton.addEventListener('click', function (e) {
+	    e.preventDefault();
 
-		
-	    const cartItems = document.querySelectorAll('.cart-item');
-
-	    if (cartItems.length === 0) {
-	        alert('장바구니가 비어 있습니다.');
+	    const userNo = document.getElementById("userNum").value;
+	    if (!userNo || userNo === "null") {
+	        alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
+	        window.location.href = window.location.origin + "/register/loginin/form";
 	        return;
 	    }
 
-	    // 장바구니 데이터를 JSON으로 변환
-	    let orderList = [];
-	    cartItems.forEach(item => {
-	        const name = item.querySelector('.cart-item-name').textContent;
-	        const price = parseInt(item.querySelector('.cart-item-price').textContent.replace(/[^0-9]/g, ''));
-	        const quantity = parseInt(item.querySelector('.quantity').textContent);
-
-	        orderList.push({
-	            menuName: name,
-	            menuPrice: price,
-	            quantity: quantity
-	        });
-	    });
-
-	    // ✅ AJAX 호출
-	    sendOrderData(orderList);
-	});
-	
-	
-	
-	document.getElementById("orderForm").addEventListener("submit", function(event) {
-	    event.preventDefault(); // 기본 폼 전송 방지
-		const userNo = document.getElementById("userNum").value;
-
-		console.log(userNo);
-		
-		if (!userNo || userNo === "null") {
-		       event.preventDefault(); // 폼 제출 방지
-		       alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-			   window.location.href = window.location.origin + "/register/loginin/form";
+		const cartItems = document.querySelector(".cart-items").children;
+		   if (cartItems.length === 0) {
+		       alert('장바구니가 비어 있습니다.');
 		       return;
 		   }
 
+	    let orderList = [];
 		
-	    let cartItems = [];
+	   
+		Array.from(cartItems).forEach(item => {
+		        const menuNo = item.getAttribute("data-menu-no");
+		        const quantityText = item.querySelector(".quantity")?.innerText ?? "0개";
+		        const quantity = parseInt(quantityText.replace("개", "").trim());
 
-	    document.querySelectorAll(".cart-items .item").forEach(item => {
-	        let menuNo = item.getAttribute("data-menu-no");
-	        let menuCount = item.querySelector(".item-quantity").innerText.replace("개", "").trim();
+		
 
-	        cartItems.push({
+	        orderList.push({
 	            menuNo: parseInt(menuNo),
-	            menuCount: parseInt(menuCount)
+	            menuCount: parseInt(quantity)
 	        });
 	    });
 
-	    // orderData를 JSON 형식으로 변환 후 설정
-	    document.getElementById("orderData").value = JSON.stringify(cartItems);
+	    //  숨겨진 input에 JSON 문자열로 세팅
+	    document.getElementById("orderData").value = JSON.stringify(orderList);
 
-
-	    // 폼 제출
-	    this.submit();
+	    //  폼 전송
+	    document.getElementById("orderForm").submit();
 	});
+	
+	
+	
 	
 
     // ===== 영업시간 토글 기능 =====
@@ -824,7 +796,11 @@ function initKakaoMap() {
             map.panTo(markerPosition);
         });
     });
+	
+	
 }
+
+
 
 // 페이지 로드 후 지도 초기화 실행
 document.addEventListener("DOMContentLoaded", initKakaoMap);
@@ -891,4 +867,35 @@ kakao.maps.load(function () {
 
    
 });
+
+// 리뷰 답글 관련 코드
+function submitReplyBtn(){
+    const Btn = document.getElementById('reply-text').value;
+    console.log(Btn);
+
+    if(Btn === ""){
+        alert("내용을 입력해주세요");
+        return;
+    } else {
+        alert("답글이 등록되었습니다.");
+    }
+}
+
+
+// 리뷰 답글 버튼 클릭시
+function showReplyForm(reviewNo) {
+    var replyBox = document.getElementById('reply-box-' + reviewNo);
+
+	
+    // replyBox가 존재하는지 확인
+    if (replyBox) {
+        replyBox.classList.toggle('show');
+    } else {
+        console.error('답글 박스가 존재하지 않습니다. reviewNo:', reviewNo);
+    }
+}
+
+
+
+
 

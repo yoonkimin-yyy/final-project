@@ -6,8 +6,11 @@ function submitReview() {
         });
     }
 	const userNo = document.getElementById("userNum").value; 
+	
 	console.log(userNo);
-	console.log("sdfsfsfs");
+	const orderNo = parseInt(document.getElementById("orderNo").value);
+	console.log(orderNo);
+	
 	if (!userNo || userNo === "null") {
 	       alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
 		   window.location.href = window.location.origin + "/register/loginin/form";
@@ -15,7 +18,7 @@ function submitReview() {
 	   }
 	
 	
-    const name = document.getElementById("userId").value;
+   
     const rating = document.getElementById("rating").value;
     const content = document.getElementById("content").value;
     const date = new Date().toISOString().split("T")[0];
@@ -30,12 +33,14 @@ function submitReview() {
    
 	
 	const reviewData = {
-	    userNo: 1,
+	    userNo: userNo,
 	    bakeryNo: bakeryNo,
 	    reviewDetail: content,
 	    reviewRating: rating,
 	    reviewTag: selectedTags, //  태그 리스트
-	    writeDate: date
+	    writeDate: date,
+		orderNo : parseInt(orderNo)
+		
 	};
 	
 	formData.append("reviewDto", new Blob([JSON.stringify(reviewData)], { type: "application/json" }));
@@ -82,6 +87,7 @@ function fetchBakeryData(bakeryNo, callback) {
     }
 
     bakeryNo = parseFloat(bakeryNo); // String → double 변환
+	console.log(bakeryNo);
 
     fetch(`/bakery/kakao?bakeryNo=${bakeryNo}`)  // Query Parameter 방식
         .then(response => {

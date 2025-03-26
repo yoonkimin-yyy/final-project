@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자에게 문의하기</title>
+</head>
+	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+	<link rel="stylesheet" th:href="@{/css/admin/admin.inquiry-write.css}">
+<body>
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+
+<div class="admin-inquiry-form">
+    <div class="admin-inquiry-header">
+      <i class="fas fa-bread-slice"></i>
+      <h1 class="admin-inquiry-title">문의 작성</h1>
+      <p class="admin-inquiry-subtitle">궁금한 점이 있다면 아래 양식에 맞춰 작성해주세요.</p>
+    </div>
+    <form id="contactForm" action="/admin/submit" method="POST">
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="name">이름</label>
+        <input type="text" id="name" class="admin-inquiry-input" required />
+      </div>
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="email">이메일</label>
+        <input type="email" id="email" class="admin-inquiry-input" required />
+      </div>
+  <input type="hidden" name="userNo" th:if="${userNo != null}" th:value="${userNo}" />
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="subject">제목</label>
+        <input type="text" id="subject" class="admin-inquiry-input" required name="inquiryTitle" />
+      </div>
+      <div class="admin-inquiry-field">
+        <label class="admin-inquiry-label" for="message">문의내용</label>
+        <textarea id="message" class="admin-inquiry-input message-input" required name="inquiryContent"></textarea>
+      </div>
+      <button type="submit" class="admin-inquiry-submit-btn">문의하기</button>
+    </form>
+  </div>
+ 
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</body>
+</html>

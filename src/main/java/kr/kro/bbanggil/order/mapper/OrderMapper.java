@@ -2,6 +2,8 @@ package kr.kro.bbanggil.order.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
 import java.util.List;
 
@@ -14,12 +16,10 @@ import kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto;
 
 @Mapper
 public interface OrderMapper {
-
-
 	
-	List<OrderResponseDto> list(String userId);
+	List<OrderResponseDto> list(int userNo);
 	
-	int calculate(@Param("OrderRequestDto")OrderRequestDto orderRequestDto, @Param("userId")String userId);
+	int calculate(int userNo);
 	
 	void save(PaymentRequestDto paymentRequsetDto);
 
@@ -37,6 +37,12 @@ public interface OrderMapper {
 
 	String refund(int payNo);
 	
-	int countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
+	Integer countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
+
+	int selectOrderCount();
+
+	List<OrderResponseDto> selectPagedOrders(PageResponseDto pi);
+
+	BakeryResponseDto findRecentOrder(@Param("userNo")int userNo, @Param("bakeryNo")double bakeryNo);
 
 }

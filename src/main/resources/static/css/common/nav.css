@@ -75,3 +75,9 @@ a{
 	padding:0;
 	box-sizing :border-box;
 }
+.nav-item:hover,
+.dropdown:hover .dropdown-menu,
+.dropdown-item:hover,
+button:hover {
+    cursor: pointer;
+}

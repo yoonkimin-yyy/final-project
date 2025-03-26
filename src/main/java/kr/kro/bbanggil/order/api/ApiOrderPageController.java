@@ -47,11 +47,12 @@ public class ApiOrderPageController {
 	 */
 	@PostMapping("/accountCheck")
 	@ResponseBody
-	public Boolean accountCheck(@RequestParam("totalCount") int totalCount, 
-								OrderRequestDto orderRequestDto,
-								String userId) {
+	public Boolean accountCheck(@RequestParam("totalCount") int totalCount,
+								@SessionAttribute("userNum") int userNo) {
 		
-		return orderService.accountCheck(totalCount, orderRequestDto, userId);
+		logger.info(":::::::ApiOrderControllerUserNo:::::::", userNo);
+		
+		return orderService.accountCheck(totalCount, userNo);
 	}
 	
 	/**
@@ -79,20 +80,20 @@ public class ApiOrderPageController {
 	public IamportResponse<Payment> validateIamport(@PathVariable("imp_uid") String imp_uid,
 													@RequestBody PaymentRequestDto paymentRequestDto,
 													OrderRequestDto orderRequestDto,
-													@SessionAttribute("userId") String userId) 
+													@SessionAttribute("userNum") int userNo) 
 	throws IamportResponseException, IOException {
 
-		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userId);
+		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userNo);
 	}
 	
 	/**
 	 * DB저장
 	 */
 	@PostMapping("/success")
-	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDtoDto,
-											@SessionAttribute("userNo") int userNo) {
+	public ResponseEntity<String> saveOrder(@RequestBody PaymentRequestDto paymentRequestDto,
+											@SessionAttribute("userNum") int userNo) {
 		
-		if(orderService.saveOrder(paymentRequestDtoDto, userNo)) {
+		if(orderService.saveOrder(paymentRequestDto, userNo)) {
 			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
 		}	
 		
@@ -113,13 +114,13 @@ public class ApiOrderPageController {
 	 */
 	@GetMapping("/pickupCheck")
 	public HashMap<String, Object> pickupCheckStatus(@SessionAttribute("userId") String userId,
-													 @SessionAttribute("userId") int userNo) {
+													 @SessionAttribute("userNum") int userNo) {
 		int payNo = orderService.getPayNo(userNo);
 		
 		HashMap<String, Object> response = new HashMap<>();
 
 		PickupCheckResponseDto result = orderService.pickupCheckStatus(payNo);
-		List<OrderResponseDto> list = orderService.pickupList(result, payNo, userId);
+		List<OrderResponseDto> list = orderService.pickupList(result, payNo, userNo);
 		
 		response.put("result", result);
 		response.put("list", list);

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Valid
 public class BakeryRequestDTO {
 	
-	@Pattern(regexp="^[가-힣a-zA-Z\\s]{2,10}$", message="한글,영어 소문자, 영어 대문자, 띄어쓰기만 가능합니다.특수문자는 불가능합니다.")
+	@Pattern(regexp="^[0-9가-힣a-zA-Z\\s]{2,30}$", message="한글,숫자,영어 소문자, 영어 대문자, 띄어쓰기만 가능합니다.특수문자는 불가능합니다.")
 	private String bakeryName;
 	
 	@NotBlank(message = "주소는 비어있으면 안됩니다")

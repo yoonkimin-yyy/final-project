@@ -29,7 +29,7 @@ public class AwsS3Util {
     		String changeName = UUID.randomUUID().toString() + "." + getFileExtension(originalFilename);
     		int urlLength = amazonS3.getUrl(bucket, changeName).toString().length();
     		int changeLength = changeName.length();
-    		int result = urlLength - changeLength;
+    		int result = urlLength - changeLength-1;
     		
     		ObjectMetadata metadata = new ObjectMetadata();
     		metadata.setContentLength(multipartFile.getSize());

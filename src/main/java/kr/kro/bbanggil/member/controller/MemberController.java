@@ -179,6 +179,9 @@ public class MemberController {
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
             session.setAttribute("role", loginUser.getUserType());
+            if(loginUser.getUserType().equals("admin")) {
+            	return "redirect:/admin/form";
+            }
             return "redirect:/";  
         } else {
             // 로그인 실패 메시지 전달

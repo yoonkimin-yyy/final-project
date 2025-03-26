@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="/css/home/home.css">
-    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
+    <script type="text/javascript"
+        src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Swiper CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
+
 <body>
     <!-- 헤더 및 네비게이션 -->
     <header th:replace="~{fragments/header :: HeaderFragment}"></header>
-        
-   
+
+
 
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-       
-    
+
+
 
     <!-- 히어로 섹션 -->
     <section class="hero-section">
@@ -30,7 +34,10 @@
             <div class="hero-content">
                 <h2 class="hero-title">전국 빵집을 한눈에</h2>
                 <p class="hero-subtitle">장인의 손길로 탄생한 맛있는 빵집들을 소개합니다</p>
-                <button class="hero-button">빵집 탐색하기</button>
+                <button class="hero-button"
+                    th:attr="onclick=|location.href='@{/bakery/list(searchText='', orderType='popular')}'|">
+                    빵집 탐색하기
+                </button>
             </div>
         </div>
     </section>
@@ -40,18 +47,19 @@
         <div class="section-header">
             <h2 class="section-title">인기 빵집</h2>
             <a th:href="@{/bakery/list(searchText='', orderType='popular')}" class="view-all-button">
-    전체보기
-    <i class="fas fa-chevron-right"></i>
-</a>
+                전체보기
+                <i class="fas fa-chevron-right"></i>
+            </a>
         </div>
-    
+
         <!-- Swiper Container -->
-        <div class="swiper swiper-popularBakerySwiper"> 
+        <div class="swiper swiper-popularBakerySwiper">
             <div class="swiper-wrapper">
                 <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card">
-				<a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
-                    <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"  th:alt="${bakery.name}" class="bakery-image">
-                   </a>
+                    <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
+                        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
+                            th:alt="${bakery.name}" class="bakery-image">
+                    </a>
                     <div class="bakery-info">
                         <h3 class="bakery-name" th:text="${bakery.name}"></h3>
                         <div class="location-container">
@@ -59,13 +67,13 @@
                             <span class="location-text" th:text="${bakery.address}"></span>
                         </div>
                         <div class="rating-container">
-    						<i class="fas fa-star"></i>
-    							<span class="rating-text">
-        							<th:block th:if="${bakery.response != null}" 
-                 				 	th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></th:block>
-        							<th:block th:if="${bakery.response == null}"></th:block>
-    							</span>
-							</div>
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">
+                                <th:block th:if="${bakery.response != null}"
+                                    th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></th:block>
+                                <th:block th:if="${bakery.response == null}"></th:block>
+                            </span>
+                        </div>
                         <div class="specialty-container">
                             <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
                             <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
@@ -75,13 +83,13 @@
                     </div>
                 </div>
             </div>
-                  <!-- 네비게이션 버튼 -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <!-- 페이지네이션 -->
-        <div class="swiper-pagination"></div>
-    </div>
-</section>
+            <!-- 네비게이션 버튼 -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <!-- 페이지네이션 -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
 
 
     <!-- 지역별 빵집 섹션 -->
@@ -93,12 +101,12 @@
                 <i class="fas fa-chevron-right"></i>
             </a>
         </div>
-    
-        
-         <!-- ✅ 카카오맵 표시 -->
-        <div id="map" style="width: 100%; height: 500px;"></div>   
 
-    
+
+        <!-- ✅ 카카오맵 표시 -->
+        <div id="map" style="width: 100%; height: 500px;"></div>
+
+
         <!-- ✅ 지역 선택 버튼 -->
         <div class="region-container">
             <button class="region-button" data-region="서울">서울</button>
@@ -123,20 +131,22 @@
 
     <section class="section-container">
         <div class="section-header">
-            <h2 class="section-title" style="color:#a18267;">최근 오픈 빵집</h2>
-            <a href="#" class="view-all-button" th:onclick="|location.href='@{/bakery/list(searchText='', orderType='recent')}'|">
-    		전체보기
-    			<i class="fas fa-chevron-right"></i>
-				</a>
+            <h2 class="section-title">최근 오픈 빵집</h2>
+            <a href="#" class="view-all-button"
+                th:onclick="|location.href='@{/bakery/list(searchText='', orderType='recent')}'|">
+                전체보기
+                <i class="fas fa-chevron-right"></i>
+            </a>
         </div>
-    
+
         <!-- Swiper 컨테이너 (최근 오픈 빵집) -->
         <div class="swiper recentBakerySwiper">
             <div class="swiper-wrapper">
-                <div th:each="bakery : ${recentBakeries}"class="swiper-slide bakery-card">
+                <div th:each="bakery : ${recentBakeries}" class="swiper-slide bakery-card">
                     <div class="new-badge">NEW</div>
                     <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
-                    <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" th:alt="${bakery.name}" class="bakery-image">
+                        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
+                            th:alt="${bakery.name}" class="bakery-image">
                     </a>
                     <div class="bakery-info">
                         <h3 class="bakery-name" th:text="${bakery.name}">브레드랩</h3>
@@ -150,16 +160,16 @@
                         </div>
                         <div class="specialty-container">
                             <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
-                            <span class="specialty-text"  th:text="${bakery.response.menuName}"></span>
+                            <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
                         </div>
                     </div>
                 </div>
             </div>
-    
+
             <!-- 네비게이션 버튼 -->
             <div class="swiper-button-next recent-next"></div>
             <div class="swiper-button-prev recent-prev"></div>
-    
+
             <!-- 페이지네이션 -->
             <div class="swiper-pagination recent-pagination"></div>
         </div>
@@ -177,10 +187,11 @@
 
         <div class="categories-container">
             <div class="category-card" th:each="bakery : ${categoryBakeries}">
-                <img src="https://api.a0.dev/assets/image?text=fresh%20loaves%20of%20bread&aspect=1:1&seed=131" alt="식빵" class="category-image">
+                <img src="https://api.a0.dev/assets/image?text=fresh%20loaves%20of%20bread&aspect=1:1&seed=131" alt="식빵"
+                    class="category-image">
                 <div class="category-info">
                     <h3 class="category-name" th:text="${bakery.response.category}"></h3>
-                    <p class="category-count"th:text="|${#numbers.formatInteger(bakery.response.totalCount, 0)}개|"></p>
+                    <p class="category-count" th:text="|${#numbers.formatInteger(bakery.response.totalCount, 0)}개|"></p>
                 </div>
             </div>
 
@@ -199,18 +210,19 @@
                 <input type="email" name="email" class="email-input" placeholder="이메일 주소 입력" required id="email">
                 <button type="submit" class="subscribe-button" onclick="subscribe()">구독하기</button>
             </div>
-            <p class="subscribed-text" id="subscribed-message" style="display: none;"  th:text="${message}"></p>
+            <p class="subscribed-text" id="subscribed-message" style="display: none;" th:text="${message}"></p>
         </div>
     </section>
 
     <!-- 푸터 -->
     <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
-        
-    
 
-    
+
+
+
 </body>
 <script src="/js/home/home.js"></script>
 <script src="/js/home/kakaoMap.js"></script>
 <script src="/js/home/subscribe.js"></script>
+
 </html>
