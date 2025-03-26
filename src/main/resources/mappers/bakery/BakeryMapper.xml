@@ -42,6 +42,7 @@
 			bi.bakery_no =
 			${bakeryNo}
 		</select>
+		
 		<select id="getBakeryImg" resultMap="bakeryImgResultMap">
 			SELECT CHANGE_NAME,
 			FOLDER_NAME_PATH
@@ -300,10 +301,13 @@
 			#{region} || '%'
 
 		</select>
+		
 		<select id="getUserCountBybakeryNo" resultType="int">
 			SELECT user_count FROM user_count
 			WHERE bakery_no =${bakeryNo}
 		</select>
+		
+		
 		<update id="updateUserCount">
 			UPDATE user_count
 			SET user_count = ${count}
