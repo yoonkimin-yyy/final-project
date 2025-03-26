@@ -28,18 +28,15 @@
 			<div class="stats-container">
 				<div class="stat-card">
 					<div class="stat-title">일일 방문자</div>
-					<div class="stat-value">2,345</div>
-					<div class="stat-increase">+12%</div>
+					<div class="stat-value" th:text="${today}"></div>
 				</div>
 				<div class="stat-card">
 					<div class="stat-title">총 주문</div>
-					<div class="stat-value">1,234</div>
-					<div class="stat-increase">+23%</div>
+					<div class="stat-value" th:text=${order}></div>
 				</div>
 				<div class="stat-card">
 					<div class="stat-title">신규 회원</div>
-					<div class="stat-value">432</div>
-					<div class="stat-increase">+8%</div>
+					<div class="stat-value" th:text=${user}></div>
 				</div>
 			</div>
 
@@ -55,20 +52,14 @@
 						<div class="inline" onclick="showTab('bakery')">more</div>
 					</div>
 
-					<div class="list-item">
-						<div class="list-item-title">김철수</div>
-						<div class="list-item-subtitle">상품A</div>
-						<span class="status-badge status-pending">배송중</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">이영희</div>
-						<div class="list-item-subtitle">상품B</div>
-						<span class="status-badge status-pending">주문확인</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">박지성</div>
-						<div class="list-item-subtitle">상품C</div>
-						<span class="status-badge status-completed">결제완료</span>
+					<div class="list-item" th:each="order : ${newOrder}">
+						<div class="list-item-title" th:text="${order.recipientsName}"></div>
+						<div class="list-item-subtitle" th:text="${order.menuList}"></div>
+						<span class="status-badge status" th:text="${order.pickupStatus}"
+							  th:classappend="${order.pickupStatus == '대기중' ? 'status-pending' : 
+						                       (order.pickupStatus == '승인' ? 'status-complete' : 
+						                       (order.pickupStatus == '거절' ? 'status-denied' : 
+						                       (order.pickupStatus == '완료' ? 'status-done' : '')))}"></span>
 					</div>
 				</div>
 
@@ -99,20 +90,15 @@
 						1:1 문의
 						<div class="inline">more</div>
 					</div>
-					<div class="list-item">
-						<div class="list-item-title">배송문의</div>
-						<div class="list-item-subtitle">문의 ID: 1</div>
-						<span class="status-badge status-pending">답변대기</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">결제문의</div>
-						<div class="list-item-subtitle">문의 ID: 2</div>
-						<span class="status-badge status-completed">답변완료</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">상품문의</div>
-						<div class="list-item-subtitle">문의 ID: 3</div>
-						<span class="status-badge status-pending">답변대기</span>
+					<div class="list-item" th:each="inquiries : ${inquiries}">
+						<div class="list-item-title" th:text="${inquiries.inquiryTitle}"></div>
+						<div class="list-item-subtitle">문의 ID:<span th:text="${inquiries.userName}"></span></div>
+						<span class="status-badge status-pending" 
+						th:text="${inquiries.isAnswered == 'N' ? '답변대기' :
+								  (inquiries.isAnswered == 'Y' ? '답변완료' : '')}"
+						th:classappend="${inquiries.isAnswered == 'N' ? 'status-pending' : 
+				                         (inquiries.isAnswered == 'Y' ? 'status-complete' : '')}">
+                        </span>
 					</div>
 				</div>
 			</div>

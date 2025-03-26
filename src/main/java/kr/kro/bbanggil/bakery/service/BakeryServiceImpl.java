@@ -208,6 +208,7 @@ public class BakeryServiceImpl implements BakeryService{
 					}
 				}
 				bakeryMapper.setBakery(bakeryRequestDTO.getBakeryNo(),userNo);	
+				bakeryMapper.UserCountInsert(bakeryRequestDTO.getBakeryNo());
 			return bakeryRequestDTO.getBakeryNo();
 				
 		} catch (Exception e) {
@@ -277,6 +278,7 @@ public class BakeryServiceImpl implements BakeryService{
 				bakeryMapper.bakeryScheduleUpdate(item,bakeryRequestDTO.getBakeryNo());
 			}
 			bakeryMapper.bakeryAccessUpdate(bakeryRequestDTO);
+			
 			}
 		} catch(Exception e) {
 			logger.error("에러발생! : {}",e.getMessage());
@@ -502,6 +504,12 @@ public class BakeryServiceImpl implements BakeryService{
 		} catch (IOException e) {
 			throw new BakeryException("메뉴 수정 실패","common/error",HttpStatus.NOT_ACCEPTABLE);
 		}
+	}
+	@Override
+	public void updateUserCount(int bakeryNo) {
+		int count = bakeryMapper.getUserCountBybakeryNo(bakeryNo);
+		count++;
+		bakeryMapper.updateUserCount(bakeryNo,count);
 	}
 
 }

@@ -31,7 +31,6 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
-import kr.kro.bbanggil.bakery.dto.request.MenuUpdateRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
@@ -138,7 +137,7 @@ public class BakeryController {
 			HttpSession session
 			 ) {
    {
-		
+		bakeryService.updateUserCount((int)no);
     
 		/*
 		 * 세션에서 userNum 가져오기

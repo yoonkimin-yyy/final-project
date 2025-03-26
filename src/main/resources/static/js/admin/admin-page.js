@@ -44,40 +44,47 @@ function showTab(tabId) {
     event.target.classList.add('active');
 }
 
-/*const ctx = document.getElementById('orderChart').getContext('2d');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
-        datasets: [{
-            label: '월별 주문량',
-            data: [650, 590, 880, 810, 1200, 1100],
-            fill: false,
-            borderColor: '#3498db',
-            tension: 0.1
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: '주문 건수'
-                }
-            }
-        }
-    }
-});*/
+	fetch('/api/admin/monthly-count')
+	    .then(response => response.json())
+	    .then(data => {
+	        const labels = data.map(item => item.orderMonth);
+	        const values = data.map(item => item.orderCount);
+				const ctx = document.getElementById('orderChart').getContext('2d');
+				new Chart(ctx, {
+				    type: 'line',
+				    data: {
+				        labels: labels,
+				        datasets: [{
+				            label: '월별 주문량',
+				            data: values,
+				            fill: false,
+				            borderColor: '#3498db',
+				            tension: 0.1
+				        }]
+				    },
+				    options: {
+				        responsive: true,
+				        plugins: {
+				            legend: {
+				                position: 'top',
+				            },
+				            title: {
+				                display: false
+				            }
+				        },
+				        scales: {
+				            y: {
+				                beginAtZero: true,
+				                title: {
+				                    display: true,
+				                    text: '주문 건수'
+				                }
+				            }
+				        }
+				    }
+				});
+			})
+			.catch(error => console.error("Error fetching chart data:", error));
 function bakeryDetail(){
     window.open("/admin/bakery/detail");
 }
