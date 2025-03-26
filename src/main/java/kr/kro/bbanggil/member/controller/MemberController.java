@@ -184,6 +184,24 @@ public class MemberController {
             return "redirect:/register/loginin/form";
         }
     }
+    
+    @PostMapping("/logininAdmin")
+    public String logininAdmin(MemberRequestSignupDto memberRequestSignupDto, HttpSession session,
+    		RedirectAttributes redirectAttributes) {
+
+    	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
+    	
+    	if (loginUser != null && loginUser.getUserType().equals("admin")) {
+    		session.setAttribute("userNum", loginUser.getUserNo());
+    		session.setAttribute("userId", loginUser.getUserId());
+    		session.setAttribute("role", loginUser.getUserType());
+    		return "redirect:/admin/form";  
+    	} 
+    	
+		redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
+		return "redirect:/admin/login";
+
+    }
 
     // 아이디/비밀번호 찾기 페이지
     @GetMapping("/findidpw/form")
