@@ -130,9 +130,9 @@
                 </div>
                 <!-- 메뉴 리스트 -->
                 <div class="menu-list active" id="menu">
-                    <div class="menu-item" th:each="menu : ${menuList}" >
-                        <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}"
-                            alt="메뉴 이미지" class="menu-image" width="100">
+                    <div class="menu-item" th:each="menu : ${menuList}" th:attr="data-menu-no=${menu.menuNo}">
+                        <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}" alt="메뉴 이미지"
+                            class="menu-image" width="100">
                         <div class="menu-info">
                             <div class="menu-name" th:text="${menu.menuName}">크로아상</div>
                             <div class="menu-description" th:text="${menu.menuInfo}">바삭한 정통 프랑스 크로아상</div>
@@ -348,7 +348,7 @@
                     </div>
                     <form id="orderForm" action="/bakery/cart/add" method="POST">
                         <input type="hidden" name="orderData" id="orderData">
-                        <input type="hidden" name="userNo" id="userNo" value="4">
+                        <input type="hidden" name="userNo" id="userNo" value="${userNo}">
                         <button type="submit" class="checkout-button">주문하기</button>
                     </form>
                 </div>

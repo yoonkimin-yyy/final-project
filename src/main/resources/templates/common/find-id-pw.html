@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-	<head th:replace="~{fragments/head :: HeadFragment}"></head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" th:href="@{/css/register/find-id-pw.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<!-- Swiper JS -->
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
     <!-- 헤더 및 네비게이션 -->
     <header th:replace="~{fragments/header :: HeaderFragment}"></header>
-
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-    	<link rel="stylesheet" th:href="@{/css/register/checkbox.css}">
-    	<script src="/js/register/checkbox.js"></script>
-   	</head>
-    	<link rel="stylesheet" th:href="@{/css/register/find-id-pw.css}">
-    	<script src="/js/register/find-id-pw.js"></script>
-   	</head>
+    
     <main>
         <div class="find-id-pw-container">
             <h2>아이디/비밀번호 찾기</h2>
-            <form autocomplete="off" class="find-id-form" action="/find-id-pw" method="post">
+            <form autocomplete="off" id="find-id-form" class="find-id-form" action="/register/find/id" method="post">
                 <div class="form-group">
                     <div class="find-id-pw-input-div">
                         <p>아이디 찾기</p>
                         <label for="username"></label>
                         <input class="find-id-pw-input" type="text" placeholder="이름"
-                               id="username" name="username" required>
+                               id="username" name="userName" required>
                         <div class="error-text" id="name-msg"></div>
                     </div>
                     <div class="find-id-pw-input-div">
                         <label for="email"></label>
                         <input class="find-id-pw-input" type="email" placeholder="이메일"
-                               id="id-email" name="id-email" required>
+                               id="id-email" name="userEmail" required>
                         <div class="error-text" id="id-email-msg"></div>
                     </div>
                     <div class="find-id-pw-btn-div">
@@ -42,19 +37,19 @@
                     </div>
                 </div>
             </form>
-            <form autocomplete="off" class="find-pw-form" action="/find-id-pw" method="post">
+            <form autocomplete="off" id="find-pw-form" class="find-pw-form" action="/register/find/pw" method="post">
                 <div class="form-group">
                     <div class="find-id-pw-input-div">
                         <p>비밀번호 찾기</p>
                         <label for="userid"></label>
                         <input class="find-id-pw-input" type="text" placeholder="아이디"
-                               id="userid" name="userid" required>
+                               id="userid" name="userId" required>
                         <div class="error-text" id="id-msg"></div>
                     </div>
                     <div class="find-id-pw-input-div">
                         <label for="email"></label>
                         <input class="find-id-pw-input" type="email" placeholder="이메일"
-                               id="pw-email" name="pw-email" required>
+                               id="pw-email" name="userEmail" required>
                         <div class="error-text" id="pw-email-msg"></div> 
                     </div>
                     <div class="find-id-pw-btn-div">
@@ -63,10 +58,11 @@
                 </div>
             </form>
             <div class="login-link">
-                <a href="/register/loginin">로그인하러 가기</a>
+                <a href="/register/loginin/form">로그인하러 가기</a>
             </div> 
         </div>
     </main>
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+<script src="/js/register/find-id-pw.js"></script>
 </body>
 </html>

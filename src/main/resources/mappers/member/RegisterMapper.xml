@@ -120,6 +120,22 @@
         WHERE USER_ID = #{userId}
     </select>
     
+    <!-- 이메일로 아이디 찾기 -->
+    <select id="findUserIdByEmail" resultType="String">
+        SELECT USER_ID FROM USER_INFO WHERE USER_EMAIL = #{userEmail}
+    </select>
+
+    <!-- 이메일로 회원 정보 조회 -->
+    <select id="findUserByEmail" resultMap="loginupMap"
+    		resultType="kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto">
+        SELECT * FROM USER_INFO WHERE USER_EMAIL = #{userEmail}
+    </select>
+
+    <!-- 비밀번호 변경 -->
+    <update id="updatePassword">
+        UPDATE USER_INFO SET USER_PASSWORD = #{userPassword} WHERE USER_EMAIL = #{userEmail}
+    </update>
+    
     <select id="ownerMypage" resultMap="ownerResultMap">
 		SELECT bi.BAKERY_NO,
 			   bi.BAKERY_NAME,
