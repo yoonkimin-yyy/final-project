@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.admin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.common.util.PaginationUtil;
@@ -38,15 +40,22 @@ public class AdminController {
 	
 	@GetMapping("/form")
 	public String adminForm(Model model) {
-
+		Map<String,Object> topContent = adminService.trafficMonitoring();
+		Map<String,Object> bottomContent = adminService.bottomContent();
+		
 		List<AdminResponseDto> sublist = adminService.subList();
 
 		List<AdminResponseDto> bakeryList = adminService.bakeryList();
 		List<AdminResponseDto> userList = adminService.userList();
 		
+		model.addAttribute("today", topContent.get("today"));
+		model.addAttribute("user", topContent.get("user"));
+		model.addAttribute("order", topContent.get("order"));
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
+		model.addAttribute("newOrder", bottomContent.get("new"));
+		model.addAttribute("inquiries", bottomContent.get("inquiry"));
 		
 		return "admin/admin-page";
 	}
@@ -81,9 +90,11 @@ public class AdminController {
 								   Model model) {
 		
 		AdminResponseDto result = adminService.acceptList(bakeryNo, userNo);
+		List<MenuResponseDto> menuList = adminService.menuList(bakeryNo);
 		
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
+		model.addAttribute("menuList", menuList);
 
 		return "admin/bakery-accept";
 	}

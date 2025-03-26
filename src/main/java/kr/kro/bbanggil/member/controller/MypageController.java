@@ -21,7 +21,7 @@ public class MypageController {
 	private final MypageServiceImpl mypageService;
 	private final MypagePagination mypagePagination;
 	
-	@GetMapping("/mypage/form") 
+	@GetMapping("/form") 
 	public String myPageForm(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 							  Model model) {
 		

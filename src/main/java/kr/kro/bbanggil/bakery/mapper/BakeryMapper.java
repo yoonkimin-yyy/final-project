@@ -143,6 +143,15 @@ public interface BakeryMapper {
 
 	public void menuUpdate(MenuRequestDTO menuDTO);
 
+	public void UserCountInsert(int bakeryNo);
+
+	public int getUserCountBybakeryNo(int bakeryNo);
+
+	public void updateUserCount(@Param("bakeryNo")int bakeryNo,
+								@Param("count")int count);
+
+	public void resetDailyVisitCount();
+
 	
 
 }

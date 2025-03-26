@@ -103,8 +103,16 @@
 	<div id="myModal" class="modal">
 		<div class="modal-content">
 			<span id="closeBtn" class="close">&times;</span>
-			<h2>모달 창 내용</h2>
-			<p>이곳은 모달 창 내용입니다!</p>
+			<h2>메뉴</h2>
+			<div class="menu-container">
+				<div th:each="list, iterStat : ${menuList}" class="menu-item">
+					<div class="bread-info">
+						<img th:src="@{${list.resourcesPath} + '/' + ${list.changeName}}" class="bread-image">
+						<h3 th:text="${list.menuName}"></h3>
+						<p th:text="${list.menuPrice} + '원'"></p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 

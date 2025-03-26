@@ -227,6 +227,15 @@
 			'',
 			'')
 		</insert>
+		<insert id="UserCountInsert">
+			INSERT INTO user_count
+			values(#{bakeryNo},0,0)
+		</insert>
+		<update id="resetDailyVisitCount">
+        UPDATE user_count
+        SET total_visit = total_visit + user_count,
+            user_count = 0
+    	</update>
 		<select id="requestUserNo">
 			SELECT user_no FROM BAKERY_INFO bi
 			JOIN BAKERY_ACCESS
@@ -291,4 +300,13 @@
 			#{region} || '%'
 
 		</select>
+		<select id="getUserCountBybakeryNo" resultType="int">
+			SELECT user_count FROM user_count
+			WHERE bakery_no =${bakeryNo}
+		</select>
+		<update id="updateUserCount">
+			UPDATE user_count
+			SET user_count = ${count}
+			where bakery_no = ${bakeryNo}
+		</update>
 </mapper>

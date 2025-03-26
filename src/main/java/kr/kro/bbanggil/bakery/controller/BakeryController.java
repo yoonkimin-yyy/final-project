@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +140,7 @@ public class BakeryController {
 			HttpSession session
 			 ) {
    {
-		
+		bakeryService.updateUserCount((int)no);
     
 		/*
 		 * 세션에서 userNum 가져오기
