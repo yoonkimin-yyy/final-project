@@ -42,7 +42,8 @@ public class PickupServiceImpl implements PickupService{
 	        // bakeryNosArray에 bakeryNo가 포함되어 있을 경우 실행
 	    	
 	        List<PickupBakeryInfoResponseDTO> orderList = pickupMapper.findAllOrders(bakeryNo);
-	        	
+	        
+	        	        	
 	        
 	        if (orderList == null || orderList.isEmpty()) {
 	            return null;

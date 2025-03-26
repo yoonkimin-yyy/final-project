@@ -276,6 +276,7 @@ public class BakeryController {
 		
 		Integer userNo = (Integer) session.getAttribute("userNum");
 		
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();

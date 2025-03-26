@@ -47,6 +47,19 @@ public class PickupListController {
     	
         List<PickupBakeryInfoResponseDTO> orderList = pickupServiceImpl.getAllOrders(userNo, bakeryNo);
         
+        
+        System.out.println("===dfdsfas");
+        System.out.println(orderList.size());
+        for(PickupBakeryInfoResponseDTO i : orderList) {
+        	System.out.println("-=-=-=-=");
+        	System.out.println(i.getPayDTO().getOrderNo());
+        	System.out.println(i.getStatusDTO().getPickupStatus());
+        	System.out.println(i.getPayDTO().getPaymentDate());
+        	System.out.println(i.getPayDTO().getAmount());
+        	System.out.println(i.getUserDTO().getRecipientsPhonenum());
+        	System.out.println("-=-=-=-=");
+        }
+        
        
         model.addAttribute("orders",orderList);
         model.addAttribute("bakeryNo",bakeryNo);
