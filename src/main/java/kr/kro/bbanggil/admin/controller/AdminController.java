@@ -114,7 +114,7 @@ public class AdminController {
 
 	@GetMapping("/inquiry-list")
 	public String inquiryListForm() {
-		return "admin/admin-inquiry-list";
+		return "admin/inquiry-list";
 	}
 
 	/*
