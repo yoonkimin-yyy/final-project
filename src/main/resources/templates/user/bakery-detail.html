@@ -58,9 +58,10 @@
                     <h1 class="bakery-name" th:text="${bakery.name}"></h1>
                     <!-- ⭐ 별점 -->
                     <div class="rating">
-                        <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-                            class="fas fa-star"></i> <i class="fas fa-star-half-alt"></i> <span
-                            th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}">4.5</span>
+                           <span th:if="${bakery.response.reviewRating == null}">리뷰 없음</span>
+					<span th:if="${bakery.response.reviewRating != null}">
+    			   ⭐<span th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></span>점
+  					</span>
                     </div>
                     <!-- 📍 주소 -->
                     <div class="info-item">
@@ -251,38 +252,45 @@
                        </div>
                    </div>
                    
-   
-                       <ul class="pagination">
-                           <!-- 이전 페이지 버튼 -->
-                           <li class="page-item" style="margin-right: 0px"><a class="page-link"
-                                   th:href="${pi.currentPage > 1 ? '/detail(currentPage=' + (pi.currentPage - 1) + ', bakeryNo=' + bakeryNo + ')' : '#'}"
-                                   th:classappend="${pi.currentPage > 1 ? '' : 'disabled'}" aria-label="Previous"> <span
-                                       aria-hidden="true">&laquo;</span>
-                               </a></li>
-   
-                           <!-- 페이지 번호 버튼 -->
-                           <li class="page-item"
-                               th:each="page : ${pi != null ? #numbers.sequence(pi.startPage, pi.endPage) : {}}"><a
-                                   class="page-link" th:href="@{/bakery/detail(currentPage=${page}, bakeryNo=${bakeryNo})}"
-                                   th:text="${page}"> </a></li>
-   
-                           <!-- 다음 페이지 버튼 -->
-                           <li class="page-item"><a class="page-link" th:if="${pi != null and pi.currentPage < pi.maxpage}"
-                                   th:href="@{/bakery/detail(currentPage=${pi.currentPage + 1}, bakeryNo=${bakeryNo})}"
-                                   aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-                               </a></li>
-                       </ul>
+        <!-- 리뷰가 1개 이상 있을 때만 페이징 표시 -->
+<ul class="pagination" th:if="${totalReviews > 0}">
+    <!-- 이전 페이지 버튼 -->
+    <li class="page-item" th:classappend="${pi.currentPage == 1} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/bakery/detail(currentPage=${pi.currentPage - 1}, bakeryNo=${bakeryNo})}"
+           aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+
+    <!-- 페이지 번호 버튼 -->
+    <li class="page-item"
+        th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}"
+        th:classappend="${page == pi.currentPage} ? 'active'">
+        <a class="page-link"
+           th:href="@{/bakery/detail(currentPage=${page}, bakeryNo=${bakeryNo})}"
+           th:text="${page}"></a>
+    </li>
+
+    <!-- 다음 페이지 버튼 -->
+    <li class="page-item" th:classappend="${pi.currentPage == pi.maxpage} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/bakery/detail(currentPage=${pi.currentPage + 1}, bakeryNo=${bakeryNo})}"
+           aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+</ul>
    
                    </div>
             </div>
                 <!-- 실내 사진 섹션 -->
                 <div class="interior-photos" id="interior" style="display: none;">
                     <h3>실내 전경</h3>
-                    <div class="photo-grid" th:each="bakery : ${bakeryDetail}">
+                    <div class="photo-grid" th:each="bakery : ${insideImages}">
                         <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
                             th:alt="${bakery.name}" class="bakery-image">
                         <div class="photo-description">
-                            <p th:text="${bakery.response.amenity}">아늑한 분위기의 실내 공간에서 편안하게 즐기실 수 있습니다.</p>
                             <ul>
                                 <li th:text="${bakery.response.insideInfo}">총 좌석: 30석</li>
                             </ul>
@@ -293,11 +301,10 @@
                 <!-- 실외 사진 섹션 -->
                 <div class="exterior-photos" id="exterior" style="display: none;">
                     <h3>실외 전경</h3>
-                    <div class="photo-grid" th:each="bakery : ${bakeryDetail}">
+                    <div class="photo-grid" th:each="bakery : ${outsideImages}">
                         <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
                             th:alt="${bakery.name}" class="bakery-image">
                         <div class="photo-description">
-                            <p th:text="${bakery.response.amenity}"></p>
                             <ul>
                                 <li th:text="${bakery.response.outsideInfo}"></li>
                             </ul>
@@ -308,14 +315,12 @@
                 <!-- 주차 정보 섹션 -->
                 <div class="parking-info" id="parking" style="display: none;">
                     <h3>주차 안내</h3>
-                    <div class="parking-content">
-                        <img src="https://api.a0.dev/assets/image?text=parking%20lot%20entrance" alt="주차장">
+                    <div class="parking-content" th:each="bakery : ${bakeryDetail}">
+                        <img src="" alt="주차장">
                         <div class="parking-details">
                             <h4>주차 정보</h4>
                             <ul>
-                                <li>전용주차장: 있음</li>
-                                <li>주차 가능 대수: 10대</li>
-                                <li>주차 요금: 매장 이용시 2시간 무료</li>
+                                <li th:text="${bakery.response.amenity}"></li>
                             </ul>
                             <div class="parking-notice">
                                 <p>※ 2시간 초과시 30분당 2,000원</p>
@@ -367,9 +372,10 @@
             <span class="close-modal" onclick="closeReviewModal()">&times;</span>
             <h2>리뷰 작성</h2>
             <form id="reviewForm">
-           <input type="hidden"
-       th:if="${recentOrder != null}"
-       th:value="${recentOrder.orderNo}">
+      <input type="hidden"
+       th:if="${recentOrder.orderNo != null}"
+       th:value="${recentOrder.orderNo}"
+       name="orderNo" />
                 <div class="form-group">
                     <label for="name">이름</label>
                     <input type="text" id="name" required>

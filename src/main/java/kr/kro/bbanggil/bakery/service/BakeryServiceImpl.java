@@ -36,6 +36,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
@@ -363,16 +364,24 @@ public class BakeryServiceImpl implements BakeryService{
 		}
 
 	}
-
+	@Override
 	public BakeryDto getBakeryByNo(double bakeryNo) {
 		return bakeryMapper.findBakeryByNo(bakeryNo);
 	}
-
+	
 	public List<BakeryDto> getBakeryDetail(double no) {
 		
 		return bakeryMapper.getBakeryDetail(no);
 	}
+	@Override
+	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo) {
+	    return bakeryMapper.getInsideImages(bakeryNo);
+	}
 
+	@Override
+	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo) {
+	    return bakeryMapper.getOutsideImages(bakeryNo);
+	}	
 	
 	
 	
