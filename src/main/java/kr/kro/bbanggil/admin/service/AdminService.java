@@ -30,6 +30,8 @@ public interface AdminService {
 	void update(String action, int bakeryNo, String rejectReason);
 
 	void sendEmail(AdminEmailRequestDto adminReqeustDto);
+	
+	List<AdminResponseDto> reportList();
 
 	void saveInquiry(InquiryRequestDto inquiryRequestDto);
 

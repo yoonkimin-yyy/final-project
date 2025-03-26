@@ -176,6 +176,7 @@ public class MemberController {
             // 로그인 성공 → 세션에 사용자 정보 저장
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
+            session.setAttribute("userName", loginUser.getUserName());
             session.setAttribute("role", loginUser.getUserType());
             return "redirect:/";  
         } else {
@@ -244,17 +245,7 @@ public class MemberController {
     	session.invalidate();
 		return "redirect:/";
 	}
-    
-    @GetMapping("/mypage")
-	public String myPage(Model model,HttpSession session) {
-    	if(session.getAttribute("role").equals("owner"))
-		model.addAttribute("goOwnerPage",true);
-    	else
-    	model.addAttribute("goOwnerPage",false);
-
-		return "user/mypage";
-
-	}
+ 
 
 	@GetMapping("/edit")
 	public String edit() {

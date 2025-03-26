@@ -23,6 +23,17 @@
 		<result property="agree" column="AGREE"></result>
 		<result property="submissionDate" column="SUBMISSION_DATE"></result>
 		<result property="acceptDate" column="ACCEPT_DATE"></result>
+		
+		<result property="reportNo" column="report_no"></result>
+		<result property="reviewNo" column="review_no"></result>
+		<result property="reportDetail" column="report_detail"></result>
+		<result property="reportDate" column="report_date"></result>
+		<result property="reportResult" column="report_result"></result>
+		<result property="reportResultDate" column="report_result_date"></result>
+		<result property="reportUnfreeze" column="report_unfreeze"></result>
+		<result property="unfreezeDetail" column="unfreeze_detail"></result>
+		
+		
 		<collection property="bakeryImgPath" resultMap="imgPathMap"></collection>
 	</resultMap>
 	
@@ -219,6 +230,15 @@ sysdate)
 		JOIN USER_INFO ui ON ui.USER_NO = i.USER_NO
 		ORDER BY INQUIRY_NO desc
 		FETCH FIRST 3 ROWS ONLY
+	</select>
+	
+	<select id="reportList" resultMap="adminMap">
+		SELECT 
+			
+		FROM review_report rr
+		JOIN 
+		 
+		ORDER BY bi.BAKERY_NO DESC
 	</select>
   
 </mapper>

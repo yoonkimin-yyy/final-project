@@ -144,7 +144,7 @@
 				        <button class="nav-btn next-btn" type="button">&#10095;</button>
 				    </div>
                     <div class="photo-description">
-                        <textarea class="description" name="insideInfo" id="insideText" oninput="updateCharCount('insideText','insideDisplay')" placeholder="실내 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+                        <textarea class="description" th:field="*{insideInfo}" id="insideText" oninput="updateCharCount('insideText','insideDisplay')" placeholder="실내 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
                         <p id="insideDisplay">0/500</p>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
 				        <button class="nav-btn next-btn" type="button">&#10095;</button>
 				    </div>
                     <div class="photo-description">
-                        <textarea class="description" name="outsideInfo" id="outsideText" oninput="updateCharCount('outsideText','outsideDisplay')" placeholder="실외 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+                        <textarea class="description" th:field="*{outsideInfo}" id="outsideText" oninput="updateCharCount('outsideText','outsideDisplay')" placeholder="실외 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
                         <p id="outsideDisplay">0/500</p>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
 					        <button class="nav-btn next-btn" type="button">&#10095;</button>
 					    </div>
                         <div class="parking-details">
-                            <textarea class="parking-text" name="parkingInfo" id="parkingText" oninput="updateCharCount('parkingText','parkingDisplay')" placeholder="주차장 정보를 입력해주세요" maxlength="500"></textarea>
+                            <textarea class="parking-text" th:field="*{parkingInfo}" id="parkingText" oninput="updateCharCount('parkingText','parkingDisplay')" placeholder="주차장 정보를 입력해주세요" maxlength="500"></textarea>
                             <p id="parkingDisplay" class="displays">0/500</p>
                         </div>
                     </div>

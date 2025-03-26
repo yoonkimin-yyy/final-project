@@ -132,6 +132,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public List<AdminResponseDto> reportList(){
+		
+		return adminMapper.reportList();
+		
+	}
+	
 	public Map<String,Object> bottomContent(){
 		//최근 주문
 		List<NewlyResponseDTO> newlyOrder = adminMapper.getNewlyOrder();
@@ -148,6 +154,7 @@ public class AdminServiceImpl implements AdminService {
 		result.put("inquiry", inquiry);
 		
 		return result;
+		
 	}
 
 }

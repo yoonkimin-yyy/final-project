@@ -28,7 +28,6 @@
 .nav-item-active {
     background-color: #f9e8d4;
     color: #8B4513;
-    font-weight: bold;
 }
 .nav-buttons {
     display: flex;
