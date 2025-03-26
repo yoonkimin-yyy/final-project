@@ -159,9 +159,8 @@ public class MemberController {
     // 로그인 페이지
     @GetMapping("/loginin/form")
     public String loginInForm(HttpSession session, Model model) {
-    	 System.out.println("로그인 페이지 접근, 기존 status 값: " + session.getAttribute("status"));
-    	    
-    	 // 로그인 페이지 진입 시 에러 메시지 초기화
+
+    	// 로그인 페이지 진입 시 에러 메시지 초기화
     	 session.removeAttribute("status");  
     	 return "/common/loginin";  
     }
@@ -172,16 +171,12 @@ public class MemberController {
     					  RedirectAttributes redirectAttributes) {
         // 로그인 검증
     	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
-        System.out.println("로그인 결과: " + loginUser);
 
-        if (loginUser != null) {
+        if (loginUser != null && !loginUser.getUserType().equals("admin")) {
             // 로그인 성공 → 세션에 사용자 정보 저장
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
             session.setAttribute("role", loginUser.getUserType());
-            if(loginUser.getUserType().equals("admin")) {
-            	return "redirect:/admin/form";
-            }
             return "redirect:/";  
         } else {
             // 로그인 실패 메시지 전달
