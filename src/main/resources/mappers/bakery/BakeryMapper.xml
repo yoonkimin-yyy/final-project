@@ -103,7 +103,8 @@
 			menu_category
 		</select>
 		<select id="getMenuList">
-			SELECT menu_name AS menuName,
+			SELECT m.menu_no AS menuNo,
+				   menu_name AS menuName,
 				   MENU_PRICE AS menuPrice,
 				   MENU_INFO AS menuInfo,
 				   CATEGORY AS category,
@@ -113,11 +114,50 @@
 			JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO
 			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
 			WHERE BAKERY_NO = ${bakeryNo}
+			ORDER BY m.menu_no DESC
 		</select>
 		<select id="getBakeryName">
 			SELECT bakery_Name AS bakeryName 
 			from bakery_Info
 			where bakery_no = ${bakeryNo}
+		</select>
+		<select id="getMenuImgInfo" resultType="String">
+			SELECT change_name FROM menu_imege
+			WHERE menu_no = ${menuNo}
+		</select>
+		<select id="getMenuImg">
+			SELECT change_name AS changeName,
+				   resources_path AS resourcesPath
+			FROM menu_imege
+			WHERE menu_no=${menuNo}
+		</select>
+		<update id="menuUpdate">
+			UPDATE menu
+			SET menu_name = #{menuName},
+				menu_price = #{menuPrice},
+				menu_Info = #{menuPopulity},
+				category_no = #{menuCategory}
+			WHERE menu_no = #{menuNo}
+		</update>
+		<delete id="menuDelete">
+			DELETE FROM menu
+			where menu_no = #{menuNo}
+		</delete>
+		<delete id="deleteMenuImg">
+			DELETE FROM menu_imege
+			where change_name = #{changeName}
+		</delete>
+		<select id="getMenuUpdate">
+			SELECT menu_name AS menuName,
+				   menu_price AS menuPrice,
+				   menu_info AS populity,
+				   change_name AS changeName,
+				   resources_path AS resourcesPath,
+				   category
+			FROM MENU m
+			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO
+			JOIN MENU_CATEGORY mc ON mc.CATEGORY_NO = m.CATEGORY_NO
+			WHERE m.menu_no = ${menuNo}
 		</select>
 		<select id="bakeryInfo" >
 			SELECT bi.BAKERY_NAME AS bakeryName,
@@ -126,7 +166,8 @@
 				   bd.INSIDE_INFO AS insideInfo,
 				   bd.OUTSIDE_INFO AS outsideInfo,
 				   bd.AMENITY AS parkingInfo,
-				   ba.AGREE
+				   ba.AGREE,
+				   ba.reject
 			FROM BAKERY_INFO bi
 			JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
 			JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO
@@ -186,6 +227,15 @@
 			'',
 			'')
 		</insert>
+		<insert id="UserCountInsert">
+			INSERT INTO user_count
+			values(#{bakeryNo},0,0)
+		</insert>
+		<update id="resetDailyVisitCount">
+        UPDATE user_count
+        SET total_visit = total_visit + user_count,
+            user_count = 0
+    	</update>
 		<select id="requestUserNo">
 			SELECT user_no FROM BAKERY_INFO bi
 			JOIN BAKERY_ACCESS
@@ -250,4 +300,13 @@
 			#{region} || '%'
 
 		</select>
+		<select id="getUserCountBybakeryNo" resultType="int">
+			SELECT user_count FROM user_count
+			WHERE bakery_no =${bakeryNo}
+		</select>
+		<update id="updateUserCount">
+			UPDATE user_count
+			SET user_count = ${count}
+			where bakery_no = ${bakeryNo}
+		</update>
 </mapper>

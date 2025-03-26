@@ -4,7 +4,7 @@
 <mapper namespace="kr.kro.bbanggil.admin.mapper.AdminMapper">
 	
 	<resultMap id="adminMap" type="kr.kro.bbanggil.admin.dto.response.AdminResponseDto">
-		<result property="userNum" column="USER_NUM"></result>
+		<result property="userNo" column="USER_NO"></result>
 		<result property="userName" column="USER_NAME"></result>
 		<result property="userId" column="USER_Id"></result>
 		<result property="userPhoneNum" column="USER_PHONENUM"></result>
@@ -12,6 +12,7 @@
 		<result property="userBirthdate" column="USER_BIRTHDATE"></result>
 		<result property="userCreatedate" column="CREATED_DATE"></result>
 		<result property="userType" column="USER_TYPE"></result>
+		<result property="userBusinessNo" column="USER_BUSINESSNO"></result>
 		<result property="agreeEmail" column="AGREE_EMAIL"></result>
 		<result property="bakeryName" column="BAKERY_NAME"></result>
 		<result property="bakeryNo" column="BAKERY_NO"></result>
@@ -36,7 +37,14 @@
 		<collection property="bakeryImgPath" resultMap="imgPathMap"></collection>
 	</resultMap>
 	
-	<resultMap id="imgPathMap"  type="kr.kro.bbanggil.admin.dto.response.BakeryImgResponseDto">
+	<resultMap id="imgPathMap" type="kr.kro.bbanggil.admin.dto.response.BakeryImgResponseDto">
+		<result property="resourcesPath" column="RESOURCES_PATH"/>
+       	<result property="changeName" column="CHANGE_NAME"/>
+	</resultMap>
+	
+	<resultMap id="MenuListMap" type="kr.kro.bbanggil.admin.dto.response.MenuResponseDto">
+		<result property="menuName" column="MENU_NAME"/>
+		<result property="menuPrice" column="MENU_PRICE"/>
 		<result property="resourcesPath" column="RESOURCES_PATH"/>
        	<result property="changeName" column="CHANGE_NAME"/>
 	</resultMap>
@@ -44,7 +52,7 @@
 	<select id="subList" resultMap="adminMap">
 		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
 			   ba.AGREE, bi.BAKERY_NAME, bd.SUBMISSION_DATE, 
-			   ba.ACCEPT_DATE 
+			   ba.ACCEPT_DATE, ui.USER_NO
 		FROM BAKERY_ACCESS ba
 		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
 		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
@@ -52,50 +60,67 @@
 		ORDER BY bi.BAKERY_NO DESC
 	</select>
 	
-	<select id="acceptList" resultMap="adminMap">
-		SELECT * FROM (
-			SELECT * FROM (
-			SELECT ROWNUM AS rn, f.* FROM (
-				SELECT * FROM BAKERY_ACCESS ba
-				JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-				JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-				JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
-				ORDER BY bi.BAKERY_NO)f)
-			WHERE rn = #{listNum})m
-		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = m.BAKERY_NO
-	</select>
-	
-	<!-- <select id="acceptList" resultMap="adminMap">
-		SELECT * FROM (
-		SELECT ROWNUM AS rn, f.* FROM (
-		SELECT * FROM BAKERY_ACCESS ba
+	<select id="bakeryList" resultMap="adminMap">
+		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
+			   bi.BAKERY_NAME, bi.BAKERY_ADDRESS, bi.BAKERY_NO, ui.USER_NO 
+		FROM BAKERY_ACCESS ba
 		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
 		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
-		ORDER BY bd.SUBMISSION_DATE)f)
-		WHERE rn = #{listNum}
-	</select> -->
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+		WHERE ba.AGREE = '승인' 
+		ORDER BY bi.BAKERY_NO DESC
+	</select>
+	
+	<select id="userList" resultMap="adminMap">
+		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, 
+			   ui.USER_TYPE, a.AGREE_EMAIL
+		FROM USER_INFO ui 
+		JOIN AGREE a ON ui.USER_NO = a.USER_NO
+		ORDER BY ui.USER_NO DESC
+	</select>
+	
+	<select id="acceptList" resultMap="adminMap">
+		SELECT * FROM USER_INFO ui
+		JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
+		JOIN BAKERY_ACCESS ba ON ui.USER_NO = ba.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = bi.BAKERY_NO
+		WHERE ui.USER_NO = #{userNo} AND ba.BAKERY_NO = #{bakeryNo}
+	</select>
+	
+	<select id="bakeryDetailList" resultMap="adminMap">
+		SELECT * FROM USER_INFO ui
+		JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
+		JOIN BAKERY_ACCESS ba ON ui.USER_NO = ba.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = bi.BAKERY_NO
+		WHERE ui.USER_NO = #{userNo} AND ba.BAKERY_NO = #{bakeryNo}
+	</select>
+
+	<select id="userDetailList" resultMap="adminMap">
+		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, ui.USER_TYPE, 
+			   a.AGREE_EMAIL, ui.CREATED_DATE, ui.USER_NAME, ui.USER_BIRTHDATE, b.USER_BUSINESSNO 
+		FROM USER_INFO ui 
+		JOIN AGREE a ON ui.USER_NO = a.USER_NO
+		LEFT OUTER JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
+		WHERE ui.USER_NO = #{userNo}
+	</select>
+
+	<select id="menuList" resultMap="MenuListMap">
+		SELECT m.MENU_NAME, m.MENU_PRICE, mi.CHANGE_NAME, mi.RESOURCES_PATH FROM MENU_IMEGE mi 
+		JOIN MENU m ON mi.MENU_NO = m.MENU_NO
+		WHERE m.BAKERY_NO = #{bakeryNo}
+	</select>
 	
 	<update id="update">
-		UPDATE BAKERY_ACCESS 
-		SET AGREE = #{action}, REJECT = #{rejectReason}, ACCEPT_DATE = SYSDATE 
-		WHERE BAKERY_NO = (
-		    SELECT bakery_no 
-		FROM (
-		    SELECT ROWNUM AS rn, f.* 
-		    FROM (
-		        SELECT * 
-		        FROM BAKERY_ACCESS ba
-		        JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-		        JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		        JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
-		        ORDER BY bi.BAKERY_NO
-		    ) f
-		) 
-		WHERE rn = #{listNum} 
-		)
+		UPDATE BAKERY_ACCESS SET AGREE = #{action}, REJECT = #{rejectReason}, ACCEPT_DATE = SYSDATE 
+		WHERE BAKERY_NO = #{bakeryNo}
 	</update>
-	
+
+<!-- .................................................................................................. -->
+  	
 	<select id="getUserType" resultType="String" parameterType="java.lang.Integer">
 		SELECT
 	USER_TYPE
@@ -167,49 +192,44 @@ sysdate)
 	where inquiry_no = #{inquiryNo}
 	
 	</update>
-	
-	<select id="bakeryList" resultMap="adminMap">
-		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
-			   bi.BAKERY_NAME, bi.BAKERY_ADDRESS 
-		FROM BAKERY_ACCESS ba
-		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
-		WHERE ba.AGREE = '승인' 
-		ORDER BY bi.BAKERY_NO DESC
+
+	<select id="getNewlyOrder">
+		WITH LatestOrders AS (
+		    SELECT recipients_name, 
+		           pickup_status,
+		           menu_name,
+		           pay_request_date,
+		           ROW_NUMBER() OVER (ORDER BY pay_request_date DESC) AS row_num
+		    FROM PAYMENT p 
+		    JOIN PICKUP_STATUS ps ON p.PAY_NO = ps.PAY_NO 
+		    JOIN ORDER_INFO oi  ON oi.PAY_NO = p.PAY_NO
+		    JOIN CART c ON c.CART_NO = oi.CART_NO 
+		    JOIN CART_INFO ci ON c.CART_NO = ci.CART_NO 
+		    JOIN menu m ON ci.MENU_NO = m.MENU_NO
+		)
+		SELECT recipients_name AS recipientsName,
+		       pickup_status AS pickupStatus,
+		       LISTAGG(menu_name, ', ') WITHIN GROUP (ORDER BY menu_name DESC) AS menuList
+		FROM LatestOrders
+		WHERE row_num &lt;= 3
+		GROUP BY recipients_name, pickup_status
+	</select>
+	<select id="getMonthlyOrderCount">
+		SELECT TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM') AS orderMonth, 
+           	   COUNT(*) AS orderCount
+	    FROM PAYMENT p 
+	    GROUP BY TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM')
+	    ORDER BY orderMonth
 	</select>
 	
-	<select id="bakeryDetailList" resultMap="adminMap">
-		SELECT * FROM (
-			SELECT * FROM (
-			SELECT ROWNUM AS rn, f.* FROM (
-				SELECT * FROM BAKERY_ACCESS ba
-				JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-				JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-				JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
-				WHERE ba.AGREE = '승인'
-				ORDER BY bi.BAKERY_NO)f)
-			WHERE rn = #{listNum})m
-		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = m.BAKERY_NO	
-	</select>
-	
-	<select id="userList" resultMap="adminMap">
-		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, 
-			   ui.USER_TYPE, a.AGREE_EMAIL
-		FROM USER_INFO ui 
-		JOIN AGREE a ON ui.USER_NO = a.USER_NO 
-		ORDER BY ui.USER_NO DESC
-	</select>
-	
-	<select id="userDetailList" resultMap="adminMap">
-		SELECT * FROM (
-			SELECT ROWNUM AS rn, f.* FROM (
-							SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, ui.USER_TYPE, 
-								   a.AGREE_EMAIL, ui.CREATED_DATE, ui.USER_NAME, ui.USER_BIRTHDATE
-							FROM USER_INFO ui 
-							JOIN AGREE a ON ui.USER_NO = a.USER_NO 
-							ORDER BY ui.USER_NO)f)m
-			WHERE rn = #{listNum}
+	<select id="getInquiries">
+		SELECT USER_NAME AS userName,
+			   INQUIRY_TITLE AS inquiryTitle,
+			   IS_ANSWERED AS isAnswered
+		FROM INQUIRY i 
+		JOIN USER_INFO ui ON ui.USER_NO = i.USER_NO
+		ORDER BY INQUIRY_NO desc
+		FETCH FIRST 3 ROWS ONLY
 	</select>
 	
 	<select id="reportList" resultMap="adminMap">
@@ -220,5 +240,5 @@ sysdate)
 		 
 		ORDER BY bi.BAKERY_NO DESC
 	</select>
-	
+  
 </mapper>

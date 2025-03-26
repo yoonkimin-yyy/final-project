@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,8 +32,10 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
@@ -41,6 +45,7 @@ import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
+import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -50,7 +55,7 @@ public class BakeryController {
 
 	private final BakeryServiceImpl bakeryService;
 	private final ReviewServiceImpl reviewService;
-
+	private final OrderServiceImpl orderService;
 	private final ListPageNation pageNation;
 	
 
@@ -64,7 +69,7 @@ public class BakeryController {
 		int postCount = bakeryService.totalCount(bakerySearchDTO);
 		int pageLimit = 5;
 		int boardLimit = 10;
-		System.out.println("현재페이지 = " + currentPage);
+		
 		
 		Map<String,Object> result = bakeryService.bakeryList(pageNation,
 															currentPage,
@@ -75,7 +80,7 @@ public class BakeryController {
 															bakerySearchDTO);
 		
 		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
-		System.out.println(piResult.getCurrentPage());
+		
 		
 		List<BakeryInfoDTO> postsResult = (List<BakeryInfoDTO>) result.get("posts");
 		List<List<BakeryInfoDTO>> imagesResult = (List<List<BakeryInfoDTO>>) result.get("images");
@@ -135,7 +140,7 @@ public class BakeryController {
 			HttpSession session
 			 ) {
    {
-		
+		bakeryService.updateUserCount((int)no);
     
 		/*
 		 * 세션에서 userNum 가져오기
@@ -248,6 +253,17 @@ public class BakeryController {
 		model.addAttribute("userNum", userNum);
 		
 		
+		
+		/*
+		 * 사용자의 orderNo가져오기
+		 */
+		BakeryResponseDto recentOrder = orderService.findOrderNo(userNum, no);
+		if (recentOrder == null) {
+		    recentOrder = new BakeryResponseDto(); // 혹은 new BakeryResponseDto(0, ...)
+		}
+		
+		model.addAttribute("recentOrder", recentOrder);
+		
 		return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 		
    }
@@ -357,5 +373,28 @@ public class BakeryController {
 		return "/owner/bakery-info";
 	}
 	
-
+	@PostMapping("/menu/delete")
+	public String menuDelete(@RequestParam("menuNo") int menuNo,
+							 @RequestParam("no")int no,
+							 RedirectAttributes redirectAttributes) {
+		bakeryService.menuDelete(menuNo);
+		redirectAttributes.addAttribute("no", no);
+		return "redirect:/bakery/menu/list/form";
+	}
+	@GetMapping("/menu/update/form")
+	public String menuUpdateForm(@RequestParam("menuNo") int menuNo,
+								 Model model) {
+		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail(menuNo);
+		
+		model.addAttribute("menu",menuDTO);
+		model.addAttribute("menuNo",menuNo);
+		return "/owner/menu-update";
+	}
+	@PostMapping("/menu/update")
+	public String menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file) {
+		bakeryService.updateMenu(menuDTO,file);
+		return "/owner/menu-list";
+	}
 }
+

@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
+import kr.kro.bbanggil.member.service.FindIdPwServiceImpl;
 import kr.kro.bbanggil.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 
@@ -31,6 +33,7 @@ public class MemberController {
     private final Logger logger = LogManager.getLogger(MemberController.class);
     private final MemberServiceImpl memberService;
     private final PasswordEncoder passwordEncoder;
+    private final FindIdPwServiceImpl findIdPwService;
 
     // 회원가입 타입 선택 페이지 (일반/사업자 선택)
     @GetMapping("/typeloginup/form")
@@ -188,11 +191,40 @@ public class MemberController {
     }
 
     // 아이디/비밀번호 찾기 페이지
-    @GetMapping("/findidpw")
-    public String findIdPw() {
+    @GetMapping("/findidpw/form")
+    public String findIdPwForm() {
         return "/common/find-id-pw";
     }
     
+    /**
+     * 아이디 찾기
+     */
+    @PostMapping("/find/id")
+    public String findUserId(@RequestParam("userEmail") String userEmail, Model model) {
+        try {
+            String userId = findIdPwService.findUserIdByEmail(userEmail);
+            model.addAttribute("message", userId);    
+        } catch (Exception e) {
+            model.addAttribute("error", "아이디 찾기 중 오류 발생");
+            e.printStackTrace();  // 오류 발생 시 로그로 확인
+        }
+        return "redirect:/register/loginin/form";
+    }
+
+
+    /**
+     * 비밀번호 재설정 (임시 비밀번호 발송)
+     */
+    @PostMapping("/find/pw")
+    public String resetPassword(@RequestParam("userEmail") String userEmail, Model model) {
+        try {
+            String message = findIdPwService.sendTemporaryPassword(userEmail);
+            model.addAttribute("message", message);
+        } catch (MessagingException e) {
+            model.addAttribute("error", "이메일 전송 실패");
+        }
+        return "redirect:/register/loginin/form";
+    }
     
     @GetMapping("/logout")
 	public String logout(HttpSession session) {

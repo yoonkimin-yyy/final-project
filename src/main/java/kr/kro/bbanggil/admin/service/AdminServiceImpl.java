@@ -1,18 +1,22 @@
 package kr.kro.bbanggil.admin.service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
-import jakarta.validation.constraints.Email;
-import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
+import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
 import kr.kro.bbanggil.email.service.EmailServiceImpl;
 import lombok.AllArgsConstructor;
@@ -40,23 +44,28 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public AdminResponseDto bakeryDetailList(int listNum) {
-		return adminMapper.bakeryDetailList(listNum);
+	public AdminResponseDto bakeryDetailList(int bakeryNo, int userNo) {
+		return adminMapper.bakeryDetailList(bakeryNo, userNo);
 	}
 	
 	@Override
-	public AdminResponseDto userDetailList(int listNum) {
-		return adminMapper.userDetailList(listNum);
+	public AdminResponseDto userDetailList(int userNo) {
+		return adminMapper.userDetailList(userNo);
 	}
 	
 	@Override
-	public AdminResponseDto acceptList(int listNum) {
-		return adminMapper.acceptList(listNum);
+	public AdminResponseDto acceptList(int bakeryNo, int userNo) {
+		return adminMapper.acceptList(bakeryNo, userNo);
 	}
 	
 	@Override
-	public void update(String action, int listNum, String rejectReason) {
-		adminMapper.update(action, listNum, rejectReason);
+	public List<MenuResponseDto> menuList(int bakeryNo) {
+		return adminMapper.menuList(bakeryNo);
+	}
+	
+	@Override
+	public void update(String action, int bakeryNo, String rejectReason) {
+		adminMapper.update(action, bakeryNo, rejectReason);
 	}
 
 	@Override
@@ -100,11 +109,52 @@ public class AdminServiceImpl implements AdminService {
 			emailServiceImpl.sendEmail(addresses[i], title, content);
 		}
 	}
+	
+	@Override
+	public Map<String,Object> trafficMonitoring() {
+		int todayUser = adminMapper.getTodayUser();
+		int totalOrder = adminMapper.getTotalOrder();
+		int newUser = adminMapper.getNewUser();
+		
+		
+		Map<String,Object> result = new HashMap<>();
+		result.put("today",todayUser);
+		result.put("order",totalOrder);
+		result.put("user",newUser);
+		
+		return result;
+		
+	}
+	
+	@Override
+	public List<MonthlyOrderResponseDTO> getMonthlyOrderCount(){
+		return adminMapper.getMonthlyOrderCount();
+	}
 
 	@Override
 	public List<AdminResponseDto> reportList(){
 		
-		return adminMapper.reportList(); 
+		return adminMapper.reportList();
+		
+	}
+	
+	public Map<String,Object> bottomContent(){
+		//최근 주문
+		List<NewlyResponseDTO> newlyOrder = adminMapper.getNewlyOrder();
+		
+		//신고 내역
+		
+		
+		//1:1 문의
+		List<InquiryResponseDto> inquiry = adminMapper.getInquiries();
+		
+		
+		Map<String,Object> result = new HashMap<>();
+		result.put("new", newlyOrder);
+		result.put("inquiry", inquiry);
+		
+		return result;
+		
 	}
 
 }

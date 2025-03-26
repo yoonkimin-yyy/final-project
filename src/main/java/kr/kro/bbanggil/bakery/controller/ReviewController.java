@@ -125,8 +125,10 @@ public class ReviewController {
 	public String reviewReport(@RequestParam("reviewNo") int reviewNo,
 					@SessionAttribute(name = "userNum", required = false) int userNo,
 					@ModelAttribute ReviewRequestDto requestDTO,
-								HttpSession session,
-								Model model		) {
+								HttpSession session,Model model) {
+		model.addAttribute("reviewNo", reviewNo);
+		
+		
 		
 		
 		reviewService.reviewReport(requestDTO,userNo);

@@ -1,0 +1,168 @@
+    :root {
+      --main-color: #d9a86c;
+      --bg-color: #fff8f0;
+      --text-color: #4b3621;
+      --accent-color: #9c5d2e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: var(--bg-color);
+      background-image: url('https://images.unsplash.com/photo-1608198093002-ad4e0054849b'); /* 배경 */
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: brightness(0.95);
+      padding: 20px;
+      color: var(--text-color);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background-color: #fffefb;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      width: 140px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: var(--text-color);
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-radius: 12px;
+      padding: 10px 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e0d4c1;
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      flex: 1;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      color: var(--text-color);
+    }
+
+    .search-icon {
+      color: #c1a47e;
+      margin-right: 10px;
+    }
+
+    .status-filter {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .status-button {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background-color: #fff5e1;
+      border: 1px solid #e0d4c1;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .status-button.active {
+      background-color: var(--main-color);
+      color: white;
+      border-color: var(--main-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #f0e6d6;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fff2dc;
+      color: var(--text-color);
+    }
+
+    td:last-child {
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    tr:hover {
+      background-color: #fff8ee;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .page-btn {
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .page-btn.active {
+      background-color: var(--main-color);
+      color: white;
+      border-color: var(--main-color);
+    }
+
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .title {
+        font-size: 20px;
+      }
+
+      .search-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .status-filter {
+        justify-content: center;
+      }
+
+      table th, table td {
+        font-size: 14px;
+      }
+
+      .search-input {
+        width: 100%;
+        margin-top: 8px;
+      }
+    }

@@ -150,8 +150,14 @@ body {
 	background-color: #FFC107;
 }
 
-.status-completed {
+.status-complete {
 	background-color: #4CAF50;
+}
+.status-denied{
+	background-color: red;
+}
+.status-done{
+	background-color: #aaaaaa;
 }
 
 table {
@@ -564,4 +570,65 @@ tr:hover {
 .email-btn-div {
 	margin-left: 1000px;
 }
+
+#myModal {
+	display: none; /* 기본적으로 숨기기 */
+	position: fixed; /* 화면에 고정 */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* 배경 반투명 */
+	z-index: 1; /* 다른 요소 위에 표시되게 */
+}
+
+.modal-content {
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); /* 모달을 화면 중앙에 위치시킴 */
+	background-color: white;
+	padding: 20px;
+	border-radius: 5px;
+	width: 80%;
+	max-width: 500px;
+}
+
+.close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 30px;
+	cursor: pointer;
+}
+
+/* 메뉴 컨테이너: 수평 스크롤을 가능하게 */
+.menu-container {
+	display: flex;
+	overflow-x: auto; /* 가로로 넘기기 */
+	gap: 20px; /* 메뉴 항목 간 간격 */
+	padding-bottom: 10px; /* 스크롤이 보이도록 아래 여백 */
+}
+
+.menu-item {
+	flex-shrink: 0; /* 항목이 축소되지 않도록 */
+	width: 200px;
+	text-align: center;
+}
+
+.bread-image {
+	width: 100%;
+	height: 150px;
+	object-fit: cover;
+	margin-bottom: 10px;
+}
+
+.bread-info h3 {
+	margin: 0;
+	font-size: 18px;
+}
+
+.bread-info p {
+	margin: 5px 0;
+	font-size: 16px;
 }

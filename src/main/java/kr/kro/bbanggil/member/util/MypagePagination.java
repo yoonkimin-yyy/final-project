@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.mypage.util;
+package kr.kro.bbanggil.member.util;
 
 import org.springframework.stereotype.Component;
 
