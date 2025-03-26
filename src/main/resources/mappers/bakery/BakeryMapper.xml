@@ -7,6 +7,7 @@
 		type="kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO">
 		<result property="bakeryNo" column="bakery_no"></result>
 		<result property="bakeryName" column="bakery_name"></result>
+		<result property="bakeryPhone" column="bakery_phone"></result>
 		<result property="bakeryAddress" column="bakery_address"></result>
 		<result property="createdDate" column="created_date"></result>
 		<result property="insideInfo" column="inside_info"></result>
