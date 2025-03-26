@@ -182,4 +182,43 @@ sysdate)
 	
 	</update>
 
+	<select id="getNewlyOrder">
+		WITH LatestOrders AS (
+		    SELECT recipients_name, 
+		           pickup_status,
+		           menu_name,
+		           pay_request_date,
+		           ROW_NUMBER() OVER (ORDER BY pay_request_date DESC) AS row_num
+		    FROM PAYMENT p 
+		    JOIN PICKUP_STATUS ps ON p.PAY_NO = ps.PAY_NO 
+		    JOIN ORDER_INFO oi  ON oi.PAY_NO = p.PAY_NO
+		    JOIN CART c ON c.CART_NO = oi.CART_NO 
+		    JOIN CART_INFO ci ON c.CART_NO = ci.CART_NO 
+		    JOIN menu m ON ci.MENU_NO = m.MENU_NO
+		)
+		SELECT recipients_name AS recipientsName,
+		       pickup_status AS pickupStatus,
+		       LISTAGG(menu_name, ', ') WITHIN GROUP (ORDER BY menu_name DESC) AS menuList
+		FROM LatestOrders
+		WHERE row_num &lt;= 3
+		GROUP BY recipients_name, pickup_status
+	</select>
+	<select id="getMonthlyOrderCount">
+		SELECT TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM') AS orderMonth, 
+           	   COUNT(*) AS orderCount
+	    FROM PAYMENT p 
+	    GROUP BY TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM')
+	    ORDER BY orderMonth
+	</select>
+	
+	<select id="getInquiries">
+		SELECT USER_NAME AS userName,
+			   INQUIRY_TITLE AS inquiryTitle,
+			   IS_ANSWERED AS isAnswered
+		FROM INQUIRY i 
+		JOIN USER_INFO ui ON ui.USER_NO = i.USER_NO
+		ORDER BY INQUIRY_NO desc
+		FETCH FIRST 3 ROWS ONLY
+	</select>
+  
 </mapper>

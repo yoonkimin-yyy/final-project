@@ -3,7 +3,9 @@ package kr.kro.bbanggil.admin.service;
 import java.time.LocalDateTime;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
+import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
 import kr.kro.bbanggil.email.service.EmailServiceImpl;
 import lombok.AllArgsConstructor;
@@ -105,6 +109,45 @@ public class AdminServiceImpl implements AdminService {
 			emailServiceImpl.sendEmail(addresses[i], title, content);
 		}
 	}
+	
+	@Override
+	public Map<String,Object> trafficMonitoring() {
+		int todayUser = adminMapper.getTodayUser();
+		int totalOrder = adminMapper.getTotalOrder();
+		int newUser = adminMapper.getNewUser();
+		
+		
+		Map<String,Object> result = new HashMap<>();
+		result.put("today",todayUser);
+		result.put("order",totalOrder);
+		result.put("user",newUser);
+		
+		return result;
+		
+	}
+	
+	@Override
+	public List<MonthlyOrderResponseDTO> getMonthlyOrderCount(){
+		return adminMapper.getMonthlyOrderCount();
+	}
 
+	@Override
+	public Map<String,Object> bottomContent(){
+		//최근 주문
+		List<NewlyResponseDTO> newlyOrder = adminMapper.getNewlyOrder();
+		
+		//신고 내역
+		
+		
+		//1:1 문의
+		List<InquiryResponseDto> inquiry = adminMapper.getInquiries();
+		
+		
+		Map<String,Object> result = new HashMap<>();
+		result.put("new", newlyOrder);
+		result.put("inquiry", inquiry);
+		
+		return result;
+	}
 
 }

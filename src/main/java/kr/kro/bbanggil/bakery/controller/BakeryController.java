@@ -138,7 +138,7 @@ public class BakeryController {
 			HttpSession session
 			 ) {
    {
-		
+		bakeryService.updateUserCount((int)no);
     
 		/*
 		 * 세션에서 userNum 가져오기
