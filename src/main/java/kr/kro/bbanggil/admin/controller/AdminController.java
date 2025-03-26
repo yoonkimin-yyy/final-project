@@ -16,6 +16,7 @@ import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
 import lombok.AllArgsConstructor;
 
@@ -76,9 +77,11 @@ public class AdminController {
 								   Model model) {
 		
 		AdminResponseDto result = adminService.acceptList(bakeryNo, userNo);
+		List<MenuResponseDto> menuList = adminService.menuList(bakeryNo);
 		
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
+		model.addAttribute("menuList", menuList);
 
 		return "admin/bakery-accept";
 	}

@@ -1,18 +1,18 @@
 package kr.kro.bbanggil.admin.service;
 
 import java.time.LocalDateTime;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
-import jakarta.validation.constraints.Email;
-import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
 import kr.kro.bbanggil.email.service.EmailServiceImpl;
 import lombok.AllArgsConstructor;
@@ -52,6 +52,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public AdminResponseDto acceptList(int bakeryNo, int userNo) {
 		return adminMapper.acceptList(bakeryNo, userNo);
+	}
+	
+	@Override
+	public List<MenuResponseDto> menuList(int bakeryNo) {
+		return adminMapper.menuList(bakeryNo);
 	}
 	
 	@Override
