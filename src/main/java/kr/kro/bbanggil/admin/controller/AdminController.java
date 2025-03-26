@@ -112,16 +112,6 @@ public class AdminController {
 		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
 	}
 
-	@GetMapping("/inquiry/form")
-	public String inquiryWrite() {
-		return "admin/admin-inquiry";
-	}
-
-	@GetMapping("/inquiry-list")
-	public String inquiryListForm() {
-		return "admin/inquiry-list";
-	}
-
 	/*
 	 * 문의 등록 처리
 	 */
@@ -138,7 +128,7 @@ public class AdminController {
 
 		return "redirect:/";
 	}
-
+	
 	
 	@GetMapping("/inquiry/list")
 	public String inquiryList(Model model) {
@@ -148,6 +138,7 @@ public class AdminController {
 		 
 	      return "admin/inquiry-list";
 	}
+	
 	@PostMapping("/inquiry/answer")
 	public String saveAnswer(@ModelAttribute InquiryReplyRequestDto inquiryReplyDto,
 						HttpSession session){
@@ -159,10 +150,6 @@ public class AdminController {
 			adminService.saveAnswer(inquiryReplyDto);
 			
 			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
-	}
-	@GetMapping("/order")
-	public String orderList() {
-		return "admin/admin-order-list";
 	}
 	
 	@GetMapping("/order/list")

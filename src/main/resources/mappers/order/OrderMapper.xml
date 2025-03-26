@@ -4,6 +4,7 @@
 <mapper namespace="kr.kro.bbanggil.order.mapper.OrderMapper">
 	
 	<resultMap id="orderResultMap" type="kr.kro.bbanggil.order.dto.response.OrderResponseDto">
+		<result property="bakeryName" column="BAKERY_NAME"></result>
 		<result property="menuPrice" column="MENU_PRICE"></result>
 		<result property="menuName" column="MENU_NAME"></result>
 		<result property="menuCount" column="MENU_COUNT"></result>
