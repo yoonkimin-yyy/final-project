@@ -31,8 +31,6 @@ public interface AdminService {
 
 	void sendEmail(AdminEmailRequestDto adminReqeustDto);
 	
-	List<AdminResponseDto> reportList();
-
 	void saveInquiry(InquiryRequestDto inquiryRequestDto);
 
 	List<InquiryResponseDto> getInquiryList();

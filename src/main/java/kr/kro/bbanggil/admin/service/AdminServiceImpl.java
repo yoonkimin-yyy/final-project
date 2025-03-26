@@ -131,13 +131,6 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.getMonthlyOrderCount();
 	}
 
-	@Override
-	public List<AdminResponseDto> reportList(){
-		
-		return adminMapper.reportList();
-		
-	}
-	
 	public Map<String,Object> bottomContent(){
 		//최근 주문
 		List<NewlyResponseDTO> newlyOrder = adminMapper.getNewlyOrder();

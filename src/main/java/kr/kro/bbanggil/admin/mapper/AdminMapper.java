@@ -47,10 +47,8 @@ public interface AdminMapper {
 	void insertInquiryReply(InquiryReplyRequestDto inquiryReplyDto);
 
 	void updateInquiryStatusToAnswered(@Param("inquiryNo")int inquiryNo);
-	
-	List<AdminResponseDto> reportList();
 
-  @Select("SELECT SUM(user_count) FROM user_count")
+	@Select("SELECT SUM(user_count) FROM user_count")
 	int getTodayUser();
 
 	@Select("SELECT count(*) FROM order_info")
