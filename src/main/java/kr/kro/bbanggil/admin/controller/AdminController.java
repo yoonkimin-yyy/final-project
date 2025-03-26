@@ -19,6 +19,10 @@ import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
+import kr.kro.bbanggil.common.util.PaginationUtil;
+import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
+import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -27,6 +31,7 @@ import lombok.AllArgsConstructor;
 public class AdminController {
 
 	private final AdminService adminService;
+	private final OrderServiceImpl orderService;
 	
 	@GetMapping("/login")
 	public String adminLoginForm() {
@@ -107,8 +112,8 @@ public class AdminController {
 		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
 	}
 
-	@GetMapping("/inquiry-write")
-	public String inquiryWriteForm() {
+	@GetMapping("/inquiry/form")
+	public String inquiryWrite() {
 		return "admin/admin-inquiry";
 	}
 
@@ -120,6 +125,7 @@ public class AdminController {
 	/*
 	 * 문의 등록 처리
 	 */
+	
 	@PostMapping("/submit")
 	public String submitInquiry(HttpSession session, @ModelAttribute InquiryRequestDto inquiryRequestDto, Model model) {
 
@@ -153,6 +159,28 @@ public class AdminController {
 			adminService.saveAnswer(inquiryReplyDto);
 			
 			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
+	}
+	@GetMapping("/order")
+	public String orderList() {
+		return "admin/admin-order-list";
+	}
+	
+	@GetMapping("/order/list")
+	public String getOrderList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,Model model) {
+		
+		
+		int listCount = orderService.getOrderCount(); // 전체 주문수
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		PageResponseDto pi = PaginationUtil.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		List<OrderResponseDto> orderList = orderService.getPagedOrders(pi);
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("pi", pi);
+		
+		
+		return "admin/admin-order-list";
 	}
 	
 }

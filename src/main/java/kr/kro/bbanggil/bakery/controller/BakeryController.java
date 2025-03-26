@@ -32,6 +32,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
@@ -44,6 +45,7 @@ import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
+import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -53,7 +55,7 @@ public class BakeryController {
 
 	private final BakeryServiceImpl bakeryService;
 	private final ReviewServiceImpl reviewService;
-
+	private final OrderServiceImpl orderService;
 	private final ListPageNation pageNation;
 	
 
@@ -67,7 +69,7 @@ public class BakeryController {
 		int postCount = bakeryService.totalCount(bakerySearchDTO);
 		int pageLimit = 5;
 		int boardLimit = 10;
-		System.out.println("현재페이지 = " + currentPage);
+		
 		
 		Map<String,Object> result = bakeryService.bakeryList(pageNation,
 															currentPage,
@@ -78,7 +80,7 @@ public class BakeryController {
 															bakerySearchDTO);
 		
 		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
-		System.out.println(piResult.getCurrentPage());
+		
 		
 		List<BakeryInfoDTO> postsResult = (List<BakeryInfoDTO>) result.get("posts");
 		List<List<BakeryInfoDTO>> imagesResult = (List<List<BakeryInfoDTO>>) result.get("images");
@@ -250,6 +252,17 @@ public class BakeryController {
 		
 		model.addAttribute("userNum", userNum);
 		
+		
+		
+		/*
+		 * 사용자의 orderNo가져오기
+		 */
+		BakeryResponseDto recentOrder = orderService.findOrderNo(userNum, no);
+		if (recentOrder == null) {
+		    recentOrder = new BakeryResponseDto(); // 혹은 new BakeryResponseDto(0, ...)
+		}
+		
+		model.addAttribute("recentOrder", recentOrder);
 		
 		return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 		

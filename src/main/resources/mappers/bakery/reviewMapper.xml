@@ -153,6 +153,9 @@ FROM
 		r.review_detail,
 		r.review_rating,
 		r.review_date,
+		ri.img_no,
+		ri.RESOURCES_PATH,
+		ri.CHANGE_NAME,
 		MAX(rtn.tag_first) AS tag_first,
 		MAX(rtn.tag_second) AS tag_second,
 		MAX(rtn.tag_third) AS tag_third,
@@ -173,7 +176,8 @@ FROM
 	WHERE
 		bi.bakery_no = #{bakeryNo}
 	GROUP BY
-		ui.user_no, ui.user_id, r.review_no, r.review_detail, r.review_rating, r.review_date
+		ui.user_no, ui.user_id, r.review_no, r.review_detail, r.review_rating, r.review_date,
+		ri.img_no, ri.RESOURCES_PATH, ri.CHANGE_NAME
 )
 WHERE
 	rn BETWEEN #{pi.offset} AND #{pi.limit}

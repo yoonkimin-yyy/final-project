@@ -12,6 +12,8 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
 import kr.kro.bbanggil.order.dto.request.PaymentRequestDto;
 import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
@@ -156,10 +158,23 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.countByUserAndOrder(userNo, orderNo) > 0;
 	}
 	
+	@Override
+	public int getOrderCount() {
+		return orderMapper.selectOrderCount();
+	}
 	
+	@Override
+	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi) {
+	    return orderMapper.selectPagedOrders(pi);
+	}
 	
-	
-	
+	@Override
+	public BakeryResponseDto findOrderNo(int userNum, double bakeryNo) {
+		
+		return orderMapper.findRecentOrder(userNum, bakeryNo);
+		
+		
+	}
 	
 	
 }
