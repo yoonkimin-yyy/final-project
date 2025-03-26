@@ -49,7 +49,7 @@
 		
 		<resultMap id="MenuResultMap"
 			type="kr.kro.bbanggil.bakery.dto.response.MenuResponseDto">
-			<result property="resourcesPath" column="resources_path" />
+			<result property="resourcesPath" column="RESOURCES_PATH" />
 			<result property="menuNo" column="menu_no" />
 			<result property="menuName" column="menu_name" />
 			<result property="menuPrice" column="menu_price" />
@@ -90,6 +90,9 @@ SELECT
     bi.BAKERY_ADDRESS,
     bi.BAKERY_PHONE,
     bi2.IMG_NO,
+    bs.day,
+    bs.open_time,
+    bs.close_time,
     bi2.CHANGE_NAME,
     bi2.RESOURCES_PATH,
     NVL(ROUND(AVG(r.REVIEW_RATING), 1), 0) AS REVIEW_RATING  
@@ -105,7 +108,10 @@ GROUP BY
     bi.BAKERY_PHONE,
     bi2.IMG_NO,
     bi2.CHANGE_NAME,
-    bi2.RESOURCES_PATH
+    bi2.RESOURCES_PATH,
+    bs.day,
+    bs.open_time,
+    bs.close_time
 	</select>
 
 
