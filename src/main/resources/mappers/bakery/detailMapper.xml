@@ -112,6 +112,17 @@ GROUP BY
     bs.day,
     bs.open_time,
     bs.close_time
+    ORDER BY
+    CASE bs.day
+        WHEN '월' THEN 1
+        WHEN '화' THEN 2
+        WHEN '수' THEN 3
+        WHEN '목' THEN 4
+        WHEN '금' THEN 5
+        WHEN '토' THEN 6
+        WHEN '일' THEN 7
+        ELSE 8
+    END
 	</select>
 
 
