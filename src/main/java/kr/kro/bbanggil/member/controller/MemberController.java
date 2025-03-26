@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
@@ -169,11 +170,13 @@ public class MemberController {
         // 로그인 검증
     	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
         System.out.println("로그인 결과: " + loginUser);
+        
 
         if (loginUser != null) {
             // 로그인 성공 → 세션에 사용자 정보 저장
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
+            session.setAttribute("userName", loginUser.getUserName());
             session.setAttribute("role", loginUser.getUserType());
             return "redirect:/";  
         } else {
@@ -195,17 +198,7 @@ public class MemberController {
     	session.invalidate();
 		return "redirect:/";
 	}
-    
-    @GetMapping("/mypage")
-	public String myPage(Model model,HttpSession session) {
-    	if(session.getAttribute("role").equals("owner"))
-		model.addAttribute("goOwnerPage",true);
-    	else
-    	model.addAttribute("goOwnerPage",false);
-
-		return "user/mypage";
-
-	}
+ 
 
 	@GetMapping("/edit")
 	public String edit() {

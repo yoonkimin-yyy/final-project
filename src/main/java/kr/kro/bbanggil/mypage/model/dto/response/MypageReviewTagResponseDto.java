@@ -1,5 +1,8 @@
 package kr.kro.bbanggil.mypage.model.dto.response;
 
+import lombok.Getter;
+
+@Getter
 public class MypageReviewTagResponseDto {
 	
 	/**

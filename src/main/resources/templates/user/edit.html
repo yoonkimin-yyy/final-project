@@ -35,59 +35,59 @@
     	<script src="/js/mypage/edit.js"></script>
 <main>
 <div class="info-div">   
-	<form class="info-form">
+	<form class="info-form" method="POST" th:action="@{/register/edit}">
         <div class="mypageInfo">
-            <div class="info-correction">
+            <div class="info-correction" >
                 <div class="info-title">
                     <h3>기본정보 수정</h3>
-                </div>
+                </div>       		 
                 <div class="info-edit">
-                    <input class="info-input" type="text" value="이빵이"
-                            id="info-name" name="name">
+                    <input class="info-input" type="text" th:value="${userInfo.userDto.userName}"
+                            id="info-name" name="userName">
 
-                    <input class="info-input" type="email" value="asd123@naver.com"
-                            id="info-email" name="email">
+                    <input class="info-input" type="email" th:value="${userInfo.userDto.userEmail}"
+                            id="info-email" name="userEmail">
 
-                    <input class="info-input" type="tel" value="01012345678"
-                            id="info-phone" name="phone">
+                    <input class="info-input" type="tel" th:value="${userInfo.userDto.phoneNum}"
+                            id="info-phone" name="phoneNum">
                 </div>
                     <div class="error-text" id="name-msg"></div>
                     <div class="error-text" id="email-msg"></div>
                     <div class="error-text" id="phone-msg"></div>
                 <div class="info-btn-div">
-                    <button class="edit-btn" type="button">수정</button>
+                    <button class="edit-btn" type="submit">수정</button>
                 </div>
             </div>
         </div>
 	</form>
-    <form class="info-form">
+    
         <div class="mypageInfo">
             <div class="info-change">
                 <div class="info-title">
                     <h3>개인정보 변경</h3>
                 </div>
-                    <div class="info-edit">
-
+                  <div class="info-edit">
+					<form class="info-form" method="POST" action="/register/updatePassword">
                         <div class="info-pw-btn-div">
                             <button class="change-pw-btn" type="button" onclick="pwBtn()">비밀번호 변경</button>
 
                             <div class="pass-div" id="pass-div">
-                                <input class="change-password" type="password" id="password-now" 
+                                <input class="change-password" type="password" id="password-now" name="currentPassword"
                                         placeholder="현재 비밀번호">
                                         <div class="error-text" id="passwordNow-msg"></div>
 
-                                <input class="change-password" type="password" id="password-new"
+                                <input class="change-password" type="password" id="password-new" name="newPassword"
                                         placeholder="새 비밀번호">
                                         <div class="error-text" id="passwordNew-msg"></div>   
 
-                                <input class="change-password" type="password" id="password-new-confirm"
+                                <input class="change-password" type="password" id="password-new-confirm" name="confirmPassword"
                                         placeholder="새 비밀번호 확인">
                                         <div class="error-text" id="password-confirm-msg"></div>
 
-                                <button class="pass-btn" id="pass-btn" type="button">변경하기</button>
+                                <button class="pass-btn" id="pass-btn" type="submit">변경하기</button>
                             </div>
                         </div>
-
+					</form>
                         <div class="info-address-btn-div">
                             <button class="change-ar-btn" type="button">주소 변경</button>
 
@@ -106,7 +106,7 @@
                     </div>
         	</div>
     	</div>
-    </form>
+    
 </div> 
 </main>
 </body>
