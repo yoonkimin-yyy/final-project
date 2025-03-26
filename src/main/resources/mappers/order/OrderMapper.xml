@@ -8,6 +8,8 @@
 		<result property="menuPrice" column="MENU_PRICE"></result>
 		<result property="menuName" column="MENU_NAME"></result>
 		<result property="menuCount" column="MENU_COUNT"></result>
+		<result property="resourcesPath" column="RESOURCES_PATH"></result>
+		<result property="changeName" column="CHANGE_NAME"></result>
 		<result property="payNo" column="pay_no"></result>
 		<result property="paymentCode" column="merchant_uid"></result>
 		<result property="userName" column="user_name"></result>
@@ -33,11 +35,13 @@
 	</resultMap>
 	
 	<select id="list" resultMap="orderResultMap">
-		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
+		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT,
+		       mi.RESOURCES_PATH, mi.CHANGE_NAME
 		FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
+		JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
 		WHERE c.CART_NO = (SELECT max(cart_no) FROM CART c 
 						   WHERE USER_NO = #{userNo})
 		ORDER BY ci.LIST_NO DESC
