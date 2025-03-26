@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.admin.service;
 
 import java.time.LocalDateTime;
+
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
@@ -54,6 +56,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public AdminResponseDto acceptList(int bakeryNo, int userNo) {
 		return adminMapper.acceptList(bakeryNo, userNo);
+	}
+	
+	@Override
+	public List<MenuResponseDto> menuList(int bakeryNo) {
+		return adminMapper.menuList(bakeryNo);
 	}
 	
 	@Override

@@ -105,11 +105,11 @@
 			<span id="closeBtn" class="close">&times;</span>
 			<h2>메뉴</h2>
 			<div class="menu-container">
-				<div class="menu-item">
-					<img src="bread1.jpg" alt="빵1" class="bread-image">
+				<div th:each="list, iterStat : ${menuList}" class="menu-item">
 					<div class="bread-info">
-						<h3>빵 이름 1</h3>
-						<p>가격: 3000원</p>
+						<img th:src="@{${list.resourcesPath} + '/' + ${list.changeName}}" class="bread-image">
+						<h3 th:text="${list.menuName}"></h3>
+						<p th:text="${list.menuPrice} + '원'"></p>
 					</div>
 				</div>
 			</div>
