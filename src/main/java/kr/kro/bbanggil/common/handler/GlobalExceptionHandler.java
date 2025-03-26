@@ -3,13 +3,13 @@ package kr.kro.bbanggil.common.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import kr.kro.bbanggil.admin.exception.AdminException;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.order.exception.OrderException;
 import kr.kro.bbanggil.pickup.exception.PickupException;
@@ -53,5 +53,13 @@ public class GlobalExceptionHandler {
 		model.addAttribute("status", oe.getStatus().value());
 		
 		return oe.getPath();
+	}
+	
+	@ExceptionHandler(AdminException.class)
+	public String handleAdminException(AdminException ae, Model model) {
+		model.addAttribute("message", ae.getMessage());
+		model.addAttribute("status", ae.getStatus().value());
+		
+		return ae.getPath();
 	}
 }
