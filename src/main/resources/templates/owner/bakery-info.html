@@ -65,7 +65,10 @@
                         </tr>
                     </tbody>
                 </table>
-            <button class="btn" th:onclick="|location.href='@{/bakery/menu/list/form(no=${no})}'|">메뉴 등록</button>
+                <div>
+		            <button class="btn" th:onclick="|location.href='@{/bakery/update/form(bakeryNo=${no})}'|">가게 수정</button>
+		            <button class="btn" th:onclick="|location.href='@{/bakery/menu/list/form(no=${no})}'|">메뉴 등록</button>
+                </div>
             </div>
         </div>
     </div>
