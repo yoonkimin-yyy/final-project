@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>주문 관리 시스템</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --main-color: #d9a86c;
+      --bg-color: #fff8f0;
+      --text-color: #4b3621;
+      --accent-color: #9c5d2e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: var(--bg-color);
+      background-image: url('https://images.unsplash.com/photo-1608198093002-ad4e0054849b'); /* 배경 */
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: brightness(0.95);
+      padding: 20px;
+      color: var(--text-color);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background-color: #fffefb;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      width: 140px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: var(--text-color);
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-radius: 12px;
+      padding: 10px 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e0d4c1;
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      flex: 1;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      color: var(--text-color);
+    }
+
+    .search-icon {
+      color: #c1a47e;
+      margin-right: 10px;
+    }
+
+    .status-filter {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .status-button {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background-color: #fff5e1;
+      border: 1px solid #e0d4c1;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .status-button.active {
+      background-color: var(--main-color);
+      color: white;
+      border-color: var(--main-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #f0e6d6;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fff2dc;
+      color: var(--text-color);
+    }
+
+    td:last-child {
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    tr:hover {
+      background-color: #fff8ee;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .page-btn {
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .page-btn.active {
+      background-color: var(--main-color);
+      color: white;
+      border-color: var(--main-color);
+    }
+
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .title {
+        font-size: 20px;
+      }
+
+      .search-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .status-filter {
+        justify-content: center;
+      }
+
+      table th, table td {
+        font-size: 14px;
+      }
+
+      .search-input {
+        width: 100%;
+        margin-top: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="/images/logo-bakery.png" alt="빵집 로고" class="logo"/>
+    <h1 class="title">주문 관리</h1>
+
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input" placeholder="주문번호, 구매자 검색">
+    </div>
+
+    <div class="status-filter">
+      <button class="status-button active">전체</button>
+      <button class="status-button">준비중</button>
+      <button class="status-button">배송완료</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>결제번호</th>
+            <th>빵집</th>
+            <th>구매자</th>
+            <th>상태</th>
+            <th>날짜</th>
+            <th>금액</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="location.href='order-detail.html'">
+            <td>1</td>
+            <td>P2024032401</td>
+            <td>파리바게트 강남점</td>
+            <td>김민수</td>
+            <td>배송완료</td>
+            <td>2024-03-24</td>
+            <td>32,000원</td>
+          </tr>
+          <!-- 반복 -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+    </div>
+  </div>
+
+  <script>
+    // 상태 필터
+    document.querySelectorAll('.status-button').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelector('.status-button.active')?.classList.remove('active');
+        button.classList.add('active');
+        // 필터 적용 로직 (예: AJAX or JS 필터링)
+      });
+    });
+
+    // 검색 기능
+    document.querySelector('.search-input').addEventListener('input', e => {
+      const search = e.target.value.toLowerCase();
+      document.querySelectorAll('tbody tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
+      });
+    });
+
+    // 페이지 버튼 클릭 (추후 AJAX 대응 가능)
+    document.querySelectorAll('.page-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.page-btn.active')?.classList.remove('active');
+        btn.classList.add('active');
+        // 페이지 이동 로직 넣으면 됨
+      });
+    });
+  </script>
+</body>
+</html>

@@ -2,11 +2,9 @@
 <html lang="ko">
 
 <head>
-	<head th:replace="~{fragments/head :: HeadFragment}"></head>
-	<link rel="stylesheet" th:href="@{/css/admin/admin.css}">
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="/js/admin/admin-page.js"></script>
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+<link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 
@@ -23,24 +21,24 @@
 				관리</button>
 			<button class="tab" href="#" onclick="showTab('accept')">등록
 				관리</button>
+		    <a href="/admin/inquiry/list" class="tab">문의 리스트</a>
+			<button class="tab" href="#" onclick="showTab('report')">신고
+				관리</button>
 		</div>
 
 		<div id="traffic" class="tab-content bg-brown active-content">
 			<div class="stats-container">
 				<div class="stat-card">
 					<div class="stat-title">일일 방문자</div>
-					<div class="stat-value">2,345</div>
-					<div class="stat-increase">+12%</div>
+					<div class="stat-value" th:text="${today}"></div>
 				</div>
 				<div class="stat-card">
 					<div class="stat-title">총 주문</div>
-					<div class="stat-value">1,234</div>
-					<div class="stat-increase">+23%</div>
+					<div class="stat-value" th:text=${order}></div>
 				</div>
 				<div class="stat-card">
 					<div class="stat-title">신규 회원</div>
-					<div class="stat-value">432</div>
-					<div class="stat-increase">+8%</div>
+					<div class="stat-value" th:text=${user}></div>
 				</div>
 			</div>
 
@@ -56,20 +54,14 @@
 						<div class="inline" onclick="showTab('bakery')">more</div>
 					</div>
 
-					<div class="list-item">
-						<div class="list-item-title">김철수</div>
-						<div class="list-item-subtitle">상품A</div>
-						<span class="status-badge status-pending">배송중</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">이영희</div>
-						<div class="list-item-subtitle">상품B</div>
-						<span class="status-badge status-pending">주문확인</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">박지성</div>
-						<div class="list-item-subtitle">상품C</div>
-						<span class="status-badge status-completed">결제완료</span>
+					<div class="list-item" th:each="order : ${newOrder}">
+						<div class="list-item-title" th:text="${order.recipientsName}"></div>
+						<div class="list-item-subtitle" th:text="${order.menuList}"></div>
+						<span class="status-badge status" th:text="${order.pickupStatus}"
+							  th:classappend="${order.pickupStatus == '대기중' ? 'status-pending' : 
+						                       (order.pickupStatus == '승인' ? 'status-complete' : 
+						                       (order.pickupStatus == '거절' ? 'status-denied' : 
+						                       (order.pickupStatus == '완료' ? 'status-done' : '')))}"></span>
 					</div>
 				</div>
 
@@ -100,20 +92,15 @@
 						1:1 문의
 						<div class="inline">more</div>
 					</div>
-					<div class="list-item">
-						<div class="list-item-title">배송문의</div>
-						<div class="list-item-subtitle">문의 ID: 1</div>
-						<span class="status-badge status-pending">답변대기</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">결제문의</div>
-						<div class="list-item-subtitle">문의 ID: 2</div>
-						<span class="status-badge status-completed">답변완료</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">상품문의</div>
-						<div class="list-item-subtitle">문의 ID: 3</div>
-						<span class="status-badge status-pending">답변대기</span>
+					<div class="list-item" th:each="inquiries : ${inquiries}">
+						<div class="list-item-title" th:text="${inquiries.inquiryTitle}"></div>
+						<div class="list-item-subtitle">문의 ID:<span th:text="${inquiries.userName}"></span></div>
+						<span class="status-badge status-pending" 
+						th:text="${inquiries.isAnswered == 'N' ? '답변대기' :
+								  (inquiries.isAnswered == 'Y' ? '답변완료' : '')}"
+						th:classappend="${inquiries.isAnswered == 'N' ? 'status-pending' : 
+				                         (inquiries.isAnswered == 'Y' ? 'status-complete' : '')}">
+                        </span>
 					</div>
 				</div>
 			</div>
@@ -123,32 +110,22 @@
 			<table>
 				<thead>
 					<tr>
-						<th>상호명</th>
+						<th>번호</th>
+						<th>가게명</th>
 						<th>사용자ID</th>
 						<th>연락처</th>
-						<th>주소</th>
+						<th>가게주소</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr onclick="bakeryDetail()">
-						<td>베이커리A</td>
-						<td>user01</td>
-						<td>010-1234-5678</td>
-						<td>서울시 강남구</td>
+					<tr id="user1" th:each="list, iterStat : ${bakeryLists}"
+						th:attr="onclick=|location.href='/admin/bakery/detail?bakeryNo=${list.bakeryNo}&userNo=${list.userNo}'|">
+						<td th:text="${bakeryLists.size() - iterStat.index}"></td>
+						<td th:text="${list.bakeryName}"></td>
+						<td th:text="${list.userId}"></td>
+						<td th:text="${list.userPhoneNum}"></td>
+						<td th:text="${list.bakeryAddress}"></td>
 					</tr>
-					<tr onclick="bakeryDetail()">
-						<td>베이커리B</td>
-						<td>user02</td>
-						<td>010-2134-5678</td>
-						<td>서울시 강남구</td>
-					</tr>
-					<tr onclick="bakeryDetail()">
-						<td>베이커리C</td>
-						<td>user01</td>
-						<td>010-1234-5678</td>
-						<td>서울시 강남구</td>
-					</tr>
-					<!-- 추가 행들 -->
 				</tbody>
 			</table>
 
@@ -163,41 +140,28 @@
 						<th>이메일</th>
 						<th>핸드폰번호</th>
 						<th>타입</th>
-						<th>경고/정지</th>
-						<th>신고된 리뷰</th>
+						<th>email 수신동의 여부</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr id="user1" onclick="userDetail()">
-						<td>1</td>
-						<td>user01</td>
-						<td>user01@example.com</td>
-						<td>010-1234-5678</td>
-						<td>관리자</td>
-						<td class="status"></td>
-						<td></td>
+					<tr id="user1" th:each="list, iterStat : ${userLists}"
+						th:attr="onclick=|location.href='/admin/user/detail?userNo=${list.userNo}'|">
+						<td th:text="${userLists.size() - iterStat.index}"></td>
+						<td th:text="${list.userId}"></td>
+						<td th:text="${list.userPhoneNum}"></td>
+						<td th:text="${list.userEmail}"></td>
+						<td th:text="${list.userType}"></td>
+						<td th:text="${list.agreeEmail}"></td>
+						<td th:if="${list.agreeEmail == 'Y'}"><input type="checkbox"
+							name="check1" value="1" th:data-email="${list.userEmail}"
+							onclick="event.stopPropagation(); addEmailToModal(event, this);"
+							style="transform: scale(1.5);"></td>
 					</tr>
-					<tr id="user2" onclick="userDetail()">
-						<td>2</td>
-						<td>user02</td>
-						<td>user02@example.com</td>
-						<td>010-1234-5678</td>
-						<td>유저</td>
-						<td class="status">안됨?</td>
-						<td>맛이 있을까요 없을까요</td>
-						<td class="popup-btn" onclick="openPopup()">더보기</td>
-					</tr>
-					<tr id="user3" onclick="userDetail()">
-						<td>3</td>
-						<td>user03</td>
-						<td>user03@example.com</td>
-						<td>010-2451-5678</td>
-						<td>관리자</td>
-						<td class="status"></td>
-						<td></td>
-					</tr>
-					<!-- 추가 행들 -->
+					<div class="email-btn-div">
+						<button class="email-btn" id="email-btn">전체선택</button>
+						<button class="email-btn" id="openModalBtn">email전송</button>
+					</div>
 				</tbody>
 			</table>
 		</div>
@@ -217,6 +181,34 @@
 				</thead>
 				<tbody>
 					<tr id="user1" th:each="list, iterStat : ${sublists}"
+						th:attr="onclick=|location.href='/admin/bakery/accept?listNum=${sublists.size() - iterStat.index}&bakeryNo=${list.bakeryNo}&userNo=${list.userNo}'|">
+						<td th:text="${sublists.size() - iterStat.index}"></td>
+						<td th:text="${list.userId}"></td>
+						<td th:text="${list.userPhoneNum}"></td>
+						<td th:text="${list.submissionDate}"></td>
+						<td th:text="${list.bakeryName}"></td>
+						<td th:text="${list.agree}"></td>
+						<td th:text="${list.acceptDate}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="report" class="tab-content">
+			<table>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>신고한 유저</th>
+						<th>신고 내용</th>
+						<th>신고 받은 유저</th>
+						<th>리뷰 내용 상세보기</th>
+						<th>작성 날짜</th>
+						<th>리뷰 작성된 빵집</th>
+						<th>답변여부</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="user1" th:each="list, iterStat : ${sublists}"
 						th:attr="onclick=|location.href='/admin/bakery/accept?listNum=${sublists.size() - iterStat.index}'|">
 						<td th:text="${sublists.size() - iterStat.index}"></td>
 						<td th:text="${list.userId}"></td>
@@ -224,7 +216,8 @@
 						<td th:text="${list.submissionDate}"></td>
 						<td th:text="${list.bakeryName}"></td>
 						<td th:text="${list.agree}"></td>
-						<td></td>
+						<td th:text="${list.acceptDate}"></td>
+						<td th:text="${list.acceptDate}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -233,6 +226,37 @@
 	</div>
 	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
 
+	<div id="myModal" class="custom-modal-container">
+		<div class="custom-modal-content">
+			<span id="closeBtn" class="custom-close">&times;</span>
+			<h2 style="margin-bottom: 20px;">이메일 전송</h2>
+			<form id="emailForm">
+				<div class="form-group">
+					<label for="email">이메일 주소:</label> <input type="text" id="email"
+						name="email" placeholder="이메일 주소를 입력하세요" required>
+				</div>
+				<div class="form-group">
+					<label for="subject">제목:</label> <input type="text" id="subject"
+						name="subject" placeholder="제목을 입력하세요" required>
+				</div>
+				<div class="form-group">
+					<label for="message">메시지:</label>
+					<textarea id="message" name="message" placeholder="메시지를 입력하세요"
+						required></textarea>
+				</div>
+
+				<button type="button" id="submitBtn">전송</button>
+				<button type="reset"
+					style="background-color: #FFD700; color: white;">초기화</button>
+				<button type="button" id="cancelBtn">취소</button>
+			</form>
+		</div>
+	</div>
+
 </body>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/admin/admin-page.js"></script>
 
 </html>

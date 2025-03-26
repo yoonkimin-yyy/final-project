@@ -10,7 +10,7 @@ import java.util.List;
 public class ReviewRequestDto {
 	private int reviewNo;
     private int userNo;  
-    private int orderNo=2;
+    private int orderNo;
     private int tagNo; 
     private String userId;
     private double reviewRating;     // 리뷰 평점 (0.5 ~ 5.0)
@@ -28,6 +28,10 @@ public class ReviewRequestDto {
     private String tagThird;
     private String tagForth;
     private String tagFive;
+    
+    // 사장님 답글
+    private String reviewReply;
+    private String reviewReportDetail;
     
     
     

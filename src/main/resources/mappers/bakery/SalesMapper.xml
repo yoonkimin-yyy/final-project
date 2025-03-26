@@ -63,7 +63,7 @@
 	    JOIN menu m ON ci.menu_no = m.menu_no
 	    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
 	    WHERE bi.bakery_no = #{bakeryNo}
-	    AND EXTRACT(YEAR FROM p.pay_request_date) = 2025
+	    AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
     </select>
 
     <!-- 사용 가능한 연도 목록 조회 -->

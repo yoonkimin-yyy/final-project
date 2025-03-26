@@ -28,6 +28,6 @@ public class BakeryDetailResponseDto {
 	private String outsideInfo;
 	private String createdDate;
 	private String submissionDate;
-	
+	private String position;
 	
 }

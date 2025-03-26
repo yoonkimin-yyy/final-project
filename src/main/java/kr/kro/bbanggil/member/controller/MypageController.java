@@ -1,12 +1,10 @@
 package kr.kro.bbanggil.member.controller;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +15,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.member.service.MypageServiceImpl;
+import kr.kro.bbanggil.member.util.MypagePagination;
 import kr.kro.bbanggil.mypage.model.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageListResponseDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypagePageInfoDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageUserResponseDto;
-import kr.kro.bbanggil.mypage.util.MypagePagination;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -32,6 +30,7 @@ public class MypageController {
 	private final MypageServiceImpl mypageService;
 	private final MypagePagination mypagePagination;
 	
+
 	@GetMapping("/mypage") 
 	public String myPage(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 						 @SessionAttribute(value="userNum",required=false)Integer userNo,
@@ -39,7 +38,8 @@ public class MypageController {
 							@SessionAttribute(value="userName",required=false)String userName,
 							MypageListResponseDto mypageDto,
 							 HttpSession session,
-							  Model model) {
+							 Model model) {
+
 		
 		int postCount = mypageService.getTotalCount(userNo);
 		int pageLimit = 10;

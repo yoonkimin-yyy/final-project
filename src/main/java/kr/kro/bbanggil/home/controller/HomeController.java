@@ -9,12 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
+import kr.kro.bbanggil.admin.service.AdminServiceImpl;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
 import kr.kro.bbanggil.email.dto.request.SubscriptionRequsetDto;
@@ -31,6 +36,7 @@ public class HomeController {
 	private final EmailServiceImpl emailService;
 	private final NewsletterScheduler newsletterScheduler;
 	private final BakeryServiceImpl bakeryService;
+	private final AdminServiceImpl adminService;
 	
 	/*
 	 * 이메일로 구독 알림 보내는 기능
@@ -66,18 +72,6 @@ public class HomeController {
 		return "admin/newsLetter";
 	}
 	
-	/**
-	 * 카카오 api를 이용하여 region과 query를 이용하여 데이터 db에 주입 받는 기능
-	 */
-	@GetMapping("/bakeries")
-	public ResponseEntity<List<BakeryDto>> getBakeriesByRegion(@RequestParam("region") String region){
-
-		  List<BakeryDto> bakeries = bakeryService.getBakeriesByRegion(region);
-		    
-		  return ResponseEntity.ok(bakeries);
-		    
-	}
-	
 	@GetMapping("")
 	public String homePage(@RequestParam(value = "bakeryNo", required = false, defaultValue = "0") double bakeryNo,Model model) {
 		/*
@@ -109,6 +103,38 @@ public class HomeController {
 		
 		return "common/home";
 	}
+	
+	@GetMapping("by-region")
+	@ResponseBody
+	public List<BakeryDto> getBakeriesByRegion(@RequestParam("region") String region){
+		
+		return bakeryService.getBakeriesByRegion(region);
+		
+	}
+	
+	
+	/*
+	 * 문의 등록 처리
+	 */
+	
+	@PostMapping("/submit")
+	public String submitInquiry(HttpSession session, @ModelAttribute InquiryRequestDto inquiryRequestDto, Model model) {
+
+		// 1.문의 저장
+		Integer userNo = (Integer) session.getAttribute("userNum");
+
+		inquiryRequestDto.setUserNo(userNo);
+
+		adminService.saveInquiry(inquiryRequestDto);
+
+		return "redirect:/";
+	}
+	
+	@GetMapping("/inquiry-write")
+	public String showInquiryForm() {
+	    return "admin/admin-inquiry"; // 뷰 파일 이름이 admin-inquiry.html이면 이렇게!
+	}
+	
 	
 	
 	

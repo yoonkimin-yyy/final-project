@@ -2,9 +2,9 @@ package kr.kro.bbanggil.member.service;
 
 import java.util.Map;
 
+import kr.kro.bbanggil.member.util.MypagePagination;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageListResponseDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageUserResponseDto;
-import kr.kro.bbanggil.mypage.util.MypagePagination;
 
 public interface MypageService {
 	

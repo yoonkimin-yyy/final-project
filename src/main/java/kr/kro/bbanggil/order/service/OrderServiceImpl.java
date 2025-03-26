@@ -12,6 +12,8 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
 import kr.kro.bbanggil.order.dto.request.PaymentRequestDto;
 import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
@@ -31,18 +33,18 @@ public class OrderServiceImpl implements OrderService {
 	 * 장바구니 출력
 	 */
 	@Override
-	public List<OrderResponseDto> list(String userId) {
+	public List<OrderResponseDto> list(int userNo) {
 
-		return orderMapper.list(userId);
+		return orderMapper.list(userNo);
 	}
 
 	/**
 	 * 가격검증
 	 */
 	@Override
-	public boolean accountCheck(int totalCount, OrderRequestDto orderRequestDto, String userId) {
-
-		return orderMapper.calculate(orderRequestDto, userId) == totalCount ? true : false;
+	public boolean accountCheck(int totalCount, int userNo) {
+		
+		return orderMapper.calculate(userNo) == totalCount ? true : false;
 	}
 
 	/**
@@ -50,10 +52,10 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public IamportResponse<Payment> validateIamport(String imp_uid, PaymentRequestDto paymentRequestDto,
-													OrderRequestDto orderRequestDto, String userId) {
-
-		int dbTotalPrice = orderMapper.calculate(orderRequestDto, userId);
-
+													OrderRequestDto orderRequestDto, int userNo) {
+		
+		int dbTotalPrice = orderMapper.calculate(userNo);
+		
 		if (dbTotalPrice == paymentRequestDto.getAccount()) {
 			try {
 				IamportResponse<Payment> payment = iamportClient.paymentByImpUid(imp_uid);
@@ -74,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional(rollbackFor = { Exception.class })
 	public boolean saveOrder(PaymentRequestDto paymentRequestDto, int userNo) {
+
 		try {
 			orderMapper.save(paymentRequestDto);
 
@@ -126,13 +129,13 @@ public class OrderServiceImpl implements OrderService {
 	 * @param payNo 결제 번호
 	 */
 	@Transactional(rollbackFor = {Exception.class})
-	public List<OrderResponseDto> pickupList(PickupCheckResponseDto result, int payNo, String userId) {
+	public List<OrderResponseDto> pickupList(PickupCheckResponseDto result, int payNo, int userNo) {
 		try {
 			String pickupStatus = result.getPickupStatus();
 
 			switch (pickupStatus) {
 			case "승인":
-				List<OrderResponseDto> list = orderMapper.list(userId);
+				List<OrderResponseDto> list = orderMapper.list(userNo);
 				return list;
 			case "거절":
 				String imp = orderMapper.refund(payNo);
@@ -155,10 +158,23 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.countByUserAndOrder(userNo, orderNo) > 0;
 	}
 	
+	@Override
+	public int getOrderCount() {
+		return orderMapper.selectOrderCount();
+	}
 	
+	@Override
+	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi) {
+	    return orderMapper.selectPagedOrders(pi);
+	}
 	
-	
-	
+	@Override
+	public BakeryResponseDto findOrderNo(int userNum, double bakeryNo) {
+		
+		return orderMapper.findRecentOrder(userNum, bakeryNo);
+		
+		
+	}
 	
 	
 }

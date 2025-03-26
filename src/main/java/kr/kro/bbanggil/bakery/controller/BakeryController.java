@@ -1,8 +1,10 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,15 +30,22 @@ import kr.kro.bbanggil.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
+import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.service.BakeryServiceImpl;
 import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
+import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -44,7 +55,7 @@ public class BakeryController {
 
 	private final BakeryServiceImpl bakeryService;
 	private final ReviewServiceImpl reviewService;
-
+	private final OrderServiceImpl orderService;
 	private final ListPageNation pageNation;
 	
 
@@ -58,7 +69,7 @@ public class BakeryController {
 		int postCount = bakeryService.totalCount(bakerySearchDTO);
 		int pageLimit = 5;
 		int boardLimit = 10;
-		System.out.println("현재페이지 = " + currentPage);
+		
 		
 		Map<String,Object> result = bakeryService.bakeryList(pageNation,
 															currentPage,
@@ -69,7 +80,7 @@ public class BakeryController {
 															bakerySearchDTO);
 		
 		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
-		System.out.println(piResult.getCurrentPage());
+		
 		
 		List<BakeryInfoDTO> postsResult = (List<BakeryInfoDTO>) result.get("posts");
 		List<List<BakeryInfoDTO>> imagesResult = (List<List<BakeryInfoDTO>>) result.get("images");
@@ -102,13 +113,6 @@ public class BakeryController {
 		return "owner/bakery-insert";
 	}
 
-	@GetMapping("/menu/insert/form")
-	public String menuInsertForm() {
-		return "owner/menu-insert";
-
-	}
-
-
 	/**
 	 * 
 	 * @param BakeryRequestDTO : insert에 대한 전반적인 데이터가 들어있는 DTO
@@ -122,22 +126,22 @@ public class BakeryController {
 							   @SessionAttribute("userNum")int userNo,
 							   @SessionAttribute("role") String role,
 							   Model model) throws Exception {
-		System.out.println("에엥");
-		System.out.println(role);
-		System.out.println("엥");
 		BakeryRequestDTO.setTime();
-		bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo,role);
-		
-		return "common/home";
+		int bakeryNo = bakeryService.bakeryInsert(BakeryRequestDTO,BakeryImgRequestDTO,userNo,role);
+		model.addAttribute("no",bakeryNo);
+		return "redirect:/bakery/menu/list/form?no="+bakeryNo;
 	}
 
 	@GetMapping("/detail")
 	public String getBakeryImages(@RequestParam(value = "bakeryNo", required = false) double no,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-			@RequestParam(value = "sort" ,defaultValue= "latest") String sort,
-			HttpSession session,
-			Model model) {
-		
+			@RequestParam(value = "sort" , defaultValue= "latest") String sort,
+			Model model,
+			HttpSession session
+			 ) {
+   {
+		bakeryService.updateUserCount((int)no);
+    
 		/*
 		 * 세션에서 userNum 가져오기
 		 */
@@ -151,6 +155,49 @@ public class BakeryController {
 
 		List<BakeryDto> getBakeriesInfo = bakeryService.getBakeriesInfo(no);
 		model.addAttribute("getBakeriesInfo", getBakeriesInfo);
+		
+		
+		
+		// 빵집 번호로 사장님 답글 가져오기
+		List<ReviewResponseDto> reviewReplies = reviewService.getReviewReplies(no);
+		if(reviewReplies.size() < 10) {
+			ReviewResponseDto dto = new ReviewResponseDto();
+			dto.setReviewNo(0);
+			reviewReplies.add(dto);
+		}
+		model.addAttribute("reviewReplies",reviewReplies);
+		
+		
+		
+		// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
+		if(session.getAttribute("userNum") != null) {
+			int userNo = (int) userNum;
+			int resultValue = reviewService.byIdCheck(userNo,no);
+			if(resultValue == 0) {
+				int bakeryNoInt = (int) no;
+				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
+				model.addAttribute("bakeryNoValue", resultValue);
+			} else {
+				int bakeryNoInt = (int) no;
+				List<Integer> reviewCheck = reviewService.reviewCheck(bakeryNoInt);
+				int[] reviewCheckArray = reviewCheck.stream().mapToInt(Integer::intValue).toArray();
+				
+				
+				List<Integer> reviewNoCheck = Arrays.stream(reviewCheckArray)
+						.boxed() // int[] → List<Integer> 변환
+						.collect(Collectors.toList());
+				
+				model.addAttribute("reviewNoCheck",reviewNoCheck);
+				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
+				model.addAttribute("bakeryNoValue", resultValue);
+				model.addAttribute("reviewCheck", reviewCheck);
+				
+			}
+		}
+		
+		
+		
+		
 
 		// 리뷰 리스트 pagination
 		int pageLimit = 5;
@@ -162,11 +209,17 @@ public class BakeryController {
 
 		Map<String, Object> result = reviewService.list(pageInfo, currentPage, totalReviews, pageLimit, reviewLimit,
 				no, sort);
-
+		
+		
+		
+		
 		model.addAttribute("pi", pageInfo);
 		model.addAttribute("reviews", result.get("reviews"));
 		model.addAttribute("bakeryNo", no);
 		model.addAttribute("sort", sort);
+		model.addAttribute("totalReviews", totalReviews);
+		
+		
 
 		/**
 		 * 메뉴 리스트 보여주는 기능
@@ -174,19 +227,28 @@ public class BakeryController {
 		List<MenuResponseDto> menuList = bakeryService.getMenuInfo(no);
 		model.addAttribute("menuList", menuList);
 
+		
+		
+		
 		/*
 		 * 편의정보, 실내사진, 외부 사진 보여지는 기능
 		 */
 
 		List<BakeryDto> bakeryDetail = bakeryService.getBakeryDetail(no);
+		List<BakeryDetailResponseDto> insideImages =  bakeryService.getInsideImages(no);
+		List<BakeryDetailResponseDto> outsideImages = bakeryService.getOutsideImages(no);
+		
 		model.addAttribute("bakeryDetail", bakeryDetail);
+		model.addAttribute("insideImages", insideImages);
+		model.addAttribute("outsideImages", outsideImages);
+		
 
 		/*
 		 * 리뷰 이미지 보여지는 기능
 		 */
 		List<ReviewResponseDto> reviewImages = reviewService.getReviewImages(no);
 		model.addAttribute("reviewImages", reviewImages);
-
+		
 		
 		Map<String, Integer> tagCounts = reviewService.getTagCounts(no);
 		
@@ -199,22 +261,50 @@ public class BakeryController {
 		
 		
 		
+		/*
+		 * 사용자의 orderNo가져오기
+		 */
+		BakeryResponseDto recentOrder = null;
+		if (userNum != null) {
+		    recentOrder = orderService.findOrderNo(userNum, no);
+		}
+
+		if (recentOrder == null) {
+		    recentOrder = new BakeryResponseDto(); // 기본값 처리
+		}
 		
+		model.addAttribute("recentOrder", recentOrder);
 		
 		return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
+		
+   }
+		
 	}
 
 	@PostMapping("/cart/add")
 	public String addCart( HttpSession session,@RequestParam("orderData") String orderData) {
-
+		
+		
 		Integer userNo = (Integer) session.getAttribute("userNum");
 		
 		ObjectMapper objectMapper = new ObjectMapper();
+		
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();
+		
+		
+		
+		  try {
+		        //  배열로 먼저 파싱하고 리스트로 변환
+		        MenuDetailRequestDto[] dtoArray = objectMapper.readValue(orderData, MenuDetailRequestDto[].class);
+		        menuDtoList = Arrays.asList(dtoArray);
+		        
+		    } catch (Exception e) {
+		        e.printStackTrace(); // 파싱 에러 로그
+		    }
+		  bakeryService.addCart(userNo, menuDtoList);
+		
 
-		bakeryService.addCart(userNo, menuDtoList);
-
-		return "user/order-page";
+		return "redirect:/order/page";
 	}
 
 	@GetMapping("/kakao")
@@ -226,24 +316,27 @@ public class BakeryController {
 		if (bakery == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		
+		 	
+		
 		return ResponseEntity.ok(bakery);
 	}
 
 
 
 	
-//	@GetMapping("/detail/{bakeryNo}")
-//	public String getBakeryImages(@PathVariable("bakeryNo") double no, Model model) {
-//		
-//		/**
-//		 * 가게 정보 가져오는 기능
-//		 */
-//	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
-//
-//	    model.addAttribute("bakeriesInfo", bakeriesInfo);
-//	    
-//	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
-//	}
+	@GetMapping("/detail/{bakeryNo}")
+	public String getBakeryImages(@PathVariable("bakeryNo") double no, Model model) {
+		
+		/**
+		 * 가게 정보 가져오는 기능
+		 */
+	    List<BakeryDto> bakeriesInfo = bakeryService.getBakeryImages(no); 
+	    model.addAttribute("bakeriesInfo", bakeriesInfo);
+	    
+	    
+	    return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
+	}
 	
 	@GetMapping("/update/form")
 	public String bakeryUpdateForm(@RequestParam(name="bakeryNo",required=false) Integer bakeryNo,Model model) {
@@ -260,7 +353,59 @@ public class BakeryController {
 		return "/owner/owner-mypage";
 	}
 	
-
+	@GetMapping("menu/list/form")
+	public String menuListForm(@RequestParam("no")int bakeryNo, Model model) {
+		Map<String,Object> result = bakeryService.getMenuList(bakeryNo);
+		model.addAttribute("menu",result.get("list"));
+		model.addAttribute("bakery",result.get("bakery"));
+		model.addAttribute("no",bakeryNo);
+		return "/owner/menu-list";
+	}
+	@GetMapping("/menu/insert/form")
+	public String menuInsertForm(@RequestParam("bakeryNo") int bakeryNo,Model model) {
+		List<CategoryResponseDTO> category = bakeryService.getCategory();
+		model.addAttribute("category",category);
+		model.addAttribute("bakeryNo",bakeryNo);
+		return "owner/menu-insert";
+	}
+	@PostMapping("/menu/insert")
+	public String menuInsert(MenuRequestDTO menuDTO,
+							 @RequestParam("bakeryNo") int bakeryNo,
+							 @RequestParam("menuImage") MultipartFile file) {
+			bakeryService.menuInsert(menuDTO,bakeryNo,file);
+		return "/owner/menu-list";
+	}
+	@GetMapping("/info/form")
+	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo,
+								 Model model) {
+		myBakeryResponseDTO result = bakeryService.bakeryInfo(bakeryNo);
+		model.addAttribute("bakery",result);
+		model.addAttribute("no",bakeryNo);
+		return "/owner/bakery-info";
+	}
 	
-
+	@PostMapping("/menu/delete")
+	public String menuDelete(@RequestParam("menuNo") int menuNo,
+							 @RequestParam("no")int no,
+							 RedirectAttributes redirectAttributes) {
+		bakeryService.menuDelete(menuNo);
+		redirectAttributes.addAttribute("no", no);
+		return "redirect:/bakery/menu/list/form";
+	}
+	@GetMapping("/menu/update/form")
+	public String menuUpdateForm(@RequestParam("menuNo") int menuNo,
+								 Model model) {
+		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail(menuNo);
+		
+		model.addAttribute("menu",menuDTO);
+		model.addAttribute("menuNo",menuNo);
+		return "/owner/menu-update";
+	}
+	@PostMapping("/menu/update")
+	public String menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file) {
+		bakeryService.updateMenu(menuDTO,file);
+		return "/owner/menu-list";
+	}
 }
+

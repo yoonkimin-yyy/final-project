@@ -6,17 +6,15 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.Valid;
 import kr.kro.bbanggil.member.mapper.MypageMapper;
+import kr.kro.bbanggil.member.util.MypagePagination;
 import kr.kro.bbanggil.mypage.model.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageListResponseDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypagePageInfoDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageUserResponseDto;
-import kr.kro.bbanggil.mypage.util.MypagePagination;
 import lombok.AllArgsConstructor;
 
 @Service

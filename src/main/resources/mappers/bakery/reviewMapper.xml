@@ -21,6 +21,9 @@
 	<result property="tagThird" column="tag_third"></result>
 	<result property="tagForth" column="tag_forth"></result>
 	<result property="tagFive" column="tag_five"></result>
+	<result property="reviewReply" column="review_reply"></result>
+	<result property="reviewReplyDate" column="review_reply_date"></result>	
+	<result property="reviewReportDetail" column="report_detail"></result>	
 </resultMap>
 
 
@@ -150,6 +153,9 @@ FROM
 		r.review_detail,
 		r.review_rating,
 		r.review_date,
+		ri.img_no,
+		ri.RESOURCES_PATH,
+		ri.CHANGE_NAME,
 		MAX(rtn.tag_first) AS tag_first,
 		MAX(rtn.tag_second) AS tag_second,
 		MAX(rtn.tag_third) AS tag_third,
@@ -170,7 +176,8 @@ FROM
 	WHERE
 		bi.bakery_no = #{bakeryNo}
 	GROUP BY
-		ui.user_no, ui.user_id, r.review_no, r.review_detail, r.review_rating, r.review_date
+		ui.user_no, ui.user_id, r.review_no, r.review_detail, r.review_rating, r.review_date,
+		ri.img_no, ri.RESOURCES_PATH, ri.CHANGE_NAME
 )
 WHERE
 	rn BETWEEN #{pi.offset} AND #{pi.limit}
@@ -299,7 +306,52 @@ DELETE FROM REVIEW WHERE review_no = #{reviewNo}
 
 </select>
 
+<select id="getBakeryNoByUserNo" 
+	        resultType="java.lang.Integer"
+	        parameterType="int" 
+	        >
+	    SELECT bakery_no 
+	    FROM bakery_access 
+	    WHERE user_no = #{userNo}
+</select>
 
+<insert id="insertReviewReply">
+
+   INSERT 
+   		INTO
+   		review_reply (review_reply_no, review_no, user_no, review_reply, review_reply_date)
+   		VALUES (review_reply_seq.nextval, #{reviewNo}, #{userNo}, #{reviewReply}, sysdate)
+</insert>
+
+<!-- bakeryNo에 해당하는 리뷰 답글 조회 -->
+    <select id="selectReviewRepliesByBakeryNo" resultMap="ReviewResultMap">
+        SELECT 
+        	r.review_no,
+        	rr.review_reply,
+        	rr.review_reply_date
+        FROM review r
+        JOIN review_reply rr ON r.review_no = rr.review_no
+        WHERE bakery_no = #{bakeryNo}
+    </select>
+    
+    <select id="reviewCheck" resultMap="ReviewResultMap">
+        SELECT 
+        	r.review_no
+        FROM review r
+        JOIN review_reply rr ON r.review_no = rr.review_no
+        WHERE bakery_no = #{bakeryNo}
+        AND rr.review_reply IS not NULL
+    </select>
+    
+    <insert id="reviewReport">
+
+	   INSERT 
+	   		INTO
+	   		review_report (report_no, user_no, review_no, report_detail, report_date)
+	   		VALUES (review_report_seq.nextval, #{userNo}, #{reviewNo}, #{reviewReportDetail}, sysdate)
+	</insert>
+    
+    
 
 
 </mapper>

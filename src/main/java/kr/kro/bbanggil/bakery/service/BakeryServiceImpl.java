@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import groovy.transform.Undefined.EXCEPTION;
-import jakarta.validation.Valid;
 import kr.kro.bbanggil.bakery.api.KakaoController;
 import kr.kro.bbanggil.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.bakery.dto.BakeryInfoDTO;
@@ -36,9 +35,14 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
+import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
+import kr.kro.bbanggil.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
@@ -81,23 +85,17 @@ public class BakeryServiceImpl implements BakeryService{
 		
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		
-		System.out.println("day : " + getTodayDayOfWeek());
-		System.out.println("bakerySearchDTO.getSearchText" + bakerySearchDTO.getSearchText());
-		
-		System.out.println("bakerySearchDTO.getKeyword1()"+bakerySearchDTO.getKeyword1());
-		System.out.println("bakerySearchDTO.getKeyword2()"+bakerySearchDTO.getKeyword2());
-		System.out.println("orderType : " + orderType);
-		System.out.println("offset = "+pi.getOffset());
-		System.out.println("boardLimit = aaa"+pi.getBoardLimit());
+		System.out.println(pi.getLimit());
+		System.out.println(pi.getOffset());
 		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
 															getTodayDayOfWeek(),
 															orderType,
 															bakerySearchDTO);
 		
-		for(BakeryInfoDTO item : posts)
-		{
+		for(BakeryInfoDTO item : posts) {
 			System.out.println(item.getBakeryName());
 		}
+ 		
 		List<List<BakeryInfoDTO>> images = new ArrayList<>();
 		
 		for (int i = 0; i < posts.size(); i++) {
@@ -121,6 +119,7 @@ public class BakeryServiceImpl implements BakeryService{
 	}
 	
 
+	
 	//오늘 요일 구하기
 	@Override
 	public String getTodayDayOfWeek() {
@@ -140,8 +139,6 @@ public class BakeryServiceImpl implements BakeryService{
             case SUNDAY -> "일";
         };
     }
-
-	
 	/**
 	 * location : 카카오 api로 bakeryRequestDTO에 있는 주소 값을 통해 데이터를 받아오는 변수
 	 * address : 받아온 주소를 " "기준으로 잘라서 배열에 넣어두는 변수
@@ -150,9 +147,9 @@ public class BakeryServiceImpl implements BakeryService{
 	 */
 	@Override
 	@Transactional(rollbackFor = EXCEPTION.class)
-	public void bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo, String role) throws Exception {
+	public int bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo, String role) throws Exception {
 		try {
-			if(role!="owner")
+			if(!role.equals("owner"))
 				throw new BakeryException("사장이 아닙니다","common/error",HttpStatus.BAD_REQUEST);
 			
 			JsonNode location=kakao.getLocationFromAddress(bakeryRequestDTO.getBakeryAddress());
@@ -212,7 +209,8 @@ public class BakeryServiceImpl implements BakeryService{
 					}
 				}
 				bakeryMapper.setBakery(bakeryRequestDTO.getBakeryNo(),userNo);	
-			
+				bakeryMapper.UserCountInsert(bakeryRequestDTO.getBakeryNo());
+			return bakeryRequestDTO.getBakeryNo();
 				
 		} catch (Exception e) {
 			
@@ -232,6 +230,7 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
 		bakeryUpdateResponseDTO response = bakeryMapper.getBakeryInfo(bakeryNo);
+		System.out.println(response.getBakeryPhone());
 		response.setImgDTO(bakeryMapper.getBakeryImg(bakeryNo));
 		List<BakeryTimeSetDTO> timeDTO = bakeryMapper.getBakerySchedule(bakeryNo);
 		setBakeryOperatingHours(response,timeDTO);
@@ -239,6 +238,7 @@ public class BakeryServiceImpl implements BakeryService{
 	}
 	
 	@Override
+	@Transactional
 	public void bakeryUpdate(BakeryRequestDTO bakeryRequestDTO,
 			   				 BakeryImgRequestDTO bakeryImgRequestDTO,
 			   				 int userNo) {
@@ -279,6 +279,7 @@ public class BakeryServiceImpl implements BakeryService{
 				bakeryMapper.bakeryScheduleUpdate(item,bakeryRequestDTO.getBakeryNo());
 			}
 			bakeryMapper.bakeryAccessUpdate(bakeryRequestDTO);
+			
 			}
 		} catch(Exception e) {
 			logger.error("에러발생! : {}",e.getMessage());
@@ -349,35 +350,38 @@ public class BakeryServiceImpl implements BakeryService{
 	public List<MenuResponseDto> getMenuInfo(double no){
 	
 		List<MenuResponseDto> menuList = bakeryMapper.getMenuInfo(no);
-		
 		return menuList;
 	}
 
 	@Override
 	public void addCart(int userNo, List<MenuDetailRequestDto> menuDto) {
 
+
+		bakeryMapper.insertCart(userNo);
 		Integer cartNo = bakeryMapper.getCartNoByUserNo(userNo);
-
-		if (cartNo == null) {
-			bakeryMapper.insertCart(userNo);
-			cartNo = bakeryMapper.getLastCartNo();
-		}
-
 		for (MenuDetailRequestDto item : menuDto) {
 			bakeryMapper.insertCartInfo(cartNo, item.getMenuNo(), item.getMenuCount());
 		}
 
 	}
-
+	@Override
 	public BakeryDto getBakeryByNo(double bakeryNo) {
 		return bakeryMapper.findBakeryByNo(bakeryNo);
 	}
-
+	
 	public List<BakeryDto> getBakeryDetail(double no) {
 		
 		return bakeryMapper.getBakeryDetail(no);
 	}
+	@Override
+	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo) {
+	    return bakeryMapper.getInsideImages(bakeryNo);
+	}
 
+	@Override
+	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo) {
+	    return bakeryMapper.getOutsideImages(bakeryNo);
+	}	
 	
 	
 	
@@ -446,6 +450,75 @@ public class BakeryServiceImpl implements BakeryService{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public List<CategoryResponseDTO> getCategory() {
+		return bakeryMapper.getCategory();
+	}
+	@Override
+	@Transactional
+	public void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file) {
+		
+		try {
+			s3Upload.saveFile(file, menuDTO.getFileDTO());
+			bakeryMapper.menuInsert(menuDTO, bakeryNo);
+			bakeryMapper.menuFileUpload(menuDTO);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public Map<String,Object> getMenuList(int bakeryNo) {
+		List<MenuResponseDto> menuList = bakeryMapper.getMenuList(bakeryNo);
+		String bakery = bakeryMapper.getBakeryName(bakeryNo);
+		Map<String,Object> result = new HashMap<>();
+		result.put("bakery", bakery);
+		result.put("list", menuList);
+			return result;
+	}
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
+		return bakeryMapper.bakeryInfo(bakeryNo);
+	}
+	@Override
+	public void menuDelete(int menuNo) {
+		String changeName = bakeryMapper.getMenuImgInfo(menuNo);
+		if(changeName!=null) {
+			bakeryMapper.deleteMenuImg(changeName);
+		}
+		bakeryMapper.menuDelete(menuNo);
+		logger.warn("{}번 메뉴 삭제됨", menuNo);
+	}
+	@Override
+	public MenuUpdateResponseDTO getMenuDetail(int menuNo) {
+		MenuUpdateResponseDTO menuDTO = bakeryMapper.getMenuUpdate(menuNo);
+		menuDTO.getMenuCategory().addAll(bakeryMapper.getCategory());
+		return menuDTO;
+	}
+	@Override
+	public void updateMenu(MenuRequestDTO menuDTO, MultipartFile file) {
+		try {
+			FileResponseDTO fileDTO = bakeryMapper.getMenuImg(menuDTO.getMenuNo());
+			if(file!=null&&!file.isEmpty()) {
+				if(fileDTO!=null) {
+					s3Upload.deleteImage(fileDTO.getChangeName());
+					bakeryMapper.deleteMenuImg(fileDTO.getChangeName());
+				}
+					s3Upload.saveFile(file,menuDTO.getFileDTO());
+					bakeryMapper.menuFileUpload(menuDTO);
+					bakeryMapper.menuUpdate(menuDTO);
+			}
+		
+		} catch (IOException e) {
+			throw new BakeryException("메뉴 수정 실패","common/error",HttpStatus.NOT_ACCEPTABLE);
+		}
+	}
+	@Override
+	public void updateUserCount(int bakeryNo) {
+		int count = bakeryMapper.getUserCountBybakeryNo(bakeryNo);
+		count++;
+		bakeryMapper.updateUserCount(bakeryNo,count);
 	}
 
 }
