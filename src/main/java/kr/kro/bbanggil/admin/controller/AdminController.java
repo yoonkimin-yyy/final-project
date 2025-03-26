@@ -1,5 +1,7 @@
 package kr.kro.bbanggil.admin.controller;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
@@ -100,16 +101,13 @@ public class AdminController {
 	}
 
 	@PostMapping("/bakery/update")
-	@ResponseBody
 	public String bakeryUpdateForm(@RequestParam("action") String action,
 								   @RequestParam("bakeryNo") int bakeryNo,
 								   @RequestParam("rejectReason") String rejectReason) {
 		
 		adminService.update(action, bakeryNo, rejectReason);
 		
-		String message = ("승인".equals(action) ? "승인" : "거절") + " 완료되었습니다.";
-
-		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
+		return "redirect:/admin/form";
 	}
 
 	/*
