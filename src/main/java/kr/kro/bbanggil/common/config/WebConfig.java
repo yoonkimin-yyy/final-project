@@ -24,7 +24,9 @@ public class WebConfig implements WebMvcConfigurer{
 		
 		//admin권한이 있는지 확인하는 인터셉터
 		registry.addInterceptor(adminAuthInterceptor)
-				.addPathPatterns("/admin/**");
+				.addPathPatterns("/admin/**")
+				.excludePathPatterns("/admin/login");
+				
 	}
 	
 }
