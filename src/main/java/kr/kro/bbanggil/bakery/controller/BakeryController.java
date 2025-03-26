@@ -100,6 +100,7 @@ public class BakeryController {
 		model.addAttribute("pi",piResult);
 		model.addAttribute("today",todayDayOfWeek);
 		model.addAttribute("bakerySearchDTO",bakerySearchDTO);
+		model.addAttribute("searchText", bakerySearchDTO.getSearchText());
 		
 		return "user/bakery-list";
 	}

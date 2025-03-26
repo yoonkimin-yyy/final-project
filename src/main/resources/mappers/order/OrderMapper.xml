@@ -214,6 +214,8 @@ ON
 WHERE
 	ui.USER_NO = #{userNo}
 	AND bi.BAKERY_NO = #{bakeryNo}
+	ORDER BY oi.ORDER_NO DESC
+FETCH FIRST 1 ROWS ONLY
 	
 	
 	</select>
