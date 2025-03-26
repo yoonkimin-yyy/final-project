@@ -150,8 +150,14 @@ body {
 	background-color: #FFC107;
 }
 
-.status-completed {
+.status-complete {
 	background-color: #4CAF50;
+}
+.status-denied{
+	background-color: red;
+}
+.status-done{
+	background-color: #aaaaaa;
 }
 
 table {

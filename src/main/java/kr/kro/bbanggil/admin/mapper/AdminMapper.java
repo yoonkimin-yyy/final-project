@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
+import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
+import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
 
 @Mapper
 public interface AdminMapper {
@@ -40,6 +43,21 @@ public interface AdminMapper {
 	void insertInquiryReply(InquiryReplyRequestDto inquiryReplyDto);
 
 	void updateInquiryStatusToAnswered(@Param("inquiryNo")int inquiryNo);
+
+	@Select("SELECT SUM(user_count) FROM user_count")
+	int getTodayUser();
+
+	@Select("SELECT count(*) FROM order_info")
+	int getTotalOrder();
+
+	@Select("SELECT COUNT(*) FROM user_info WHERE created_date >= SYSDATE - INTERVAL '1' MONTH")
+	int getNewUser();
+
+	List<NewlyResponseDTO> getNewlyOrder();
+
+	List<MonthlyOrderResponseDTO> getMonthlyOrderCount();
+
+	List<InquiryResponseDto> getInquiries();
 
 	
 }

@@ -76,6 +76,8 @@ public interface BakeryService {
 	MenuUpdateResponseDTO getMenuDetail(int menuNo);
 	
 	void updateMenu(MenuRequestDTO menuDTO, MultipartFile file);
+	
+	void updateUserCount(int bakeryNo);
 
 	
 	
