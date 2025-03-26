@@ -344,5 +344,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
     
     
+    @Override
+    public void reviewReport(ReviewRequestDto reviewDTO ,int userNo) {
+    	
+    	int reviewNo = reviewDTO.getReviewNo();
+    	String reviewReportDetail = reviewDTO.getReviewReportDetail();
+    	reviewMapper.reviewReport(reviewNo,reviewReportDetail,userNo);
+    }
 	
 }

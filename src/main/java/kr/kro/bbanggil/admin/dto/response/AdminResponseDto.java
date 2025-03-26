@@ -1,7 +1,6 @@
 package kr.kro.bbanggil.admin.dto.response;
 
 import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +16,7 @@ public class AdminResponseDto {
 	private String userBirthdate;
 	private String userType;
 	private String userCreatedate;
+	private String userBusinessNo;
 	private String agreeEmail;
 	private String bakeryNo;
 	private String bakeryName;

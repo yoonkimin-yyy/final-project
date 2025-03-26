@@ -79,8 +79,8 @@
                         <div class="hours-detail" style="display: none;">
                             <th:block th:each="schedule : ${bakery.schedule}">
                                 <div class="hours-item">
-                                    <span class="day" th:text="${schedule.day}">월요일</span> <span class="time"
-                                        th:text="|${schedule.openTime} - ${schedule.closeTime}|">07:00 - 22:00</span>
+                                    <span class="day" th:text="${schedule.day}"></span> <span class="time"
+                                        th:text="|${schedule.openTime} - ${schedule.closeTime}|"></span>
                                 </div>
                             </th:block>
                         </div>
@@ -128,9 +128,15 @@
                 </div>
                 <!-- 메뉴 리스트 -->
                 <div class="menu-list active" id="menu">
+<<<<<<< HEAD
                     <div class="menu-item" th:each="menu : ${menuList}">
                         <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}"
                             alt="메뉴 이미지" class="menu-image" width="100">
+=======
+                    <div class="menu-item" th:each="menu : ${menuList}" th:attr="data-menu-no=${menu.menuNo}">
+                        <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}" alt="메뉴 이미지"
+                            class="menu-image" width="100">
+>>>>>>> 4279f53651643d114ca94dda36857211e67fe657
                         <div class="menu-info">
                             <div class="menu-name" th:text="${menu.menuName}">크로아상</div>
                             <div class="menu-description" th:text="${menu.menuInfo}">바삭한 정통 프랑스 크로아상</div>
@@ -332,7 +338,7 @@
 					        </div>
 							<div class="review-reply-div">
 					            <button class="review-reply-btn"  
-					            	th:if="${bakeryNoUrlValue == bakeryNoValue and not #lists.contains(reviewNoCheck, review.reviewNo)}" 
+					            	th:if="${bakeryNoUrlValue == bakeryNoValue and (reviewNoCheck != null and not #lists.contains(reviewNoCheck, review.reviewNo))}" 
 					            	th:id="'reply-button-'+${review.reviewNo}"
 					                th:attr="onclick=|showReplyForm(${review.reviewNo})|">
 					                <i class="fas fa-pen"></i>답글 작성
@@ -472,7 +478,7 @@
                     </div>
                     <form id="orderForm" action="/bakery/cart/add" method="POST">
                         <input type="hidden" name="orderData" id="orderData">
-                        <input type="hidden" name="userNo" id="userNo" value="4">
+                        <input type="hidden" name="userNo" id="userNo" value="${userNo}">
                         <button type="submit" class="checkout-button">주문하기</button>
                     </form>
                 </div>
@@ -485,6 +491,7 @@
     
     <input type="hidden" id="bakeryNo">
     <input type="hidden" id="reviewNo">
+    <input type="hidden" id="userNum" value="session.userNum">
 
     <!-- 모달 추가 (body 태그 끝나기 전에 추가) -->
     <div id="reviewModal" class="modal">

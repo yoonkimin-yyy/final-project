@@ -23,7 +23,6 @@ import kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
-import kr.kro.bbanggil.pickup.exception.PickupException;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -111,26 +110,28 @@ public class ReviewController {
 	
 	@GetMapping("/report/form")
 	public String reviewReportForm(@RequestParam("reviewNo") int reviewNo,
-									//@RequestParam("userNum") int userNo,
 									HttpSession session,
 									Model model) {
-		//if(session.getAttribute("userNo") == null) {
-			//throw new BakeryException("로그인 후 신고가 가능합니다.","common/error",HttpStatus.BAD_REQUEST);
-		//}
-		model.addAttribute("reviewNo", reviewNo);
-		//session.setAttribute("userNo", userNo);
-		int userNo = 33;
-		session.setAttribute("userNo", userNo);
-		
-		return "user/review-report";
+		if(session.getAttribute("userNum") == null) {
+			throw new BakeryException("로그인 후 신고가 가능합니다.","common/error",HttpStatus.BAD_REQUEST);
+		} else {
+			model.addAttribute("reviewNo", reviewNo);
+			
+			return "user/review-report";
+		}
 	}
 	
 	@PostMapping("/report")
 	public String reviewReport(@RequestParam("reviewNo") int reviewNo,
-					@SessionAttribute(name = "userNo", required = false) int userNo,
-								HttpSession session,
-								Model model		) {
+					@SessionAttribute(name = "userNum", required = false) int userNo,
+					@ModelAttribute ReviewRequestDto requestDTO,
+								HttpSession session,Model model) {
 		model.addAttribute("reviewNo", reviewNo);
+		
+		
+		
+		
+		reviewService.reviewReport(requestDTO,userNo);
 		
 		
 		return "user/review-report";

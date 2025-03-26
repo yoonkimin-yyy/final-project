@@ -76,6 +76,6 @@ public interface ReviewMapper {
     
     List<ReviewResponseDto> reviewCheck(@Param("bakeryNo") int bakeryNo );
     
-    void reviewReport();
+    void reviewReport(@Param("reviewNo")int reviewNo, @Param("reviewReportDetail")String reviewReportDetail, @Param("userNo") int userNo);
 	
 }

@@ -48,15 +48,16 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
-
+		
 		return "admin/admin-page";
 	}
 
 	@GetMapping("/bakery/detail")
-	public String bakeryDetailForm(@RequestParam("listNum") int listNum,
+	public String bakeryDetailForm(@RequestParam("bakeryNo") int bakeryNo,
+			   					   @RequestParam("userNo") int userNo,
 			   					   Model model) {
-		
-		AdminResponseDto result = adminService.bakeryDetailList(listNum);
+
+		AdminResponseDto result = adminService.bakeryDetailList(bakeryNo, userNo);
 		
 		model.addAttribute("result", result);
 
@@ -64,10 +65,10 @@ public class AdminController {
 	}
 
 	@GetMapping("/user/detail")
-	public String userDetailForm(@RequestParam("listNum") int listNum,
+	public String userDetailForm(@RequestParam("userNo") int userNo,
 								 Model model) {
 		
-		AdminResponseDto result = adminService.userDetailList(listNum);
+		AdminResponseDto result = adminService.userDetailList(userNo);
 		
 		model.addAttribute("result", result);
 		
@@ -75,15 +76,12 @@ public class AdminController {
 	}
 
 	@GetMapping("/bakery/accept")
-	public String bakeryAcceptForm(@RequestParam("listNum") int listNum, Model model) {
-
-		AdminResponseDto result = adminService.acceptList(listNum);
-
-		for (int i = 0; i < result.getBakeryImgPath().size(); i++) {
-			System.out.println(result.getBakeryImgPath().get(i).getResourcesPath());
-			System.out.println(result.getBakeryImgPath().get(i).getChangeName());
-		}
-
+	public String bakeryAcceptForm(@RequestParam("listNum") int listNum,
+								   @RequestParam("bakeryNo") int bakeryNo,
+								   @RequestParam("userNo") int userNo,
+								   Model model) {
+		
+		AdminResponseDto result = adminService.acceptList(bakeryNo, userNo);
 		
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
@@ -93,11 +91,12 @@ public class AdminController {
 
 	@PostMapping("/bakery/update")
 	@ResponseBody
-	public String bakeryUpdateForm(@RequestParam("action") String action, @RequestParam("listNum") int listNum,
-			@RequestParam("rejectReason") String rejectReason) {
-
-		adminService.update(action, listNum, rejectReason);
-
+	public String bakeryUpdateForm(@RequestParam("action") String action,
+								   @RequestParam("bakeryNo") int bakeryNo,
+								   @RequestParam("rejectReason") String rejectReason) {
+		
+		adminService.update(action, bakeryNo, rejectReason);
+		
 		String message = ("승인".equals(action) ? "승인" : "거절") + " 완료되었습니다.";
 
 		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
@@ -162,12 +161,5 @@ public class AdminController {
 		
 		return "admin/admin-order-list";
 	}
-	
-
-	
-	
-	
-	
-	
 	
 }

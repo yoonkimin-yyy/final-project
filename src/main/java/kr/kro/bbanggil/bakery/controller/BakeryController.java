@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,6 +33,7 @@ import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO;
@@ -162,11 +164,12 @@ public class BakeryController {
 		}
 		model.addAttribute("reviewReplies",reviewReplies);
 		
-		int userNo = (int) session.getAttribute("userNum");
 		
 		
 		// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
-		int resultValue = reviewService.byIdCheck(userNo,no);
+		if(session.getAttribute("userNum") != null) {
+			int userNo = (int) userNum;
+			int resultValue = reviewService.byIdCheck(userNo,no);
 			if(resultValue == 0) {
 				int bakeryNoInt = (int) no;
 				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
@@ -178,8 +181,8 @@ public class BakeryController {
 				
 				
 				List<Integer> reviewNoCheck = Arrays.stream(reviewCheckArray)
-                        .boxed() // int[] → List<Integer> 변환
-                        .collect(Collectors.toList());
+						.boxed() // int[] → List<Integer> 변환
+						.collect(Collectors.toList());
 				
 				model.addAttribute("reviewNoCheck",reviewNoCheck);
 				model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
@@ -187,6 +190,7 @@ public class BakeryController {
 				model.addAttribute("reviewCheck", reviewCheck);
 				
 			}
+		}
 		
 		
 		
@@ -220,7 +224,6 @@ public class BakeryController {
 		model.addAttribute("menuList", menuList);
 
 		
-		System.out.println(menuList.size());
 		
 		
 		/*
@@ -263,10 +266,13 @@ public class BakeryController {
 		
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();
 		
+		
+		
 		  try {
 		        //  배열로 먼저 파싱하고 리스트로 변환
 		        MenuDetailRequestDto[] dtoArray = objectMapper.readValue(orderData, MenuDetailRequestDto[].class);
 		        menuDtoList = Arrays.asList(dtoArray);
+		        
 		    } catch (Exception e) {
 		        e.printStackTrace(); // 파싱 에러 로그
 		    }
@@ -353,5 +359,28 @@ public class BakeryController {
 		return "/owner/bakery-info";
 	}
 	
-
+	@PostMapping("/menu/delete")
+	public String menuDelete(@RequestParam("menuNo") int menuNo,
+							 @RequestParam("no")int no,
+							 RedirectAttributes redirectAttributes) {
+		bakeryService.menuDelete(menuNo);
+		redirectAttributes.addAttribute("no", no);
+		return "redirect:/bakery/menu/list/form";
+	}
+	@GetMapping("/menu/update/form")
+	public String menuUpdateForm(@RequestParam("menuNo") int menuNo,
+								 Model model) {
+		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail(menuNo);
+		
+		model.addAttribute("menu",menuDTO);
+		model.addAttribute("menuNo",menuNo);
+		return "/owner/menu-update";
+	}
+	@PostMapping("/menu/update")
+	public String menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file) {
+		bakeryService.updateMenu(menuDTO,file);
+		return "/owner/menu-list";
+	}
 }
+
