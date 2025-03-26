@@ -31,5 +31,17 @@ public class AdminResponseDto {
 	private String acceptDate;
 	
 	private List<BakeryImgResponseDto> bakeryImgPath;
+	
+	// 신고 답변 DTO
+	// 신고 당한 유저
+	private int reportNo;
+	private int reviewNo;
+	private String reportDetail;
+	private String reportDate;
+	private String reportResult;
+	private String reportResultDate;
+	private String reportUnfreeze;
+	private String unfreezeDetail;
+	
 
 }

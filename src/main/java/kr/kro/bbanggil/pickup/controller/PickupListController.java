@@ -46,6 +46,7 @@ public class PickupListController {
     	session.setAttribute("bakeryNo", bakeryNo);
     	
         List<PickupBakeryInfoResponseDTO> orderList = pickupServiceImpl.getAllOrders(userNo, bakeryNo);
+        
        
         model.addAttribute("orders",orderList);
         model.addAttribute("bakeryNo",bakeryNo);

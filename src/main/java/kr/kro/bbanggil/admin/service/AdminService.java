@@ -31,5 +31,5 @@ public interface AdminService {
 	void saveAnswer(InquiryReplyRequestDto inquiryReplyDto);
 
 	void sendEmail(AdminEmailRequestDto adminReqeustDto);
-
+	List<AdminResponseDto> reportList();
 }

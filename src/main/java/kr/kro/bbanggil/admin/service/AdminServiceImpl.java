@@ -101,5 +101,10 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 
+	@Override
+	public List<AdminResponseDto> reportList(){
+		
+		return adminMapper.reportList(); 
+	}
 
 }

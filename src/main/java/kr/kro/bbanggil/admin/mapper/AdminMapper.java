@@ -38,6 +38,8 @@ public interface AdminMapper {
 	void insertInquiryReply(InquiryReplyRequestDto inquiryReplyDto);
 
 	void updateInquiryStatusToAnswered(@Param("inquiryNo")int inquiryNo);
+	
+	List<AdminResponseDto> reportList();
 
 	
 }

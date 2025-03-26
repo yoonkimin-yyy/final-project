@@ -42,10 +42,13 @@ public class AdminController {
 
 		List<AdminResponseDto> bakeryList = adminService.bakeryList();
 		List<AdminResponseDto> userList = adminService.userList();
+		List<AdminResponseDto> reportList = adminService.reportList();
 		
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
+		model.addAttribute("reportLists", reportList);
+		
 		
 		return "admin/admin-page";
 	}
