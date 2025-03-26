@@ -2,7 +2,7 @@
 <nav class="navigation" th:fragment="NavFragment">
     <div class="nav-scroll">
 
-        <a href="/bakery/list?searchText=&orderType=recent" class="nav-item nav-item-active">전체 빵집</a>
+        <a th:onclick="|location.href='@{/bakery/list?searchText=&orderType=popular}'|" class="nav-item nav-item-active">전체 빵집</a>
 
         
 
