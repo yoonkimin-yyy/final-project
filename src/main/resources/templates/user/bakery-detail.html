@@ -2,7 +2,7 @@
 <html lang="ko">
 
 <head>
-	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+   <head th:replace="~{fragments/head :: HeadFragment}"></head>
     <link rel="stylesheet" href="/css/bakery/detail/detail.css">
 
     
@@ -29,25 +29,25 @@
         </div>
 
         <!-- <div class="container">
-		<div class="slider-container" th:each="bakery : ${bakeriesInfo}">
-			<div class="slider">
-				<div class="slide">
-					<img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" th:alt="${bakery.name}" class="bakery-image">
-				</div>
-				<div class="slide">
-					<img src="https://api.a0.dev/assets/image?text=fresh%20bread%20display%20in%20bakery" alt="빵집 전경 2">
-				</div>
-				<div class="slide">
-					<img src="https://api.a0.dev/assets/image?text=cozy%20bakery%20cafe%20interior" alt="빵집 전경 3">
-				</div>
-			</div>
-			<button class="slider-button prev">
-				<i class="fas fa-chevron-left"></i>
-			</button>
-			<button class="slider-button next">
-				<i class="fas fa-chevron-right"></i>
-			</button>
-		</div> -->
+      <div class="slider-container" th:each="bakery : ${bakeriesInfo}">
+         <div class="slider">
+            <div class="slide">
+               <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" th:alt="${bakery.name}" class="bakery-image">
+            </div>
+            <div class="slide">
+               <img src="https://api.a0.dev/assets/image?text=fresh%20bread%20display%20in%20bakery" alt="빵집 전경 2">
+            </div>
+            <div class="slide">
+               <img src="https://api.a0.dev/assets/image?text=cozy%20bakery%20cafe%20interior" alt="빵집 전경 3">
+            </div>
+         </div>
+         <button class="slider-button prev">
+            <i class="fas fa-chevron-left"></i>
+         </button>
+         <button class="slider-button next">
+            <i class="fas fa-chevron-right"></i>
+         </button>
+      </div> -->
 
         <!-- 헤더 섹션 -->
         <div class="header">
@@ -97,10 +97,10 @@
                             <div class="tag-header">
                                 <div class="tag-left">
                                     <span class="emoji" th:text="${tagEntry.key == '빵이 맛있어요' ? '🍞' :
-				                                   tagEntry.key == '친절해요' ? '💖' :
-				                                   tagEntry.key == '매장이 청결해요' ? '✨' :
-				                                   tagEntry.key == '특별한 메뉴가 있어요' ? '🌟' :
-				                                   tagEntry.key == '아이와 가기 좋아요' ? '👶' : '🏠'}">
+                                               tagEntry.key == '친절해요' ? '💖' :
+                                               tagEntry.key == '매장이 청결해요' ? '✨' :
+                                               tagEntry.key == '특별한 메뉴가 있어요' ? '🌟' :
+                                               tagEntry.key == '아이와 가기 좋아요' ? '👶' : '🏠'}">
                                     </span>
                                     <span class="text" th:utext="${tagEntry.key}"></span>
                                 </div>
@@ -112,6 +112,8 @@
                         </div>
                     </th:block>
                 </div>
+
+
             </div>
         </div>
 
@@ -128,15 +130,9 @@
                 </div>
                 <!-- 메뉴 리스트 -->
                 <div class="menu-list active" id="menu">
-<<<<<<< HEAD
-                    <div class="menu-item" th:each="menu : ${menuList}">
-                        <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}"
-                            alt="메뉴 이미지" class="menu-image" width="100">
-=======
                     <div class="menu-item" th:each="menu : ${menuList}" th:attr="data-menu-no=${menu.menuNo}">
                         <img th:src="@{${menu.resourcesPath} + '/' + ${menu.changeName}}" alt="메뉴 이미지"
                             class="menu-image" width="100">
->>>>>>> 4279f53651643d114ca94dda36857211e67fe657
                         <div class="menu-info">
                             <div class="menu-name" th:text="${menu.menuName}">크로아상</div>
                             <div class="menu-description" th:text="${menu.menuInfo}">바삭한 정통 프랑스 크로아상</div>
@@ -145,268 +141,140 @@
                         <button class="add-to-cart">담기</button>
                     </div>
                 </div>
-                <!-- 리뷰 섹션 -->
-                
-                <div id="reviews">
-				    <div class="review" th:each="review : ${reviews}" th:attr="data-review-no=${review.reviewNo}">
-				        <div class="review-report">
-				            <img onclick="reviewReport()" class="review-report-img" src="/img/common/신고아이콘.png" alt="">
-				        </div>
-				        <div class="review-header">
-				            <span class="reviewer-name" th:text="${review.userId}"></span>
-				            <div class="review-rating">
-				                <i class="fas fa-star" th:each="star : ${#numbers.sequence(1, review.reviewRating)}"></i>
-				            </div>
-				        </div>
-				        <div class="review-date" th:text="${review.reviewDate}"></div>
-				        <div class="review-content" th:text="${review.reviewDetail}"></div>
-				        
-				        <div class="review-actions">
-				            <button type="button" class="btn btn-edit" onclick="editReview()">수정</button>
-				            <button type="button" class="btn btn-delete" 
-				                th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">
-				                삭제
-				            </button>
-				        </div>
-						<div class="review-reply-div">
-				            <button class="review-reply-btn"  
-				            	th:if="${bakeryNoUrlValue == bakeryNoValue and not #lists.contains(reviewNoCheck, review.reviewNo)}" 
-				            	th:id="'reply-button-'+${review.reviewNo}"
-				                th:attr="onclick=|showReplyForm(${review.reviewNo})|">
-				                <i class="fas fa-pen"></i>답글 작성
-				            </button>
-				        </div>
-				
-				        <!-- 답글 작성 폼 -->
-				        <form action="/review/reply" method="post">
-				            <div th:id="'reply-box-'+${review.reviewNo}" class="hidden">
-				                <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
-				                <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
-				                <textarea name="replyText" th:id="'reply-text-'+${review.reviewNo}" 
-				                    placeholder="답글을 작성하세요" style="width: 100%; height: 70%;"></textarea>
-				                <br>
-				                <div class="reply-button-div">
-				                    <button th:id="'submit-reply-'+${review.reviewNo}" type="submit">답글 등록</button>
-				                </div>
-				            </div>
-				        </form>
-				        
-				        
-				        <!-- 해당 리뷰에 대한 답글 표시 (각 리뷰 안에 포함) -->
-				        <div class="review-reply-main-div"  th:id="'review-reply-'+${review.reviewNo}">
-				            <div th:each="reply : ${reviewReplies}" th:if="${review.reviewNo == reply.reviewNo}" 
-				                class="review-reply-sub-div" style="width: 80%; height: auto;">
-				                <div class="review-reply-header">
-				                    <h4>사장님 답글</h4>
-				                </div>
-				                <div class="review-reply-date-div">
-				                    <div class="review-reply-date" th:text="${reply.reviewReplyDate}"></div>
-				                </div>
-				                <div class="review-reply-content">
-				                    <span th:text="${reply.reviewReply}"></span>
-				                </div>
-				            </div>
-				        </div>
-				    </div>
-				    
-				
-
-				
-				
-                    <!-- 리뷰 리스트 -->
-                    <div id="reviewSection">
-                        <div class="review" th:each="review : ${reviews}">
-                            <div class="review-header">
-                                <span class="reviewer-name" th:text="${review.userId}"></span>
-                                <div class="review-rating">
-                                    <i class="fas fa-star"
-                                        th:each="star : ${#numbers.sequence(1, review.reviewRating)}"></i>
+                 <div class="reviews" id="reviews">
+                   <div>
+                        <div class="reviews-header">
+                            <h2>리뷰</h2>
+                            <form id="reviewSortForm" method="GET" th:action="@{/bakery/detail}">
+                                <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
+                                <div class="review-sort">
+                                    <select id="reviewSort" onchange="sortReviews()">
+                                        <option value="latest" th:selected="${sort == 'latest'}">최신순</option>
+                                        <option value="highest" th:selected="${sort == 'highest'}">평점 높은순</option>
+                                        <option value="lowest" th:selected="${sort == 'lowest'}"> 평점 낮은순</option>
+                                    </select>
+                                </div>
+                            </form>
+                            <div id="openReviewModal">
+                                <button class="write-review-btn">
+                                    <i class="fas fa-pen"></i> 리뷰 작성
+                                </button>
+                            </div>
+                        </div>
+                        <div class="carousel-container">
+                            <div class="carousel">
+                                <div class="carousel-slide" th:each="review : ${reviewImages}">
+                                    <img th:src="@{${review.resourcesPath} + '/' + ${review.changeName}}"
+                                        class="review-image">
                                 </div>
                             </div>
-                            <input type="hidden" id="reviewNo" th:value="${review.reviewNo}">
-                            <input type="hidden" id="reviewRating" th:value="${review.reviewRating}">
-                            <input type="hidden" id="reviewDetail" th:value="${review.reviewDetail}">
-                            <div class="review-date" th:text="${review.reviewDate}"></div>
-                            <div class="review-content" th:text="${review.reviewDetail}"></div>
-                            <div class="review-tags">
+                            <button class="carousel-prev">&#10094;</button>
+                            <button class="carousel-next">&#10095;</button>
+                            <div class="carousel-dots"></div>
+                        </div>
+                   </div>
+                   
+                        
+                   <!-- 리뷰 섹션 -->
+                   <div>
+                   <div class="review" th:each="review : ${reviews}" th:attr="data-review-no=${review.reviewNo}">
+                       <div class="review-report">
+                           <a th:href="@{/review/report/form(reviewNo=${review.reviewNo})}"
+                              onclick="window.open(this.href, '_blank', 'width=800,height=600'); return false;">
+                              <img class="review-report-img" src="/img/common/신고아이콘.png" alt="">
+                           </a>
+                       </div>
+                       <div class="review-header">
+                           <span class="reviewer-name" th:text="${review.userId}"></span>
+                           <div class="review-rating">
+                               <i class="fas fa-star" th:each="star : ${#numbers.sequence(1, review.reviewRating)}"></i>
+                           </div>
+                       </div>
+                       <input type="hidden" id="reviewNo" th:value="${review.reviewNo}">
+                           <input type="hidden" id="reviewRating" th:value="${review.reviewRating}">
+                           <input type="hidden" id="reviewDetail" th:value="${review.reviewDetail}">
+                       <div class="review-date" th:text="${review.reviewDate}"></div>
+                       <div class="review-content" th:text="${review.reviewDetail}"></div>
+                       <div class="review-tags">
                                 <th:block th:if="${review.tagFirst != null}" class="tag-label"
                                     th:utext="${review.tagFirst}">
                                 </th:block>
-                            </div>
-                            <th:block th:each="image : ${reviewImages}">
-                                <img th:if="${image.resourcesPath != null and image.changeName != null}"
-                                    th:src="@{|${image.resourcesPath}/${image.changeName}|}" class="review-image">
-                            </th:block>
-                            <div class="review-actions">
-                                <button type="button" class="btn btn-edit" onclick="editReview()">수정</a>
-                                    <button type="button" class="btn btn-delete" onclick="deleteReview()"
-                                        th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <ul class="pagination">
-                        <!-- 이전 페이지 버튼 -->
-                        <li class="page-item" style="margin-right: 0px"><a class="page-link"
-                                th:href="${pi.currentPage > 1 ? '/detail(currentPage=' + (pi.currentPage - 1) + ', bakeryNo=' + bakeryNo + ')' : '#'}"
-                                th:classappend="${pi.currentPage > 1 ? '' : 'disabled'}" aria-label="Previous"> <span
-                                    aria-hidden="true">&laquo;</span>
-                            </a></li>
-
-                        <!-- 페이지 번호 버튼 -->
-                        <li class="page-item"
-                            th:each="page : ${pi != null ? #numbers.sequence(pi.startPage, pi.endPage) : {}}"><a
-                                class="page-link" th:href="@{/bakery/detail(currentPage=${page}, bakeryNo=${bakeryNo})}"
-                                th:text="${page}"> </a></li>
-
-                        <!-- 다음 페이지 버튼 -->
-                        <li class="page-item"><a class="page-link" th:if="${pi != null and pi.currentPage < pi.maxpage}"
-                                th:href="@{/bakery/detail(currentPage=${pi.currentPage + 1}, bakeryNo=${bakeryNo})}"
-                                aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-                            </a></li>
-                    </ul>
-
-                </div>
-
-=======
-	           	<div class="reviews" id="reviews">
-	                <div>
-	                     <div class="reviews-header">
-	                         <h2>리뷰</h2>
-	                         <form id="reviewSortForm" method="GET" th:action="@{/bakery/detail}">
-	                             <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
-	                             <div class="review-sort">
-	                                 <select id="reviewSort" onchange="sortReviews()">
-	                                     <option value="latest" th:selected="${sort == 'latest'}">최신순</option>
-	                                     <option value="highest" th:selected="${sort == 'highest'}">평점 높은순</option>
-	                                     <option value="lowest" th:selected="${sort == 'lowest'}"> 평점 낮은순</option>
-	                                 </select>
-	                             </div>
-	                         </form>
-	                         <div id="openReviewModal">
-	                             <button class="write-review-btn">
-	                                 <i class="fas fa-pen"></i> 리뷰 작성
-	                             </button>
-	                         </div>
-	                     </div>
-	                     <div class="carousel-container">
-	                         <div class="carousel">
-	                             <div class="carousel-slide" th:each="review : ${reviewImages}">
-	                                 <img th:src="@{${review.resourcesPath} + '/' + ${review.changeName}}"
-	                                     class="review-image">
-	                             </div>
-	                         </div>
-	                         <button class="carousel-prev">&#10094;</button>
-	                         <button class="carousel-next">&#10095;</button>
-	                         <div class="carousel-dots"></div>
-	                     </div>
-	                </div>
-	                     
-	                <!-- 리뷰 섹션 -->
-	                <div>
-					    <div class="review" th:each="review : ${reviews}" th:attr="data-review-no=${review.reviewNo}">
-					        <div class="review-report">
-					            <a th:href="@{/review/report/form(reviewNo=${review.reviewNo})}"
-					            	onclick="window.open(this.href, '_blank', 'width=800,height=600'); return false;">
-					            	<img class="review-report-img" src="/img/common/신고아이콘.png" alt="">
-					            </a>
-					        </div>
-					        <div class="review-header">
-					            <span class="reviewer-name" th:text="${review.userId}"></span>
-					            <div class="review-rating">
-					                <i class="fas fa-star" th:each="star : ${#numbers.sequence(1, review.reviewRating)}"></i>
-					            </div>
-					        </div>
-					        <input type="hidden" id="reviewNo" th:value="${review.reviewNo}">
-	                        <input type="hidden" id="reviewRating" th:value="${review.reviewRating}">
-	                        <input type="hidden" id="reviewDetail" th:value="${review.reviewDetail}">
-					        <div class="review-date" th:text="${review.reviewDate}"></div>
-					        <div class="review-content" th:text="${review.reviewDetail}"></div>
-					        <div class="review-tags">
-	                             <th:block th:if="${review.tagFirst != null}" class="tag-label"
-	                                 th:utext="${review.tagFirst}">
-	                             </th:block>
-	                        </div>
-	                             <img th:src="@{${review.resourcesPath} + '/' + ${review.changeName}}" class="review-image">
-					        <div class="review-actions">
-					            <button type="button" class="btn btn-edit" onclick="editReview()">수정</button>
-					            <button type="button" class="btn btn-delete" 
-					                th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">
-					                삭제
-					            </button>
-					        </div>
-							<div class="review-reply-div">
-					            <button class="review-reply-btn"  
-					            	th:if="${bakeryNoUrlValue == bakeryNoValue and (reviewNoCheck != null and not #lists.contains(reviewNoCheck, review.reviewNo))}" 
-					            	th:id="'reply-button-'+${review.reviewNo}"
-					                th:attr="onclick=|showReplyForm(${review.reviewNo})|">
-					                <i class="fas fa-pen"></i>답글 작성
-					            </button>
-					        </div>
-					
-					        <!-- 답글 작성 폼 -->
-					        <form action="/review/reply" method="post">
-					            <div th:id="'reply-box-'+${review.reviewNo}" class="hidden">
-					                <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
-					                <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
-					                <textarea name="replyText" th:id="'reply-text-'+${review.reviewNo}" 
-					                    placeholder="답글을 작성하세요" style="width: 100%; height: 70%;"></textarea>
-					                <br>
-					                <div class="reply-button-div">
-					                    <button th:id="'submit-reply-'+${review.reviewNo}" type="submit">답글 등록</button>
-					                </div>
-					            </div>
-					        </form>
-					        
-					        
-					        <!-- 해당 리뷰에 대한 답글 표시 (각 리뷰 안에 포함) -->
-					        <div class="review-reply-main-div"  th:id="'review-reply-'+${review.reviewNo}">
-					            <div th:each="reply : ${reviewReplies}" th:if="${review.reviewNo == reply.reviewNo}" 
-					                class="review-reply-sub-div" style="width: 80%; height: auto;">
-					                <div class="review-reply-header">
-					                    <h4>사장님 답글</h4>
-					                </div>
-					                <div class="review-reply-date-div">
-					                    <div class="review-reply-date" th:text="${reply.reviewReplyDate}"></div>
-					                </div>
-					                <div class="review-reply-content">
-					                    <span th:text="${reply.reviewReply}"></span>
-					                </div>
-					            </div>
-					        </div>
-					    </div>
-					    
-					
-	
-					
-					
-	
-	
-	                    <ul class="pagination">
-	                        <!-- 이전 페이지 버튼 -->
-	                        <li class="page-item" style="margin-right: 0px"><a class="page-link"
-	                                th:href="${pi.currentPage > 1 ? '/detail(currentPage=' + (pi.currentPage - 1) + ', bakeryNo=' + bakeryNo + ')' : '#'}"
-	                                th:classappend="${pi.currentPage > 1 ? '' : 'disabled'}" aria-label="Previous"> <span
-	                                    aria-hidden="true">&laquo;</span>
-	                            </a></li>
-	
-	                        <!-- 페이지 번호 버튼 -->
-	                        <li class="page-item"
-	                            th:each="page : ${pi != null ? #numbers.sequence(pi.startPage, pi.endPage) : {}}"><a
-	                                class="page-link" th:href="@{/bakery/detail(currentPage=${page}, bakeryNo=${bakeryNo})}"
-	                                th:text="${page}"> </a></li>
-	
-	                        <!-- 다음 페이지 버튼 -->
-	                        <li class="page-item"><a class="page-link" th:if="${pi != null and pi.currentPage < pi.maxpage}"
-	                                th:href="@{/bakery/detail(currentPage=${pi.currentPage + 1}, bakeryNo=${bakeryNo})}"
-	                                aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-	                            </a></li>
-	                    </ul>
-	
-	                </div>
-				</div>
->>>>>>> 9fa1ba359f0c3c63a871a227065834a0be55ec72
+                           </div>
+                           <img th:if="${review.resourcesPath != null and review.changeName != null}"
+    			 				th:src="@{${review.resourcesPath + '/' + review.changeName}}"
+     							class="review-image">
+                       <div class="review-actions">
+                           <button type="button" class="btn btn-edit" onclick="editReview()">수정</button>
+                           <button type="button" class="btn btn-delete" 
+                               th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">
+                               삭제
+                           </button>
+                       </div>
+                     <div class="review-reply-div">
+                           <button class="review-reply-btn"  
+                              th:if="${bakeryNoUrlValue == bakeryNoValue and (reviewNoCheck != null and not #lists.contains(reviewNoCheck, review.reviewNo))}" 
+                              th:id="'reply-button-'+${review.reviewNo}"
+                               th:attr="onclick=|showReplyForm(${review.reviewNo})|">
+                               <i class="fas fa-pen"></i>답글 작성
+                           </button>
+                       </div>
+               
+                       <!-- 답글 작성 폼 -->
+                       <form action="/review/reply" method="post">
+                           <div th:id="'reply-box-'+${review.reviewNo}" class="hidden">
+                               <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
+                               <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
+                               <textarea name="replyText" th:id="'reply-text-'+${review.reviewNo}" 
+                                   placeholder="답글을 작성하세요" style="width: 100%; height: 70%;"></textarea>
+                               <br>
+                               <div class="reply-button-div">
+                                   <button th:id="'submit-reply-'+${review.reviewNo}" type="submit">답글 등록</button>
+                               </div>
+                           </div>
+                       </form>
+                       
+                       
+                       <!-- 해당 리뷰에 대한 답글 표시 (각 리뷰 안에 포함) -->
+                       <div class="review-reply-main-div"  th:id="'review-reply-'+${review.reviewNo}">
+                           <div th:each="reply : ${reviewReplies}" th:if="${review.reviewNo == reply.reviewNo}" 
+                               class="review-reply-sub-div" style="width: 80%; height: auto;">
+                               <div class="review-reply-header">
+                                   <h4>사장님 답글</h4>
+                               </div>
+                               <div class="review-reply-date-div">
+                                   <div class="review-reply-date" th:text="${reply.reviewReplyDate}"></div>
+                               </div>
+                               <div class="review-reply-content">
+                                   <span th:text="${reply.reviewReply}"></span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   
+   
+                       <ul class="pagination">
+                           <!-- 이전 페이지 버튼 -->
+                           <li class="page-item" style="margin-right: 0px"><a class="page-link"
+                                   th:href="${pi.currentPage > 1 ? '/detail(currentPage=' + (pi.currentPage - 1) + ', bakeryNo=' + bakeryNo + ')' : '#'}"
+                                   th:classappend="${pi.currentPage > 1 ? '' : 'disabled'}" aria-label="Previous"> <span
+                                       aria-hidden="true">&laquo;</span>
+                               </a></li>
+   
+                           <!-- 페이지 번호 버튼 -->
+                           <li class="page-item"
+                               th:each="page : ${pi != null ? #numbers.sequence(pi.startPage, pi.endPage) : {}}"><a
+                                   class="page-link" th:href="@{/bakery/detail(currentPage=${page}, bakeryNo=${bakeryNo})}"
+                                   th:text="${page}"> </a></li>
+   
+                           <!-- 다음 페이지 버튼 -->
+                           <li class="page-item"><a class="page-link" th:if="${pi != null and pi.currentPage < pi.maxpage}"
+                                   th:href="@{/bakery/detail(currentPage=${pi.currentPage + 1}, bakeryNo=${bakeryNo})}"
+                                   aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+                               </a></li>
+                       </ul>
+   
+                   </div>
+            </div>
                 <!-- 실내 사진 섹션 -->
                 <div class="interior-photos" id="interior" style="display: none;">
                     <h3>실내 전경</h3>
@@ -485,13 +353,13 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-   
     <!-- 모달 추가 (body 태그 끝나기 전에 추가) -->
+    
+    
     
     <input type="hidden" id="bakeryNo">
     <input type="hidden" id="reviewNo">
-    <input type="hidden" id="userNum" value="session.userNum">
+    <input type="hidden" id="userNum" th:value="${session.userNum}">
 
     <!-- 모달 추가 (body 태그 끝나기 전에 추가) -->
     <div id="reviewModal" class="modal">
@@ -499,6 +367,9 @@
             <span class="close-modal" onclick="closeReviewModal()">&times;</span>
             <h2>리뷰 작성</h2>
             <form id="reviewForm">
+           <input type="hidden"
+       th:if="${recentOrder != null}"
+       th:value="${recentOrder.orderNo}">
                 <div class="form-group">
                     <label for="name">이름</label>
                     <input type="text" id="name" required>
@@ -566,14 +437,13 @@
                     </div>
                 </div>
                 <div class="form-group button-group">
-                    <button type="submit" class="submit-review">등록하기</button>
+                    <button type="button" class="submit-review" onclick="submitReview()">등록하기</button>
                     <button type="button" class="cancel-review" onclick="closeReviewModal()">취소</button>
                 </div>
-            </form>
         </div>
     </div>
 
-	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+   <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
     <script src="/js/bakery/detail/detail.js"></script>
     <script src="/js/bakery/detail/detailAjax.js"></script>
 

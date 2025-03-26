@@ -25,6 +25,8 @@ public class BakeryResponseDto {
 	private String openTime;
 	private String closeTime;
 	private String reviewRating;
+	private int orderNo;
+	private int userNo;
 	
 	
 	

@@ -187,7 +187,36 @@ JOIN BAKERY_INFO bi ON
     WHERE rn BETWEEN #{offset} AND #{limit}
 </select>
 	
+	<select id="findRecentOrder" resultType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto">
 	
+	SELECT
+	oi.ORDER_NO
+FROM
+	ORDER_INFO oi
+JOIN PAYMENT p 
+ON
+	oi.PAY_NO = p.PAY_NO
+JOIN CART c 
+ON
+	c.CART_NO = oi.CART_NO
+JOIN USER_INFO ui 
+ON
+	ui.USER_NO = c.USER_NO
+JOIN CART_INFO ci 
+ON
+	ci.CART_NO = c.CART_NO
+JOIN MENU m 
+ON
+	m.MENU_NO = ci.MENU_NO
+JOIN BAKERY_INFO bi 
+ON
+	bi.BAKERY_NO = m.BAKERY_NO
+WHERE
+	ui.USER_NO = #{userNo}
+	AND bi.BAKERY_NO = #{bakeryNo}
+	
+	
+	</select>
 	
 	
 	

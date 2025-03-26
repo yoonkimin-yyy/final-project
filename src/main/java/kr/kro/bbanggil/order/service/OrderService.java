@@ -5,6 +5,7 @@ import java.util.List;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.order.dto.request.OrderRequestDto;
 import kr.kro.bbanggil.order.dto.request.PaymentRequestDto;
@@ -39,5 +40,7 @@ public interface OrderService {
 	int getOrderCount();
 	
 	List<OrderResponseDto> getPagedOrders(PageResponseDto pi);
+	
+	BakeryResponseDto findOrderNo(int userNum, double bakeryNo);
 
 }

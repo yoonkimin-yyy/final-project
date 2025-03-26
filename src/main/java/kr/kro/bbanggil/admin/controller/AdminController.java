@@ -21,7 +21,6 @@ import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.order.service.OrderServiceImpl;
-import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -102,9 +101,19 @@ public class AdminController {
 		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
 	}
 
+	@GetMapping("/inquiry/form")
+	public String inquiryWrite() {
+		return "admin/admin-inquiry";
+	}
+	
+	
+	
+	
+	
 	/*
 	 * 문의 등록 처리
 	 */
+	
 	@PostMapping("/submit")
 	public String submitInquiry(HttpSession session, @ModelAttribute InquiryRequestDto inquiryRequestDto, Model model) {
 
