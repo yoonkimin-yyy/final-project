@@ -158,6 +158,8 @@ public class BakeryController {
 		
 		
 		
+		
+		
 		// 빵집 번호로 사장님 답글 가져오기
 		List<ReviewResponseDto> reviewReplies = reviewService.getReviewReplies(no);
 		if(reviewReplies.size() < 10) {
@@ -237,10 +239,12 @@ public class BakeryController {
 		List<BakeryDto> bakeryDetail = bakeryService.getBakeryDetail(no);
 		List<BakeryDetailResponseDto> insideImages =  bakeryService.getInsideImages(no);
 		List<BakeryDetailResponseDto> outsideImages = bakeryService.getOutsideImages(no);
+		List<BakeryDetailResponseDto> parkingImages = bakeryService.getParkingImages(no);
 		
 		model.addAttribute("bakeryDetail", bakeryDetail);
 		model.addAttribute("insideImages", insideImages);
 		model.addAttribute("outsideImages", outsideImages);
+		model.addAttribute("parkingImages", parkingImages);
 		
 
 		/*

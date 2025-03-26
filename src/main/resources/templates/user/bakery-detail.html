@@ -309,8 +309,8 @@
         <!-- 주차 정보 섹션 -->
         <div class="parking-info" id="parking" style="display: none;">
           <h3>주차 안내</h3>
-          <div class="parking-content" th:each="bakery : ${bakeryDetail}">
-            <img src="" alt="주차장">
+          <div class="parking-content" th:each="bakery : ${parkingImages}">
+            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" alt="주차장">
             <div class="parking-details">
               <h4>주차 정보</h4>
               <ul>

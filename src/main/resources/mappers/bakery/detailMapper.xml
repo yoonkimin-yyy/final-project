@@ -270,6 +270,27 @@ GROUP BY
 </select>
 
 
+<select id="getParkingImages" resultMap="DetailResultMap">
+ SELECT
+        bi.bakery_address,
+        bi.bakery_name,
+        bi.bakery_phone,
+        bi.BAKERY_NO,
+        bd.AMENITY,
+        bd.OUTSIDE_INFO,
+        bd.CREATED_DATE,
+        BI2.IMG_NO,
+        BI2.RESOURCES_PATH,
+        BI2.CHANGE_NAME,
+        BI2.POSITION
+    FROM BAKERY_DETAIL bd
+    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
+    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
+    WHERE bi.BAKERY_NO = #{no}
+      AND BI2.POSITION = 'parking'
+
+</select>
+
 
 
 
