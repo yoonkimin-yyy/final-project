@@ -503,8 +503,8 @@ public class BakeryServiceImpl implements BakeryService{
 				}
 					s3Upload.saveFile(file,menuDTO.getFileDTO());
 					bakeryMapper.menuFileUpload(menuDTO);
-					bakeryMapper.menuUpdate(menuDTO);
 			}
+			bakeryMapper.menuUpdate(menuDTO);
 		
 		} catch (IOException e) {
 			throw new BakeryException("메뉴 수정 실패","common/error",HttpStatus.NOT_ACCEPTABLE);
