@@ -200,30 +200,46 @@ public class MemberController {
      * 아이디 찾기
      */
     @PostMapping("/find/id")
-    public String findUserId(@RequestParam("userEmail") String userEmail, Model model) {
+    public String findUserId(MemberRequestSignupDto memberRequestSignupDto, Model model) {
         try {
-            String userId = findIdPwService.findUserIdByEmail(userEmail);
-            model.addAttribute("message", userId);    
+            String userId = findIdPwService.findUserIdByEmail(memberRequestSignupDto);
+            
+            if (userId == "등록된 정보가 아닙니다.") {
+                // 이메일이 등록되지 않은 경우
+                model.addAttribute("error", "등록된 정보가 아닙니다.");
+                return "redirect:/register/find/form";  // 오류 페이지로 리다이렉트
+            }
+            
+            // 이메일이 등록되어 있는 경우
+            model.addAttribute("message", "아이디: " + userId);
+            return "redirect:/register/loginin/form";  // 아이디를 찾았으면 로그인 페이지로 리다이렉트
         } catch (Exception e) {
             model.addAttribute("error", "아이디 찾기 중 오류 발생");
             e.printStackTrace();  // 오류 발생 시 로그로 확인
+            return "redirect:/register/find/form";  // 오류가 발생하면 원래 폼 페이지로 리다이렉트
         }
-        return "redirect:/register/loginin/form";
     }
+
 
 
     /**
      * 비밀번호 재설정 (임시 비밀번호 발송)
      */
     @PostMapping("/find/pw")
-    public String resetPassword(@RequestParam("userEmail") String userEmail, Model model) {
+    public String resetPassword(MemberRequestSignupDto memberRequestSignupDto, Model model) {
         try {
-            String message = findIdPwService.sendTemporaryPassword(userEmail);
+        	String message = findIdPwService.sendTemporaryPassword(memberRequestSignupDto);
+        	if ("등록된 정보가 아닙니다.".equals(message)) {
+                // 이메일이 등록되지 않은 경우
+                model.addAttribute("error", "등록된 정보가 아닙니다.");
+                return "redirect:/register/find/form";
+            }
             model.addAttribute("message", message);
-        } catch (MessagingException e) {
+            return "redirect:/register/loginin/form";  // 오류 페이지로 리다이렉트
+        } catch (Exception e) {
             model.addAttribute("error", "이메일 전송 실패");
+            return "redirect:/register/find/form";
         }
-        return "redirect:/register/loginin/form";
     }
     
     @GetMapping("/logout")
