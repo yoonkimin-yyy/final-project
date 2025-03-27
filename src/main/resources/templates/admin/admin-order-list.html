@@ -12,12 +12,15 @@
 </head>
 <body>
   <div class="container">
-    <img src="/images/logo-bakery.png" alt="./css/img/common.이빵이오 로고.png" class="logo"/>
+  <img th:src="@{/img/common/이빵이오 로고.png}" class="logo" />
     <h1 class="title">주문 관리</h1>
 
     <div class="search-container">
       <i class="fas fa-search search-icon"></i>
-      <input type="text" class="search-input" placeholder="주문번호, 구매자 검색">
+      <form method="get" th:action="@{/admin/order/list}" class="search-form">
+  <input type="text" name="keyword" class="search-input" placeholder="주문번호, 구매자 검색" th:value="${keyword}" />
+    <button type="submit" class="search-btn">검색</button>
+</form>
     </div>
 
     <div class="status-filter">
@@ -41,7 +44,7 @@
         </thead>
         <tbody>
           <tr th:each="order, iterStat : ${orderList}">
-            <td th:text="${iterStat.count}">1</td>
+          <td th:text="${(pi.currentPage - 1) * pi.boardLimit + iterStat.index + 1}">번호</td>
             <td th:text="${order.paymentCode}">P2024032401</td>
             <td th:text="${order.bakeryName}">파리바게트 강남점</td>
             <td th:text="${order.userName}">김민수</td>
@@ -59,7 +62,7 @@
     <li class="page-item"
         th:classappend="${pi == null or pi.currentPage <= 1} ? 'disabled'">
         <a class="page-link"
-           th:href="${pi != null and pi.currentPage > 1} ? @{/admin/order/list(page=${pi.currentPage - 1})} : '#'"
+           th:href="${pi != null and pi.currentPage > 1} ? @{/admin/order/list(currentPage=${pi.currentPage - 1})} : '#'"
            aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
         </a>
@@ -70,7 +73,7 @@
         th:each="page : ${pi != null ? #numbers.sequence(pi.startPage, pi.endPage) : {}}"
         th:classappend="${pi.currentPage == page} ? 'active'">
         <a class="page-link"
-           th:href="@{/admin/order/list(page=${page})}"
+           th:href="@{/admin/order/list(currentPage=${page})}"
            th:text="${page}"></a>
     </li>
 
@@ -78,7 +81,7 @@
     <li class="page-item"
         th:classappend="${pi == null or pi.currentPage >= pi.maxpage} ? 'disabled'">
         <a class="page-link"
-           th:href="${pi != null and pi.currentPage < pi.maxpage} ? @{/admin/order/list(page=${pi.currentPage + 1})} : '#'"
+           th:href="${pi != null and pi.currentPage < pi.maxpage} ? @{/admin/order/list(currentPage=${pi.currentPage + 1})} : '#'"
            aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
         </a>
@@ -86,23 +89,6 @@
 </ul>
   
 
-  <script>
-    // 상태 필터
-    document.querySelectorAll('.status-button').forEach(button => {
-      button.addEventListener('click', () => {
-        document.querySelector('.status-button.active')?.classList.remove('active');
-        button.classList.add('active');
-        // 필터 적용 로직 (예: AJAX or JS 필터링)
-      });
-    });
-
-    // 검색 기능
-    document.querySelector('.search-input').addEventListener('input', e => {
-      const search = e.target.value.toLowerCase();
-      document.querySelectorAll('tbody tr').forEach(row => {
-        row.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
-      });
-    });
-  </script>
+  
 </body>
 </html>

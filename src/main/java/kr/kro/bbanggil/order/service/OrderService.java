@@ -37,9 +37,9 @@ public interface OrderService {
 	public boolean isUserOrder(Integer userNo, Integer orderNo);
 	
 	
-	int getOrderCount();
+	int getOrderCount(String keyword);
 	
-	List<OrderResponseDto> getPagedOrders(PageResponseDto pi);
+	List<OrderResponseDto> getPagedOrders(PageResponseDto pi,String keyword);
 	
 	BakeryResponseDto findOrderNo(int userNum, double bakeryNo);
 
