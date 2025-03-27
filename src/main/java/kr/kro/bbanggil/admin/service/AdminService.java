@@ -44,4 +44,6 @@ public interface AdminService {
 
 	List<MonthlyOrderResponseDTO> getMonthlyOrderCount();
 
+	InquiryResponseDto getInquiryByNo(int inquiryNo);
+
 }
