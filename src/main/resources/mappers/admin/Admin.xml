@@ -214,6 +214,7 @@ sysdate)
 		WHERE row_num &lt;= 3
 		GROUP BY recipients_name, pickup_status
 	</select>
+	
 	<select id="getMonthlyOrderCount">
 		SELECT TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM') AS orderMonth, 
            	   COUNT(*) AS orderCount
@@ -232,13 +233,4 @@ sysdate)
 		FETCH FIRST 3 ROWS ONLY
 	</select>
 	
-	<select id="reportList" resultMap="adminMap">
-		SELECT 
-			
-		FROM review_report rr
-		JOIN 
-		 
-		ORDER BY bi.BAKERY_NO DESC
-	</select>
-  
 </mapper>

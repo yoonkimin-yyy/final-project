@@ -11,8 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderResponseDto {  
     
-	
-	
 	private int payNo;
 	private String bakeryName;
 	private String paymentCode; // = merchant_uid
@@ -20,13 +18,10 @@ public class OrderResponseDto {
 	private String status;
 	private String paymentDate; 
 	private int amount;
-	
-	
-	
-	
-	
     private String menuName;     
     private int menuPrice;       
-    private int menuCount;       
+    private int menuCount; 
+    private String resourcesPath;
+    private String changeName;
     
 }

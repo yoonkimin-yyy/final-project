@@ -32,8 +32,8 @@
 					<td>
 						<div class="product-info">
 							<img
-								src="https://api.a0.dev/assets/image?text=delicious%20croissant%20bread&aspect=1:1"
-								class="product-image" alt="크로와상">
+								th:src="@{${result.resourcesPath} + '/' + ${result.changeName}}"
+								class="product-image">
 							<div class="product-details">
 								<div class="product-name" th:text="${result.menuName}"></div>
 							</div>
