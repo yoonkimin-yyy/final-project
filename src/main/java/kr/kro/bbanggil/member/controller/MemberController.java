@@ -1,7 +1,5 @@
 package kr.kro.bbanggil.member.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,14 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
-import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.member.service.FindIdPwServiceImpl;
 import kr.kro.bbanggil.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
@@ -246,21 +242,6 @@ public class MemberController {
 		return "redirect:/";
 	}
  
-
-	@GetMapping("/edit")
-	public String edit() {
-
-		return "user/edit";
-
-	}
-
-	@GetMapping("owner/mypage")
-	public String ownerMypage(@SessionAttribute("userNum") int userNum,
-							  Model model) {
-		List<OwnerMypageResponseDTO> result =memberService.ownerMypage(userNum); 
-		model.addAttribute("bakeries",result);
-		model.addAttribute("goMyPage",true);
-		return "owner/owner-mypage";
-	}
+	
 
 }
