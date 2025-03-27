@@ -42,6 +42,14 @@ public class ReviewServiceImpl implements ReviewService {
 		try {
 			logger.info(" 리뷰 작성 시작 - userId: {}, bakeryNo: {}, orderNo: {}", reviewDto.getUserNo(),
 					reviewDto.getBakeryNo(), reviewDto.getOrderNo());
+			
+			
+			  if (reviewDto.getUserNo() == null || reviewDto.getOrderNo() == null) {
+		            logger.error("userNo 또는 orderNo가 null입니다. userNo: {}, orderNo: {}",
+		                    reviewDto.getUserNo(), reviewDto.getOrderNo());
+		            throw new IllegalArgumentException("사용자 번호 또는 주문 번호가 누락되었습니다.");
+		        }
+			
 
 			// ORDER_NO가 존재하는지 확인
 			int orderExists = reviewMapper.checkOrderExists(reviewDto.getOrderNo());

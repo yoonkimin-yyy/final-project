@@ -108,6 +108,7 @@ public class AdminController {
 		
 		return "redirect:/admin/form";
 	}
+
 	
   
 	@GetMapping("/inquiry/list")
