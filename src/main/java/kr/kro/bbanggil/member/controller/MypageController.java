@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.member.model.dto.response.OwnerInfoResponseDTO;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.member.service.MypageServiceImpl;
 import kr.kro.bbanggil.member.util.MypagePagination;
 import kr.kro.bbanggil.mypage.model.dto.request.PasswordRequestDto;
@@ -57,12 +59,6 @@ public class MypageController {
 		
 		List<MypageListResponseDto> getBuyHistory = (List<MypageListResponseDto>) result.get("getBuyHistory");
 		
-		for(MypageListResponseDto item : getBuyHistory) {
-			System.out.println(item.getReviewDto().getReviewRating());
-			System.out.println(item.getBakeryInfoDto().getBakeryList());
-		}
-		
-	
 		model.addAttribute("getBuyHistory",getBuyHistory);
 		 model.addAttribute("userName",userName);
 		 model.addAttribute("userInfo",userInfo);
@@ -110,6 +106,18 @@ public class MypageController {
 		mypageService.updatePassword(userNo,passwordDto);
 	
 		return "redirect:/register/mypage";
+	}
+	
+	@GetMapping("owner/mypage")
+	public String ownerMypage(@SessionAttribute("userNum") int userNum,
+							  Model model) {
+		List<OwnerMypageResponseDTO> result = mypageService.ownerMypage(userNum);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info",info);
+		model.addAttribute("bakeries",result);
+		model.addAttribute("goMyPage",true);
+		
+		return "owner/owner-mypage";
 	}
 	
 }

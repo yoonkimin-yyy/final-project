@@ -31,8 +31,6 @@ public interface MemberMapper {
 
 	MemberRequestSignupDto loginIn(MemberRequestSignupDto memberRequestSignupDto);
 
-	List<OwnerMypageResponseDTO> ownerMypage(int userNum);
-	
 	String findUserIdByEmail(String userEmail);
 	    
 	MemberRequestSignupDto findUserByEmail(String userEmail);
