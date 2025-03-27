@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 public class ReviewRequestDto {
 	private int reviewNo;
-    private int userNo;  
-    private int orderNo;
+    private Integer userNo;  
+    private Integer orderNo;
     private int tagNo; 
     private String userId;
     private double reviewRating;     // 리뷰 평점 (0.5 ~ 5.0)

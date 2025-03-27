@@ -31,6 +31,7 @@ public interface AdminService {
 
 	void sendEmail(AdminEmailRequestDto adminReqeustDto);
 	
+
 	void saveInquiry(InquiryRequestDto inquiryRequestDto);
 
 	List<InquiryResponseDto> getInquiryList();
@@ -42,5 +43,7 @@ public interface AdminService {
 	Map<String, Object> bottomContent();
 
 	List<MonthlyOrderResponseDTO> getMonthlyOrderCount();
+
+	List<MenuResponseDto> categoryList();
 
 }

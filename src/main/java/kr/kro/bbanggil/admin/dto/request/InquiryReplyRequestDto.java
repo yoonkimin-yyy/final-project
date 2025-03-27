@@ -13,6 +13,7 @@ public class InquiryReplyRequestDto {
 	 private String replyContent;      
 	 private String replyDate; 
 	 private int adminNo;
+
 	
 	
 	

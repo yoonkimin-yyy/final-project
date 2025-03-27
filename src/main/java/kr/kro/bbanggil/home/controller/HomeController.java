@@ -4,6 +4,7 @@ package kr.kro.bbanggil.home.controller;
 
 import java.util.List;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,7 +124,13 @@ public class HomeController {
 		// 1.문의 저장
 		Integer userNo = (Integer) session.getAttribute("userNum");
 
-		inquiryRequestDto.setUserNo(userNo);
+		 if (userNo != null) {
+		        // 로그인 상태일 경우
+		        inquiryRequestDto.setUserNo(userNo);
+		    } else {
+		        // 비회원인 경우
+		        inquiryRequestDto.setUserNo(null);
+		    }
 
 		adminService.saveInquiry(inquiryRequestDto);
 
@@ -134,7 +141,6 @@ public class HomeController {
 	public String showInquiryForm() {
 	    return "admin/admin-inquiry"; // 뷰 파일 이름이 admin-inquiry.html이면 이렇게!
 	}
-	
 	
 	
 	

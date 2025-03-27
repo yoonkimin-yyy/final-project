@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InquiryRequestDto {
 	
-	private int userNo;
+	private Integer userNo;
 	private String inquiryTitle;
 	private String inquiryContent;
 

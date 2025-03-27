@@ -62,5 +62,7 @@ public interface AdminMapper {
 	List<MonthlyOrderResponseDTO> getMonthlyOrderCount();
 
 	List<InquiryResponseDto> getInquiries();
-	
+
+	List<MenuResponseDto> categoryList();
+
 }

@@ -47,6 +47,7 @@
 		<result property="menuPrice" column="MENU_PRICE"/>
 		<result property="resourcesPath" column="RESOURCES_PATH"/>
        	<result property="changeName" column="CHANGE_NAME"/>
+       	<result property="category" column="CATEGORY"/>
 	</resultMap>
 
 	<select id="subList" resultMap="adminMap">
@@ -118,7 +119,12 @@
 		UPDATE BAKERY_ACCESS SET AGREE = #{action}, REJECT = #{rejectReason}, ACCEPT_DATE = SYSDATE 
 		WHERE BAKERY_NO = #{bakeryNo}
 	</update>
-
+	
+	<select id="categoryList" resultMap="MenuListMap">
+		SELECT CATEGORY FROM MENU_CATEGORY
+		ORDER BY CATEGORY_NO DESC
+	</select>
+	
 <!-- .................................................................................................. -->
   	
 	<select id="getUserType" resultType="String" parameterType="java.lang.Integer">
@@ -127,7 +133,7 @@
 FROM
 	USER_INFO
 WHERE
-	USER_NO = #{userNo}
+	USER_NO = #{userNo,jdbcType=INTEGER}
 	
 	</select>
 	
@@ -141,7 +147,7 @@ WHERE
         IS_ANSWERED
     ) VALUES (
         INQUIRY_SEQ.NEXTVAL,
-        #{userNo},
+        #{userNo,jdbcType=INTEGER},
         #{inquiryTitle},
         #{inquiryContent},
         SYSDATE,
@@ -162,7 +168,7 @@ SELECT
     ir.REPLY_CONTENT,
     ir.REPLY_DATE
 FROM INQUIRY i
-JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
+LEFT JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
 LEFT JOIN INQUIRY_REPLY ir ON i.INQUIRY_NO = ir.INQUIRY_NO
 ORDER BY i.CREATE_DATE DESC
 	</select>
@@ -232,5 +238,6 @@ sysdate)
 		ORDER BY INQUIRY_NO desc
 		FETCH FIRST 3 ROWS ONLY
 	</select>
+	
 	
 </mapper>

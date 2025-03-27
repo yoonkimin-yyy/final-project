@@ -108,7 +108,8 @@
 		INSERT INTO PICKUP_STATUS VALUES(PICKUP_STATUS_SEQ.NEXTVAL,
 										 #{payNo},
 										 DEFAULT,
-										 DEFAULT)
+										 DEFAULT,
+										 CURRENT_TIMESTAMP)
 	</insert>
 	
 	<select id="pickupPay" resultType="int">
@@ -135,23 +136,12 @@
 	
 	
 	<select id="countByUserAndOrder">
-	SELECT
-		c.CART_NO ,
-		oi.ORDER_NO ,
-		oi.PAY_NO ,
-		ui.USER_NO ,
-		ui.USER_ID
-	FROM
-		CART c
-	JOIN ORDER_INFO oi 
-	  ON
-		c.CART_NO = oi.CART_NO
-	JOIN USER_INFO ui 
-	  ON
-		c.USER_NO = UI.USER_NO
-	WHERE
-		ui.USER_NO = #{userNo}
-		AND oi.ORDER_NO = #{orderNo}
+    SELECT COUNT(*)
+    FROM CART c
+    JOIN ORDER_INFO oi ON c.CART_NO = oi.CART_NO
+    JOIN USER_INFO ui ON c.USER_NO = ui.USER_NO
+    WHERE ui.USER_NO = #{userNo}
+      AND oi.ORDER_NO = #{orderNo}
 	</select>
 	
 	
