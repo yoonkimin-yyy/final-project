@@ -214,6 +214,7 @@ sysdate)
 		WHERE row_num &lt;= 3
 		GROUP BY recipients_name, pickup_status
 	</select>
+	
 	<select id="getMonthlyOrderCount">
 		SELECT TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM') AS orderMonth, 
            	   COUNT(*) AS orderCount
