@@ -36,6 +36,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryTimeRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
@@ -84,15 +85,12 @@ public class BakeryServiceImpl implements BakeryService{
 		
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		
-		System.out.println(pi.getLimit());
-		System.out.println(pi.getOffset());
 		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
 															getTodayDayOfWeek(),
 															orderType,
 															bakerySearchDTO);
 		
 		for(BakeryInfoDTO item : posts) {
-			System.out.println(item.getBakeryName());
 		}
  		
 		List<List<BakeryInfoDTO>> images = new ArrayList<>();
@@ -229,7 +227,6 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
 		bakeryUpdateResponseDTO response = bakeryMapper.getBakeryInfo(bakeryNo);
-		System.out.println(response.getBakeryPhone());
 		response.setImgDTO(bakeryMapper.getBakeryImg(bakeryNo));
 		List<BakeryTimeSetDTO> timeDTO = bakeryMapper.getBakerySchedule(bakeryNo);
 		setBakeryOperatingHours(response,timeDTO);
@@ -363,16 +360,24 @@ public class BakeryServiceImpl implements BakeryService{
 		}
 
 	}
-
+	@Override
 	public BakeryDto getBakeryByNo(double bakeryNo) {
 		return bakeryMapper.findBakeryByNo(bakeryNo);
 	}
-
+	
 	public List<BakeryDto> getBakeryDetail(double no) {
 		
 		return bakeryMapper.getBakeryDetail(no);
 	}
+	@Override
+	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo) {
+	    return bakeryMapper.getInsideImages(bakeryNo);
+	}
 
+	@Override
+	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo) {
+	    return bakeryMapper.getOutsideImages(bakeryNo);
+	}	
 	
 	
 	
@@ -498,8 +503,8 @@ public class BakeryServiceImpl implements BakeryService{
 				}
 					s3Upload.saveFile(file,menuDTO.getFileDTO());
 					bakeryMapper.menuFileUpload(menuDTO);
-					bakeryMapper.menuUpdate(menuDTO);
 			}
+			bakeryMapper.menuUpdate(menuDTO);
 		
 		} catch (IOException e) {
 			throw new BakeryException("메뉴 수정 실패","common/error",HttpStatus.NOT_ACCEPTABLE);
@@ -510,6 +515,10 @@ public class BakeryServiceImpl implements BakeryService{
 		int count = bakeryMapper.getUserCountBybakeryNo(bakeryNo);
 		count++;
 		bakeryMapper.updateUserCount(bakeryNo,count);
+	}
+
+	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo) {
+		return bakeryMapper.getParkingImages(bakeryNo);
 	}
 
 }

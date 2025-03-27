@@ -107,8 +107,13 @@ function closeReviewModal() {
 document.getElementById('openReviewModal')?.addEventListener('click', () => {
 	const userNo = document.getElementById("userNum").value;
 	console.log(userNo);
+	
+	
+	console.log("sfsfsfs");
 	const orderNo = parseInt(document.getElementById("orderNo").value);
 	console.log(orderNo);
+	
+	
 	if (!userNo || userNo === "null" || userNo === "") {
 	        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
 			window.location.href = window.location.origin + "/register/loginin/form";

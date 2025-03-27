@@ -5,6 +5,7 @@ function toggleDetail(clickedRow) {
 	if (event.target.classList.contains('no-toggle')) {
 	       return;
 	   }
+	 
     // 상세 정보가 표시되는 <tr>인지 확인
     if (nextRow && nextRow.classList.contains('detail-row')) {
         const detailDiv = nextRow.querySelector('.detail-info');
@@ -40,33 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-
+// 리뷰 작성 하기 버튼 (등록 버튼 아님)
+function writeBtn(index) {
+	console.log(index)
+    const textDiv = document.getElementById(`review-text-div-${index}`);
+    
+    if (textDiv.style.display === 'none' || textDiv.style.display === '') {
+        textDiv.style.display = 'flex'; // 보이게 함
+    } else {
+        textDiv.style.display = 'none'; // 숨김
+    }
+}
 
 // 리뷰 작성 ~ 등록 버튼 까지
 document.addEventListener('DOMContentLoaded', () => {
 	
-// 리뷰 작성 하기 버튼 (등록 버튼 아님)
-document.addEventListener("DOMContentLoaded", function () {
-const writeBtn = document.getElementById('review-write-btn');
-const textDiv = document.getElementById('review-text-div');
-
-textDiv.style.display = 'flex';
-textDiv.style.display = 'none';
-
-console.log(writeBtn);
-
-writeBtn.addEventListener('click', () => {
-        if(textDiv.style.display === 'none') {
-            textDiv.style.display = 'flex';
-        }else {
-            textDiv.style.display = 'none';
-        }
 
 
-})
 
-});
 
     const submitButton = document.querySelector('.text-btn');
     const reviewTextarea = document.querySelector('.review-text-textarea');
@@ -81,6 +73,7 @@ writeBtn.addEventListener('click', () => {
     const tagInputs = document.querySelectorAll('.review-div .tag');
     const tagOutputsContainer = document.querySelector('.review-info-div .tag-container');
 
+	
     // 글자 수 실시간 업데이트
     reviewTextarea.addEventListener('input', () => {
         const currentLength = reviewTextarea.value.length;
@@ -150,9 +143,26 @@ writeBtn.addEventListener('click', () => {
             }
             fillStars(selectedRating);
             console.log('현재 선택된 평점:', selectedRating);
+			
+			const ratingInput = document.getElementById("review-rating");
+			ratingInput.value = selectedRating;  // input 태그에 selectedRating 값 설정
+			console.log(ratingInput.value)
         });
     });
 
+	document.querySelectorAll(".stars").forEach(starContainer => {
+	        const rating = document.getElementById("rating-value").textContent; // 별점 값 가져오기
+	        const stars = starContainer.querySelectorAll("i"); // 별 태그들 가져오기
+			console.log(rating)
+	        fillStars(stars, rating);  // 별점 값에 맞춰 채우기
+	    });
+
+
+	
+	
+	
+	
+		
     // 별점 채우기
     function fillStars(rating) {
         stars.forEach((star, i) => {
@@ -168,13 +178,9 @@ writeBtn.addEventListener('click', () => {
         });
     }
 
-    // 태그 선택 기능
-    const tags = document.querySelectorAll('.tag');
-    tags.forEach(tag => {
-        tag.addEventListener('click', () => {
-            tag.classList.toggle('active');
-        });
-    });
+	
+   
+
 
     // 리뷰 작성 화면 초기화 함수
     function resetReviewForm() {
@@ -194,4 +200,15 @@ writeBtn.addEventListener('click', () => {
         });
     }
 });
+
+// 태그 선택 기능
+document.addEventListener('DOMContentLoaded', () => {
+	const tags = document.querySelectorAll('.tag');
+		console.log(tags)
+		   tags.forEach(tag => {
+		       tag.addEventListener('click', () => {
+		           tag.classList.toggle('active');
+		       });
+		   });
+	   });
 

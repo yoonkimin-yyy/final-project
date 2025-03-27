@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
@@ -18,6 +20,7 @@ import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
+import kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto;
 import kr.kro.bbanggil.email.service.EmailServiceImpl;
 import lombok.AllArgsConstructor;
 
@@ -27,6 +30,7 @@ public class AdminServiceImpl implements AdminService {
 
 	private final EmailServiceImpl emailServiceImpl;
 	private final AdminMapper adminMapper;
+	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
 
 	@Override
 	public List<AdminResponseDto> subList() {
@@ -71,9 +75,18 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void saveInquiry(InquiryRequestDto inquiryRequestDto) {
 
-		String userType = adminMapper.getUserType(inquiryRequestDto.getUserNo());
+		
+		Integer userNo = inquiryRequestDto.getUserNo();
+		
+		if (userNo == null || userNo == 0) {
+	        adminMapper.insertInquiry(inquiryRequestDto);
+	        return;
+	    }
+	
 
-		if (!userType.equals("user") && !userType.equals("owner")) {
+		String userType = adminMapper.getUserType(userNo);
+		
+		if (userType == null || (!userType.equals("user") && !userType.equals("owner"))) {
 			throw new IllegalArgumentException("일반 사용자 또는 사업자만 문의할 수 있습니다.");
 		}
 
@@ -97,6 +110,8 @@ public class AdminServiceImpl implements AdminService {
 
 	    // 문의 상태 "답변 완료"로 변경
 	    adminMapper.updateInquiryStatusToAnswered(inquiryReplyDto.getInquiryNo());
+	    
+	    sendAnswerEmail(inquiryReplyDto.getInquiryNo());
 	} 
 	@Override
 	public void sendEmail(AdminEmailRequestDto adminRequestDto) {
@@ -131,7 +146,7 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.getMonthlyOrderCount();
 	}
 
-	@Override
+	
 	public Map<String,Object> bottomContent(){
 		//최근 주문
 		List<NewlyResponseDTO> newlyOrder = adminMapper.getNewlyOrder();
@@ -148,6 +163,35 @@ public class AdminServiceImpl implements AdminService {
 		result.put("inquiry", inquiry);
 		
 		return result;
+		
+	}
+	  private void sendAnswerEmail(int inquiryNo) {
+	        InquiryEmailInfoDto info = adminMapper.getInquiryEmailInfo(inquiryNo);
+
+	        if (info == null || info.getEmail() == null) {
+	            logger.warn("이메일 전송 실패: 이메일 정보 없음 - inquiryNo: {}", inquiryNo);
+	            return;
+	        }
+
+	        String subject = "[빵모아] 문의에 대한 답변이 등록되었습니다";
+	        String body = """
+	            안녕하세요, 빵모아입니다.<br><br>
+	            문의 제목: %s<br>
+	            문의 내용: %s<br><br>
+	            <strong>[답변]</strong><br>
+	            %s<br><br>
+	            감사합니다.
+	        """.formatted(info.getTitle(), info.getContent(), info.getReply());
+
+	        emailServiceImpl.sendEmail(info.getEmail(), subject, body);
+	    }
+	  @Override
+	  public InquiryResponseDto getInquiryByNo(int inquiryNo) {
+	      return adminMapper.selectInquiryByNo(inquiryNo);
+	  }
+	  
+	  
+	  
 	}
 
-}
+

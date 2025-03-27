@@ -1,7 +1,5 @@
 package kr.kro.bbanggil.member.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,14 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
-import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.member.service.FindIdPwServiceImpl;
 import kr.kro.bbanggil.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
@@ -159,9 +155,8 @@ public class MemberController {
     // 로그인 페이지
     @GetMapping("/loginin/form")
     public String loginInForm(HttpSession session, Model model) {
-    	 System.out.println("로그인 페이지 접근, 기존 status 값: " + session.getAttribute("status"));
-    	    
-    	 // 로그인 페이지 진입 시 에러 메시지 초기화
+
+    	// 로그인 페이지 진입 시 에러 메시지 초기화
     	 session.removeAttribute("status");  
     	 return "/common/loginin";  
     }
@@ -172,22 +167,37 @@ public class MemberController {
     					  RedirectAttributes redirectAttributes) {
         // 로그인 검증
     	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
-        System.out.println("로그인 결과: " + loginUser);
 
-        if (loginUser != null) {
+        if (loginUser != null && !loginUser.getUserType().equals("admin")) {
             // 로그인 성공 → 세션에 사용자 정보 저장
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
+            session.setAttribute("userName", loginUser.getUserName());
             session.setAttribute("role", loginUser.getUserType());
-            if(loginUser.getUserType().equals("admin")) {
-            	return "redirect:/admin/form";
-            }
             return "redirect:/";  
         } else {
             // 로그인 실패 메시지 전달
             redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
             return "redirect:/register/loginin/form";
         }
+    }
+    
+    @PostMapping("/logininAdmin")
+    public String logininAdmin(MemberRequestSignupDto memberRequestSignupDto, HttpSession session,
+    		RedirectAttributes redirectAttributes) {
+
+    	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
+    	
+    	if (loginUser != null && loginUser.getUserType().equals("admin")) {
+    		session.setAttribute("userNum", loginUser.getUserNo());
+    		session.setAttribute("userId", loginUser.getUserId());
+    		session.setAttribute("role", loginUser.getUserType());
+    		return "redirect:/admin/form";  
+    	} 
+    	
+		redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
+		return "redirect:/admin/login";
+
     }
 
     // 아이디/비밀번호 찾기 페이지
@@ -247,32 +257,7 @@ public class MemberController {
     	session.invalidate();
 		return "redirect:/";
 	}
-    
-    @GetMapping("/mypage")
-	public String myPage(Model model,HttpSession session) {
-    	if(session.getAttribute("role").equals("owner"))
-		model.addAttribute("goOwnerPage",true);
-    	else
-    	model.addAttribute("goOwnerPage",false);
-
-		return "user/mypage";
-
-	}
-
-	@GetMapping("/edit")
-	public String edit() {
-
-		return "user/edit";
-
-	}
-
-	@GetMapping("owner/mypage")
-	public String ownerMypage(@SessionAttribute("userNum") int userNum,
-							  Model model) {
-		List<OwnerMypageResponseDTO> result =memberService.ownerMypage(userNum); 
-		model.addAttribute("bakeries",result);
-		model.addAttribute("goMyPage",true);
-		return "owner/owner-mypage";
-	}
+ 
+	
 
 }

@@ -14,7 +14,6 @@
 		<result property="region" column="region" />
 		<result property="address" column="bakery_address" />
 		<result property="phone" column="bakery_phone" />
-
 		<!-- BakeryResponseDto와 연관된 정보 (리뷰, 이미지, 메뉴 등) -->
 		<association property="response"
 			javaType="kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto">
@@ -34,6 +33,7 @@
 			<result property="outsideInfo" column="outside_info" />
 			<result property="submissionDate" column="submission_date" />
 			<result property="resourcesPath" column="resources_path" />
+			<result property="position" column="position"/>
 		</association>
 
 		<!-- BakeryScheduleDto와 연관된 정보 (요일별 운영시간) -->
@@ -112,6 +112,17 @@ GROUP BY
     bs.day,
     bs.open_time,
     bs.close_time
+    ORDER BY
+    CASE bs.day
+        WHEN '월' THEN 1
+        WHEN '화' THEN 2
+        WHEN '수' THEN 3
+        WHEN '목' THEN 4
+        WHEN '금' THEN 5
+        WHEN '토' THEN 6
+        WHEN '일' THEN 7
+        ELSE 8
+    END
 	</select>
 
 
@@ -184,7 +195,8 @@ GROUP BY
 		bd.SUBMISSION_DATE,
 		BI2.IMG_NO ,
 		BI2.RESOURCES_PATH,
-		BI2.CHANGE_NAME
+		BI2.CHANGE_NAME,
+		BI2.position
 		FROM
 		BAKERY_DETAIL bd
 		JOIN BAKERY_INFO bi
@@ -216,9 +228,68 @@ GROUP BY
 
 	</select>
 
+<select id="getInsideImages" resultMap="DetailResultMap">
+    SELECT
+        bi.bakery_address,
+        bi.bakery_name,
+        bi.bakery_phone,
+        bi.BAKERY_NO,
+        bd.AMENITY,
+        bd.INSIDE_INFO,
+        bd.CREATED_DATE,
+        BI2.IMG_NO,
+        BI2.RESOURCES_PATH,
+        BI2.CHANGE_NAME,
+        BI2.POSITION
+    FROM BAKERY_DETAIL bd
+    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
+    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
+    WHERE bi.BAKERY_NO = #{no}
+      AND BI2.POSITION = 'inside'
+</select>
 
 
+<select id="getOutsideImages" resultMap="DetailResultMap">
+    SELECT
+        bi.bakery_address,
+        bi.bakery_name,
+        bi.bakery_phone,
+        bi.BAKERY_NO,
+        bd.AMENITY,
+        bd.OUTSIDE_INFO,
+        bd.CREATED_DATE,
+        BI2.IMG_NO,
+        BI2.RESOURCES_PATH,
+        BI2.CHANGE_NAME,
+        BI2.POSITION
+    FROM BAKERY_DETAIL bd
+    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
+    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
+    WHERE bi.BAKERY_NO = #{no}
+      AND BI2.POSITION = 'outside'
+</select>
 
+
+<select id="getParkingImages" resultMap="DetailResultMap">
+ SELECT
+        bi.bakery_address,
+        bi.bakery_name,
+        bi.bakery_phone,
+        bi.BAKERY_NO,
+        bd.AMENITY,
+        bd.OUTSIDE_INFO,
+        bd.CREATED_DATE,
+        BI2.IMG_NO,
+        BI2.RESOURCES_PATH,
+        BI2.CHANGE_NAME,
+        BI2.POSITION
+    FROM BAKERY_DETAIL bd
+    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
+    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
+    WHERE bi.BAKERY_NO = #{no}
+      AND BI2.POSITION = 'parking'
+
+</select>
 
 
 

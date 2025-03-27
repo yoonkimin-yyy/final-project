@@ -12,6 +12,7 @@ import kr.kro.bbanggil.bakery.dto.BakeryTimeSetDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
@@ -75,6 +76,7 @@ public interface BakeryMapper {
 	List<BakeryDto> getBakeryDetail(@Param("no") double No);
 	public List<ReviewResponseDto> getReviewImages(@Param("bakeryNo") double bakeryNo);
 
+	
 	
 	
 	void insertCartInfo(@Param("cartNo") int cartNo,@Param("menuNo") int menuNo, @Param("menuCount") int menuCount);
@@ -145,13 +147,17 @@ public interface BakeryMapper {
 
 	public void UserCountInsert(int bakeryNo);
 
-	public int getUserCountBybakeryNo(int bakeryNo);
+	public int  getUserCountBybakeryNo(int bakeryNo);
 
 	public void updateUserCount(@Param("bakeryNo")int bakeryNo,
 								@Param("count")int count);
 
 	public void resetDailyVisitCount();
 
+	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
+
+	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
+	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
 	
 
 }

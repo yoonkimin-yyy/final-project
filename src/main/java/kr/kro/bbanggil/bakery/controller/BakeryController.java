@@ -1,7 +1,6 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
@@ -45,6 +45,8 @@ import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
+import kr.kro.bbanggil.member.model.dto.response.OwnerInfoResponseDTO;
+import kr.kro.bbanggil.member.service.MypageServiceImpl;
 import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 
@@ -54,6 +56,7 @@ import lombok.AllArgsConstructor;
 public class BakeryController {
 
 	private final BakeryServiceImpl bakeryService;
+	private final MypageServiceImpl mypageService;
 	private final ReviewServiceImpl reviewService;
 	private final OrderServiceImpl orderService;
 	private final ListPageNation pageNation;
@@ -100,6 +103,7 @@ public class BakeryController {
 		model.addAttribute("pi",piResult);
 		model.addAttribute("today",todayDayOfWeek);
 		model.addAttribute("bakerySearchDTO",bakerySearchDTO);
+		model.addAttribute("searchText", bakerySearchDTO.getSearchText());
 		
 		return "user/bakery-list";
 	}
@@ -155,6 +159,8 @@ public class BakeryController {
 
 		List<BakeryDto> getBakeriesInfo = bakeryService.getBakeriesInfo(no);
 		model.addAttribute("getBakeriesInfo", getBakeriesInfo);
+		
+		
 		
 		
 		
@@ -217,6 +223,7 @@ public class BakeryController {
 		model.addAttribute("reviews", result.get("reviews"));
 		model.addAttribute("bakeryNo", no);
 		model.addAttribute("sort", sort);
+		model.addAttribute("totalReviews", totalReviews);
 		
 		
 
@@ -234,7 +241,15 @@ public class BakeryController {
 		 */
 
 		List<BakeryDto> bakeryDetail = bakeryService.getBakeryDetail(no);
+		List<BakeryDetailResponseDto> insideImages =  bakeryService.getInsideImages(no);
+		List<BakeryDetailResponseDto> outsideImages = bakeryService.getOutsideImages(no);
+		List<BakeryDetailResponseDto> parkingImages = bakeryService.getParkingImages(no);
+		
 		model.addAttribute("bakeryDetail", bakeryDetail);
+		model.addAttribute("insideImages", insideImages);
+		model.addAttribute("outsideImages", outsideImages);
+		model.addAttribute("parkingImages", parkingImages);
+		
 
 		/*
 		 * 리뷰 이미지 보여지는 기능
@@ -257,9 +272,13 @@ public class BakeryController {
 		/*
 		 * 사용자의 orderNo가져오기
 		 */
-		BakeryResponseDto recentOrder = orderService.findOrderNo(userNum, no);
+		BakeryResponseDto recentOrder = null;
+		if (userNum != null) {
+		    recentOrder = orderService.findOrderNo(userNum, no);
+		}
+
 		if (recentOrder == null) {
-		    recentOrder = new BakeryResponseDto(); // 혹은 new BakeryResponseDto(0, ...)
+		    recentOrder = new BakeryResponseDto(); // 기본값 처리
 		}
 		
 		model.addAttribute("recentOrder", recentOrder);
@@ -343,8 +362,12 @@ public class BakeryController {
 	}
 	
 	@GetMapping("menu/list/form")
-	public String menuListForm(@RequestParam("no")int bakeryNo, Model model) {
+	public String menuListForm(@RequestParam("no")int bakeryNo,
+							   @SessionAttribute("userNum") int userNum,
+							   Model model) {
 		Map<String,Object> result = bakeryService.getMenuList(bakeryNo);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info",info);
 		model.addAttribute("menu",result.get("list"));
 		model.addAttribute("bakery",result.get("bakery"));
 		model.addAttribute("no",bakeryNo);
@@ -366,8 +389,11 @@ public class BakeryController {
 	}
 	@GetMapping("/info/form")
 	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo,
+								 @SessionAttribute("userNum") int userNum,
 								 Model model) {
 		myBakeryResponseDTO result = bakeryService.bakeryInfo(bakeryNo);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info",info);
 		model.addAttribute("bakery",result);
 		model.addAttribute("no",bakeryNo);
 		return "/owner/bakery-info";

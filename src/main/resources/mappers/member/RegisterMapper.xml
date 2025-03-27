@@ -26,14 +26,6 @@
 		<result property="userDetailaddress" column="USER_DETAILADDRESS"></result>
 	</resultMap>
 	
-	<resultMap id="ownerResultMap" type="kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO">
-		<result property="bakeryNo" column="bakery_no"></result>
-		<result property="bakeryName" column="bakery_name"></result>
-		<result property="createdDate" column="submission_date"></result>
-		<result property="bakeryPhone" column="bakery_phone"></result>
-		<result property="bakeryAddress" column="bakery_address"></result>
-		<result property="agree" column="agree"></result>
-	</resultMap>
 	
 
 	
@@ -146,6 +138,7 @@
         UPDATE USER_INFO SET USER_PASSWORD = #{userPassword} WHERE USER_EMAIL = #{userEmail}
     </update>
     
+
     <select id="ownerMypage" resultMap="ownerResultMap">
 		SELECT bi.BAKERY_NO,
 			   bi.BAKERY_NAME,
@@ -160,8 +153,7 @@
 	</select>
 	
 	
-	
-	
+
 
 
 </mapper>

@@ -12,6 +12,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.MenuUpdateResponseDTO;
@@ -78,6 +79,12 @@ public interface BakeryService {
 	void updateMenu(MenuRequestDTO menuDTO, MultipartFile file);
 	
 	void updateUserCount(int bakeryNo);
+	
+	List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
+	List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
+	
+	List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
+	
 
 	
 	

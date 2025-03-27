@@ -1,5 +1,10 @@
 package kr.kro.bbanggil.mypage.model.dto.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class MypageUserResponseDto {
 	
 	/**

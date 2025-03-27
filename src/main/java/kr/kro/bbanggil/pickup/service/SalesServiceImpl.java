@@ -25,6 +25,9 @@ public class SalesServiceImpl implements SalesService {
 
     @Override
     public List<Integer> getAvailableYears(int bakeryNo) {
+    	System.out.println("==");
+    	System.out.println(bakeryNo);
+    	System.out.println("==");
         return salesMapper.getAvailableYears(bakeryNo);  // 사용 가능한 년도 목록
     }
 }

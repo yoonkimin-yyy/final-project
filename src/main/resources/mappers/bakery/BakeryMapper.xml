@@ -7,6 +7,7 @@
 		type="kr.kro.bbanggil.bakery.dto.response.bakeryUpdateResponseDTO">
 		<result property="bakeryNo" column="bakery_no"></result>
 		<result property="bakeryName" column="bakery_name"></result>
+		<result property="bakeryPhone" column="bakery_phone"></result>
 		<result property="bakeryAddress" column="bakery_address"></result>
 		<result property="createdDate" column="created_date"></result>
 		<result property="insideInfo" column="inside_info"></result>
@@ -42,6 +43,7 @@
 			bi.bakery_no =
 			${bakeryNo}
 		</select>
+		
 		<select id="getBakeryImg" resultMap="bakeryImgResultMap">
 			SELECT CHANGE_NAME,
 			FOLDER_NAME_PATH
@@ -300,10 +302,13 @@
 			#{region} || '%'
 
 		</select>
+		
 		<select id="getUserCountBybakeryNo" resultType="int">
 			SELECT user_count FROM user_count
 			WHERE bakery_no =${bakeryNo}
 		</select>
+		
+		
 		<update id="updateUserCount">
 			UPDATE user_count
 			SET user_count = ${count}

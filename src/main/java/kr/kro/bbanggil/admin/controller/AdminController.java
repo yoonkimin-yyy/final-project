@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
@@ -54,6 +53,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
+		
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));
 		
@@ -100,45 +100,17 @@ public class AdminController {
 	}
 
 	@PostMapping("/bakery/update")
-	@ResponseBody
 	public String bakeryUpdateForm(@RequestParam("action") String action,
 								   @RequestParam("bakeryNo") int bakeryNo,
 								   @RequestParam("rejectReason") String rejectReason) {
 		
 		adminService.update(action, bakeryNo, rejectReason);
 		
-		String message = ("승인".equals(action) ? "승인" : "거절") + " 완료되었습니다.";
-
-		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
-	}
-
-	@GetMapping("/inquiry/form")
-	public String inquiryWrite() {
-		return "admin/admin-inquiry";
-	}
-	
-	
-	
-	
-	
-	/*
-	 * 문의 등록 처리
-	 */
-	
-	@PostMapping("/submit")
-	public String submitInquiry(HttpSession session, @ModelAttribute InquiryRequestDto inquiryRequestDto, Model model) {
-
-		// 1.문의 저장
-		Integer userNo = (Integer) session.getAttribute("userNum");
-
-		inquiryRequestDto.setUserNo(userNo);
-
-		adminService.saveInquiry(inquiryRequestDto);
-
-		return "redirect:/";
+		return "redirect:/admin/form";
 	}
 
 	
+  
 	@GetMapping("/inquiry/list")
 	public String inquiryList(Model model) {
 		List<InquiryResponseDto> inquiries = adminService.getInquiryList();
@@ -147,6 +119,7 @@ public class AdminController {
 		 
 	      return "admin/inquiry-list";
 	}
+	
 	@PostMapping("/inquiry/answer")
 	public String saveAnswer(@ModelAttribute InquiryReplyRequestDto inquiryReplyDto,
 						HttpSession session){
@@ -155,13 +128,14 @@ public class AdminController {
 		  Integer adminNo = (Integer) session.getAttribute("userNum");
 		  inquiryReplyDto.setAdminNo(adminNo);
 		
-			adminService.saveAnswer(inquiryReplyDto);
+		  adminService.saveAnswer(inquiryReplyDto);
+		  
+		  int inquiryNo = inquiryReplyDto.getInquiryNo();
+
+		  
+		  InquiryResponseDto answer = adminService.getInquiryByNo(inquiryNo);
 			
 			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
-	}
-	@GetMapping("/order")
-	public String orderList() {
-		return "admin/admin-order-list";
 	}
 	
 	@GetMapping("/order/list")
@@ -181,5 +155,6 @@ public class AdminController {
 		
 		return "admin/admin-order-list";
 	}
+	
 	
 }

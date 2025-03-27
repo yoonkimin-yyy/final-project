@@ -14,6 +14,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
+import kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto;
 
 @Mapper
 public interface AdminMapper {
@@ -48,7 +49,7 @@ public interface AdminMapper {
 
 	void updateInquiryStatusToAnswered(@Param("inquiryNo")int inquiryNo);
 
-  @Select("SELECT SUM(user_count) FROM user_count")
+	@Select("SELECT SUM(user_count) FROM user_count")
 	int getTodayUser();
 
 	@Select("SELECT count(*) FROM order_info")
@@ -62,5 +63,9 @@ public interface AdminMapper {
 	List<MonthlyOrderResponseDTO> getMonthlyOrderCount();
 
 	List<InquiryResponseDto> getInquiries();
+
+	InquiryEmailInfoDto getInquiryEmailInfo(@Param("inquiryNo")int inquiryNo);
+
+	InquiryResponseDto selectInquiryByNo(@Param("inquiryNo")int inquiryNo);
 	
 }
