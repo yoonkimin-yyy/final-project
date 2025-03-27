@@ -155,6 +155,13 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public boolean isUserOrder(Integer userNo, Integer orderNo) {
 		
+		
+		 if (userNo == null || orderNo == null) {
+		        logger.warn("isUserOrder - null 전달됨! userNo: {}, orderNo: {}", userNo, orderNo);
+		        return false;
+		    }
+		
+		
 		return orderMapper.countByUserAndOrder(userNo, orderNo) > 0;
 	}
 	
