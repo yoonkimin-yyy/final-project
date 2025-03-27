@@ -24,17 +24,18 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 	  * 이메일을 기반으로 아이디 찾기
 	  */
 	 @Override
-	 public String findUserIdByEmail(String userEmail) {
-	     String userId = memberMapper.findUserIdByEmail(userEmail);
-	     MemberRequestSignupDto member = memberMapper.findUserByEmail(userEmail);
-
+	 public String findUserIdByEmail(MemberRequestSignupDto memberRequestSignupDto) {
+	    
+	     MemberRequestSignupDto member = memberMapper.findUserByEmail(memberRequestSignupDto);
+	     
+	     
 	     // 아이디가 없으면 에러 메시지 반환
-	     if (userId == null) {
-	         return "등록되지 않은 이메일입니다.";
+	     if (member.getUserId() == null) {
+	         return "등록된 정보가 아닙니다.";
 	     }
 
 	     // 아이디 마스킹
-	     String maskedUserId = findIdConfig.maskUserId(userId);
+	     String maskedUserId = findIdConfig.maskUserId(member.getUserId());
 
 	     // 이메일 발송 내용
 	     String subject = "[이빵이오] 아이디 찾기 안내";
@@ -43,24 +44,28 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 	     
 	     try {
 	    	 // 이메일 전송
-	         emailService.sendEmail(userEmail, subject, content);
+	         emailService.sendEmail(memberRequestSignupDto.getUserEmail(), subject, content);
 	     } catch (Exception e) {
 	         e.printStackTrace();
 	         return "이메일 전송에 실패했습니다.";
 	     }
 
-	        return "이메일을 발송하였습니다.";
+	        return "이메일이 전송되었습니다";
 	    }
 
 	 /**
 	  * 임시 비밀번호 생성 및 이메일 발송
 	  */
 	 @Override
-	 public String sendTemporaryPassword(String userEmail) throws MessagingException {
-	     
-	     MemberRequestSignupDto member = memberMapper.findUserByEmail(userEmail);
-	     if (member == null) {
-	         return "등록되지 않은 이메일입니다.";
+	 public String sendTemporaryPassword(MemberRequestSignupDto memberRequestSignupDto) {
+	     System.out.println(memberRequestSignupDto.getUserId());
+	     MemberRequestSignupDto member = memberMapper.findUserPassword(memberRequestSignupDto);
+	     System.out.println("==============================");
+	     System.out.println(member.getUserPassword());
+	     System.out.println("==============================");
+	     if (member.getUserPassword() == null) {
+	    	 System.out.println("==============================asdasdasd");
+	         return "등록된 정보가 아닙니다.";
 	     }
 
 	     String tempPassword = PasswordUtil.generateTempPassword();
@@ -81,7 +86,7 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 	                      "<p>로그인 후 마이페이지에서 비밀번호를 변경해주세요!</p>";
 
 	     try {
-	         emailService.sendEmail(userEmail, subject, content);
+	         emailService.sendEmail(memberRequestSignupDto.getUserEmail(), subject, content);
 	     } catch (Exception e) {
 	         e.printStackTrace();
 	         return "오류가 발생했습니다.";

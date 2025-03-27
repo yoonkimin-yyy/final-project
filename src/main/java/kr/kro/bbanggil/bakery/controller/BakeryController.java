@@ -45,6 +45,8 @@ import kr.kro.bbanggil.bakery.service.ReviewServiceImpl;
 import kr.kro.bbanggil.bakery.util.ListPageNation;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
+import kr.kro.bbanggil.member.model.dto.response.OwnerInfoResponseDTO;
+import kr.kro.bbanggil.member.service.MypageServiceImpl;
 import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 
@@ -54,6 +56,7 @@ import lombok.AllArgsConstructor;
 public class BakeryController {
 
 	private final BakeryServiceImpl bakeryService;
+	private final MypageServiceImpl mypageService;
 	private final ReviewServiceImpl reviewService;
 	private final OrderServiceImpl orderService;
 	private final ListPageNation pageNation;
@@ -360,8 +363,12 @@ public class BakeryController {
 	}
 	
 	@GetMapping("menu/list/form")
-	public String menuListForm(@RequestParam("no")int bakeryNo, Model model) {
+	public String menuListForm(@RequestParam("no")int bakeryNo,
+							   @SessionAttribute("userNum") int userNum,
+							   Model model) {
 		Map<String,Object> result = bakeryService.getMenuList(bakeryNo);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info",info);
 		model.addAttribute("menu",result.get("list"));
 		model.addAttribute("bakery",result.get("bakery"));
 		model.addAttribute("no",bakeryNo);
@@ -383,8 +390,11 @@ public class BakeryController {
 	}
 	@GetMapping("/info/form")
 	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo,
+								 @SessionAttribute("userNum") int userNum,
 								 Model model) {
 		myBakeryResponseDTO result = bakeryService.bakeryInfo(bakeryNo);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info",info);
 		model.addAttribute("bakery",result);
 		model.addAttribute("no",bakeryNo);
 		return "/owner/bakery-info";

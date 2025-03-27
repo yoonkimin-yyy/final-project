@@ -68,11 +68,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		            userName: name
 		        },
 		        success: function(response) {
-		            alert('아이디 찾기 요청이 완료되었습니다. 로그인 페이지로 이동합니다.');
-		            window.location.href = '/register/loginin/form';
+		            if (response === "등록된 정보가 아닙니다.") {
+		                alert('등록된 정보가 아닙니다.');
+		            } else {
+		                alert('아이디 찾기 요청이 완료되었습니다. 로그인 페이지로 이동합니다.');
+		                window.location.href = '/register/loginin/form';
+		            }
 		        },
 		        error: function(xhr, status, error) {
-		            alert('서버 오류가 발생했습니다.');
+		            if (xhr.status === 404) {
+		                alert('등록된 정보가 아닙니다.');
+		            } else {
+		                alert('서버 오류가 발생했습니다.');
+		            }
 		        }
 		    });
 		}
@@ -118,22 +126,30 @@ document.addEventListener('DOMContentLoaded', function() {
         
         
 		if (isValid) {
-		    $.ajax({
-		        url: findPwForm.action,
-		        method: 'POST',
-		        data: {
-		            userEmail: email,
-		            userId: getId
-		        },
-		        success: function(response) {
-		            alert('임시 비밀번호가 이메일로 발송되었습니다. 로그인 페이지로 이동합니다.');
-		            window.location.href = '/register/loginin/form';
-		        },
-		        error: function(xhr, status, error) {
-		            alert('서버 오류가 발생했습니다.');
-		        }
-		    });
-		}
+				    $.ajax({
+				        url: findPwForm.action,
+				        method: 'POST',
+				        data: {
+							userEmail: email,
+							userId: getId
+				        },
+				        success: function(response) {
+				            if (response === "등록된 정보가 아닙니다.") {
+				                alert('등록된 정보가 아닙니다.');
+				            } else {
+				                alert('비밀번호 찾기 요청이 완료되었습니다. 로그인 페이지로 이동합니다.');
+				                window.location.href = '/register/loginin/form';
+				            }
+				        },
+				        error: function(xhr, status, error) {
+				            if (xhr.status === 404) {
+				                alert('등록된 정보가 아닙니다.');
+				            } else {
+				                alert('서버 오류가 발생했습니다.');
+				            }
+				        }
+				    });
+				}
     });
 
     
@@ -151,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Real-time validation for ID finding email input
+
     idEmailInput.addEventListener('input', function() {
         const email = idEmailInput.value.trim();
         if (email === '') {
@@ -166,7 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Real-time validation for user ID input
     userIdInput.addEventListener('input', function() {
         const getId = userIdInput.value.trim();
         if (getId === '') {
