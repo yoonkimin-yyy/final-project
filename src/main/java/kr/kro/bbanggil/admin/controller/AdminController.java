@@ -128,7 +128,12 @@ public class AdminController {
 		  Integer adminNo = (Integer) session.getAttribute("userNum");
 		  inquiryReplyDto.setAdminNo(adminNo);
 		
-			adminService.saveAnswer(inquiryReplyDto);
+		  adminService.saveAnswer(inquiryReplyDto);
+		  
+		  int inquiryNo = inquiryReplyDto.getInquiryNo();
+
+		  
+		  InquiryResponseDto answer = adminService.getInquiryByNo(inquiryNo);
 			
 			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
 	}
@@ -150,5 +155,6 @@ public class AdminController {
 		
 		return "admin/admin-order-list";
 	}
+	
 	
 }
