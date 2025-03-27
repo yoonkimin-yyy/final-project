@@ -71,9 +71,18 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void saveInquiry(InquiryRequestDto inquiryRequestDto) {
 
-		String userType = adminMapper.getUserType(inquiryRequestDto.getUserNo());
+		
+		Integer userNo = inquiryRequestDto.getUserNo();
+		
+		if (userNo == null || userNo == 0) {
+	        adminMapper.insertInquiry(inquiryRequestDto);
+	        return;
+	    }
+	
 
-		if (!userType.equals("user") && !userType.equals("owner")) {
+		String userType = adminMapper.getUserType(userNo);
+		
+		if (userType == null || (!userType.equals("user") && !userType.equals("owner"))) {
 			throw new IllegalArgumentException("일반 사용자 또는 사업자만 문의할 수 있습니다.");
 		}
 
@@ -131,6 +140,7 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.getMonthlyOrderCount();
 	}
 
+	
 	public Map<String,Object> bottomContent(){
 		//최근 주문
 		List<NewlyResponseDTO> newlyOrder = adminMapper.getNewlyOrder();

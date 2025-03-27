@@ -127,7 +127,7 @@
 FROM
 	USER_INFO
 WHERE
-	USER_NO = #{userNo}
+	USER_NO = #{userNo,jdbcType=INTEGER}
 	
 	</select>
 	
@@ -141,7 +141,7 @@ WHERE
         IS_ANSWERED
     ) VALUES (
         INQUIRY_SEQ.NEXTVAL,
-        #{userNo},
+        #{userNo,jdbcType=INTEGER},
         #{inquiryTitle},
         #{inquiryContent},
         SYSDATE,
@@ -232,5 +232,6 @@ sysdate)
 		ORDER BY INQUIRY_NO desc
 		FETCH FIRST 3 ROWS ONLY
 	</select>
+	
 	
 </mapper>

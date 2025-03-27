@@ -123,7 +123,13 @@ public class HomeController {
 		// 1.문의 저장
 		Integer userNo = (Integer) session.getAttribute("userNum");
 
-		inquiryRequestDto.setUserNo(userNo);
+		 if (userNo != null) {
+		        // 로그인 상태일 경우
+		        inquiryRequestDto.setUserNo(userNo);
+		    } else {
+		        // 비회원인 경우
+		        inquiryRequestDto.setUserNo(null);
+		    }
 
 		adminService.saveInquiry(inquiryRequestDto);
 

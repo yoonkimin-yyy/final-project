@@ -53,6 +53,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
+		
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));
 		
@@ -107,24 +108,8 @@ public class AdminController {
 		
 		return "redirect:/admin/form";
 	}
-
-	/*
-	 * 문의 등록 처리
-	 */
 	
-	@PostMapping("/submit")
-	public String submitInquiry(HttpSession session, @ModelAttribute InquiryRequestDto inquiryRequestDto, Model model) {
-
-		// 1.문의 저장
-		Integer userNo = (Integer) session.getAttribute("userNum");
-
-		inquiryRequestDto.setUserNo(userNo);
-
-		adminService.saveInquiry(inquiryRequestDto);
-
-		return "redirect:/";
-	}
-	
+  
 	@GetMapping("/inquiry/list")
 	public String inquiryList(Model model) {
 		List<InquiryResponseDto> inquiries = adminService.getInquiryList();
