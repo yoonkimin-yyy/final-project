@@ -120,14 +120,39 @@
     <!-- 이메일로 회원 정보 조회 -->
     <select id="findUserByEmail" resultMap="loginupMap"
     		resultType="kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto">
-        SELECT * FROM USER_INFO WHERE USER_EMAIL = #{userEmail}
+        SELECT * FROM USER_INFO 
+        	WHERE USER_EMAIL = #{userEmail}
+        	AND user_name = #{userName}
+        	AND user_type IN ('owner', 'user')
+    </select>
+    
+    <select id="findUserPassword" resultMap="loginupMap">
+    	SELECT * from user_info 
+    		WHERE user_id = #{userId}
+    		AND user_email = #{userEmail}
+    		AND user_type IN ('owner', 'user')
     </select>
 
-    <!-- 비밀번호 변경 -->
+    <!-- 비밀번호 임시비밀번호로 변경 -->
     <update id="updatePassword">
         UPDATE USER_INFO SET USER_PASSWORD = #{userPassword} WHERE USER_EMAIL = #{userEmail}
     </update>
     
+
+    <select id="ownerMypage" resultMap="ownerResultMap">
+		SELECT bi.BAKERY_NO,
+			   bi.BAKERY_NAME,
+			   bi.BAKERY_ADDRESS,
+			   bi.BAKERY_PHONE,
+			   ba.AGREE,
+			   TO_CHAR(TO_DATE(SUBMISSION_DATE, 'YY/MM/DD'), 'YYYY-MM-DD') AS SUBMISSION_DATE 
+		FROM BAKERY_INFO bi 
+		JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO =ba.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO  
+		WHERE USER_NO = #{userNum}
+	</select>
+	
+	
 
 
 

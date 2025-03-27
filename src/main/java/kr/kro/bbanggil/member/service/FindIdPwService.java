@@ -1,17 +1,18 @@
 package kr.kro.bbanggil.member.service;
 
 import jakarta.mail.MessagingException;
+import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
 
 public interface FindIdPwService {
 	
 	 /**
      * 아이디 찾기
      */
-    String findUserIdByEmail(String userEmail);
+    String findUserIdByEmail(MemberRequestSignupDto memberRequestSignupDto);
 
     /**
      * 임시 비밀번호 생성 및 이메일 발송 
      */
-    String sendTemporaryPassword(String userEmail) throws MessagingException;
+    String sendTemporaryPassword(MemberRequestSignupDto memberRequestSignupDto) throws MessagingException;
 	
 }

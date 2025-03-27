@@ -3,12 +3,11 @@ package kr.kro.bbanggil.member.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
-import kr.kro.bbanggil.member.model.dto.request.MemberRequestSigninDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
-import kr.kro.bbanggil.member.model.dto.response.SigninResponseDto;
 
 @Mapper
 public interface MemberMapper {
@@ -33,7 +32,11 @@ public interface MemberMapper {
 
 	String findUserIdByEmail(String userEmail);
 	    
-	MemberRequestSignupDto findUserByEmail(String userEmail);
+	MemberRequestSignupDto findUserByEmail(MemberRequestSignupDto memberRequestSignupDto);
+	
+	MemberRequestSignupDto findUserPassword(MemberRequestSignupDto memberRequestSignupDto);
 
 	int updatePassword(MemberRequestSignupDto userNo);
+	
+
 }
