@@ -110,6 +110,7 @@ public class AdminController {
 	}
 
 	
+  
 	@GetMapping("/inquiry/list")
 	public String inquiryList(Model model) {
 		List<InquiryResponseDto> inquiries = adminService.getInquiryList();
