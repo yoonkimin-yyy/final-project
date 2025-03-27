@@ -158,7 +158,8 @@ public class BakeryController {
 		model.addAttribute("getBakeriesInfo", getBakeriesInfo);
 		
 		
-		
+		List<BakeryDto> getBakeriesTime = bakeryService.getBakeriesTime(no);
+		model.addAttribute("getBakeriesTime", getBakeriesTime);
 		
 		
 		// 빵집 번호로 사장님 답글 가져오기

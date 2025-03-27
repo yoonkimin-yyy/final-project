@@ -59,6 +59,14 @@
 			<result property="imgNo" column="img_no" />
 			<result property="changeName" column="change_name" />
 	</resultMap>
+	
+	
+	<resultMap id="BakeryScheduleResultMap"
+           type="kr.kro.bbanggil.bakery.dto.response.BakeryResponseScheduleDto">
+    <result property="day" column="day" />
+    <result property="openTime" column="open_time" />
+    <result property="closeTime" column="close_time" />
+	</resultMap>
 		
 
 
@@ -290,6 +298,39 @@ GROUP BY
       AND BI2.POSITION = 'parking'
 
 </select>
+
+<select id="getBakeriesTime" resultMap="BakeryScheduleResultMap">
+
+SELECT
+	bs.BAKERY_NO,
+	bs.day,
+	bs.open_time,
+	bs.close_time
+FROM
+	BAKERY_SCHEDULE bs
+WHERE
+	bs.BAKERY_NO = #{no}
+ORDER BY
+	CASE
+		bs.day
+            WHEN '월' THEN 1
+		WHEN '화' THEN 2
+		WHEN '수' THEN 3
+		WHEN '목' THEN 4
+		WHEN '금' THEN 5
+		WHEN '토' THEN 6
+		WHEN '일' THEN 7
+		ELSE 8
+	END
+
+
+
+
+</select>
+
+
+
+
 
 
 

@@ -49,6 +49,7 @@
             <i class="fas fa-chevron-right"></i>
          </button>
       </div> -->
+      
 
     <!-- 헤더 섹션 -->
     <div class="header">
@@ -71,19 +72,24 @@
           <!-- ⏰ 운영 시간 -->
           <div class="info-item">
             <i class="fas fa-clock"></i> <span id="today-hours">
-              <th:block th:each="schedule, iterStat : ${bakery.schedule}">
-                <span th:text="|오늘 ${schedule.openTime} - ${schedule.closeTime}|" th:if="${iterStat.first}"></span>
+              <th:block th:each="schedule, iterStat : ${getBakeriesTime}">
+                <span th:if="${iterStat.first}"
+                  th:text="|오늘 ${schedule.openTime.toString().substring(0,5)} - ${schedule.closeTime.toString().substring(0,5)}|">
+                </span>
               </th:block>
             </span>
             <!-- 🕒 "더보기" 버튼 -->
             <button class="hours-toggle">더보기</button>
             <div class="hours-detail" style="display: none;">
-              <th:block th:each="schedule : ${bakery.schedule}">
+              <th:block th:each="schedule : ${getBakeriesTime}">
                 <div class="hours-item">
-                  <span class="day" th:text="${schedule.day}"></span> <span class="time"
-                    th:text="|${schedule.openTime} - ${schedule.closeTime}|"></span>
+                  <span class="day" th:text="${schedule.day}"></span>
+                  <span class="time"
+                    th:text="|${schedule.openTime.toString().substring(0,5)} - ${schedule.closeTime.toString().substring(0,5)}|">
+                  </span>
                 </div>
               </th:block>
+
             </div>
           </div>
           <!-- 📞 전화번호 -->
@@ -366,7 +372,8 @@
       <span class="close-modal" onclick="closeReviewModal()">&times;</span>
       <h2>리뷰 작성</h2>
       <form id="reviewForm">
-        <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo" id="orderNo"/>
+        <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo"
+          id="orderNo" />
         <div class="form-group">
           <label for="name">이름</label>
           <input type="text" id="name" required>
