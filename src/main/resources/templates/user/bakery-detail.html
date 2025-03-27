@@ -309,8 +309,8 @@
         <!-- 주차 정보 섹션 -->
         <div class="parking-info" id="parking" style="display: none;">
           <h3>주차 안내</h3>
-          <div class="parking-content" th:each="bakery : ${bakeryDetail}">
-            <img src="" alt="주차장">
+          <div class="parking-content" th:each="bakery : ${parkingImages}">
+            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" alt="주차장">
             <div class="parking-details">
               <h4>주차 정보</h4>
               <ul>
@@ -366,7 +366,7 @@
       <span class="close-modal" onclick="closeReviewModal()">&times;</span>
       <h2>리뷰 작성</h2>
       <form id="reviewForm">
-        <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo" />
+        <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo" id="orderNo"/>
         <div class="form-group">
           <label for="name">이름</label>
           <input type="text" id="name" required>

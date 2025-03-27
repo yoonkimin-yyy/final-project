@@ -83,7 +83,7 @@ public interface BakeryService {
 	List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
 	List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
 	
-	
+	List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
 	
 
 	

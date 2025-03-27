@@ -48,7 +48,7 @@ public class HomeController {
 	    }
 
 	    boolean isSuccess = emailService.sendSubscriptionEmail(request.getEmail());
-	    System.out.println(isSuccess);
+	    
 
 	    if (isSuccess) {
 	        return ResponseEntity.ok("구독 완료! 확인 이메일을 발송했습니다.");

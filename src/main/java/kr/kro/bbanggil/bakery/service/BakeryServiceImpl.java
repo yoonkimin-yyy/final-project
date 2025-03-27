@@ -85,15 +85,12 @@ public class BakeryServiceImpl implements BakeryService{
 		
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		
-		System.out.println(pi.getLimit());
-		System.out.println(pi.getOffset());
 		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
 															getTodayDayOfWeek(),
 															orderType,
 															bakerySearchDTO);
 		
 		for(BakeryInfoDTO item : posts) {
-			System.out.println(item.getBakeryName());
 		}
  		
 		List<List<BakeryInfoDTO>> images = new ArrayList<>();
@@ -230,7 +227,6 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public bakeryUpdateResponseDTO getbakeryInfo(int bakeryNo) {
 		bakeryUpdateResponseDTO response = bakeryMapper.getBakeryInfo(bakeryNo);
-		System.out.println(response.getBakeryPhone());
 		response.setImgDTO(bakeryMapper.getBakeryImg(bakeryNo));
 		List<BakeryTimeSetDTO> timeDTO = bakeryMapper.getBakerySchedule(bakeryNo);
 		setBakeryOperatingHours(response,timeDTO);
@@ -519,6 +515,10 @@ public class BakeryServiceImpl implements BakeryService{
 		int count = bakeryMapper.getUserCountBybakeryNo(bakeryNo);
 		count++;
 		bakeryMapper.updateUserCount(bakeryNo,count);
+	}
+
+	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo) {
+		return bakeryMapper.getParkingImages(bakeryNo);
 	}
 
 }

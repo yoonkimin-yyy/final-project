@@ -157,7 +157,7 @@ public interface BakeryMapper {
 	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
 
 	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
-
+	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
 	
 
 }

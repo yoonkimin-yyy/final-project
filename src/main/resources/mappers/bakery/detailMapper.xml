@@ -112,6 +112,17 @@ GROUP BY
     bs.day,
     bs.open_time,
     bs.close_time
+    ORDER BY
+    CASE bs.day
+        WHEN '월' THEN 1
+        WHEN '화' THEN 2
+        WHEN '수' THEN 3
+        WHEN '목' THEN 4
+        WHEN '금' THEN 5
+        WHEN '토' THEN 6
+        WHEN '일' THEN 7
+        ELSE 8
+    END
 	</select>
 
 
@@ -258,6 +269,27 @@ GROUP BY
       AND BI2.POSITION = 'outside'
 </select>
 
+
+<select id="getParkingImages" resultMap="DetailResultMap">
+ SELECT
+        bi.bakery_address,
+        bi.bakery_name,
+        bi.bakery_phone,
+        bi.BAKERY_NO,
+        bd.AMENITY,
+        bd.OUTSIDE_INFO,
+        bd.CREATED_DATE,
+        BI2.IMG_NO,
+        BI2.RESOURCES_PATH,
+        BI2.CHANGE_NAME,
+        BI2.POSITION
+    FROM BAKERY_DETAIL bd
+    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
+    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
+    WHERE bi.BAKERY_NO = #{no}
+      AND BI2.POSITION = 'parking'
+
+</select>
 
 
 

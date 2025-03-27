@@ -100,6 +100,7 @@ public class BakeryController {
 		model.addAttribute("pi",piResult);
 		model.addAttribute("today",todayDayOfWeek);
 		model.addAttribute("bakerySearchDTO",bakerySearchDTO);
+		model.addAttribute("searchText", bakerySearchDTO.getSearchText());
 		
 		return "user/bakery-list";
 	}
@@ -155,6 +156,8 @@ public class BakeryController {
 
 		List<BakeryDto> getBakeriesInfo = bakeryService.getBakeriesInfo(no);
 		model.addAttribute("getBakeriesInfo", getBakeriesInfo);
+		
+		
 		
 		
 		
@@ -237,10 +240,12 @@ public class BakeryController {
 		List<BakeryDto> bakeryDetail = bakeryService.getBakeryDetail(no);
 		List<BakeryDetailResponseDto> insideImages =  bakeryService.getInsideImages(no);
 		List<BakeryDetailResponseDto> outsideImages = bakeryService.getOutsideImages(no);
+		List<BakeryDetailResponseDto> parkingImages = bakeryService.getParkingImages(no);
 		
 		model.addAttribute("bakeryDetail", bakeryDetail);
 		model.addAttribute("insideImages", insideImages);
 		model.addAttribute("outsideImages", outsideImages);
+		model.addAttribute("parkingImages", parkingImages);
 		
 
 		/*
