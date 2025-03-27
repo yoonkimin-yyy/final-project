@@ -53,10 +53,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
-<<<<<<< HEAD
 		
-=======
->>>>>>> c5b8ee2837a41ce58c1b426d3ae13406f9299ff4
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));
 		

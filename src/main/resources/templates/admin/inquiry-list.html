@@ -24,7 +24,7 @@
 
   <!-- 작성자 | 날짜 | 상태 -->
   <div class="admin-inquiry-item-meta">
-    <span th:text="${inquiry.userName} + ' | ' + ${inquiry.createDate}">작성자 | 날짜</span>
+  <span th:text="(${inquiry.userName} != null ? ${inquiry.userName} : '비회원') + ' | ' + ${inquiry.createDate}"></span>
     <span class="admin-inquiry-status"
           th:classappend="'admin-inquiry-status-' + (${inquiry.isAnswered} == 'Y' ? 'answered' : 'pending')">
       <span th:text="${inquiry.isAnswered} == 'Y' ? '답변완료' : '답변대기'">답변 상태</span>
