@@ -273,15 +273,14 @@ public class BakeryController {
 		/*
 		 * 사용자의 orderNo가져오기
 		 */
-		BakeryResponseDto recentOrder = null;
+		BakeryResponseDto recentOrder = new BakeryResponseDto();
+		System.out.println("(BakeryController) userNum : " + userNum);
 		if (userNum != null) {
 		    recentOrder = orderService.findOrderNo(userNum, no);
+		    System.out.println("(BakeryController) recentOrder : " + recentOrder.getOrderNo());
 		}
+		System.out.println("(BakeryController) if 종료 ");
 
-		if (recentOrder == null) {
-		    recentOrder = new BakeryResponseDto(); // 기본값 처리
-		}
-		
 		model.addAttribute("recentOrder", recentOrder);
 		
 		return "user/bakery-detail"; // bakeryDetail.html 뷰 반환

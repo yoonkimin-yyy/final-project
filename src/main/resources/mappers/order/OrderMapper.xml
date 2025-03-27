@@ -191,7 +191,7 @@
 	<select id="findRecentOrder" resultType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto">
 	
 	SELECT
-	oi.ORDER_NO
+	oi.ORDER_NO AS orderNo
 FROM
 	ORDER_INFO oi
 JOIN PAYMENT p 

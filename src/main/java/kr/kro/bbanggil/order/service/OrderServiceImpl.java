@@ -177,7 +177,6 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	public BakeryResponseDto findOrderNo(int userNum, double bakeryNo) {
-		
 		return orderMapper.findRecentOrder(userNum, bakeryNo);
 		
 		
