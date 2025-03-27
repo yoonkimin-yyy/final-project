@@ -158,6 +158,8 @@ public interface BakeryMapper {
 
 	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
 	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
+
+	public List<BakeryDto> getBakeriesTime(@Param("no")double no);
 	
 
 }

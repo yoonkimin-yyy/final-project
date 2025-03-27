@@ -44,7 +44,7 @@ public interface BakeryService {
 	List<BakeryDto>getCategoryBakeries(List<BakeryDto> topBakeries);
 	List<BakeryDto> getTopFiveOrders();
 	
-	
+	public List<BakeryDto> getBakeriesTime(double no);
 	
 	
 	List<BakeryDto> getBakeriesInfo(double no);
