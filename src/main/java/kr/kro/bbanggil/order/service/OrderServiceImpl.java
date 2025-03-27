@@ -166,13 +166,13 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public int getOrderCount() {
-		return orderMapper.selectOrderCount();
+	public int getOrderCount(String keyword) {
+		return orderMapper.selectOrderCount(keyword);
 	}
 	
 	@Override
-	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi) {
-	    return orderMapper.selectPagedOrders(pi);
+	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi, String keyword) {
+	    return orderMapper.selectPagedOrders(pi,keyword);
 	}
 	
 	@Override
