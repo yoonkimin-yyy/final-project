@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
+import kr.kro.bbanggil.pickup.exception.PickupException;
 import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;
+import kr.kro.bbanggil.pickup.response.dto.PickupMenuResponseDTO;
 import kr.kro.bbanggil.pickup.service.PickupServiceImpl;
 
 @Controller
@@ -47,23 +49,16 @@ public class PickupListController {
     	
         List<PickupBakeryInfoResponseDTO> orderList = pickupServiceImpl.getAllOrders(userNo, bakeryNo);
         
-        
-        System.out.println("===dfdsfas");
-        System.out.println(orderList.size());
-        for(PickupBakeryInfoResponseDTO i : orderList) {
-        	System.out.println("-=-=-=-=");
-        	System.out.println(i.getPayDTO().getOrderNo());
-        	System.out.println(i.getStatusDTO().getPickupStatus());
-        	System.out.println(i.getPayDTO().getPaymentDate());
-        	System.out.println(i.getPayDTO().getAmount());
-        	System.out.println(i.getUserDTO().getRecipientsPhonenum());
-        	System.out.println("-=-=-=-=");
+        for (PickupBakeryInfoResponseDTO order : orderList) {
+            List<PickupMenuResponseDTO> menuList = pickupServiceImpl.getMenusByOrderNo(order.getPayDTO().getOrderNo());
+            order.setMenuList(menuList);  // 주문 객체에 메뉴 리스트 추가
+            
+            
         }
         
-       
+        
         model.addAttribute("orders",orderList);
         model.addAttribute("bakeryNo",bakeryNo);
-        
         
         return "owner/pickup-list";  
     }

@@ -67,12 +67,49 @@
                         </tr>
                     </thead>
                     <tbody id="order-list">
-                        <tr class="pending" th:each="order : ${orders}" th:attr="data-status=${order.statusDTO.pickupStatus}, data-date=${order.payDTO.paymentDate}">
-                            <td th:text="${order.payDTO.orderNo}"></td>
+                        <tr class="pending" th:each="order : ${orders}" th:attr="data-order-no=${order.orderNo},data-status=${order.statusDTO.pickupStatus}, data-date=${order.payDTO.paymentDate}">
+                            <td th:text="${order.orderNo}"></td>
                             <td th:text="${order.statusDTO.pickupStatus}"></td>
                             <td th:text="${order.payDTO.paymentDate}"></td>
                             <td th:text="${order.payDTO.amount}"></td>
                             <td th:text="${order.userDTO.recipientsPhonenum}"></td>
+					            <div th:id="'popup-' + ${order.orderNo}" class="popup">
+					                <div class="popup-content">
+					                    <span class="close">&times;</span>
+					                    <h2>주문 상세 정보</h2>
+										<p id="popup-info"></p>
+										
+										<p><strong>주문 번호 :</strong> <strong><span th:id="'popup-order-number-' + ${order.orderNo}" th:text="${order.orderNo}"></span></strong></p>
+										<br>
+										<!-- 메뉴 목록 출력 -->
+										<div class="menu-div">
+											<strong>
+											    <p><strong>메뉴 :</strong></p>
+											    
+											    <!-- 주문에 속한 메뉴들을 반복해서 출력 -->
+											    <div class="menu-list" th:each="menu : ${order.menuList}">
+											        <span th:text="${menu.menuName} + ' (' + ${menu.menuCount} + '개)'"></span>
+											        <br>
+											    </div>
+											</strong>
+										</div>
+										<br>
+					                    <p><strong>고객 전화번호 :</strong>&nbsp;<strong><span id="popup-customer-phone" th:text="${order.userDTO.recipientsPhonenum}"></span></strong></p>
+					                    <p><strong>주문 시간 :</strong><strong>&nbsp;<span id="popup-order-time" th:text="${order.payDTO.paymentDate}"></span></strong></p>
+					                    <p><strong>주문 금액 :</strong><strong>&nbsp;<span id="popup-total-price" th:text="${order.payDTO.amount}"></span></strong></p>
+					                    <p><strong>요청사항 :</strong>&nbsp;<strong><span id="popup-request" th:text="${order.payDTO.requestContent}"></span></strong></p>
+					                
+					                    <div class="rejection-reason-div" th:if="${order.statusDTO.pickupStatus}=='대기'">
+					                        <textarea id="rejection-reason" placeholder="거절 사유 입력..."></textarea>
+					                    </div>    
+					                    <div class="popup-buttons" >
+					                        <button id="approve-btn" th:if="${order.statusDTO.pickupStatus}=='대기'" th:attr="data-order-no=${order.orderNo}">승인</button>
+					                        <button id="reject-btn" th:if="${order.statusDTO.pickupStatus}=='대기'" th:attr="data-order-no=${order.orderNo}">거절</button>
+					                        <button id="complete-btn" th:if="${order.statusDTO.pickupStatus}=='승인'" th:attr="data-order-no=${order.orderNo}">완료</button>
+					                    </div>
+					                    
+					                </div>
+					            </div>
                         </tr>
                     </tbody>
                     
@@ -80,40 +117,6 @@
             </div>
 
             <!-- 상세보기 팝업 -->
-            <div id="popup" class="popup">
-                <div class="popup-content">
-                    <span class="close">&times;</span>
-                    <h2>주문 상세 정보</h2>
-                    <p id="popup-info"></p>
-                    
-                    <p><strong>주문 번호 :</strong>&nbsp;<strong><span id="popup-order-number"></span></strong></p>
-	                <div class="menu-div">
-	                    <p th:each="order : ${orders}">
-	                    	<strong>
-	                    		<span>메뉴 :</span>
-	                    		<br>
-	                    		<span th:each="menu : ${order.menuDTO}">
-	                    			<span th:utext="${menu.menuName} + '&nbsp;&nbsp;' + ${menu.menuCount} + '개'"></span>
-	                    			<br> 
-	                    		</span>
-	                    	</strong>
-	                    </p>
-	                </div>
-                    <p><strong>고객 전화번호 :</strong>&nbsp;<strong><span id="popup-customer-phone"></span></strong></p>
-                    <p><strong>주문 시간 :</strong><strong>&nbsp;<span id="popup-order-time"></span></strong></p>
-                    <p><strong>주문 금액 :</strong><strong>&nbsp;<span id="popup-total-price"></span></strong></p>
-                    <p th:each="order : ${orders}"><strong>요청사항 :</strong>&nbsp;<strong><span id="popup-request" th:text="${order.payDTO.requestContent}"></span></strong></p>
-                    <ul class="menu-list" id="popup-menu-list" ></ul>
-                
-                    <div class="rejection-reason-div">
-                        <textarea id="rejection-reason" placeholder="거절 사유 입력..."></textarea>
-                    </div>    
-                    <div class="popup-buttons">
-                        <button id="approve-btn">승인</button>
-                        <button id="reject-btn">거절</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 

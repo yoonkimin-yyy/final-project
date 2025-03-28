@@ -1,7 +1,6 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,7 @@ import kr.kro.bbanggil.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.bakery.dto.request.MenuRequestDTO;
+import kr.kro.bbanggil.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto;
 import kr.kro.bbanggil.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.bakery.dto.response.MenuResponseDto;
@@ -217,6 +217,7 @@ public class BakeryController {
 		model.addAttribute("reviews", result.get("reviews"));
 		model.addAttribute("bakeryNo", no);
 		model.addAttribute("sort", sort);
+		model.addAttribute("totalReviews", totalReviews);
 		
 		
 
@@ -234,7 +235,13 @@ public class BakeryController {
 		 */
 
 		List<BakeryDto> bakeryDetail = bakeryService.getBakeryDetail(no);
+		List<BakeryDetailResponseDto> insideImages =  bakeryService.getInsideImages(no);
+		List<BakeryDetailResponseDto> outsideImages = bakeryService.getOutsideImages(no);
+		
 		model.addAttribute("bakeryDetail", bakeryDetail);
+		model.addAttribute("insideImages", insideImages);
+		model.addAttribute("outsideImages", outsideImages);
+		
 
 		/*
 		 * 리뷰 이미지 보여지는 기능
@@ -257,9 +264,13 @@ public class BakeryController {
 		/*
 		 * 사용자의 orderNo가져오기
 		 */
-		BakeryResponseDto recentOrder = orderService.findOrderNo(userNum, no);
+		BakeryResponseDto recentOrder = null;
+		if (userNum != null) {
+		    recentOrder = orderService.findOrderNo(userNum, no);
+		}
+
 		if (recentOrder == null) {
-		    recentOrder = new BakeryResponseDto(); // 혹은 new BakeryResponseDto(0, ...)
+		    recentOrder = new BakeryResponseDto(); // 기본값 처리
 		}
 		
 		model.addAttribute("recentOrder", recentOrder);

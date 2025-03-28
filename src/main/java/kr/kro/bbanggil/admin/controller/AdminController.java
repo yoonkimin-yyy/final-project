@@ -115,32 +115,7 @@ public class AdminController {
 		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
 	}
 
-	@GetMapping("/inquiry/form")
-	public String inquiryWrite() {
-		return "admin/admin-inquiry";
-	}
 	
-	
-	
-	
-	
-	/*
-	 * 문의 등록 처리
-	 */
-	
-	@PostMapping("/submit")
-	public String submitInquiry(HttpSession session, @ModelAttribute InquiryRequestDto inquiryRequestDto, Model model) {
-
-		// 1.문의 저장
-		Integer userNo = (Integer) session.getAttribute("userNum");
-
-		inquiryRequestDto.setUserNo(userNo);
-
-		adminService.saveInquiry(inquiryRequestDto);
-
-		return "redirect:/";
-	}
-
 	
 	@GetMapping("/inquiry/list")
 	public String inquiryList(Model model) {

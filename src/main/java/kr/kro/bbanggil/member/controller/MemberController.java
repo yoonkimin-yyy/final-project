@@ -173,11 +173,13 @@ public class MemberController {
         // 로그인 검증
     	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
         System.out.println("로그인 결과: " + loginUser);
+        
 
         if (loginUser != null) {
             // 로그인 성공 → 세션에 사용자 정보 저장
             session.setAttribute("userNum", loginUser.getUserNo());
             session.setAttribute("userId", loginUser.getUserId());
+            session.setAttribute("userName", loginUser.getUserName());
             session.setAttribute("role", loginUser.getUserType());
             if(loginUser.getUserType().equals("admin")) {
             	return "redirect:/admin/form";
@@ -231,17 +233,7 @@ public class MemberController {
     	session.invalidate();
 		return "redirect:/";
 	}
-    
-    @GetMapping("/mypage")
-	public String myPage(Model model,HttpSession session) {
-    	if(session.getAttribute("role").equals("owner"))
-		model.addAttribute("goOwnerPage",true);
-    	else
-    	model.addAttribute("goOwnerPage",false);
-
-		return "user/mypage";
-
-	}
+ 
 
 	@GetMapping("/edit")
 	public String edit() {
@@ -256,6 +248,7 @@ public class MemberController {
 		List<OwnerMypageResponseDTO> result =memberService.ownerMypage(userNum); 
 		model.addAttribute("bakeries",result);
 		model.addAttribute("goMyPage",true);
+		
 		return "owner/owner-mypage";
 	}
 

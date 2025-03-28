@@ -37,10 +37,12 @@ public class SalesController {
             // bakeryNo 값이 잘못 전달된 경우에 대한 처리 로직
         }
         
-        if (year == null) {
-        	throw new PickupException("아직 가게의 매출이 없습니다.","common/error",HttpStatus.BAD_REQUEST);
-        }
         
+        if (year == null) {
+             
+             year = LocalDate.now().getYear();  // Integer 타입으로도 사용할 수 있습니다.
+            
+        }
         
 
         // 매출 조회

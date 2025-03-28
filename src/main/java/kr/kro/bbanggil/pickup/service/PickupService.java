@@ -15,5 +15,7 @@ public interface PickupService {
     
     // 주문 상태를 변경하는 메서드
     public boolean updateOrderStatus(int orderNo, String status, String rejectionReason);
+    
+    List<PickupMenuResponseDTO> getMenusByOrderNo(int orderNo);
 
 }
