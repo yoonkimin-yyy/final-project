@@ -372,8 +372,12 @@
       <span class="close-modal" onclick="closeReviewModal()">&times;</span>
       <h2>리뷰 작성</h2>
       <form id="reviewForm">
-        <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo"
-          id="orderNo" />
+      <th:block th:if="${recentOrder != null}">
+  <input type="hidden"
+         th:if="${recentOrder.orderNo != null}"
+         th:value="${recentOrder.orderNo}"
+         name="orderNo" id="orderNo" />
+</th:block>
         <div class="form-group">
           <label for="name">이름</label>
           <input type="text" id="name" required>

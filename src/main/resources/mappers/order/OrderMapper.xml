@@ -108,7 +108,8 @@
 		INSERT INTO PICKUP_STATUS VALUES(PICKUP_STATUS_SEQ.NEXTVAL,
 										 #{payNo},
 										 DEFAULT,
-										 DEFAULT)
+										 DEFAULT,
+										 CURRENT_TIMESTAMP)
 	</insert>
 	
 	<select id="pickupPay" resultType="int">

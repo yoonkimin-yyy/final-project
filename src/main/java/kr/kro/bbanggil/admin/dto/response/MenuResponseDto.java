@@ -11,5 +11,6 @@ public class MenuResponseDto {
 	private String menuPrice;
 	private String resourcesPath;
 	private String changeName;
-
+	private String category;
+	
 }
