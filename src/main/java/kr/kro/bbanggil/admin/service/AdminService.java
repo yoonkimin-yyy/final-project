@@ -6,6 +6,7 @@ import java.util.Map;
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
+import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
@@ -48,5 +49,13 @@ public interface AdminService {
 	void addCategory(String newCategory);
 
 	void deleteCategory(Map<String, List<String>> requestBody);
+
+	List<AdminResponseDto> reportList();
+
+	AdminResponseDto reportDetail(int reportNo);
+
+	void insertReport(ReportRequestDTO reportDTO, String userId, int reportNo);
+
+	InquiryResponseDto getInquiryByNo(int inquiryNo);
 
 }

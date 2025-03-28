@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{fragments/head :: HeadFragment}"></head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" th:href="@{/css/admin/report-reply.css}">
+</head>
+<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+
+<body>
+<form th:action="@{/admin/report}" method="Post">
+<input type="hidden" name="reportNo" th:value="${reportNo}">
+    <div class="containers">
+        <h2>신고 답변</h2>
+        <table>
+            <tr>
+                <th>신고한 유저 ID</th>
+                <td th:text="${result.reporter}"></td>
+            </tr>
+            <tr>
+                <th>신고 받은 유저 ID</th>
+                <td th:text="${result.reportedUser}"></td>
+            </tr>
+            <tr>
+                <th>신고당한 내용</th>
+                <td th:text="${result.reviewDetail}"></td>
+            </tr>
+            <tr>
+                <th>신고 사유</th>
+                <td th:text="${result.reportDetail}"></td>
+            </tr>
+        </table>
+	      	<select name="reportResult" class="denied">
+	      		<option value="경고">경고</option>
+	      		<option value="3일정지">3일 정지</option>
+	      		<option value="7일정지">7일 정지</option>
+	      		<option value="영구정지">영구 정지</option>
+	      	</select>
+	      	<textarea class="reply" name="unfreezeDetail"></textarea>
+	      	<div class="btn-box">
+	          	<button type="submit" class="submit-btn">제출</button>
+	          	<button type="button" class="back-btn" onclick="history.back()">뒤로가기</button>
+	      	</div>
+
+    </div>
+</form>
+    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+
+</body>
+
+</html>
