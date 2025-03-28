@@ -14,6 +14,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
+import kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto;
 
 @Mapper
 public interface AdminMapper {
@@ -69,4 +70,8 @@ public interface AdminMapper {
 
 	void deleteCategory(@Param("category") String category);
 
+	InquiryEmailInfoDto getInquiryEmailInfo(@Param("inquiryNo")int inquiryNo);
+
+	InquiryResponseDto selectInquiryByNo(@Param("inquiryNo")int inquiryNo);
+	
 }

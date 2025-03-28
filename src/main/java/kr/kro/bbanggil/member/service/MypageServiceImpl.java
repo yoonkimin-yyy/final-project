@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.member.mapper.MypageMapper;
+import kr.kro.bbanggil.member.model.dto.response.OwnerInfoResponseDTO;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.member.util.MypagePagination;
 import kr.kro.bbanggil.mypage.model.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageListResponseDto;
@@ -36,9 +38,6 @@ public class MypageServiceImpl implements MypageService {
 		MypagePageInfoDto pi = mypagePagination.getMyList(postCount, currentPage, pageLimit, boardLimit);
 		List<MypageListResponseDto> getBuyHistory = mypageMapper.getBuyHistory(userNo);
 		
-		for(MypageListResponseDto item : getBuyHistory) {
-			System.out.println(item.getBakeryInfoDto().getBakeryName());
-		}
 		
 		Map<String, Object> result = new HashMap<>();
 		
@@ -76,11 +75,7 @@ public class MypageServiceImpl implements MypageService {
 
 	public int updatePassword(int userNo, PasswordRequestDto passwordDto) {
 		
-		System.out.println(passwordDto.getCurrentPassword());
-		System.out.println(passwordDto.getNewPassword());
-		System.out.println(passwordDto.getConfirmPassword());
 		String currentPassword = mypageMapper.getPassword(userNo);
-		System.out.println("현재 비밀번호 : " +currentPassword);
 		
 		if(currentPassword == null) {
 			throw new RuntimeException("사용자를 찾을 수 없습니다.");
@@ -100,6 +95,24 @@ public class MypageServiceImpl implements MypageService {
 		
 		return result;
 	}
+	
+    @Override
+	public List<OwnerMypageResponseDTO> ownerMypage(int userNum) {
+    		
+		return mypageMapper.ownerMypage(userNum);
+	}
+
+	public OwnerInfoResponseDTO ownerInfo(int userNum) {
+		OwnerInfoResponseDTO result = mypageMapper.ownerInfo(userNum);
+		result.setBusinessNo(result.getBusinessNo().replaceAll("(\\d{3})(\\d{2})(\\d{5})", "$1-$2-$3"));
+			if(result.getUserPhone().length()==11) {
+				result.setUserPhone(result.getUserPhone().replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3"));
+			} else {
+				result.setUserPhone(result.getUserPhone().replaceAll("(\\d{4})(\\d{4})(\\d{4})", "$1-$2-$3"));
+			}
+		return result;
+	}
+
     
     
    

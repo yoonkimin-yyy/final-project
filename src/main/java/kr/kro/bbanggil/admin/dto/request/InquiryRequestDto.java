@@ -12,5 +12,6 @@ public class InquiryRequestDto {
 	private Integer userNo;
 	private String inquiryTitle;
 	private String inquiryContent;
+	private String email;
 
 }

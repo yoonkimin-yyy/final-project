@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.kro.bbanggil.member.model.dto.response.OwnerInfoResponseDTO;
+import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageListResponseDto;
 import kr.kro.bbanggil.mypage.model.dto.response.MypageUserResponseDto;
 
@@ -30,4 +32,8 @@ public interface MypageMapper {
 	//비밀번호수정
 	public int updatePassword(@Param("userNo")int userNo,
 							  @Param("userPassword")String userPassword);
+
+	public List<OwnerMypageResponseDTO> ownerMypage(int userNum);
+
+	public OwnerInfoResponseDTO ownerInfo(int userNum);
 }

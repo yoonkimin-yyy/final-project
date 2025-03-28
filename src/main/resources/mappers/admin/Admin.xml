@@ -145,24 +145,26 @@ WHERE
 	
 	</select>
 	
-	<insert id="insertInquiry">
+	<insert id="insertInquiry" parameterType="kr.kro.bbanggil.admin.dto.request.InquiryRequestDto">
 	  INSERT INTO INQUIRY (
         INQUIRY_NO,
         USER_NO,
         INQUIRY_TITLE,
         INQUIRY_CONTENT,
         CREATE_DATE,
-        IS_ANSWERED
+        IS_ANSWERED,
+        EMAIL
     ) VALUES (
         INQUIRY_SEQ.NEXTVAL,
         #{userNo,jdbcType=INTEGER},
         #{inquiryTitle},
         #{inquiryContent},
         SYSDATE,
-        'N'
+        'N',
+        #{email}
     )
-	
 	</insert>
+	
 	<select id="selectInquiryList" resultType="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
 	
 SELECT
@@ -246,6 +248,45 @@ sysdate)
 		ORDER BY INQUIRY_NO desc
 		FETCH FIRST 3 ROWS ONLY
 	</select>
+	
+	<select id="getInquiryEmailInfo" resultType="kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto">
+
+SELECT
+	i.INQUIRY_TITLE AS title,
+	i.INQUIRY_CONTENT AS content,
+	ir.REPLY_CONTENT AS reply,
+	COALESCE(UI.USER_EMAIL, i.EMAIL) AS email
+FROM
+	INQUIRY i
+LEFT JOIN USER_INFO ui ON
+	i.USER_NO = ui.USER_NO
+LEFT JOIN INQUIRY_REPLY ir ON
+	i.INQUIRY_NO = ir.INQUIRY_NO
+WHERE
+	i.INQUIRY_NO = #{inquiryNo}
+	
+	
+	</select>
+	
+	
+	<select id="selectInquiryByNo" resultType="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
+    SELECT
+        i.INQUIRY_NO,
+        i.USER_NO,
+        NVL(ui.USER_NAME, '비회원') AS userName,
+        i.INQUIRY_TITLE,
+        i.INQUIRY_CONTENT,
+        i.IS_ANSWERED,
+        TO_CHAR(i.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS createDate,
+        ir.REPLY_CONTENT,
+        TO_CHAR(ir.REPLY_DATE, 'YYYY-MM-DD HH24:MI:SS') AS replyDate
+    FROM INQUIRY i
+    LEFT JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
+    LEFT JOIN INQUIRY_REPLY ir ON i.INQUIRY_NO = ir.INQUIRY_NO
+    WHERE i.INQUIRY_NO = #{inquiryNo}
+</select>
+	
+	
 	
 	
 </mapper>

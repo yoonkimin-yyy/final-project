@@ -644,10 +644,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
     // 오늘의 영업시간 표시
     const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     const today = new Date().getDay();
-    const todayHours = document.getElementById('today-hours');
-    const timeString = today === 0 || today === 6 ? '09:00 - 20:00' : '07:00 - 22:00';
-    todayHours.textContent = `오늘 ${timeString}`;
-
+    
     hoursToggle.addEventListener('click', () => {
         isExpanded = !isExpanded;
         hoursDetail.style.display = isExpanded ? 'block' : 'none';
@@ -851,27 +848,6 @@ function sortReviews() {
   }
 
 
-
-// 카카오 지도 생성 함수
-kakao.maps.load(function () {
-    // 지도를 생성합니다
-    const container = document.getElementById('kakaoMap');
-    const options = {
-        center: new kakao.maps.LatLng(36.3281, 127.4239),
-        level: 3 // 확대 레벨
-    };
-
-    const map = new kakao.maps.Map(container, options);
-
-    // 5️ 현재 선택한 빵집(메인 마커)
-    const bakeryLocation = new kakao.maps.LatLng(36.3281, 127.4239);
-    const mainMarker = new kakao.maps.Marker({
-        position: bakeryLocation,
-        map: map
-    });
-
-   
-});
 
 // 리뷰 답글 관련 코드
 function submitReplyBtn(){

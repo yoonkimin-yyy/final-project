@@ -128,27 +128,34 @@ public class AdminController {
 		  Integer adminNo = (Integer) session.getAttribute("userNum");
 		  inquiryReplyDto.setAdminNo(adminNo);
 		
-			adminService.saveAnswer(inquiryReplyDto);
+		  adminService.saveAnswer(inquiryReplyDto);
+		  
+		  int inquiryNo = inquiryReplyDto.getInquiryNo();
+
+		  
+		  InquiryResponseDto answer = adminService.getInquiryByNo(inquiryNo);
 			
 			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
 	}
 	
 	@GetMapping("/order/list")
-	public String getOrderList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,Model model) {
+	public String getOrderList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
+			@RequestParam(value = "keyword", required = false) String keyword,Model model) {
 		
 		
-		int listCount = orderService.getOrderCount(); // 전체 주문수
+		int listCount = orderService.getOrderCount(keyword); // 전체 주문수
 		int pageLimit = 5;
 		int boardLimit = 10;
 		
 		PageResponseDto pi = PaginationUtil.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
-		List<OrderResponseDto> orderList = orderService.getPagedOrders(pi);
+		List<OrderResponseDto> orderList = orderService.getPagedOrders(pi,keyword);
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pi", pi);
-		
+		model.addAttribute("keyword", keyword);
 		
 		return "admin/admin-order-list";
 	}
+	
 	
 }

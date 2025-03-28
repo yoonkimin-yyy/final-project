@@ -103,11 +103,6 @@ public class MemberServiceImpl implements MemberService{
          }
          return null; // 로그인 실패
      }
-    @Override
-	public List<OwnerMypageResponseDTO> ownerMypage(int userNum) {
-    		
-		return registerMapper.ownerMypage(userNum);
-	}
 }
 
 

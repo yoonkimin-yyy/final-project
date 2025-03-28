@@ -521,4 +521,8 @@ public class BakeryServiceImpl implements BakeryService{
 		return bakeryMapper.getParkingImages(bakeryNo);
 	}
 
+	public List<BakeryDto> getBakeriesTime(double no) {
+		return bakeryMapper.getBakeriesTime(no);
+	}
+
 }
