@@ -101,7 +101,7 @@ public class MemberServiceImpl implements MemberService{
              // 2. 비밀번호 검증 (암호화된 비밀번호와 입력된 비밀번호 비교)
              if (passwordEncoder.matches(memberRequestSignupDto.getUserPassword(),loginUser.getUserPassword())) {
             	 String isBanned = registerMapper.isBanned(memberRequestSignupDto);
-            	 if(isBanned=="N")
+            	 if(isBanned.equals("N"))
                  return loginUser; // 로그인 성공
             	 else throw new BakeryException("계정 정지 상태 입니다","common/error",HttpStatus.LOCKED);
              }
