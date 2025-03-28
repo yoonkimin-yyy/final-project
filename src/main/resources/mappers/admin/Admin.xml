@@ -49,6 +49,24 @@
        	<result property="changeName" column="CHANGE_NAME"/>
        	<result property="category" column="CATEGORY"/>
 	</resultMap>
+	
+	
+	
+	<resultMap id="InqiuryResultMap" type="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
+		<result property="inquiryNo" column="inquiry_no"/>
+		<result property="userNo" column="user_no"/>
+		<result property="userName" column="user_name"/>
+		<result property="inquiryTitle" column="inquiry_title"/>
+		<result property="inquiryContent" column="inquiry_content"/>
+		<result property="isAnswered" column="is_answered"/>
+		<result property="createDate" column="create_date"/>
+		<result property="replyContent" column="reply_content"/>
+		<result property="replyDate" column="reply_date"/>
+	
+	</resultMap>
+	
+	
+	
 
 	<select id="subList" resultMap="adminMap">
 		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
@@ -165,7 +183,7 @@ WHERE
     )
 	</insert>
 	
-	<select id="selectInquiryList" resultType="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
+	<select id="selectInquiryList" resultMap="InqiuryResultMap">
 	
 SELECT
     i.INQUIRY_NO,

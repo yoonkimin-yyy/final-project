@@ -130,6 +130,7 @@ public class NewsletterScheduler {
 	                emailService.sendNewsletterEmail(email,subject,body);
 	                logger.info(" 뉴스레터 발송 완료: {}", email);
 	            } catch (Exception e) {
+	            	emailMapper.insertSendLog(email, "FAIL");
 	            	logger.error(" 뉴스레터 발송 실패 ({}): {}", email, e.getMessage(), e);
 	            }
 	        }
