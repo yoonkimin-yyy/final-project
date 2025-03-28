@@ -30,7 +30,6 @@ public interface AdminService {
 	void update(String action, int bakeryNo, String rejectReason);
 
 	void sendEmail(AdminEmailRequestDto adminReqeustDto);
-	
 
 	void saveInquiry(InquiryRequestDto inquiryRequestDto);
 
@@ -45,5 +44,9 @@ public interface AdminService {
 	List<MonthlyOrderResponseDTO> getMonthlyOrderCount();
 
 	List<MenuResponseDto> categoryList();
+
+	void addCategory(String newCategory);
+
+	void deleteCategory(Map<String, List<String>> requestBody);
 
 }
