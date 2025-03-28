@@ -49,7 +49,7 @@
             <i class="fas fa-chevron-right"></i>
          </button>
       </div> -->
-      
+
 
     <!-- 헤더 섹션 -->
     <div class="header">
@@ -202,17 +202,39 @@
               <div class="review-date" th:text="${review.reviewDate}"></div>
               <div class="review-content" th:text="${review.reviewDetail}"></div>
               <div class="review-tags">
-                <th:block th:if="${review.tagFirst != null}" class="tag-label" th:utext="${review.tagFirst}">
+                <th:block th:if="${review.tagFirst != null}">
+                  <span class="tag-label" th:utext="${review.tagFirst}"></span>
+                </th:block>
+                <th:block th:if="${review.tagSecond != null}">
+                  <span class="tag-label" th:utext="${review.tagSecond}"></span>
+                </th:block>
+                <th:block th:if="${review.tagThird != null}">
+                  <span class="tag-label" th:utext="${review.tagThird}"></span>
+                </th:block>
+                <th:block th:if="${review.tagForth != null}">
+                  <span class="tag-label" th:utext="${review.tagForth}"></span>
+                </th:block>
+                <th:block th:if="${review.tagFive != null}">
+                  <span class="tag-label" th:utext="${review.tagFive}"></span>
                 </th:block>
               </div>
               <img th:if="${review.resourcesPath != null and review.changeName != null}"
                 th:src="@{${review.resourcesPath + '/' + review.changeName}}" class="review-image">
               <div class="review-actions">
-                <button type="button" class="btn btn-edit" onclick="editReview()">수정</button>
-                <button type="button" class="btn btn-delete"
-                  th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">
-                  삭제
-                </button>
+                <th:block th:if="${review.userNo == userNum}">
+                  <button type="button" onclick="editReview(this)" th:data-content="${review.reviewDetail}"
+                    th:data-rating="${review.reviewRating}" th:data-tags="${(review.tagFirst != null ? '1,' : '') +
+                       (review.tagSecond != null ? '2,' : '') +
+                       (review.tagThird != null ? '3,' : '') +
+                       (review.tagForth != null ? '4,' : '') +
+                       (review.tagFive != null ? '5,' : '')}">
+                    수정
+                  </button>
+                  <button type="button" class="btn btn-delete"
+                    th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">
+                    삭제
+                  </button>
+                </th:block>
               </div>
               <div class="review-reply-div">
                 <button class="review-reply-btn"
@@ -372,12 +394,10 @@
       <span class="close-modal" onclick="closeReviewModal()">&times;</span>
       <h2>리뷰 작성</h2>
       <form id="reviewForm">
-      <th:block th:if="${recentOrder != null}">
-  <input type="hidden"
-         th:if="${recentOrder.orderNo != null}"
-         th:value="${recentOrder.orderNo}"
-         name="orderNo" id="orderNo" />
-</th:block>
+        <th:block th:if="${recentOrder != null}">
+          <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo"
+            id="orderNo" />
+        </th:block>
         <div class="form-group">
           <label for="name">이름</label>
           <input type="text" id="name" required>
@@ -445,8 +465,8 @@
           </div>
         </div>
         <div class="form-group button-group">
-          <button type="button" class="submit-review" onclick="submitReview()">등록하기</button>
-          <button type="button" class="cancel-review" onclick="closeReviewModal()">취소</button>
+          <button type="button" class="submit-review" onclick="submitReview()" id="reviewSubmitBtn">등록하기</button>
+          <button type="button" class="cancel-review" onclick="closeReviewModal()" id="cancelReviewBtn">취소</button>
         </div>
     </div>
   </div>

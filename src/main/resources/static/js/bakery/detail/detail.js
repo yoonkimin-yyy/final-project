@@ -105,21 +105,26 @@ function closeReviewModal() {
 }
 // ===== 리뷰 작성 버튼 클릭 이벤트 =====
 document.getElementById('openReviewModal')?.addEventListener('click', () => {
-	const userNo = document.getElementById("userNum").value;
-	console.log(userNo);
-	
-	
-	console.log("sfsfsfs");
-	const orderNo = parseInt(document.getElementById("orderNo").value);
-	console.log(orderNo);
-	
-	
-	if (!userNo || userNo === "null" || userNo === "") {
-	        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
-			window.location.href = window.location.origin + "/register/loginin/form";
-	        return;
-	    }
-	
+    const userNo = document.getElementById("userNum")?.value;
+    const orderNoElement = document.getElementById("orderNo"); // DOM 요소부터 찾기
+    const orderNo = orderNoElement ? parseInt(orderNoElement.value) : null;
+
+    console.log("userNo:", userNo);
+    console.log("orderNo:", orderNo);
+
+    // 🔐 로그인 체크
+    if (!userNo || userNo === "null" || userNo === "") {
+        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
+        window.location.href = window.location.origin + "/register/loginin/form";
+        return;
+    }
+
+    // 🛒 주문 내역 존재 여부 체크
+    if (!orderNo || isNaN(orderNo)) {
+        alert("리뷰는 해당 상품을 주문한 고객만 작성할 수 있습니다.");
+        return;
+    }
+
     openReviewModal();
 });
 
@@ -687,7 +692,7 @@ function formatDate(date) {
 // 전역 변수로 현재 수정 중인 리뷰 요소를 저장
 let currentEditingReview = null;
 
-// 리뷰 수정 시작 함수
+
 function closeReviewModal() {
 
     const modal = document.getElementById('reviewModal');
@@ -809,37 +814,49 @@ document.addEventListener("DOMContentLoaded", initKakaoMap);
 
 
 
-
 function editReview(ele) {
+  console.log("editReview() 실행됨!");
 
-    //  모달창 열기
-    document.getElementById("reviewModal").style.display = "block";
+  // 1. 모달창 열기
+  document.getElementById("reviewModal").style.display = "block";
 
-    //  기존 데이터 초기화 (새로 입력하는 방식)
-    document.getElementById("userId").value = "";
-    document.getElementById("content").value = "";
-    document.getElementById("rating").value = "0";
-    document.querySelector(".rating-value").textContent = "0";
+  // 2. 버튼 텍스트 및 이벤트 변경
+  const submitBtn = document.getElementById("reviewSubmitBtn");
+  submitBtn.textContent = "수정 완료";
+  submitBtn.setAttribute("onclick", "submitReviewEdit()");
 
-    //  별점 초기화
-    document.querySelectorAll(".stars i").forEach(star => {
-        star.classList.add("far");
-        star.classList.remove("fas");
-    });
+  // 3. 데이터 속성에서 값 읽기
+  const content = ele.getAttribute("data-content") || "";
+  const rating = parseInt(ele.getAttribute("data-rating")) || 0;
 
-    //  태그 체크박스 초기화
-    document.querySelectorAll(".tag-checkbox").forEach(tag => {
-        tag.checked = false;
-    });
+  // 끝에 붙은 쉼표 제거하고 배열로 변환
+  const rawTags = ele.getAttribute("data-tags") || "";
+  const tags = rawTags.replace(/,+$/, "").split(",");
 
-    //  이미지 미리보기 초기화
-    document.getElementById("preview").innerHTML = "";
-	
-	
-	document.getElementById("reviewSubmitBtn").textContent = "수정 완료";
-	document.getElementById("reviewSubmitBtn").setAttribute("onclick", "submitReviewEdit()");
+  // 4. 리뷰 내용 채우기
+  document.getElementById("content").value = content;
+
+  // 5. 별점 표시
+  document.getElementById("rating").value = rating;
+  document.querySelector(".rating-value").textContent = rating;
+
+  document.querySelectorAll(".stars i").forEach(star => {
+    const starRating = parseInt(star.getAttribute("data-rating"));
+    if (starRating <= rating) {
+      star.classList.remove("far");
+      star.classList.add("fas");
+    } else {
+      star.classList.remove("fas");
+      star.classList.add("far");
+    }
+  });
+
+  // 6. 태그 체크박스 표시
+  document.querySelectorAll(".tag-checkbox").forEach(checkbox => {
+    const tagNum = checkbox.id.replace("tag", ""); // 예: tag3 → "3"
+    checkbox.checked = tags.includes(tagNum);
+  });
 }
-
 
 
 
@@ -875,6 +892,23 @@ function showReplyForm(reviewNo) {
         console.error('답글 박스가 존재하지 않습니다. reviewNo:', reviewNo);
     }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const shouldGoToReviewTab = sessionStorage.getItem("goToReviewTab");
+
+    if (shouldGoToReviewTab === "true") {
+        // 리뷰 탭으로 자동 전환
+        const targetButton = document.querySelector(`.tab-button[data-tab="reviews"]`);
+        if (targetButton) {
+            targetButton.click();
+        }
+
+        // ✅ 플래그 삭제 (한 번만 실행되도록)
+        sessionStorage.removeItem("goToReviewTab");
+    }
+});
+
+
 
 
 

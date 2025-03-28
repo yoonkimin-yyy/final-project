@@ -228,6 +228,10 @@ public class BakeryController {
 			model.addAttribute("bakeryNo", no);
 
 			model.addAttribute("userNum", userNum);
+			
+			
+			
+			
 
 			/*
 			 * 사용자의 orderNo가져오기
