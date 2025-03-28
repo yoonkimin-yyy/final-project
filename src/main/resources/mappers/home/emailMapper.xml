@@ -43,6 +43,13 @@
 </resultMap>
 
 
+<resultMap id="subscriberResultMap" type="kr.kro.bbanggil.email.dto.response.SubscriptionResponseDto">
+    <result property="email" column="EMAIL" />
+    <result property="subscribeDate" column="SUBSCRIBE_DATE" />
+</resultMap>
+
+
+
 
 <select id="getAllSubscriberEmails" resultType="String">
 
@@ -77,11 +84,73 @@ ORDER BY
 </select>
 
 
+<select id="checkEmailExists" resultType="int">
+    SELECT COUNT(*) FROM SUBSCRIBER WHERE EMAIL = #{email}
+</select>
+
+<update id="reactivateSubscription">
+    UPDATE SUBSCRIBER
+    SET SUBSCRIBE_YN = 'Y',
+        SUBSCRIBE_DATE = SYSDATE
+    WHERE EMAIL = #{email}
+</update>
+
+<insert id="insertSubscriber">
+    INSERT INTO SUBSCRIBER (SUBSCRIBER_NO, EMAIL, SUBSCRIBE_YN, SUBSCRIBE_DATE)
+    VALUES (SUBSCRIBER_SEQ.NEXTVAL, #{email}, 'Y', SYSDATE)
+</insert>
+
+
+<select id="selectAllSubscribers" resultMap="subscriberResultMap">
+    SELECT 
+        EMAIL, 
+        TO_CHAR(SUBSCRIBE_DATE, 'YYYY-MM-DD') AS SUBSCRIBE_DATE
+    FROM SUBSCRIBER
+    WHERE SUBSCRIBE_YN = 'Y'
+    ORDER BY SUBSCRIBE_DATE DESC
+</select>
+
+<insert id="insertSendLog">
+    INSERT INTO NEWSLETTER_SEND_LOG (LOG_ID, EMAIL, SEND_STATUS)
+    VALUES (NEWSLETTER_SEND_LOG_SEQ.NEXTVAL, #{email}, #{status})
+</insert>
+
+<select id="countTotalSends" resultType="int">
+    SELECT COUNT(*) FROM NEWSLETTER_SEND_LOG
+</select>
+
+<select id="countSuccessfulSends" resultType="int">
+    SELECT COUNT(*) FROM NEWSLETTER_SEND_LOG
+    WHERE SEND_STATUS = 'SUCCESS'
+</select>
+
+<update id="unsubscribeEmail">
+    UPDATE SUBSCRIBER
+    SET SUBSCRIBE_YN = 'N'
+    WHERE EMAIL = #{email}
+</update>
 
 
 
+<insert id="insertNewsletterHistory">
+    INSERT INTO NEWSLETTER_HISTORY (
+        HISTORY_NO, BAKERY_NAME, RESOURCES_PATH, CHANGE_NAME, OPEN_TIME, CLOSE_TIME
+    ) VALUES (
+        NEWSLETTER_HISTORY_SEQ.NEXTVAL,
+        #{bakeryName},
+        #{resourcesPath},
+        #{changeName},
+        #{openTime},
+        #{closeTime}
+    )
+</insert>
 
 
+<select id="getImageInfoByImgNo" resultType="map">
+    SELECT CHANGE_NAME, RESOURCES_PATH
+    FROM BAKERY_IMAGE
+    WHERE IMG_NO = #{imgNo}
+</select>
 
 
 </mapper>
