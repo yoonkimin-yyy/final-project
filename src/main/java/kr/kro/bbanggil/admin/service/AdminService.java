@@ -49,4 +49,6 @@ public interface AdminService {
 
 	void deleteCategory(Map<String, List<String>> requestBody);
 
+	InquiryResponseDto getInquiryByNo(int inquiryNo);
+
 }
