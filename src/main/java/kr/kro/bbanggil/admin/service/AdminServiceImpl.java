@@ -189,9 +189,26 @@ public class AdminServiceImpl implements AdminService {
 	  public InquiryResponseDto getInquiryByNo(int inquiryNo) {
 	      return adminMapper.selectInquiryByNo(inquiryNo);
 	  }
-	  
-	  
-	  
+
+  @Override
+	public List<MenuResponseDto> categoryList() {
+		return adminMapper.categoryList();
 	}
-
-
+	
+	@Override
+	public void addCategory(String newCategory) {
+		adminMapper.addCategory(newCategory);
+	}
+	
+	@Override
+	public void deleteCategory(Map<String, List<String>> requestBody) {
+		
+		List<String> categories = requestBody.get("selectedCategories");
+		
+		for(int i=0; i<categories.size(); i++) {
+			String category = categories.get(i);  // 각 카테고리 이름을 꺼냄
+			adminMapper.deleteCategory(category);
+		}
+	}
+	
+}

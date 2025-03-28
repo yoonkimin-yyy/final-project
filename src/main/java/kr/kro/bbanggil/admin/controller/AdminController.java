@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.admin.controller;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
-import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;

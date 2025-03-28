@@ -4,6 +4,7 @@ package kr.kro.bbanggil.home.controller;
 
 import java.util.List;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -140,7 +141,6 @@ public class HomeController {
 	public String showInquiryForm() {
 	    return "admin/admin-inquiry"; // 뷰 파일 이름이 admin-inquiry.html이면 이렇게!
 	}
-	
 	
 	
 	
