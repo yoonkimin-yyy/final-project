@@ -153,10 +153,12 @@ body {
 .status-complete {
 	background-color: #4CAF50;
 }
-.status-denied{
+
+.status-denied {
 	background-color: red;
 }
-.status-done{
+
+.status-done {
 	background-color: #aaaaaa;
 }
 
@@ -635,26 +637,32 @@ tr:hover {
 
 /* 버튼 컨테이너 스타일 */
 .category-btn-div {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    justify-content: center;
+	text-align: end;
+	margin-top: -10px;
+	margin-bottom: -15px;
+	gap: 10px;
+	justify-content: center;
 }
 
 /* 카테고리 버튼 스타일 */
 .category-btn {
-    padding: 10px 20px;
-    background-color: #a18267; /* 기존 브라운 계열 */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+	padding: 10px 20px;
+	background-color: #a18267; /* 기존 브라운 계열 */
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	transition: background-color 0.3s;
 }
 
 /* 카테고리 버튼 hover 효과 */
 .category-btn:hover {
-    background-color: #8b6d54; /* 기존 브라운 계열에 맞는 hover 색상 */
+	background-color: #8b6d54; /* 기존 브라운 계열에 맞는 hover 색상 */
 }
 
+#addCategory-btn {
+	background-color: rgb(161, 130, 103);
+	color: white;
+	border: solid 1px;
+}
