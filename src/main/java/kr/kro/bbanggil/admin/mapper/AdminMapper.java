@@ -64,6 +64,12 @@ public interface AdminMapper {
 
 	List<InquiryResponseDto> getInquiries();
 
+	List<MenuResponseDto> categoryList();
+
+	void addCategory(@Param("newCategory") String newCategory);
+
+	void deleteCategory(@Param("category") String category);
+
 	InquiryEmailInfoDto getInquiryEmailInfo(@Param("inquiryNo")int inquiryNo);
 
 	InquiryResponseDto selectInquiryByNo(@Param("inquiryNo")int inquiryNo);

@@ -39,9 +39,9 @@ public interface OrderMapper {
 	
 	Integer countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
 
-	int selectOrderCount();
+	int selectOrderCount(@Param("keyword")String keyword);
 
-	List<OrderResponseDto> selectPagedOrders(PageResponseDto pi);
+	List<OrderResponseDto> selectPagedOrders(@Param("pi")PageResponseDto pi,@Param("keyword") String keyword);
 
 	BakeryResponseDto findRecentOrder(@Param("userNo")int userNo, @Param("bakeryNo")double bakeryNo);
 
