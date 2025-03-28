@@ -385,7 +385,7 @@ public class BakeryController {
 							 @RequestParam("bakeryNo") int bakeryNo,
 							 @RequestParam("menuImage") MultipartFile file) {
 			bakeryService.menuInsert(menuDTO,bakeryNo,file);
-		return "/owner/menu-list";
+		return "/owner/menu-insert";
 	}
 	@GetMapping("/info/form")
 	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo,
@@ -420,7 +420,7 @@ public class BakeryController {
 	public String menuUpdate(MenuRequestDTO menuDTO,
 							 @RequestParam("menuImage") MultipartFile file) {
 		bakeryService.updateMenu(menuDTO,file);
-		return "/owner/menu-list";
+		return "/owner/menu-update";
 	}
 }
 
