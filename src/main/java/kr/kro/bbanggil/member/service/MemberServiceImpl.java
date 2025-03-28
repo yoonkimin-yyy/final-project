@@ -2,9 +2,11 @@ package kr.kro.bbanggil.member.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.bakery.exception.BakeryException;
 import kr.kro.bbanggil.member.mapper.MemberMapper;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
@@ -98,7 +100,10 @@ public class MemberServiceImpl implements MemberService{
          if (loginUser != null) {
              // 2. 비밀번호 검증 (암호화된 비밀번호와 입력된 비밀번호 비교)
              if (passwordEncoder.matches(memberRequestSignupDto.getUserPassword(),loginUser.getUserPassword())) {
+            	 String isBanned = registerMapper.isBanned(memberRequestSignupDto);
+            	 if(isBanned.equals("N"))
                  return loginUser; // 로그인 성공
+            	 else throw new BakeryException("계정 정지 상태 입니다","common/error",HttpStatus.LOCKED);
              }
          }
          return null; // 로그인 실패

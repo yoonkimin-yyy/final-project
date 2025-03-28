@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.bakery.controller;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class BakeryController {
 			bakeryInfo.add(post);
 		}
 
-		model.addAttribute("orderType", orderType);
+    model.addAttribute("orderType", orderType);
 		model.addAttribute("posts", bakeryInfo);
 		model.addAttribute("pi", piResult);
 		model.addAttribute("today", todayDayOfWeek);
@@ -338,10 +339,11 @@ public class BakeryController {
 	}
 
 	@PostMapping("/menu/insert")
-	public String menuInsert(MenuRequestDTO menuDTO, @RequestParam("bakeryNo") int bakeryNo,
-			@RequestParam("menuImage") MultipartFile file) {
-		bakeryService.menuInsert(menuDTO, bakeryNo, file);
-		return "/owner/menu-list";
+	public String menuInsert(MenuRequestDTO menuDTO,
+							 @RequestParam("bakeryNo") int bakeryNo,
+							 @RequestParam("menuImage") MultipartFile file) {
+			bakeryService.menuInsert(menuDTO,bakeryNo,file);
+		return "/owner/menu-insert";
 	}
 
 	@GetMapping("/info/form")
@@ -373,8 +375,10 @@ public class BakeryController {
 	}
 
 	@PostMapping("/menu/update")
-	public String menuUpdate(MenuRequestDTO menuDTO, @RequestParam("menuImage") MultipartFile file) {
-		bakeryService.updateMenu(menuDTO, file);
-		return "/owner/menu-list";
+	public String menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file) {
+		bakeryService.updateMenu(menuDTO,file);
+		return "/owner/menu-update";
 	}
+	
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
+import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
@@ -35,6 +36,30 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<AdminResponseDto> subList() {
 		return adminMapper.subList();
+	}
+	
+	@Override
+	public List<AdminResponseDto> reportList(){
+		List<AdminResponseDto> result = adminMapper.reportList();
+		for(AdminResponseDto item : result) {
+			int answer = adminMapper.getReportReplyCount(item.getReportNo());
+			item.setAnswer(answer > 0 ? "Y" : "N" );
+			item.setAdminId(answer == 0 ? "없음" : "없음");
+		}
+		return result;
+	}
+	@Override
+	public AdminResponseDto reportDetail(int reportNo) {
+		return adminMapper.reportDetail(reportNo);
+	}
+	
+	@Override
+	public void insertReport(ReportRequestDTO reportDTO,String userId, int reportNo) {
+		String time = reportDTO.getReportResult();
+		reportDTO.setReportNo(reportNo);
+		if(time != "경고"){
+			adminMapper.insertReport(reportDTO,userId);
+		}
 	}
 
 	@Override
@@ -189,9 +214,26 @@ public class AdminServiceImpl implements AdminService {
 	  public InquiryResponseDto getInquiryByNo(int inquiryNo) {
 	      return adminMapper.selectInquiryByNo(inquiryNo);
 	  }
-	  
-	  
-	  
+
+  @Override
+	public List<MenuResponseDto> categoryList() {
+		return adminMapper.categoryList();
 	}
-
-
+	
+	@Override
+	public void addCategory(String newCategory) {
+		adminMapper.addCategory(newCategory);
+	}
+	
+	@Override
+	public void deleteCategory(Map<String, List<String>> requestBody) {
+		
+		List<String> categories = requestBody.get("selectedCategories");
+		
+		for(int i=0; i<categories.size(); i++) {
+			String category = categories.get(i);  // 각 카테고리 이름을 꺼냄
+			adminMapper.deleteCategory(category);
+		}
+	}
+	
+}
