@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -60,22 +61,25 @@ public class ReviewController {
 			@RequestParam(value = "reviewImage", required = false) List<MultipartFile> files,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("받은 reviewNo: " + reviewRequestDto.getReviewNo());
-		System.out.println(reviewRequestDto.getReviewNo());
-
-		ReviewResponseDto existingReview = reviewService.getReviewId(reviewRequestDto.getReviewNo());
-
 		int result = reviewService.editReview(reviewRequestDto, files);
+		
 
-		return "redirect:/bakery/detail?bakeryNo=" + reviewRequestDto.getReviewNo();
+		// bakeryNo
+		return "redirect:/bakery/detail?bakeryNo=" + reviewRequestDto.getBakeryNo();
 
 	}
 
 	@PostMapping("/delete")
 	public ResponseEntity<String> deleteReview(@RequestParam("reviewNo") int reviewNo,
-			@RequestParam(value = "fileName", defaultValue = "none") String fileName) {
-		int userNo = 1;
-
+			@RequestParam(value = "fileName", defaultValue = "none") String fileName,
+			HttpSession session) {
+		
+		Integer userNo = (Integer) session.getAttribute("userNum");
+		
+	    if (userNo == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+	    }
+		
 		
 		int result = reviewService.deleteReview(reviewNo, userNo, fileName);
 		

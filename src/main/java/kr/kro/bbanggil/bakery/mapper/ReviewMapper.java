@@ -78,4 +78,12 @@ public interface ReviewMapper {
     
     void reviewReport(@Param("reviewNo")int reviewNo, @Param("reviewReportDetail")String reviewReportDetail, @Param("userNo") int userNo);
 	
+    public void updateReviewTags(
+    	    @Param("reviewNo") int reviewNo,
+    	    @Param("tagFirst") String tagFirst,
+    	    @Param("tagSecond") String tagSecond,
+    	    @Param("tagThird") String tagThird,
+    	    @Param("tagForth") String tagForth,
+    	    @Param("tagFive") String tagFive
+    	);
 }
