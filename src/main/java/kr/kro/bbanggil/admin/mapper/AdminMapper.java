@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
+import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
@@ -67,5 +68,14 @@ public interface AdminMapper {
 	InquiryEmailInfoDto getInquiryEmailInfo(@Param("inquiryNo")int inquiryNo);
 
 	InquiryResponseDto selectInquiryByNo(@Param("inquiryNo")int inquiryNo);
+
+	List<AdminResponseDto> reportList();
+
+	int getReportReplyCount(int reportNo);
+
+	void insertReport(@Param("reportDTO")ReportRequestDTO reportDTO, 
+					  @Param("userId")String userId);
+
+	AdminResponseDto reportDetail(int reportNo);
 	
 }

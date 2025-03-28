@@ -137,5 +137,10 @@
     <update id="updatePassword">
         UPDATE USER_INFO SET USER_PASSWORD = #{userPassword} WHERE USER_EMAIL = #{userEmail}
     </update>
+    
+    <select id="isBanned">
+    	SELECT user_ban from user_info
+    	WHERE user_id=#{userId}
+    </select>
 
 </mapper>

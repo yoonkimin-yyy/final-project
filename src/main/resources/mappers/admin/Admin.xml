@@ -235,6 +235,42 @@ sysdate)
 		FETCH FIRST 3 ROWS ONLY
 	</select>
 	
+	<select id="reportList">
+		SELECT rrui.USER_id AS reporter,
+			   rr.REPORT_DETAIL AS reportDetail,
+			   rui.USER_id  AS  reportedUser,
+			   r.REVIEW_DETAIL AS reviewDetail,
+			   rr.REPORT_DATE AS reportDate,
+			   rr.REPORT_NO AS reportNo
+		FROM REVIEW_REPORT rr
+		JOIN REVIEW r ON rr.REVIEW_NO = r.REVIEW_NO
+		LEFT JOIN USER_INFO rui ON rui.USER_NO = r.USER_NO 
+		LEFT JOIN USER_INFO rrui ON rrui.USER_NO = rr.USER_NO
+	</select>
+	<insert id="insertReport">
+		INSERT INTO REVIEW_REPORT_RESULT rrr values(#{reportDTO.reportNo},
+													#{reportDTO.reportResult},
+													sysdate,
+													NULL,
+													#{reportDTO.unfreezeDetail},
+													#{userId})
+	</insert>
+	<select id="reportDetail">
+		SELECT rrui.USER_id AS reporter,
+			   rr.REPORT_DETAIL AS reportDetail,
+			   rui.USER_id  AS  reportedUser,
+			   r.REVIEW_DETAIL AS reviewDetail
+		FROM REVIEW_REPORT rr 
+		JOIN REVIEW r ON rr.REVIEW_NO = r.REVIEW_NO
+		LEFT JOIN USER_INFO rui ON rui.USER_NO = r.USER_NO 
+		LEFT JOIN USER_INFO rrui ON rrui.USER_NO = rr.USER_NO
+		WHERE report_no = #{reportNo}
+	</select>
+	<select id="getReportReplyCount">
+		SELECT count(*) FROM REVIEW_REPORT_RESULT rrr 
+		WHERE REPORT_NO = #{reportNo}
+	</select>
+	
 	<select id="getInquiryEmailInfo" resultType="kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto">
 
 SELECT
