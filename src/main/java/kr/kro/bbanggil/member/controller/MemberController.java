@@ -171,7 +171,7 @@ public class MemberController {
     	// 계정 잠금 상태 확인
         if (loginAttemptUtil.isAccountLocked(session)) {
             redirectAttributes.addFlashAttribute("loginError", "5회 로그인 실패로 3분 동안 잠금 처리되었습니다.");
-            return "redirect:/register/loginin";
+            return "redirect:/register/loginin/form";
         }
         
         // 로그인 검증
