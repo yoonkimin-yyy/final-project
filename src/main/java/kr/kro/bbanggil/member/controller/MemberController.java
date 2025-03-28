@@ -168,19 +168,27 @@ public class MemberController {
         // 로그인 검증
     	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
 
-        if (loginUser != null && !loginUser.getUserType().equals("admin")) {
-            // 로그인 성공 → 세션에 사용자 정보 저장
-            session.setAttribute("userNum", loginUser.getUserNo());
-            session.setAttribute("userId", loginUser.getUserId());
-            session.setAttribute("userName", loginUser.getUserName());
-            session.setAttribute("role", loginUser.getUserType());
-            return "redirect:/";  
-        } else {
-            // 로그인 실패 메시지 전달
-            redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
-            return "redirect:/register/loginin/form";
-        }
-    }
+    	
+    	 if (loginUser != null) {
+    	        // 로그인 성공 → 세션에 사용자 정보 저장
+    	        session.setAttribute("userNum", loginUser.getUserNo());
+    	        session.setAttribute("userId", loginUser.getUserId());
+    	        session.setAttribute("userName", loginUser.getUserName());
+    	        session.setAttribute("role", loginUser.getUserType());
+
+    	        // 유저 타입에 따라 리다이렉트 경로 설정
+    	        if ("admin".equals(loginUser.getUserType())) {
+    	            return "redirect:/admin/inquiry/list"; // 관리자 전용 페이지
+    	        } else {
+    	            return "redirect:/"; // 일반 사용자 메인
+    	        }
+    	    } else {
+    	        // 로그인 실패 → 에러 메시지 세팅 후 로그인 페이지로
+    	        redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
+    	        return "redirect:/register/loginin/form";
+    	    }
+    	}
+    
     
     @PostMapping("/logininAdmin")
     public String logininAdmin(MemberRequestSignupDto memberRequestSignupDto, HttpSession session,
