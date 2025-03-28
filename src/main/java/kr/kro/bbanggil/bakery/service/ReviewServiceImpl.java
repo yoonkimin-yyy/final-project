@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -168,7 +169,9 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int editReview(ReviewRequestDto reviewRequestDto, List<MultipartFile> files) {
 		ReviewResponseDto existingReview = reviewMapper.getReviewById(reviewRequestDto.getReviewNo());
-
+		System.out.println("sfsfsf");
+		System.out.println(existingReview);
+		
 		if (existingReview == null) {
 			return 0; // 리뷰가 존재하지 않으면 수정할 수 없음
 		}
@@ -176,6 +179,35 @@ public class ReviewServiceImpl implements ReviewService {
 		// 1. 리뷰 내용 및 평점 업데이트
 
 		reviewMapper.updateReview(reviewRequestDto);
+		
+		
+		
+		 List<String> tagList = reviewRequestDto.getReviewTag();
+		 
+		 String tagFirst = null, tagSecond = null, tagThird = null, tagForth = null, tagFive = null;
+
+		 if (tagList != null) {
+		     if (tagList.size() > 0) tagFirst = tagList.get(0);
+		     if (tagList.size() > 1) tagSecond = tagList.get(1);
+		     if (tagList.size() > 2) tagThird = tagList.get(2);
+		     if (tagList.size() > 3) tagForth = tagList.get(3);
+		     if (tagList.size() > 4) tagFive = tagList.get(4);
+		 }
+
+		 
+		 System.out.println("tagFirst: " + tagFirst);
+		 System.out.println("tagSecond: " + tagSecond);
+		 System.out.println("tagThird: " + tagThird);
+		 System.out.println("tagForth: " + tagForth);
+		 System.out.println("tagFive: " + tagFive);
+		 
+		 
+		 reviewMapper.updateReviewTags(
+				    reviewRequestDto.getReviewNo(),
+				    tagFirst, tagSecond, tagThird, tagForth, tagFive
+				);
+	
+		
 
 		// 2. 새로운 이미지 업로드 처리 (추가된 이미지만 `review_img` 테이블에 저장)
 		List<FileRequestDTO> savedFileList = new ArrayList<>();
@@ -204,39 +236,37 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int deleteReview(int reviewNo, int userNo, String fileName) {
 
-		List<ReviewResponseDto> fileDataList = reviewMapper.getFileInfoByReviewNo(reviewNo);
+		ReviewResponseDto review = reviewMapper.getReviewById(reviewNo);
+	    if (review == null || !Objects.equals(review.getUserNo(), userNo)) {
+	        System.out.println("리뷰가 없거나 작성자가 아닙니다.");
+	        return 0;
+	    }
 
-		System.out.println(fileDataList);
+	    //  파일 삭제
+	    List<ReviewResponseDto> fileDataList = reviewMapper.getFileInfoByReviewNo(reviewNo);
+	    if (fileName != null && !fileName.equals("none")) {
+	        for (ReviewResponseDto fileData : fileDataList) {
+	            if (fileData.getLocalPath() != null) {
+	                util.deleteImage(fileData.getChangeName());
+	            }
+	        }
+	    } else {
+	        System.out.println("파일 없이 리뷰 삭제 진행");
+	    }
 
-		if (fileDataList.isEmpty() || fileDataList.get(0).getUserNo() != userNo) {
-			System.out.println("파일 데이터가 없거나 사용자 번호 불일치!");
-			return 0;
-		}
-		// 파일이 있을 경우 삭제 (여러 개의 파일 가능)
-		if (fileName != null && !fileName.equals("none")) {
-			for (ReviewResponseDto fileData : fileDataList) {
-				if (fileData.getLocalPath() != null) {
-					String localPath = fileData.getLocalPath();
-					util.deleteImage(fileData.getChangeName());
-				}
-			}
-		} else {
-			System.out.println(" 파일 없이 리뷰 삭제 진행");
-		}
+	    // 태그 삭제
+	    reviewMapper.deleteTag(reviewNo);
+	    System.out.println("태그 삭제 완료");
 
-		// 태그 삭제
-		reviewMapper.deleteTag(reviewNo);
-		System.out.println(" 태그 삭제 완료");
+	    //  이미지 DB 삭제
+	    reviewMapper.deleteReviewImages(reviewNo);
+	    System.out.println("이미지 삭제 완료");
 
-		// 이미지 삭제
-		reviewMapper.deleteReviewImages(reviewNo);
-		System.out.println(" 이미지 삭제 완료");
+	    //  리뷰 삭제
+	    int result = reviewMapper.deleteReview(reviewNo);
+	    System.out.println("리뷰 삭제 완료 - 결과: " + result);
 
-		// 리뷰 삭제
-		int result = reviewMapper.deleteReview(reviewNo);
-		System.out.println(" 리뷰 삭제 완료 - 결과: " + result);
-
-		return result;
+	    return result;
 
 	}
 

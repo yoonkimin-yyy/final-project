@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
+import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
@@ -41,11 +43,13 @@ public class AdminController {
 	public String adminForm(Model model) {
 		Map<String,Object> topContent = adminService.trafficMonitoring();
 		Map<String,Object> bottomContent = adminService.bottomContent();
+		List<AdminResponseDto> reportList = adminService.reportList();
 		
 		List<AdminResponseDto> sublist = adminService.subList();
 
 		List<AdminResponseDto> bakeryList = adminService.bakeryList();
 		List<AdminResponseDto> userList = adminService.userList();
+		
 		
 		model.addAttribute("today", topContent.get("today"));
 		model.addAttribute("user", topContent.get("user"));
@@ -53,6 +57,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
+		model.addAttribute("reportLists", reportList);
 		
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));
@@ -60,6 +65,22 @@ public class AdminController {
 		return "admin/admin-page";
 	}
 
+	@GetMapping("/report/form")
+	public String reportForm(@RequestParam("reportNo")int reportNo,
+							 Model model) {
+		AdminResponseDto result = adminService.reportDetail(reportNo);
+		model.addAttribute("result",result);
+		model.addAttribute("reportNo",reportNo);
+		return "admin/report-reply";
+	}
+	@PostMapping("report")
+	public String report(ReportRequestDTO reportDTO,
+						 @SessionAttribute("userId")String userId,
+						 @RequestParam("reportNo")int reportNo) {
+		adminService.insertReport(reportDTO,userId,reportNo);
+		return "redirect:/admin/form";
+	}
+	
 	@GetMapping("/bakery/detail")
 	public String bakeryDetailForm(@RequestParam("bakeryNo") int bakeryNo,
 			   					   @RequestParam("userNo") int userNo,

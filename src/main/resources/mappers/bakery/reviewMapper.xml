@@ -352,6 +352,19 @@ DELETE FROM REVIEW WHERE review_no = #{reviewNo}
 	</insert>
     
     
+   <update id="updateReviewTags">
+    UPDATE REVIEW_TAG_NAME
+    SET
+        TAG_FIRST = #{tagFirst,jdbcType=VARCHAR},
+        TAG_SECOND = #{tagSecond,jdbcType=VARCHAR},
+        TAG_THIRD = #{tagThird,jdbcType=VARCHAR},
+        TAG_FORTH = #{tagForth,jdbcType=VARCHAR},
+        TAG_FIVE = #{tagFive,jdbcType=VARCHAR}
+    WHERE REVIEW_NO = #{reviewNo}
+</update>
+    
+    
+    
 
 
 </mapper>

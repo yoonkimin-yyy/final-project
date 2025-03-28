@@ -238,21 +238,21 @@
 						<th>신고 내용</th>
 						<th>신고 받은 유저</th>
 						<th>리뷰 내용 상세보기</th>
-						<th>작성 날짜</th>
-						<th>리뷰 작성된 빵집</th>
+						<th>신고 날짜</th>
+						<th>답변한 관리자</th>
 						<th>답변여부</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr id="user1" th:each="list, iterStat : ${sublists}"
-						th:attr="onclick=|location.href='/admin/bakery/accept?listNum=${sublists.size() - iterStat.index}'|">
-						<td th:text="${sublists.size() - iterStat.index}"></td>
-						<td th:text="${list.userId}"></td>
-						<td th:text="${list.userPhoneNum}"></td>
-						<td th:text="${list.submissionDate}"></td>
-						<td th:text="${list.bakeryName}"></td>
-						<td th:text="${list.agree}"></td>
-						<td th:text="${list.acceptDate}"></td>
+					<tr id="user1" th:each="list, iterStat : ${reportLists}"
+						th:attr="onclick=|location.href='/admin/report/form?reportNo=${list.reportNo}'|">
+						<td th:text="${iterStat.index+1}"></td>
+						<td th:text="${list.reporter}"></td>
+						<td th:text="${list.reportDetail}"></td>
+						<td th:text="${list.reportedUser}"></td>
+						<td th:text="${list.reviewDetail}"></td>
+						<td th:text="${list.reportDate}"></td>
+						<td th:text="${list.adminId}"></td>
 						<td th:text="${list.acceptDate}"></td>
 					</tr>
 				</tbody>

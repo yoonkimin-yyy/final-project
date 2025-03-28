@@ -229,6 +229,10 @@ public class BakeryController {
 			model.addAttribute("bakeryNo", no);
 
 			model.addAttribute("userNum", userNum);
+			
+			
+			
+			
 
 			/*
 			 * 사용자의 orderNo가져오기
@@ -335,10 +339,11 @@ public class BakeryController {
 	}
 
 	@PostMapping("/menu/insert")
-	public String menuInsert(MenuRequestDTO menuDTO, @RequestParam("bakeryNo") int bakeryNo,
-			@RequestParam("menuImage") MultipartFile file) {
-		bakeryService.menuInsert(menuDTO, bakeryNo, file);
-		return "/owner/menu-list";
+	public String menuInsert(MenuRequestDTO menuDTO,
+							 @RequestParam("bakeryNo") int bakeryNo,
+							 @RequestParam("menuImage") MultipartFile file) {
+			bakeryService.menuInsert(menuDTO,bakeryNo,file);
+		return "/owner/menu-insert";
 	}
 
 	@GetMapping("/info/form")
@@ -370,9 +375,10 @@ public class BakeryController {
 	}
 
 	@PostMapping("/menu/update")
-	public String menuUpdate(MenuRequestDTO menuDTO, @RequestParam("menuImage") MultipartFile file) {
-		bakeryService.updateMenu(menuDTO, file);
-		return "/owner/menu-list";
+	public String menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file) {
+		bakeryService.updateMenu(menuDTO,file);
+		return "/owner/menu-update";
 	}
 	
 }

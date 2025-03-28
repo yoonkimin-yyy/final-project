@@ -80,7 +80,9 @@ public interface BakeryMapper {
 	
 	
 	void insertCartInfo(@Param("cartNo") int cartNo,@Param("menuNo") int menuNo, @Param("menuCount") int menuCount);
+	
 	Integer getCartNoByUserNo(int userNo);
+	
 	void insertCart(int userNo);
 	BakeryDto findBakeryByNo(@Param("no")double bakeryNo);
 	
@@ -147,7 +149,7 @@ public interface BakeryMapper {
 
 	public void UserCountInsert(int bakeryNo);
 
-	public int  getUserCountBybakeryNo(int bakeryNo);
+	public int getUserCountBybakeryNo(int bakeryNo);
 
 	public void updateUserCount(@Param("bakeryNo")int bakeryNo,
 								@Param("count")int count);

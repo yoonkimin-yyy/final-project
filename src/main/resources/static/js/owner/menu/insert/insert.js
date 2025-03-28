@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: formData
             }).then(response => {
                 if (response.ok) {
-                    window.opener.location.reload(); // 부모창 새로고침
+                    window.opener.location.href = "/bakery/menu/list/form"; // 부모창 새로고침
                     window.close(); // 현재 창 닫기
                 } else {
                     alert("메뉴 추가에 실패했습니다.");
