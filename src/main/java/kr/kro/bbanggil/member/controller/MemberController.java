@@ -1,8 +1,7 @@
 package kr.kro.bbanggil.member.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
+
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,14 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import kr.kro.bbanggil.common.util.LoginAttemptUtil;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto;
-import kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.member.service.FindIdPwServiceImpl;
 import kr.kro.bbanggil.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
@@ -34,6 +32,7 @@ public class MemberController {
     private final MemberServiceImpl memberService;
     private final PasswordEncoder passwordEncoder;
     private final FindIdPwServiceImpl findIdPwService;
+    private final LoginAttemptUtil loginAttemptUtil;
 
     // 회원가입 타입 선택 페이지 (일반/사업자 선택)
     @GetMapping("/typeloginup/form")
@@ -159,9 +158,8 @@ public class MemberController {
     // 로그인 페이지
     @GetMapping("/loginin/form")
     public String loginInForm(HttpSession session, Model model) {
-    	 System.out.println("로그인 페이지 접근, 기존 status 값: " + session.getAttribute("status"));
-    	    
-    	 // 로그인 페이지 진입 시 에러 메시지 초기화
+
+    	// 로그인 페이지 진입 시 에러 메시지 초기화
     	 session.removeAttribute("status");  
     	 return "/common/loginin";  
     }
@@ -169,27 +167,67 @@ public class MemberController {
     // 로그인 처리
     @PostMapping("/loginin")
     public String loginin(MemberRequestSignupDto memberRequestSignupDto, HttpSession session,
-    					  RedirectAttributes redirectAttributes) {
-        // 로그인 검증
-    	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
-        System.out.println("로그인 결과: " + loginUser);
-        
-
-        if (loginUser != null) {
-            // 로그인 성공 → 세션에 사용자 정보 저장
-            session.setAttribute("userNum", loginUser.getUserNo());
-            session.setAttribute("userId", loginUser.getUserId());
-            session.setAttribute("userName", loginUser.getUserName());
-            session.setAttribute("role", loginUser.getUserType());
-            if(loginUser.getUserType().equals("admin")) {
-            	return "redirect:/admin/form";
-            }
-            return "redirect:/";  
-        } else {
-            // 로그인 실패 메시지 전달
-            redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
+    					  RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    	
+    	// IP 기준으로 계정 잠금 상태 확인
+        if (loginAttemptUtil.isAccountLocked(request)) {
+            redirectAttributes.addFlashAttribute("loginError", "5회 로그인 실패로 3분 동안 잠금 처리되었습니다.");
             return "redirect:/register/loginin/form";
         }
+        
+        // 로그인 검증
+    	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
+
+    	
+    	 if (loginUser != null) {
+    	        // 로그인 성공 → 세션에 사용자 정보 저장
+    	        session.setAttribute("userNum", loginUser.getUserNo());
+    	        session.setAttribute("userId", loginUser.getUserId());
+    	        session.setAttribute("userName", loginUser.getUserName());
+    	        session.setAttribute("role", loginUser.getUserType());
+
+    	        // 유저 타입에 따라 리다이렉트 경로 설정
+    	        if ("admin".equals(loginUser.getUserType())) {
+    	            return "redirect:/admin/inquiry/list"; // 관리자 전용 페이지
+    	        } else {
+    	            return "redirect:/"; // 일반 사용자 메인
+    	        }
+    	    } else {
+    	        // 로그인 실패 → 에러 메시지 세팅 후 로그인 페이지로
+    	    	loginAttemptUtil.incrementFailedAttempts(request);  // 실패 횟수 증가  // 실패 횟수 증가
+    	        redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
+    	        return "redirect:/register/loginin/form";
+    	    }
+    	}
+    
+    
+    @PostMapping("/logininAdmin")
+    public String logininAdmin(MemberRequestSignupDto memberRequestSignupDto, HttpSession session,
+    						   HttpServletRequest request,
+    						   RedirectAttributes redirectAttributes) {
+    	
+    	// IP 기준으로 계정 잠금 상태 확인
+        if (loginAttemptUtil.isAccountLocked(request)) {
+            redirectAttributes.addFlashAttribute("loginError", "5회 로그인 실패로 3분 동안 잠금 처리되었습니다.");
+            return "redirect:/admin/login";
+        }
+
+    	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
+    	
+    	if (loginUser != null && loginUser.getUserType().equals("admin")) {
+    		loginAttemptUtil.resetFailedAttempts(request);
+    		
+    		session.setAttribute("userNum", loginUser.getUserNo());
+    		session.setAttribute("userId", loginUser.getUserId());
+    		session.setAttribute("role", loginUser.getUserType());
+    		
+    		return "redirect:/admin/form";  
+    	} 
+    	
+    	loginAttemptUtil.incrementFailedAttempts(request);  // 실패 횟수 증가
+		redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
+		return "redirect:/admin/login";
+
     }
 
     // 아이디/비밀번호 찾기 페이지
@@ -202,30 +240,46 @@ public class MemberController {
      * 아이디 찾기
      */
     @PostMapping("/find/id")
-    public String findUserId(@RequestParam("userEmail") String userEmail, Model model) {
+    public String findUserId(MemberRequestSignupDto memberRequestSignupDto, Model model) {
         try {
-            String userId = findIdPwService.findUserIdByEmail(userEmail);
-            model.addAttribute("message", userId);    
+            String userId = findIdPwService.findUserIdByEmail(memberRequestSignupDto);
+            
+            if (userId == "등록된 정보가 아닙니다.") {
+                // 이메일이 등록되지 않은 경우
+                model.addAttribute("error", "등록된 정보가 아닙니다.");
+                return "redirect:/register/find/form";  // 오류 페이지로 리다이렉트
+            }
+            
+            // 이메일이 등록되어 있는 경우
+            model.addAttribute("message", "아이디: " + userId);
+            return "redirect:/register/loginin/form";  // 아이디를 찾았으면 로그인 페이지로 리다이렉트
         } catch (Exception e) {
             model.addAttribute("error", "아이디 찾기 중 오류 발생");
             e.printStackTrace();  // 오류 발생 시 로그로 확인
+            return "redirect:/register/find/form";  // 오류가 발생하면 원래 폼 페이지로 리다이렉트
         }
-        return "redirect:/register/loginin/form";
     }
+
 
 
     /**
      * 비밀번호 재설정 (임시 비밀번호 발송)
      */
     @PostMapping("/find/pw")
-    public String resetPassword(@RequestParam("userEmail") String userEmail, Model model) {
+    public String resetPassword(MemberRequestSignupDto memberRequestSignupDto, Model model) {
         try {
-            String message = findIdPwService.sendTemporaryPassword(userEmail);
+        	String message = findIdPwService.sendTemporaryPassword(memberRequestSignupDto);
+        	if ("등록된 정보가 아닙니다.".equals(message)) {
+                // 이메일이 등록되지 않은 경우
+                model.addAttribute("error", "등록된 정보가 아닙니다.");
+                return "redirect:/register/find/form";
+            }
             model.addAttribute("message", message);
-        } catch (MessagingException e) {
+            return "redirect:/register/loginin/form";  // 오류 페이지로 리다이렉트
+        } catch (Exception e) {
             model.addAttribute("error", "이메일 전송 실패");
+            return "redirect:/register/find/form";
         }
-        return "redirect:/register/loginin/form";
     }
     
     @GetMapping("/logout")
@@ -234,6 +288,7 @@ public class MemberController {
 		return "redirect:/";
 	}
  
+
 
 	@GetMapping("/edit")
 	public String edit() {
@@ -251,5 +306,6 @@ public class MemberController {
 		
 		return "owner/owner-mypage";
 	}
+
 
 }

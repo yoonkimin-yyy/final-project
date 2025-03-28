@@ -4,9 +4,12 @@
 <mapper namespace="kr.kro.bbanggil.order.mapper.OrderMapper">
 	
 	<resultMap id="orderResultMap" type="kr.kro.bbanggil.order.dto.response.OrderResponseDto">
+		<result property="bakeryName" column="BAKERY_NAME"></result>
 		<result property="menuPrice" column="MENU_PRICE"></result>
 		<result property="menuName" column="MENU_NAME"></result>
 		<result property="menuCount" column="MENU_COUNT"></result>
+		<result property="resourcesPath" column="RESOURCES_PATH"></result>
+		<result property="changeName" column="CHANGE_NAME"></result>
 		<result property="payNo" column="pay_no"></result>
 		<result property="paymentCode" column="merchant_uid"></result>
 		<result property="userName" column="user_name"></result>
@@ -32,11 +35,13 @@
 	</resultMap>
 	
 	<select id="list" resultMap="orderResultMap">
-		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
+		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT,
+		       mi.RESOURCES_PATH, mi.CHANGE_NAME
 		FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
+		JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
 		WHERE c.CART_NO = (SELECT max(cart_no) FROM CART c 
 						   WHERE USER_NO = #{userNo})
 		ORDER BY ci.LIST_NO DESC
@@ -131,67 +136,63 @@
 	
 	
 	<select id="countByUserAndOrder">
-	SELECT
-		c.CART_NO ,
-		oi.ORDER_NO ,
-		oi.PAY_NO ,
-		ui.USER_NO ,
-		ui.USER_ID
-	FROM
-		CART c
-	JOIN ORDER_INFO oi 
-	  ON
-		c.CART_NO = oi.CART_NO
-	JOIN USER_INFO ui 
-	  ON
-		c.USER_NO = UI.USER_NO
-	WHERE
-		ui.USER_NO = #{userNo}
-		AND oi.ORDER_NO = #{orderNo}
+    SELECT COUNT(*)
+    FROM CART c
+    JOIN ORDER_INFO oi ON c.CART_NO = oi.CART_NO
+    JOIN USER_INFO ui ON c.USER_NO = ui.USER_NO
+    WHERE ui.USER_NO = #{userNo}
+      AND oi.ORDER_NO = #{orderNo}
 	</select>
 	
 	
-<select id="selectOrderCount" resultType="int">
-  SELECT
-	COUNT(*)
-FROM
-	PAYMENT p
-JOIN ORDER_INFO oi ON
-	p.PAY_NO = oi.PAY_NO
-JOIN REVIEW r ON
-	r.ORDER_NO = oi.ORDER_NO
-JOIN USER_INFO ui ON
-	r.USER_NO = ui.USER_NO
-JOIN BAKERY_INFO bi ON
-	bi.BAKERY_NO = r.BAKERY_NO
- 
+<select id="selectOrderCount" resultType="int" parameterType="String">
+  SELECT COUNT(*)
+  FROM PAYMENT p
+  JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
+  JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
+  JOIN USER_INFO ui ON r.USER_NO = ui.USER_NO
+  JOIN BAKERY_INFO bi ON bi.BAKERY_NO = r.BAKERY_NO
+  WHERE 1=1
+  <if test="keyword != null and keyword != ''">
+    AND (
+      LOWER(ui.USER_NAME) LIKE '%' || LOWER(#{keyword}) || '%'
+      OR LOWER(p.MERCHANT_UID) LIKE '%' || LOWER(#{keyword}) || '%'
+    )
+  </if>
 </select>
 	
-<select id="selectPagedOrders" resultMap="orderResultMap" parameterType="kr.kro.bbanggil.bakery.dto.response.PageResponseDto">
-   SELECT *
-    FROM (
-        SELECT
-            ROW_NUMBER() OVER (ORDER BY p.PAY_REQUEST_DATE DESC) AS rn,
-            p.PAY_NO,
-            p.MERCHANT_UID,
-            p.AMOUNT,
-            p.STATUS,
-            p.PAY_REQUEST_DATE,
-            ui.USER_NAME,
-            bi.BAKERY_NAME
-        FROM PAYMENT p
-        JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
-        JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
-        JOIN USER_INFO ui ON r.USER_NO = ui.USER_NO
-        JOIN BAKERY_INFO bi ON bi.BAKERY_NO = r.BAKERY_NO
-    )
-    WHERE rn BETWEEN #{offset} AND #{limit}
+<select id="selectPagedOrders" resultMap="orderResultMap" parameterType="map">
+  SELECT *
+  FROM (
+    SELECT
+      ROW_NUMBER() OVER (ORDER BY p.PAY_REQUEST_DATE DESC) AS rn,
+      p.PAY_NO,
+      p.MERCHANT_UID,
+      p.AMOUNT,
+      p.STATUS,
+      p.PAY_REQUEST_DATE,
+      ui.USER_NAME,
+      bi.BAKERY_NAME
+    FROM PAYMENT p
+    JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
+    JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
+    JOIN USER_INFO ui ON r.USER_NO = ui.USER_NO
+    JOIN BAKERY_INFO bi ON bi.BAKERY_NO = r.BAKERY_NO
+    WHERE 1=1
+    <if test="keyword != null and keyword != ''">
+      AND (
+        LOWER(ui.USER_NAME) LIKE '%' || LOWER(#{keyword}) || '%'
+        OR LOWER(p.MERCHANT_UID) LIKE '%' || LOWER(#{keyword}) || '%'
+      )
+    </if>
+  )
+  WHERE rn BETWEEN #{pi.offset} AND #{pi.limit}
 </select>
 	
 	<select id="findRecentOrder" resultType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto">
 	
 	SELECT
-	oi.ORDER_NO
+	oi.ORDER_NO AS orderNo
 FROM
 	ORDER_INFO oi
 JOIN PAYMENT p 
@@ -215,6 +216,8 @@ ON
 WHERE
 	ui.USER_NO = #{userNo}
 	AND bi.BAKERY_NO = #{bakeryNo}
+	ORDER BY oi.ORDER_NO DESC
+FETCH FIRST 1 ROWS ONLY
 	
 	
 	</select>

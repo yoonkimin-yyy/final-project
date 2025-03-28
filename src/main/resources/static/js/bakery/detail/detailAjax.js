@@ -72,6 +72,13 @@ function submitReview() {
         closeReviewModal();
         document.getElementById("reviewForm").reset();
         document.getElementById("preview").innerHTML = '';
+		
+		const bakeryNo = document.getElementById("bakeryNo").value;
+		
+		sessionStorage.setItem("goToReviewTab", "true");
+		
+		window.location.replace(`/bakery/detail?bakeryNo=${bakeryNo}#reviews`);
+		
     })
     .catch(error => {
         alert("리뷰 작성 실패: " + error.message);
@@ -109,47 +116,47 @@ function fetchBakeryData(bakeryNo, callback) {
 
 
 function submitReviewEdit() {
-    //  리뷰 수정 데이터 생성
-	
-    const formData = new FormData();
-    formData.append("reviewNo", document.getElementById("reviewNo").value);
-    formData.append("reviewDetail", document.getElementById("content").value);
-    formData.append("reviewRating", document.getElementById("rating").value);
-
-	
-	
-    //  선택된 태그 추가
-    const selectedTags = [];
-    document.querySelectorAll(".tag-checkbox:checked").forEach(tag => {
-        selectedTags.push(tag.id);
-    });
-    formData.append("tags", selectedTags.join(","));
-
-    //  이미지 추가 (파일 업로드)
-    const imageInput = document.getElementById("imageInput");
-    if (imageInput.files.length > 0) {
-        for (let i = 0; i < imageInput.files.length; i++) {
-            formData.append("reviewImage", imageInput.files[i]);
-        }
-    }
-
-    //  AJAX를 이용한 POST 요청 (리뷰 수정)
-    fetch("/review/edit", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("리뷰가 수정되었습니다!");
-            location.reload(); // 수정 후 새로고침
-        } else {
-            alert("리뷰 수정에 실패했습니다.");
-        }
-    })
-    .catch(error => console.error("리뷰 수정 요청 실패", error));
-
-}
-
+     //  리뷰 수정 데이터 생성
+ 
+     const formData = new FormData();
+     formData.append("reviewNo", document.getElementById("reviewNo").value);
+     formData.append("reviewDetail", document.getElementById("content").value);
+     formData.append("reviewRating", document.getElementById("rating").value);
+	 formData.append("bakeryNo", document.getElementById("bakeryNo").value);
+ 
+ 
+     //  선택된 태그 추가
+     const selectedTags = [];
+     document.querySelectorAll(".tag-checkbox:checked").forEach(tag => {
+         selectedTags.push(tag.id);
+     });
+     formData.append("tags", selectedTags.join(","));
+ 
+     //  이미지 추가 (파일 업로드)
+     const imageInput = document.getElementById("imageInput");
+     if (imageInput.files.length > 0) {
+         for (let i = 0; i < imageInput.files.length; i++) {
+             formData.append("reviewImage", imageInput.files[i]);
+         }
+     }
+ 
+     //  AJAX를 이용한 POST 요청 (리뷰 수정)
+     fetch("/review/edit", {
+         method: "POST",
+         body: formData
+     })
+     .then(response => {
+         if (response.ok) {
+             alert("리뷰가 수정되었습니다!");
+             location.reload(); // 수정 후 새로고침
+         } else {
+             alert("리뷰 수정에 실패했습니다.");
+         }
+     })
+     .catch(error => console.error("리뷰 수정 요청 실패", error));
+ 
+ }
+ 
 
 
 function deleteReview(reviewNo, fileName) {

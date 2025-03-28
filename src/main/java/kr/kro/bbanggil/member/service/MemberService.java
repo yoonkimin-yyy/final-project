@@ -24,6 +24,5 @@ public interface MemberService {
 
 	public MemberRequestSignupDto loginIn(MemberRequestSignupDto memberRequestSignupDto);
 
-	List<OwnerMypageResponseDTO> ownerMypage(int userNum);
 	
 }

@@ -18,9 +18,9 @@
         <div class="mypage-content">
             <div class="mypage-info">
                 <h3>내 정보🥖</h3>
-                <p>이름 <br> &nbsp; 🥐 &nbsp;이빵이</p>
-                <p>이메일 <br> &nbsp; 🥐 &nbsp;asd123@naver.com</p>
-                <p>핸드폰 <br> &nbsp; 🥐 &nbsp;010.1234.5678</p>
+                <p>이름 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.userName}"></span></p>
+                <p>연락처 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.userPhone}"></span></p>
+                <p>사업자 등록 번호 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.businessNo}"></span></p>
             <div class="mypage-menu">
                 <a href="./edit.html">회원정보 수정 ✎</a>
                 <!-- <a href="#">내가 쓴 리뷰 ✎</a> -->
@@ -68,6 +68,7 @@
                 <div>
 		            <button class="btn" th:onclick="|location.href='@{/bakery/update/form(bakeryNo=${no})}'|">가게 수정</button>
 		            <button class="btn" th:onclick="|location.href='@{/bakery/menu/list/form(no=${no})}'|">메뉴 등록</button>
+		            <button class="btn" onclick="history.back()" type="button">뒤로가기</button>
                 </div>
             </div>
         </div>

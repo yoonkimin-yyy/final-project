@@ -155,22 +155,28 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public boolean isUserOrder(Integer userNo, Integer orderNo) {
 		
+		
+		 if (userNo == null || orderNo == null) {
+		        logger.warn("isUserOrder - null 전달됨! userNo: {}, orderNo: {}", userNo, orderNo);
+		        return false;
+		    }
+		
+		
 		return orderMapper.countByUserAndOrder(userNo, orderNo) > 0;
 	}
 	
 	@Override
-	public int getOrderCount() {
-		return orderMapper.selectOrderCount();
+	public int getOrderCount(String keyword) {
+		return orderMapper.selectOrderCount(keyword);
 	}
 	
 	@Override
-	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi) {
-	    return orderMapper.selectPagedOrders(pi);
+	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi, String keyword) {
+	    return orderMapper.selectPagedOrders(pi,keyword);
 	}
 	
 	@Override
 	public BakeryResponseDto findOrderNo(int userNum, double bakeryNo) {
-		
 		return orderMapper.findRecentOrder(userNum, bakeryNo);
 		
 		

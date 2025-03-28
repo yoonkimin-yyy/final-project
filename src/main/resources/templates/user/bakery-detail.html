@@ -50,6 +50,7 @@
          </button>
       </div> -->
 
+
     <!-- 헤더 섹션 -->
     <div class="header">
       <div class="header-container">
@@ -71,19 +72,24 @@
           <!-- ⏰ 운영 시간 -->
           <div class="info-item">
             <i class="fas fa-clock"></i> <span id="today-hours">
-              <th:block th:each="schedule, iterStat : ${bakery.schedule}">
-                <span th:text="|오늘 ${schedule.openTime} - ${schedule.closeTime}|" th:if="${iterStat.first}"></span>
+              <th:block th:each="schedule, iterStat : ${getBakeriesTime}">
+                <span th:if="${iterStat.first}"
+                  th:text="|오늘 ${schedule.openTime.toString().substring(0,5)} - ${schedule.closeTime.toString().substring(0,5)}|">
+                </span>
               </th:block>
             </span>
             <!-- 🕒 "더보기" 버튼 -->
             <button class="hours-toggle">더보기</button>
             <div class="hours-detail" style="display: none;">
-              <th:block th:each="schedule : ${bakery.schedule}">
+              <th:block th:each="schedule : ${getBakeriesTime}">
                 <div class="hours-item">
-                  <span class="day" th:text="${schedule.day}"></span> <span class="time"
-                    th:text="|${schedule.openTime} - ${schedule.closeTime}|"></span>
+                  <span class="day" th:text="${schedule.day}"></span>
+                  <span class="time"
+                    th:text="|${schedule.openTime.toString().substring(0,5)} - ${schedule.closeTime.toString().substring(0,5)}|">
+                  </span>
                 </div>
               </th:block>
+
             </div>
           </div>
           <!-- 📞 전화번호 -->
@@ -196,17 +202,39 @@
               <div class="review-date" th:text="${review.reviewDate}"></div>
               <div class="review-content" th:text="${review.reviewDetail}"></div>
               <div class="review-tags">
-                <th:block th:if="${review.tagFirst != null}" class="tag-label" th:utext="${review.tagFirst}">
+                <th:block th:if="${review.tagFirst != null}">
+                  <span class="tag-label" th:utext="${review.tagFirst}"></span>
+                </th:block>
+                <th:block th:if="${review.tagSecond != null}">
+                  <span class="tag-label" th:utext="${review.tagSecond}"></span>
+                </th:block>
+                <th:block th:if="${review.tagThird != null}">
+                  <span class="tag-label" th:utext="${review.tagThird}"></span>
+                </th:block>
+                <th:block th:if="${review.tagForth != null}">
+                  <span class="tag-label" th:utext="${review.tagForth}"></span>
+                </th:block>
+                <th:block th:if="${review.tagFive != null}">
+                  <span class="tag-label" th:utext="${review.tagFive}"></span>
                 </th:block>
               </div>
               <img th:if="${review.resourcesPath != null and review.changeName != null}"
                 th:src="@{${review.resourcesPath + '/' + review.changeName}}" class="review-image">
               <div class="review-actions">
-                <button type="button" class="btn btn-edit" onclick="editReview()">수정</button>
-                <button type="button" class="btn btn-delete"
-                  th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">
-                  삭제
-                </button>
+                <th:block th:if="${review.userNo == userNum}">
+                  <button type="button" onclick="editReview(this)" th:data-content="${review.reviewDetail}"
+                    th:data-rating="${review.reviewRating}" th:data-tags="${(review.tagFirst != null ? '1,' : '') +
+                       (review.tagSecond != null ? '2,' : '') +
+                       (review.tagThird != null ? '3,' : '') +
+                       (review.tagForth != null ? '4,' : '') +
+                       (review.tagFive != null ? '5,' : '')}">
+                    수정
+                  </button>
+                  <button type="button" class="btn btn-delete"
+                    th:attr="onclick=|deleteReview(${review.reviewNo}, '${review.changeName ?: 'none'}')|">
+                    삭제
+                  </button>
+                </th:block>
               </div>
               <div class="review-reply-div">
                 <button class="review-reply-btn"
@@ -309,17 +337,13 @@
         <!-- 주차 정보 섹션 -->
         <div class="parking-info" id="parking" style="display: none;">
           <h3>주차 안내</h3>
-          <div class="parking-content" th:each="bakery : ${bakeryDetail}">
-            <img src="" alt="주차장">
+          <div class="parking-content" th:each="bakery : ${parkingImages}">
+            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" alt="주차장">
             <div class="parking-details">
               <h4>주차 정보</h4>
               <ul>
                 <li th:text="${bakery.response.amenity}"></li>
               </ul>
-              <div class="parking-notice">
-                <p>※ 2시간 초과시 30분당 2,000원</p>
-                <p>※ 주말 및 공휴일 혼잡 가능</p>
-              </div>
             </div>
           </div>
         </div>
@@ -366,7 +390,10 @@
       <span class="close-modal" onclick="closeReviewModal()">&times;</span>
       <h2>리뷰 작성</h2>
       <form id="reviewForm">
-        <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo" />
+        <th:block th:if="${recentOrder != null}">
+          <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo"
+            id="orderNo" />
+        </th:block>
         <div class="form-group">
           <label for="name">이름</label>
           <input type="text" id="name" required>
@@ -434,8 +461,8 @@
           </div>
         </div>
         <div class="form-group button-group">
-          <button type="button" class="submit-review" onclick="submitReview()">등록하기</button>
-          <button type="button" class="cancel-review" onclick="closeReviewModal()">취소</button>
+          <button type="button" class="submit-review" onclick="submitReview()" id="reviewSubmitBtn">등록하기</button>
+          <button type="button" class="cancel-review" onclick="closeReviewModal()" id="cancelReviewBtn">취소</button>
         </div>
     </div>
   </div>

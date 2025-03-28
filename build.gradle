@@ -69,7 +69,7 @@ dependencies {
 }
 	
 	// 포트원 결제 
-	repositories {
+repositories {
     mavenCentral()
 
     //iamport
@@ -93,4 +93,4 @@ tasks.named('test') {
 
 compileJava {
 	options.compilerArgs << '-parameters'
-	}
+}
