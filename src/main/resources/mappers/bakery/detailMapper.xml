@@ -88,6 +88,8 @@
 		bi.BAKERY_NO = bi2.BAKERY_NO
 		WHERE
 		BI.BAKERY_NO = #{no}
+		AND BI2."POSITION" ='main'
+		
 
 	</select>
 
