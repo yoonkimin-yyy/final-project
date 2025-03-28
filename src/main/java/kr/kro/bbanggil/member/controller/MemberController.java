@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.common.util.LoginAttemptUtil;
 import kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto;
@@ -166,12 +167,12 @@ public class MemberController {
     // 로그인 처리
     @PostMapping("/loginin")
     public String loginin(MemberRequestSignupDto memberRequestSignupDto, HttpSession session,
-    					  RedirectAttributes redirectAttributes) {
+    					  RedirectAttributes redirectAttributes, HttpServletRequest request) {
     	
-    	// 계정 잠금 상태 확인
-        if (loginAttemptUtil.isAccountLocked(session)) {
+    	// IP 기준으로 계정 잠금 상태 확인
+        if (loginAttemptUtil.isAccountLocked(request)) {
             redirectAttributes.addFlashAttribute("loginError", "5회 로그인 실패로 3분 동안 잠금 처리되었습니다.");
-            return "redirect:/register/loginin";
+            return "redirect:/register/loginin/form";
         }
         
         // 로그인 검증
@@ -193,7 +194,7 @@ public class MemberController {
     	        }
     	    } else {
     	        // 로그인 실패 → 에러 메시지 세팅 후 로그인 페이지로
-    	    	loginAttemptUtil.incrementFailedAttempts(session);  // 실패 횟수 증가
+    	    	loginAttemptUtil.incrementFailedAttempts(request);  // 실패 횟수 증가  // 실패 횟수 증가
     	        redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
     	        return "redirect:/register/loginin/form";
     	    }
@@ -202,10 +203,11 @@ public class MemberController {
     
     @PostMapping("/logininAdmin")
     public String logininAdmin(MemberRequestSignupDto memberRequestSignupDto, HttpSession session,
-    		RedirectAttributes redirectAttributes) {
+    						   HttpServletRequest request,
+    						   RedirectAttributes redirectAttributes) {
     	
-    	// 계정 잠금 상태 확인
-        if (loginAttemptUtil.isAccountLocked(session)) {
+    	// IP 기준으로 계정 잠금 상태 확인
+        if (loginAttemptUtil.isAccountLocked(request)) {
             redirectAttributes.addFlashAttribute("loginError", "5회 로그인 실패로 3분 동안 잠금 처리되었습니다.");
             return "redirect:/admin/login";
         }
@@ -213,13 +215,16 @@ public class MemberController {
     	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
     	
     	if (loginUser != null && loginUser.getUserType().equals("admin")) {
+    		loginAttemptUtil.resetFailedAttempts(request);
+    		
     		session.setAttribute("userNum", loginUser.getUserNo());
     		session.setAttribute("userId", loginUser.getUserId());
     		session.setAttribute("role", loginUser.getUserType());
+    		
     		return "redirect:/admin/form";  
     	} 
     	
-    	loginAttemptUtil.incrementFailedAttempts(session);  // 실패 횟수 증가
+    	loginAttemptUtil.incrementFailedAttempts(request);  // 실패 횟수 증가
 		redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
 		return "redirect:/admin/login";
 
