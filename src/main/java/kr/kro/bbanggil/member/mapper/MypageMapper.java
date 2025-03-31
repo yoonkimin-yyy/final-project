@@ -30,4 +30,9 @@ public interface MypageMapper {
 	//비밀번호수정
 	public int updatePassword(@Param("userNo")int userNo,
 							  @Param("userPassword")String userPassword);
+	
+	public int writeReview(@Param("mypageListDto")MypageListResponseDto mypageListDto,
+							@Param("userNo")int userNo);
+	
+	public int deleteReview(@Param("mypageListDto")MypageListResponseDto mypageListDto);
 }

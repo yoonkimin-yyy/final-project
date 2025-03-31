@@ -36,9 +36,7 @@ public class MypageServiceImpl implements MypageService {
 		MypagePageInfoDto pi = mypagePagination.getMyList(postCount, currentPage, pageLimit, boardLimit);
 		List<MypageListResponseDto> getBuyHistory = mypageMapper.getBuyHistory(userNo);
 		
-		for(MypageListResponseDto item : getBuyHistory) {
-			System.out.println(item.getBakeryInfoDto().getBakeryName());
-		}
+		
 		
 		Map<String, Object> result = new HashMap<>();
 		
@@ -74,11 +72,10 @@ public class MypageServiceImpl implements MypageService {
 		return result;
 	}
 
+    @Override
 	public int updatePassword(int userNo, PasswordRequestDto passwordDto) {
 		
-		System.out.println(passwordDto.getCurrentPassword());
-		System.out.println(passwordDto.getNewPassword());
-		System.out.println(passwordDto.getConfirmPassword());
+		
 		String currentPassword = mypageMapper.getPassword(userNo);
 		System.out.println("현재 비밀번호 : " +currentPassword);
 		
@@ -101,6 +98,22 @@ public class MypageServiceImpl implements MypageService {
 		return result;
 	}
     
+    @Override
+    public int writeReview(MypageListResponseDto mypageListDto, int userNo) {
+    	System.out.println("서비스 리뷰내용" + mypageListDto.getReviewDto().getReviewNo());
+    	System.out.println("서비스 주문번호" + mypageListDto.getReviewDto().getOrderNo());
+    	System.out.println("서비스 평점" + mypageListDto.getReviewDto().getReviewRating());
+    	int result = mypageMapper.writeReview(mypageListDto,userNo);
+    	
+    	return result;
+    }
     
+    @Override
+    public int deleteReview(MypageListResponseDto mypageListDto) {
+    	
+    	System.out.println(mypageListDto.getReviewDto().getOrderNo());
+    	int result = mypageMapper.deleteReview(mypageListDto);
+    	return result;
+    }
    
 }

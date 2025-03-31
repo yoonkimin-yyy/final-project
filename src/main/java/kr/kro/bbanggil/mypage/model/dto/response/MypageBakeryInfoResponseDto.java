@@ -14,5 +14,6 @@ public class MypageBakeryInfoResponseDto {
 	
 	private String bakeryName;
 	private String bakeryList;
+	private int bakeryNo;
 	
 }

@@ -47,7 +47,7 @@ public class AdminController {
 
 		List<AdminResponseDto> bakeryList = adminService.bakeryList();
 		List<AdminResponseDto> userList = adminService.userList();
-		List<AdminResponseDto> reportList = adminService.reportList();
+		
 		
 		model.addAttribute("today", topContent.get("today"));
 		model.addAttribute("user", topContent.get("user"));
@@ -55,7 +55,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
-		model.addAttribute("reportLists", reportList);
+		
 		
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));

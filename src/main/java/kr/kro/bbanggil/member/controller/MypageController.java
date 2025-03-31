@@ -57,10 +57,6 @@ public class MypageController {
 		
 		List<MypageListResponseDto> getBuyHistory = (List<MypageListResponseDto>) result.get("getBuyHistory");
 		
-		for(MypageListResponseDto item : getBuyHistory) {
-			System.out.println(item.getReviewDto().getReviewRating());
-			System.out.println(item.getBakeryInfoDto().getBakeryList());
-		}
 		
 	
 		model.addAttribute("getBuyHistory",getBuyHistory);
@@ -109,6 +105,26 @@ public class MypageController {
 
 		mypageService.updatePassword(userNo,passwordDto);
 	
+		return "redirect:/register/mypage";
+	}
+	
+	@PostMapping("/updateAddress")
+	public String updateAddress() {
+		
+	}
+	
+	@PostMapping("/writeReview")
+	public String writeReview(MypageListResponseDto mypageListDto,
+								@SessionAttribute(value="userNum", required=false)Integer userNo) {
+		mypageService.writeReview(mypageListDto, userNo);
+		
+		return "redirect:/register/mypage";
+	}
+	
+	@PostMapping("/deleteReview")
+	public String deleteReview(MypageListResponseDto mypageListDto) {
+		
+		mypageService.deleteReview(mypageListDto);
 		return "redirect:/register/mypage";
 	}
 	

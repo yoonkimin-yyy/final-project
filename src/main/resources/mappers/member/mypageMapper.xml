@@ -6,6 +6,7 @@
 
 	<resultMap id="myPageDto" type="kr.kro.bbanggil.mypage.model.dto.response.MypageListResponseDto">
 		<association property="bakeryInfoDto" javaType="kr.kro.bbanggil.mypage.model.dto.response.MypageBakeryInfoResponseDto">
+			<result property = "bakeryNo" column = "bakery_no"></result>
 			<result property = "bakeryName" column="bakery_name"></result>
 			<result property = "bakeryList" column = "menu_list"></result>
 		</association>
@@ -72,6 +73,7 @@
     		 PS.pickup_status,
    			 R.review_detail,
     		 R.review_rating,
+    		 bi.bakery_no,
    			 LISTAGG(M.menu_name || ' x ' || CI.menu_count, ', ') WITHIN GROUP (ORDER BY M.menu_no) AS menu_list
 		FROM ORDER_INFO OI
 			JOIN CART C ON OI.cart_no = C.cart_no
@@ -83,7 +85,7 @@
 			JOIN MENU M ON CI.menu_no = M.menu_no
 			JOIN BAKERY_INFO BI ON M.bakery_no = BI.bakery_no
 		WHERE U.user_no = #{userNo}
-			GROUP BY OI.order_no, BI.bakery_name, P.amount, PS.pickup_status, R.review_detail, R.review_rating
+			GROUP BY OI.order_no, BI.bakery_name, P.amount, PS.pickup_status, R.review_detail, R.review_rating,bi.bakery_no
 		ORDER BY OI.order_no DESC
 	</select>
 	
@@ -107,8 +109,32 @@
 		WHERE user_no = #{userNo}
 	</update>
 	
-
+	<update id="updateAddress" parameterType="kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto">
+		
+	UPDATE ADDRESS SET
+		user_postcode = #{requestAddressDto.userPostcode},
+		user_city = #{requestAddressDto.userCity},
+		user_district = #{requestAddressDto.userDistrict},
+		user_street = #{requestAddressDto.userStreet},
+		user_number = #{requestAddressDto.userNumber},
+		user_detailaddress = #{requestAddressDto.userDetailaddress}
+	WHERE user_no = #{userNo}
+	</update>
 	
 
-
+	<insert id="writeReview">
+		INSERT INTO review VALUES( review_seq.nextval,
+									 #{mypageListDto.reviewDto.orderNo},
+								     #{userNo},
+									 #{mypageListDto.reviewDto.reviewDetail},
+									 #{mypageListDto.reviewDto.reviewRating},
+									 SYSDATE,
+								     #{mypageListDto.bakeryInfoDto.bakeryNo})
+	</insert>
+	
+	<delete id="deleteReview">
+		DELETE FROM review WHERE order_no = #{mypageListDto.reviewDto.orderNo}
+	</delete>
+	
+	
 </mapper>
