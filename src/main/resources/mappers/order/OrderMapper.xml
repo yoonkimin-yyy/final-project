@@ -146,7 +146,7 @@
 	
 	
 <select id="selectOrderCount" resultType="int" parameterType="String">
-  SELECT COUNT(DISTINCT oi.ORDER_NO)
+SELECT COUNT(DISTINCT p.MERCHANT_UID || '_' || oi.ORDER_NO)
   FROM PAYMENT p
   JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
   JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
