@@ -1002,9 +1002,11 @@
     user-select: none;
     width: auto;
     max-width: 150px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    
+    
+    white-space: normal;       /* 줄바꿈 허용 */
+    overflow-wrap: break-word; /* 단어가 길면 줄바꿈 */
+    word-break: break-word; 
     
 }
 
