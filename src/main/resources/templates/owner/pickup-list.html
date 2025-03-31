@@ -99,13 +99,13 @@
 					                    <p><strong>주문 금액 :</strong><strong>&nbsp;<span id="popup-total-price" th:text="${order.payDTO.amount}"></span></strong></p>
 					                    <p><strong>요청사항 :</strong>&nbsp;<strong><span id="popup-request" th:text="${order.payDTO.requestContent}"></span></strong></p>
 					                
-					                    <div class="rejection-reason-div" th:if="${order.statusDTO.pickupStatus}=='대기'">
-					                        <textarea id="rejection-reason" placeholder="거절 사유 입력..."></textarea>
+					                    <div class="rejection-reason-div">
+					                        <textarea class="rejection-reason" th:id="'rejection-reason-' + ${order.orderNo}" placeholder="거절 사유 입력..."></textarea>
 					                    </div>    
 					                    <div class="popup-buttons" >
-					                        <button id="approve-btn" th:if="${order.statusDTO.pickupStatus}=='대기'" th:attr="data-order-no=${order.orderNo}">승인</button>
-					                        <button id="reject-btn" th:if="${order.statusDTO.pickupStatus}=='대기'" th:attr="data-order-no=${order.orderNo}">거절</button>
-					                        <button id="complete-btn" th:if="${order.statusDTO.pickupStatus}=='승인'" th:attr="data-order-no=${order.orderNo}">완료</button>
+					                        <button th:id="'approve-btn-' + ${order.orderNo}" class="approve-btn"  th:attr="data-order-no=${order.orderNo}">승인</button>
+					                        <button th:id="'reject-btn-' + ${order.orderNo}" class="reject-btn"  th:attr="data-order-no=${order.orderNo}">거절</button>
+					                        <button th:id="'complete-btn-' + ${order.orderNo}" class="complete-btn"  th:attr="data-order-no=${order.orderNo}">완료</button>
 					                    </div>
 					                    
 					                </div>

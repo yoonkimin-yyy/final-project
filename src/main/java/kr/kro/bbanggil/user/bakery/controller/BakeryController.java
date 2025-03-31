@@ -157,7 +157,7 @@ public class BakeryController {
 			model.addAttribute("reviewReplies", reviewReplies);
 
 			// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
-			if (session.getAttribute("userNum") != null) {
+			if (userNum != null) {
 				int userNo = (int) userNum;
 				int resultValue = reviewService.byIdCheck(userNo, no);
 				if (resultValue == 0) {
