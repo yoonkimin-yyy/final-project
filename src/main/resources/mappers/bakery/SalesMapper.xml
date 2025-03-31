@@ -23,7 +23,7 @@
 			<result property="recipientsPhonenum" column="recipients_phonenum"></result>
 		</association>
 		
-		<association property="menuDTO" javaType="kr.kro.bbanggil.owner.pickup.response.dto.PickupMenuResponseDTO">
+		<association property="menuList" javaType="kr.kro.bbanggil.owner.pickup.response.dto.PickupMenuResponseDTO">
 			<result property="menuName" column="menu_name"></result>
 			<result property="menuCount" column="menu_count"></result>
 			<result property="price" column="menu_price"></result>

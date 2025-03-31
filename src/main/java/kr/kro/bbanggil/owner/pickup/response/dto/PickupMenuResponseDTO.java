@@ -9,8 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PickupMenuResponseDTO {
 
+	private int orderNo;
 	private String menuName;
 	private int menuCount;
 	private int price;
+	private int menuNo;
 	
 }

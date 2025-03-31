@@ -17,6 +17,10 @@ public interface PickupMapper {
     // 모든 주문 조회
     List<PickupBakeryInfoResponseDTO> findAllOrders(int bakeryNo);
     
+    
+    List<PickupMenuResponseDTO> selectMenusByOrderNo(@Param("orderNo") int orderNo);
+
+    
     // 주문 상태를 변경하는 코드
     // 상태와 거절 사유를 업데이트
     boolean updateStatusAndRejectionReason(@Param("orderNo") int orderNo, 

@@ -36,10 +36,18 @@ public class SalesController {
             // bakeryNo 값이 잘못 전달된 경우에 대한 처리 로직
         }
         
+<<<<<<< HEAD:src/main/java/kr/kro/bbanggil/owner/pickup/controller/SalesController.java
         if (year == null) {
         	throw new BbanggilException("아직 가게의 매출이 없습니다.","common/error",HttpStatus.BAD_REQUEST);
         }
+=======
+>>>>>>> 061f5299159cad51a79f1182d295aa762ed5e45c:src/main/java/kr/kro/bbanggil/pickup/controller/SalesController.java
         
+        if (year == null) {
+             
+             year = LocalDate.now().getYear();  // Integer 타입으로도 사용할 수 있습니다.
+            
+        }
         
 
         // 매출 조회

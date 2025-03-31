@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kr.kro.bbanggil.global.exception.BbanggilException;
 import kr.kro.bbanggil.owner.pickup.mapper.PickupMapper;
 import kr.kro.bbanggil.owner.pickup.response.dto.PickupBakeryInfoResponseDTO;
+import kr.kro.bbanggil.owner.pickup.response.dto.PickupMenuResponseDTO;
 
 
 
@@ -40,9 +41,9 @@ public class PickupServiceImpl implements PickupService{
 	    
 	    if (containsBakeryNo) {
 	        // bakeryNosArray에 bakeryNo가 포함되어 있을 경우 실행
-	    	
 	        List<PickupBakeryInfoResponseDTO> orderList = pickupMapper.findAllOrders(bakeryNo);
-	        	
+	        
+	        
 	        
 	        if (orderList == null || orderList.isEmpty()) {
 	            return null;
@@ -50,7 +51,16 @@ public class PickupServiceImpl implements PickupService{
 	        return orderList;
 	    } 
 	    	throw new BbanggilException("본인의 가게가 아닙니다a.","common/error",HttpStatus.BAD_REQUEST);
+	    
 	}
+	
+	@Override
+    public List<PickupMenuResponseDTO> getMenusByOrderNo(int orderNo) {
+		List<PickupMenuResponseDTO> menuList = pickupMapper.selectMenusByOrderNo(orderNo);
+        return menuList;
+    }
+	
+	
     
     // 상태 업데이트
     @Override
