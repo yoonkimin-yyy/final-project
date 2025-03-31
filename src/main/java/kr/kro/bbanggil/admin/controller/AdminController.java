@@ -48,11 +48,8 @@ public class AdminController {
 	private final OrderServiceImpl orderService;
 	private final EmailServiceImpl emailService;
 	private final EmailMapper emailMapper;
-<<<<<<< HEAD
 	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
-=======
 	private final NewsletterServiceImpl newsletterService;
->>>>>>> 9edcbc7b909757344eff279ccb644e23f74e5e0e
 	
 	@GetMapping("/login")
 	public String adminLoginForm() {
