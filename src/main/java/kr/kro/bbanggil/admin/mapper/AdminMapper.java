@@ -15,7 +15,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
-import kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto;
+import kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto;
 
 @Mapper
 public interface AdminMapper {

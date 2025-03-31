@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="kr.kro.bbanggil.pickup.mapper.SalesMapper">
+<mapper namespace="kr.kro.bbanggil.owner.pickup.mapper.SalesMapper">
 
 	<resultMap id="pickupResultMap"
-		type="kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO">
+		type="kr.kro.bbanggil.owner.pickup.response.dto.PickupBakeryInfoResponseDTO">
 		<result property="bakeryNo" column="bakery_no"></result>
 
-		<association property="payDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupPaymentResponseDTO">
+		<association property="payDTO" javaType="kr.kro.bbanggil.owner.pickup.response.dto.PickupPaymentResponseDTO">
 			<result property="orderNo" column="order_no"></result>
 			<result property="requestContent" column="request_content"></result>
 			<result property="paymentDate" column="pay_request_date"></result>
 			<result property="amount" column="amount"></result>
 		</association>
 		
-		<association property="statusDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupStatusResponseDTO">
+		<association property="statusDTO" javaType="kr.kro.bbanggil.owner.pickup.response.dto.PickupStatusResponseDTO">
 			<result property="pickupStatus" column="pickup_status"></result>
 			<result property="rejectionReason" column="refusal_detail"></result>
 		</association>
 		
-		<association property="userDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupUserInfoResponseDTO">
+		<association property="userDTO" javaType="kr.kro.bbanggil.owner.pickup.response.dto.PickupUserInfoResponseDTO">
 			<result property="userNo" column="user_no"></result>
 			<result property="recipientsPhonenum" column="recipients_phonenum"></result>
 		</association>
 		
-		<association property="menuDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupMenuResponseDTO">
+		<association property="menuDTO" javaType="kr.kro.bbanggil.owner.pickup.response.dto.PickupMenuResponseDTO">
 			<result property="menuName" column="menu_name"></result>
 			<result property="menuCount" column="menu_count"></result>
 			<result property="price" column="menu_price"></result>
 		</association>
 		
-		<association property="salesDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupSalesResponseDTO">
+		<association property="salesDTO" javaType="kr.kro.bbanggil.owner.pickup.response.dto.PickupSalesResponseDTO">
 			<result property="year" column="year"></result>
 			<result property="month" column="month"></result>
 			<result property="totalSales" column="total_sales"></result>
