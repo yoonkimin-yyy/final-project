@@ -135,6 +135,8 @@ public class NewsletterScheduler {
 	            }
 	        }
 		
+		 emailMapper.insertNewsletterHistory(bakeryInfo);
+		 logger.info("뉴스레터 히스토리 저장 완료");
 		
 	}
 	

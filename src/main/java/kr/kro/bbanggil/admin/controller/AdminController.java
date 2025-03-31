@@ -23,12 +23,14 @@ import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.admin.dto.response.NewsletterResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
 import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.email.dto.response.SubscriptionResponseDto;
 import kr.kro.bbanggil.email.mapper.EmailMapper;
 import kr.kro.bbanggil.email.service.EmailServiceImpl;
+import kr.kro.bbanggil.newsletter.service.NewsletterServiceImpl;
 import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.order.service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
@@ -42,6 +44,7 @@ public class AdminController {
 	private final OrderServiceImpl orderService;
 	private final EmailServiceImpl emailService;
 	private final EmailMapper emailMapper;
+	private final NewsletterServiceImpl newsletterService;
 	
 	@GetMapping("/login")
 	public String adminLoginForm() {
@@ -199,7 +202,14 @@ public class AdminController {
 		int successRate = emailService.getSendSuccessRate();
 	    model.addAttribute("sendSuccessRate", successRate);
 		
-	    System.out.println(successRate);
+	    /*
+	     * 최근 뉴스레터 1건 조회에서 추가
+	     */
+	    NewsletterResponseDto recentNewsletter = newsletterService.getLatestNewsletter();
+	    
+	    model.addAttribute("newsletter", recentNewsletter);
+	    
+	    
 		
 		return "admin/admin-news-letter";
 	}

@@ -132,25 +132,43 @@ ORDER BY
 
 
 
-<insert id="insertNewsletterHistory">
-    INSERT INTO NEWSLETTER_HISTORY (
-        HISTORY_NO, BAKERY_NAME, RESOURCES_PATH, CHANGE_NAME, OPEN_TIME, CLOSE_TIME
-    ) VALUES (
-        NEWSLETTER_HISTORY_SEQ.NEXTVAL,
-        #{bakeryName},
-        #{resourcesPath},
-        #{changeName},
-        #{openTime},
-        #{closeTime}
-    )
-</insert>
-
-
 <select id="getImageInfoByImgNo" resultType="map">
     SELECT CHANGE_NAME, RESOURCES_PATH
     FROM BAKERY_IMAGE
     WHERE IMG_NO = #{imgNo}
 </select>
+
+
+
+<insert id="insertNewsletterHistory">
+  INSERT INTO NEWSLETTER_HISTORY (
+    HISTORY_NO,
+    BAKERY_NAME,
+    RESOURCES_PATH,
+    CHANGE_NAME,
+    OPEN_TIME,
+    CLOSE_TIME,
+    LOCATION,
+    SENT_DATE
+  ) VALUES (
+    SEQ_NEWSLETTER_HISTORY.NEXTVAL,
+    #{bakeryName},
+    #{resourcesPath},
+    #{changeName},
+    #{openTime},
+    #{closeTime},
+    #{location},
+    SYSDATE
+  )
+</insert>
+
+
+
+
+
+
+
+
 
 
 </mapper>

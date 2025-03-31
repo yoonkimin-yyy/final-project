@@ -48,5 +48,7 @@ public interface EmailMapper {
 	 
 	 
 	void unsubscribeEmail(@Param("email") String email); // 구독해지
+	
+	void insertNewsletterHistory(Map<String, String> bakeryInfo);
 
 }
