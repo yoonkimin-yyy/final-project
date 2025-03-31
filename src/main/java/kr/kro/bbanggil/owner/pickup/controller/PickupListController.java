@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
+import kr.kro.bbanggil.admin.service.AdminServiceImpl;
 import kr.kro.bbanggil.owner.pickup.response.dto.PickupBakeryInfoResponseDTO;
 import kr.kro.bbanggil.owner.pickup.response.dto.PickupMenuResponseDTO;
 import kr.kro.bbanggil.owner.pickup.service.PickupServiceImpl;
@@ -27,6 +30,7 @@ import kr.kro.bbanggil.owner.pickup.service.PickupServiceImpl;
 public class PickupListController {
 	
     private final PickupServiceImpl pickupServiceImpl;
+    private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
 
     public PickupListController(PickupServiceImpl pickupServiceImpl) {
         this.pickupServiceImpl = pickupServiceImpl;
@@ -81,7 +85,7 @@ public class PickupListController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-        	e.printStackTrace();
+        	logger.info("/update-status: '{}'", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

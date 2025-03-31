@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.NewsletterResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
+import kr.kro.bbanggil.admin.service.AdminServiceImpl;
 import kr.kro.bbanggil.common.dto.response.SubscriptionResponseDto;
 import kr.kro.bbanggil.common.mapper.EmailMapper;
 import kr.kro.bbanggil.common.service.EmailServiceImpl;
@@ -45,6 +48,7 @@ public class AdminController {
 	private final OrderServiceImpl orderService;
 	private final EmailServiceImpl emailService;
 	private final EmailMapper emailMapper;
+	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
 	private final NewsletterServiceImpl newsletterService;
 	
 	@GetMapping("/login")
@@ -91,6 +95,7 @@ public class AdminController {
 						 @SessionAttribute("userId")String userId,
 						 @RequestParam("reportNo")int reportNo) {
 		adminService.insertReport(reportDTO,userId,reportNo);
+		logger.info("report: '{}'", userId);
 		return "redirect:/admin/form";
 	}
 	
@@ -129,6 +134,8 @@ public class AdminController {
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
 		model.addAttribute("menuList", menuList);
+		
+		logger.info("/bakery/accept: '{}'", bakeryNo);
 
 		return "admin/bakery-accept";
 	}
@@ -139,6 +146,8 @@ public class AdminController {
 								   @RequestParam("rejectReason") String rejectReason) {
 		
 		adminService.update(action, bakeryNo, rejectReason);
+		
+		logger.info("/bakery/update: '{}'", bakeryNo);
 		
 		return "redirect:/admin/form";
 	}
@@ -168,8 +177,10 @@ public class AdminController {
 
 		  
 		  InquiryResponseDto answer = adminService.getInquiryByNo(inquiryNo);
+		  
+		  logger.info("/inquiry/answer: '{}'", inquiryNo);
 			
-			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
+		  return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
 	}
 	
 	@GetMapping("/order/list")
@@ -243,14 +254,9 @@ public class AdminController {
 		
 		redirectAttributes.addFlashAttribute("message", "구독이 정상적으로 해지되었습니다.");
 		
+		logger.info("/unsubscribe: '{}'", email);
+		
 		return "redirect:/admin/newsLetter";
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

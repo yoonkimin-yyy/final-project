@@ -4,6 +4,8 @@ package kr.kro.bbanggil.admin.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +39,7 @@ public class HomeController {
 	private final NewsletterScheduler newsletterScheduler;
 	private final BakeryServiceImpl bakeryService;
 	private final AdminServiceImpl adminService;
+	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
 	
 	/*
 	 * 이메일로 구독 알림 보내는 기능
@@ -108,6 +111,8 @@ public class HomeController {
 	@ResponseBody
 	public List<BakeryDto> getBakeriesByRegion(@RequestParam("region") String region){
 		
+		logger.info("by-region: '{}'", region);
+		
 		return bakeryService.getBakeriesByRegion(region);
 		
 	}
@@ -132,6 +137,8 @@ public class HomeController {
 		    }
 
 		adminService.saveInquiry(inquiryRequestDto);
+		
+		logger.info("/submit: '{}'", userNo);
 
 		return "redirect:/";
 	}
