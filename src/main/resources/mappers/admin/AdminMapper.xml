@@ -267,10 +267,7 @@ sysdate)
 		FETCH FIRST 3 ROWS ONLY
 	</select>
 	
-<<<<<<< HEAD:src/main/resources/mappers/admin/Admin.xml
-	
-  
-=======
+
 	<select id="reportList">
 		SELECT rrui.USER_id AS reporter,
 			   rr.REPORT_DETAIL AS reportDetail,
@@ -347,5 +344,5 @@ WHERE
 	
 	
 	
->>>>>>> 67c38ef454c73c4c4ef6a7fee19b331b045a120d:src/main/resources/mappers/admin/AdminMapper.xml
+
 </mapper>

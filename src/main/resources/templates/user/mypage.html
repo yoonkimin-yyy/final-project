@@ -100,62 +100,7 @@
 												<div class="review-text">
 													<p th:each="getBuyHistory : ${getBuyHistory}"
 														th:text="${getBuyHistory.reviewDto.reviewDetail}"></p>
-													<div class="tag-container">
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">🍞</span> <span class="text">빵이
-																		맛있어요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">💖</span> <span class="text">친절해요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">✨</span> <span class="text">매장이
-																		청결해요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">🌟</span> <span class="text">특별한
-																		메뉴가 있어요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">👶</span> <span class="text">아이와
-																		가기 좋아요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-													</div>
+													
 												</div>
 												<div>
 													<button class="delete-btn" type="submit">삭제</button>
@@ -190,62 +135,7 @@
 														id="review-text-textarea" maxlength="100" type="text"
 														name="reviewDto.reviewDetail"></textarea>
 													<p class="char-count">0/100</p>
-													<div class="tag-container">
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">🍞</span> <span class="text">빵이
-																		맛있어요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">💖</span> <span class="text">친절해요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">✨</span> <span class="text">매장이
-																		청결해요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">🌟</span> <span class="text">특별한
-																		메뉴가 있어요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-														<div class="tag">
-															<div class="tag-header">
-																<div class="tag-left">
-																	<span class="emoji">👶</span> <span class="text">아이와
-																		가기 좋아요</span>
-																</div>
-															</div>
-															<div class="gauge-container">
-																<div class="gauge"></div>
-															</div>
-														</div>
-													</div>
+													
 													<button class="text-btn" type="submit">등록</button>
 												</div>
 											</form>
@@ -253,10 +143,24 @@
 									</div>
 								</td>
 							</tr>
-							
-							</th:block>
+							</th:block>				
 						</tbody>
 					</table>
+	<div class="pagination">
+        <a th:if="${pi.currentPage > 1}" th:href="@{/register/mypage(currentPage=${pi.currentPage - 1})}">이전</a>
+        <th:block th:each="pageNum : ${#numbers.sequence(pi.startPage, pi.endPage)}">
+            <a th:href="@{/register/mypage(currentPage=${pageNum})}"
+               th:text="${pageNum}"
+               th:classappend="${pageNum == pi.currentPage} ? 'active' : ''">
+            </a>
+        </th:block>
+		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/register/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
+    </div>
+
+    <!-- 점주 페이지로 이동 (점주일 경우) -->
+    <div th:if="${goOwnerPage}">
+        <a href="/register/owner/mypage">점주 페이지로 이동</a>
+    </div>
 				</div>
 			</div>
 		</div>

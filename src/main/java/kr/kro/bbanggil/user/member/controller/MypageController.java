@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
@@ -44,7 +45,7 @@ public class MypageController {
 
 		
 		int postCount = mypageService.getTotalCount(userNo);
-		int pageLimit = 10;
+		int pageLimit = 5;
 		int boardLimit = 10;
 		
 		
@@ -111,9 +112,11 @@ public class MypageController {
 	
 
 	@PostMapping("/updateAddress")
-	public String updateAddress() {
+	public String updateAddress(@ModelAttribute MemberRequestSignupDto signupRequestDto,
+								@SessionAttribute(value="userNum", required=false)Integer userNo) {
+		mypageService.updateAddress(signupRequestDto, userNo);
 		
-		return "";
+		return "redirect:/register/mypage";
 	}
 	
 	@PostMapping("/writeReview")

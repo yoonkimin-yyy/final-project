@@ -79,7 +79,7 @@
                             </div>
                         </div>
 					</form>
-					<form>
+					<form method="POST" action="/register/updateAddress">
                         <div class="info-address-btn-div">
                             <button class="change-ar-btn" type="button">주소 변경</button>
                             <div class="postcode-div" id="postcode-div">
@@ -99,7 +99,7 @@
 	                            <input class="change-address" type="text" id="sample6_detailAddress" 
 	                                   style="border-top: 0px;" name="requestAddressDto.userDetailaddress" placeholder="상세주소 (선택)">
 
-                                <button class="addr-btn" id="addr-btn" type="submit">변경하기</button>
+                                <button class="addr-btn" id="addr-btn" type="submit" onclick="checkValue()">변경하기</button>
                             </div>
                         </div>
                      </form>

@@ -213,15 +213,57 @@ window.sample6_execDaumPostcode = function () {
             } else {
                 document.getElementById("sample6_detailAddress").value = '';
             }
+			
 
             // 우편번호와 주소 정보를 해당 필드에 넣는다.
             document.getElementById('sample6_postcode').value = data.zonecode;
             document.getElementById('sample6_address').value = addr;
             // 커서를 상세주소 필드로 이동한다.
             document.getElementById('sample6_detailAddress').focus();
+			
+			const parts = document.getElementById('sample6_address').value.split(" ");
+			    const city = parts[0];  // 서울
+			    const district = parts[1]; // 강남구
+			    const streetAndNumber = parts.slice(2).join(" "); // 논현로123길 4-1
+
+			    // street과 number 분리
+			    const match = streetAndNumber.match(/(.+?)(\d+-\d+|\d+)$/);
+			    const street = match ? match[1].trim() : "";
+			    const number = match ? match[2] : "";
+
+			    // input 요소에 값 설정
+			    document.getElementById("city").value = city;
+			    document.getElementById("district").value = district;
+			    document.getElementById("street").value = street;
+			    document.getElementById("number").value = number;
         }
     }).open({
         left: left,
         top: top
     });
+}
+
+const parts = document.getElementById('sample6_address').value.split(" ");
+    const city = parts[0];  // 서울
+    const district = parts[1]; // 강남구
+    const streetAndNumber = parts.slice(2).join(" "); // 논현로123길 4-1
+
+    // street과 number 분리
+    const match = streetAndNumber.match(/(.+?)(\d+-\d+|\d+)$/);
+    const street = match ? match[1].trim() : "";
+    const number = match ? match[2] : "";
+
+    // input 요소에 값 설정
+    document.getElementById("city").value = city;
+    document.getElementById("district").value = district;
+    document.getElementById("street").value = street;
+    document.getElementById("number").value = number;
+	
+function checkValue(){
+	const postCode = document.getElementById('sample6_postcode').value
+	const address = document.getElementById('sample6_address').value
+	const city = document.getElementById('city').value
+	console.log(postCode)
+	console.log(address)
+	console.log(city)
 }
