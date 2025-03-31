@@ -27,6 +27,35 @@
 </resultMap>
 
 
+<resultMap id="ReviewWithImagesResultMap" type="kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto">
+    <id property="reviewNo" column="review_no"/>
+    <result property="userNo" column="user_no"/>
+    <result property="userId" column="user_id"/>
+    <result property="reviewDetail" column="review_detail"/>
+    <result property="reviewRating" column="review_rating"/>
+    <result property="reviewDate" column="review_date"/>
+    <result property="tagFirst" column="tag_first"/>
+    <result property="tagSecond" column="tag_second"/>
+    <result property="tagThird" column="tag_third"/>
+    <result property="tagForth" column="tag_forth"/>
+    <result property="tagFive" column="tag_five"/>
+    <result property="reviewReply" column="review_reply"/>
+    <result property="reviewReplyDate" column="review_reply_date"/>
+
+    <!-- 이미지 리스트 매핑 -->
+    <collection property="reviewImages"
+                ofType="kr.kro.bbanggil.user.bakery.dto.ReviewImageDto"
+                javaType="ArrayList">
+        <result property="imgNo" column="img_no"/>
+        <result property="changeName" column="change_name"/>
+        <result property="resourcesPath" column="resources_path"/>
+    </collection>
+</resultMap>
+
+
+
+
+
 
 
 <select id="getLatestBakeryNo" resultType="int">
