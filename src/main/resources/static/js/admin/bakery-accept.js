@@ -8,7 +8,10 @@ function handleAction(action) {
 			event.preventDefault();
         	return false;
         }
-    }
+		alert('거절완료되었습니다.');
+    } else {
+		alert('승인되었습니다.');
+	}
 
     document.getElementById("bakeryForm").submit();
 }

@@ -1,5 +1,10 @@
 package kr.kro.bbanggil.admin.controller;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -10,19 +15,23 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
-import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
+import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
-import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
+import kr.kro.bbanggil.common.dto.response.SubscriptionResponseDto;
+import kr.kro.bbanggil.common.mapper.EmailMapper;
+import kr.kro.bbanggil.common.service.EmailServiceImpl;
 import kr.kro.bbanggil.common.util.PaginationUtil;
-import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
-import kr.kro.bbanggil.order.service.OrderServiceImpl;
+import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
+import kr.kro.bbanggil.owner.order.service.OrderServiceImpl;
+import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -32,6 +41,8 @@ public class AdminController {
 
 	private final AdminService adminService;
 	private final OrderServiceImpl orderService;
+	private final EmailServiceImpl emailService;
+	private final EmailMapper emailMapper;
 	
 	@GetMapping("/login")
 	public String adminLoginForm() {
@@ -42,6 +53,7 @@ public class AdminController {
 	public String adminForm(Model model) {
 		Map<String,Object> topContent = adminService.trafficMonitoring();
 		Map<String,Object> bottomContent = adminService.bottomContent();
+		List<AdminResponseDto> reportList = adminService.reportList();
 		
 		List<AdminResponseDto> sublist = adminService.subList();
 
@@ -63,6 +75,22 @@ public class AdminController {
 		return "admin/admin-page";
 	}
 
+	@GetMapping("/report/form")
+	public String reportForm(@RequestParam("reportNo")int reportNo,
+							 Model model) {
+		AdminResponseDto result = adminService.reportDetail(reportNo);
+		model.addAttribute("result",result);
+		model.addAttribute("reportNo",reportNo);
+		return "admin/report-reply";
+	}
+	@PostMapping("report")
+	public String report(ReportRequestDTO reportDTO,
+						 @SessionAttribute("userId")String userId,
+						 @RequestParam("reportNo")int reportNo) {
+		adminService.insertReport(reportDTO,userId,reportNo);
+		return "redirect:/admin/form";
+	}
+	
 	@GetMapping("/bakery/detail")
 	public String bakeryDetailForm(@RequestParam("bakeryNo") int bakeryNo,
 			   					   @RequestParam("userNo") int userNo,
@@ -103,20 +131,17 @@ public class AdminController {
 	}
 
 	@PostMapping("/bakery/update")
-	@ResponseBody
 	public String bakeryUpdateForm(@RequestParam("action") String action,
 								   @RequestParam("bakeryNo") int bakeryNo,
 								   @RequestParam("rejectReason") String rejectReason) {
 		
 		adminService.update(action, bakeryNo, rejectReason);
 		
-		String message = ("승인".equals(action) ? "승인" : "거절") + " 완료되었습니다.";
-
-		return "<script>alert('" + message + "'); window.opener.location.reload(); window.close();</script>";
+		return "redirect:/admin/form";
 	}
 
 	
-	
+  
 	@GetMapping("/inquiry/list")
 	public String inquiryList(Model model) {
 		List<InquiryResponseDto> inquiries = adminService.getInquiryList();
@@ -125,6 +150,7 @@ public class AdminController {
 		 
 	      return "admin/inquiry-list";
 	}
+	
 	@PostMapping("/inquiry/answer")
 	public String saveAnswer(@ModelAttribute InquiryReplyRequestDto inquiryReplyDto,
 						HttpSession session){
@@ -133,31 +159,88 @@ public class AdminController {
 		  Integer adminNo = (Integer) session.getAttribute("userNum");
 		  inquiryReplyDto.setAdminNo(adminNo);
 		
-			adminService.saveAnswer(inquiryReplyDto);
+		  adminService.saveAnswer(inquiryReplyDto);
+		  
+		  int inquiryNo = inquiryReplyDto.getInquiryNo();
+
+		  
+		  InquiryResponseDto answer = adminService.getInquiryByNo(inquiryNo);
 			
 			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
 	}
-	@GetMapping("/order")
-	public String orderList() {
-		return "admin/admin-order-list";
-	}
 	
 	@GetMapping("/order/list")
-	public String getOrderList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,Model model) {
+	public String getOrderList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
+			@RequestParam(value = "keyword", required = false) String keyword,Model model) {
 		
 		
-		int listCount = orderService.getOrderCount(); // 전체 주문수
+		int listCount = orderService.getOrderCount(keyword); // 전체 주문수
 		int pageLimit = 5;
 		int boardLimit = 10;
 		
 		PageResponseDto pi = PaginationUtil.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
-		List<OrderResponseDto> orderList = orderService.getPagedOrders(pi);
+		List<OrderResponseDto> orderList = orderService.getPagedOrders(pi,keyword);
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pi", pi);
-		
+		model.addAttribute("keyword", keyword);
 		
 		return "admin/admin-order-list";
 	}
+	
+	
+	@GetMapping("/newsLetter")
+	public String goNewsLetter(Model model) {
+		
+		/*
+		 * 총 구독자 확인
+		 */
+		List<SubscriptionResponseDto> subscribeList = emailService.getAllSubscribers(); 
+		model.addAttribute("subscribers", subscribeList);
+		
+		
+		/*
+		 * 다음 월요일 오전 9시 계산
+		 */
+		LocalDate today = LocalDate.now();
+	    int daysUntilNextMonday = (DayOfWeek.MONDAY.getValue() - today.getDayOfWeek().getValue() + 7) % 7;
+	    if (daysUntilNextMonday == 0) daysUntilNextMonday = 7; // 오늘이 월요일이면 다음 주
+
+	    LocalDate nextMonday = today.plusDays(daysUntilNextMonday);
+	    LocalDateTime nextNewsletterTime = LocalDateTime.of(nextMonday, LocalTime.of(9, 0));
+	    String formattedDate = nextNewsletterTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
+		model.addAttribute("nextSchedule", formattedDate);
+		
+		/*
+		 * 성공률 계산
+		 */
+		
+		int successRate = emailService.getSendSuccessRate();
+	    model.addAttribute("sendSuccessRate", successRate);
+		
+	    System.out.println(successRate);
+		
+		return "admin/admin-news-letter";
+	}
+	/*
+	 * 구독 해지
+	 */
+	@PostMapping("/unsubscribe")
+	public String unsubscribe(@RequestParam("email") String email,Model model,RedirectAttributes redirectAttributes) {
+		
+		emailMapper.unsubscribeEmail(email);
+		
+		redirectAttributes.addFlashAttribute("message", "구독이 정상적으로 해지되었습니다.");
+		
+		return "redirect:/admin/newsLetter";
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 }
