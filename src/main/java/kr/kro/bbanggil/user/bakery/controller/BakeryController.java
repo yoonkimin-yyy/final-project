@@ -327,6 +327,7 @@ public class BakeryController {
 		model.addAttribute("menu", result.get("list"));
 		model.addAttribute("bakery", result.get("bakery"));
 		model.addAttribute("no", bakeryNo);
+		model.addAttribute("goMyPage",true);
 		return "/owner/menu-list";
 	}
 
@@ -354,6 +355,7 @@ public class BakeryController {
 		model.addAttribute("info", info);
 		model.addAttribute("bakery", result);
 		model.addAttribute("no", bakeryNo);
+		model.addAttribute("goMyPage",true);
 		return "/owner/bakery-info";
 	}
 
