@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="kr.kro.bbanggil.order.mapper.OrderMapper">
+<mapper namespace="kr.kro.bbanggil.owner.order.mapper.OrderMapper">
 	
-	<resultMap id="orderResultMap" type="kr.kro.bbanggil.order.dto.response.OrderResponseDto">
+	<resultMap id="orderResultMap" type="kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto">
 		<result property="bakeryName" column="BAKERY_NAME"></result>
 		<result property="menuPrice" column="MENU_PRICE"></result>
 		<result property="menuName" column="MENU_NAME"></result>
@@ -18,7 +18,7 @@
 		<result property="amount" column="amount"></result>
 	</resultMap>
 	
-	<resultMap id="successResultMap" type="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">
+	<resultMap id="successResultMap" type="kr.kro.bbanggil.owner.order.dto.response.PaymentResponseDto">
 		<result property="merchantUid" column="MERCHANT_UID"></result>
 		<result property="impUid" column="IMP"></result>
 		<result property="account" column="AMOUNT"></result>
@@ -28,7 +28,7 @@
 		<result property="requestContent" column="REQUEST_CONTENT"></result>
 	</resultMap>	
 	
-	<resultMap id="pickupResultMap" type="kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto">
+	<resultMap id="pickupResultMap" type="kr.kro.bbanggil.owner.order.dto.response.PickupCheckResponseDto">
 		<result property="pickupStatusNo" column="PICKUP_STATUS_NO"></result>
 		<result property="pickupStatus" column="PICKUP_STATUS"></result>
 		<result property="refusalDetail" column="REFUSAL_DETAIL"></result>
@@ -74,7 +74,7 @@
 		WHERE C.USER_NO = 1 AND C.CART_NO = 1	 -->		
 	</select>
 	
-	<insert id="save" parameterType="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">
+	<insert id="save" parameterType="kr.kro.bbanggil.owner.order.dto.response.PaymentResponseDto">
 		INSERT INTO PAYMENT VALUES(PAYMENT_SEQ.NEXTVAL,
 						   		   #{merchantUid},
 						   		   #{impUid},
@@ -189,7 +189,7 @@
   WHERE rn BETWEEN #{pi.offset} AND #{pi.limit}
 </select>
 	
-	<select id="findRecentOrder" resultType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto">
+	<select id="findRecentOrder" resultType="kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto">
 	
 	SELECT
 	oi.ORDER_NO AS orderNo

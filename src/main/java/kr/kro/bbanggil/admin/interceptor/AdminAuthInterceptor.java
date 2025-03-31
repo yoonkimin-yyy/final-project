@@ -9,7 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import kr.kro.bbanggil.admin.exception.AdminException;
+import kr.kro.bbanggil.global.exception.BbanggilException;
 
 @Component
 public class AdminAuthInterceptor implements HandlerInterceptor{
@@ -21,7 +21,7 @@ public class AdminAuthInterceptor implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		Object userRole = session.getAttribute("role");
 		if(userRole==null || !userRole.equals("admin")) {
-			throw new AdminException("Admin이 아닙니다","common/error",HttpStatus.NOT_ACCEPTABLE);
+			throw new BbanggilException("Admin이 아닙니다","common/error",HttpStatus.NOT_ACCEPTABLE);
 		}
 		return true;
 	}

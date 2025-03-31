@@ -11,8 +11,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
-import kr.kro.bbanggil.common.config.FileUploadProperties;
+import kr.kro.bbanggil.global.config.FileUploadProperties;
+import kr.kro.bbanggil.user.bakery.dto.request.FileRequestDTO;
 import lombok.AllArgsConstructor;
 
 @Component
