@@ -16,6 +16,7 @@ public class InquiryResponseDto {
 	    private String inquiryContent;
 	    private String isAnswered;
 	    private String createDate;
+	    private String email;
 
 	    //  답변 정보 포함
 	    private String replyContent;
