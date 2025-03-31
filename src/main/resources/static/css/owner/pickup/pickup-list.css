@@ -148,10 +148,10 @@ button:hover {
 
 
 /* 상태별 배경색 */
-.pending { background-color: #ffecb3; }
-.approved { background-color: #c8e6c9; }
-.rejected { background-color: #ffccbc; }
-.completed { background-color: #e0e0e0; color: gray; }
+tr.pending { background-color: #ffecb3; }
+tr.approved { background-color: #c8e6c9; }
+tr.rejected { background-color: #ffccbc; }
+tr.completed { background-color: #e0e0e0; color: gray; }
 
 
 

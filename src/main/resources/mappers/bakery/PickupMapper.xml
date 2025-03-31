@@ -5,9 +5,10 @@
 	<resultMap id="pickupResultMap"
 		type="kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO">
 		<result property="bakeryNo" column="bakery_no"></result>
-
+		<result property="orderNo" column="order_no"></result>
 		
 		<association property="payDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupPaymentResponseDTO">
+
 			<result property="orderNo" column="order_no"></result>
 			<result property="requestContent" column="request_content"></result>
 			<result property="paymentDate" column="pay_request_date"></result>
@@ -24,12 +25,19 @@
 			<result property="recipientsPhonenum" column="recipients_phonenum"></result>
 		</association>
 		
-		<association property="menuDTO" javaType="kr.kro.bbanggil.pickup.response.dto.PickupMenuResponseDTO">
-			<result property="menuName" column="menu_name"></result>
-			<result property="menuCount" column="menu_count"></result>
-			<result property="price" column="menu_price"></result>
-		</association>
 		
+		
+	</resultMap>
+	
+	<resultMap id="menuResultMap"
+	    type="kr.kro.bbanggil.pickup.response.dto.PickupMenuResponseDTO">
+	    <result property="menuName" column="menu_name"/>
+	    <result property="menuCount" column="menu_count"/>
+	    <result property="price" column="menu_price"/>
+	    <result property="menuNo" column="menu_no"/>
+	    <result property="orderNo" column="order_no"/>
+	    
+	    
 	</resultMap>
 	
 	<select id="getBakeryNoByUserNo" 
@@ -41,38 +49,41 @@
 	</select>
 	
 	<select id="findAllOrders" resultMap="pickupResultMap" parameterType="int">
-		SELECT 
-			oi.order_no,
-			ps.pickup_status,
-			p.pay_request_date,
-			p.amount,
-			p.recipients_phonenum,
-			ba.bakery_no AS bakery,
-			p.request_content,
-			c.cart_no,
-			ba.bakery_no,
-			m.menu_name,
-			ci.menu_no,
-			ci.menu_count,
-			ba.user_no
-		FROM
-			ORDER_INFO oi
-		JOIN 
-			PAYMENT p ON oi.pay_no = p.pay_no
-		JOIN
-			PICKUP_STATUS ps ON p.pay_no = ps.pay_no
-		JOIN
-			CART c ON oi.cart_no = c.cart_no
-		JOIN
-			CART_INFO ci ON c.cart_no = ci.cart_no
-		JOIN
-			menu m ON ci.menu_no = m.menu_no
-		JOIN
-			bakery_info bi ON bi.bakery_no = m.bakery_no
-		JOIN
-			bakery_access ba ON bi.bakery_no = ba.bakery_no
-		WHERE bi.bakery_no = #{bakeryNo}
-        ORDER BY pay_request_date DESC
+		SELECT
+	        oi.order_no,
+	        ps.pickup_status,
+	        p.pay_request_date,
+	        p.amount,
+	        p.recipients_phonenum,
+	        ba.bakery_no AS bakery,
+	        p.request_content,
+	        c.cart_no,
+	        ba.bakery_no,
+	        ba.user_no
+	    FROM ORDER_INFO oi
+	    JOIN PAYMENT p ON oi.pay_no = p.pay_no
+	    JOIN PICKUP_STATUS ps ON p.pay_no = ps.pay_no
+	    JOIN CART c ON oi.cart_no = c.cart_no
+	    JOIN cart_info ci ON c.cart_no = ci.cart_no
+	    JOIN menu m ON ci.menu_no = m.menu_no
+	    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
+	    JOIN bakery_access ba ON bi.bakery_no = ba.bakery_no
+	    WHERE bi.bakery_no = #{bakeryNo}
+	    ORDER BY p.pay_request_date DESC
+	</select>
+	
+	<!-- 메뉴 목록 가져오는 쿼리 -->
+	<select id="selectMenusByOrderNo" resultMap="menuResultMap">
+	    SELECT 
+	    	oi.order_no,
+	        m.menu_name, 
+	        ci.menu_no, 
+	        ci.menu_count
+	    FROM CART_INFO ci
+	    JOIN MENU m ON ci.menu_no = m.menu_no
+	    JOIN CART c ON ci.cart_no = c.cart_no
+	    JOIN ORDER_INFO oi ON c.cart_no = oi.cart_no
+	    WHERE oi.order_no = #{orderNo}
 	</select>
 	
 	<!-- 상태와 거절 사유를 업데이트 -->

@@ -13,10 +13,11 @@ import lombok.Setter;
 public class PickupBakeryInfoResponseDTO {
 
 	private int bakeryNo;
+	private int orderNo;
 	private PickupPaymentResponseDTO payDTO = new PickupPaymentResponseDTO();
 	private PickupStatusResponseDTO statusDTO = new PickupStatusResponseDTO();
 	private PickupUserInfoResponseDTO userDTO = new PickupUserInfoResponseDTO();
-	private List<PickupMenuResponseDTO> menuDTO = new ArrayList<PickupMenuResponseDTO>();
+	private List<PickupMenuResponseDTO> menuList = new ArrayList<>();
 	private PickupSalesResponseDTO salesDTO = new PickupSalesResponseDTO();
 	
 }
