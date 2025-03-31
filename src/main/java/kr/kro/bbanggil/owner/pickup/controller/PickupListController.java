@@ -18,15 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
-<<<<<<< HEAD:src/main/java/kr/kro/bbanggil/owner/pickup/controller/PickupListController.java
 import kr.kro.bbanggil.owner.pickup.response.dto.PickupBakeryInfoResponseDTO;
 import kr.kro.bbanggil.owner.pickup.service.PickupServiceImpl;
-=======
-import kr.kro.bbanggil.pickup.exception.PickupException;
-import kr.kro.bbanggil.pickup.response.dto.PickupBakeryInfoResponseDTO;
-import kr.kro.bbanggil.pickup.response.dto.PickupMenuResponseDTO;
-import kr.kro.bbanggil.pickup.service.PickupServiceImpl;
->>>>>>> 061f5299159cad51a79f1182d295aa762ed5e45c:src/main/java/kr/kro/bbanggil/pickup/controller/PickupListController.java
 
 @Controller
 @RequestMapping("/pickup")

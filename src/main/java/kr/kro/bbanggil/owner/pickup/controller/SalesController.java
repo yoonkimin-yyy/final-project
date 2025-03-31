@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.owner.pickup.controller;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +37,9 @@ public class SalesController {
             // bakeryNo 값이 잘못 전달된 경우에 대한 처리 로직
         }
         
-<<<<<<< HEAD:src/main/java/kr/kro/bbanggil/owner/pickup/controller/SalesController.java
         if (year == null) {
         	throw new BbanggilException("아직 가게의 매출이 없습니다.","common/error",HttpStatus.BAD_REQUEST);
         }
-=======
->>>>>>> 061f5299159cad51a79f1182d295aa762ed5e45c:src/main/java/kr/kro/bbanggil/pickup/controller/SalesController.java
         
         if (year == null) {
              

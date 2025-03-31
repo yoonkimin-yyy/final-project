@@ -286,25 +286,5 @@ public class MemberController {
     	session.invalidate();
 		return "redirect:/";
 	}
- 
-
-
-	@GetMapping("/edit")
-	public String edit() {
-
-		return "user/edit";
-
-	}
-
-	@GetMapping("owner/mypage")
-	public String ownerMypage(@SessionAttribute("userNum") int userNum,
-							  Model model) {
-		List<OwnerMypageResponseDTO> result =memberService.ownerMypage(userNum); 
-		model.addAttribute("bakeries",result);
-		model.addAttribute("goMyPage",true);
-		
-		return "owner/owner-mypage";
-	}
-
 
 }
