@@ -1,7 +1,6 @@
 package kr.kro.bbanggil.admin.service;
 
 import java.time.LocalDateTime;
-
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +20,8 @@ import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
-import kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto;
-import kr.kro.bbanggil.email.service.EmailServiceImpl;
+import kr.kro.bbanggil.common.service.EmailServiceImpl;
+import kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto;
 import lombok.AllArgsConstructor;
 
 @Service

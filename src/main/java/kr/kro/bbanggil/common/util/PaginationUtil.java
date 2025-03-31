@@ -1,6 +1,6 @@
 package kr.kro.bbanggil.common.util;
 
-import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
+import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 
 public class PaginationUtil {
 

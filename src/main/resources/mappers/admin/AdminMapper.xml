@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.kro.bbanggil.admin.mapper.AdminMapper">
+	
+	<resultMap id="adminMap" type="kr.kro.bbanggil.admin.dto.response.AdminResponseDto">
+		<result property="userNo" column="USER_NO"></result>
+		<result property="userName" column="USER_NAME"></result>
+		<result property="userId" column="USER_Id"></result>
+		<result property="userPhoneNum" column="USER_PHONENUM"></result>
+		<result property="userEmail" column="USER_EMAIL"></result>
+		<result property="userBirthdate" column="USER_BIRTHDATE"></result>
+		<result property="userCreatedate" column="CREATED_DATE"></result>
+		<result property="userType" column="USER_TYPE"></result>
+		<result property="userBusinessNo" column="USER_BUSINESSNO"></result>
+		<result property="agreeEmail" column="AGREE_EMAIL"></result>
+		<result property="bakeryName" column="BAKERY_NAME"></result>
+		<result property="bakeryNo" column="BAKERY_NO"></result>
+		<result property="bakeryAddress" column="BAKERY_ADDRESS"></result>
+		<result property="amenity" column="AMENITY"></result>
+		<result property="insideInfo" column="INSIDE_INFO"></result>
+		<result property="outsideInfo" column="OUTSIDE_INFO"></result>
+		<result property="agree" column="AGREE"></result>
+		<result property="submissionDate" column="SUBMISSION_DATE"></result>
+		<result property="acceptDate" column="ACCEPT_DATE"></result>
+		
+		<result property="reportNo" column="report_no"></result>
+		<result property="reviewNo" column="review_no"></result>
+		<result property="reportDetail" column="report_detail"></result>
+		<result property="reportDate" column="report_date"></result>
+		<result property="reportResult" column="report_result"></result>
+		<result property="reportResultDate" column="report_result_date"></result>
+		<result property="reportUnfreeze" column="report_unfreeze"></result>
+		<result property="unfreezeDetail" column="unfreeze_detail"></result>
+		
+		
+		<collection property="bakeryImgPath" resultMap="imgPathMap"></collection>
+	</resultMap>
+	
+	<resultMap id="imgPathMap" type="kr.kro.bbanggil.admin.dto.response.BakeryImgResponseDto">
+		<result property="resourcesPath" column="RESOURCES_PATH"/>
+       	<result property="changeName" column="CHANGE_NAME"/>
+	</resultMap>
+	
+	<resultMap id="MenuListMap" type="kr.kro.bbanggil.admin.dto.response.MenuResponseDto">
+		<result property="menuName" column="MENU_NAME"/>
+		<result property="menuPrice" column="MENU_PRICE"/>
+		<result property="resourcesPath" column="RESOURCES_PATH"/>
+       	<result property="changeName" column="CHANGE_NAME"/>
+       	<result property="category" column="CATEGORY"/>
+	</resultMap>
+	
+	
+	
+	<resultMap id="InqiuryResultMap" type="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
+		<result property="inquiryNo" column="inquiry_no"/>
+		<result property="userNo" column="user_no"/>
+		<result property="userName" column="user_name"/>
+		<result property="inquiryTitle" column="inquiry_title"/>
+		<result property="inquiryContent" column="inquiry_content"/>
+		<result property="isAnswered" column="is_answered"/>
+		<result property="createDate" column="create_date"/>
+		<result property="replyContent" column="reply_content"/>
+		<result property="replyDate" column="reply_date"/>
+	
+	</resultMap>
+	
+	
+	
+
+	<select id="subList" resultMap="adminMap">
+		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
+			   ba.AGREE, bi.BAKERY_NAME, bd.SUBMISSION_DATE, 
+			   ba.ACCEPT_DATE, ui.USER_NO
+		FROM BAKERY_ACCESS ba
+		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
+		ORDER BY bi.BAKERY_NO DESC
+	</select>
+	
+	<select id="bakeryList" resultMap="adminMap">
+		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
+			   bi.BAKERY_NAME, bi.BAKERY_ADDRESS, bi.BAKERY_NO, ui.USER_NO 
+		FROM BAKERY_ACCESS ba
+		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+		WHERE ba.AGREE = '승인' 
+		ORDER BY bi.BAKERY_NO DESC
+	</select>
+	
+	<select id="userList" resultMap="adminMap">
+		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, 
+			   ui.USER_TYPE, a.AGREE_EMAIL
+		FROM USER_INFO ui 
+		JOIN AGREE a ON ui.USER_NO = a.USER_NO
+		ORDER BY ui.USER_NO DESC
+	</select>
+	
+	<select id="acceptList" resultMap="adminMap">
+		SELECT * FROM USER_INFO ui
+		JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
+		JOIN BAKERY_ACCESS ba ON ui.USER_NO = ba.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = bi.BAKERY_NO
+		WHERE ui.USER_NO = #{userNo} AND ba.BAKERY_NO = #{bakeryNo}
+	</select>
+	
+	<select id="bakeryDetailList" resultMap="adminMap">
+		SELECT * FROM USER_INFO ui
+		JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
+		JOIN BAKERY_ACCESS ba ON ui.USER_NO = ba.USER_NO 
+		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
+		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
+		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = bi.BAKERY_NO
+		WHERE ui.USER_NO = #{userNo} AND ba.BAKERY_NO = #{bakeryNo}
+	</select>
+
+	<select id="userDetailList" resultMap="adminMap">
+		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, ui.USER_TYPE, 
+			   a.AGREE_EMAIL, ui.CREATED_DATE, ui.USER_NAME, ui.USER_BIRTHDATE, b.USER_BUSINESSNO 
+		FROM USER_INFO ui 
+		JOIN AGREE a ON ui.USER_NO = a.USER_NO
+		LEFT OUTER JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
+		WHERE ui.USER_NO = #{userNo}
+	</select>
+
+	<select id="menuList" resultMap="MenuListMap">
+		SELECT m.MENU_NAME, m.MENU_PRICE, mi.CHANGE_NAME, mi.RESOURCES_PATH FROM MENU_IMEGE mi 
+		JOIN MENU m ON mi.MENU_NO = m.MENU_NO
+		WHERE m.BAKERY_NO = #{bakeryNo}
+	</select>
+	
+	<update id="update">
+		UPDATE BAKERY_ACCESS SET AGREE = #{action}, REJECT = #{rejectReason}, ACCEPT_DATE = SYSDATE 
+		WHERE BAKERY_NO = #{bakeryNo}
+	</update>
+	
+	<select id="categoryList" resultMap="MenuListMap">
+		SELECT CATEGORY FROM MENU_CATEGORY
+		ORDER BY CATEGORY_NO DESC
+	</select>
+	
+	<insert id="addCategory">
+		INSERT INTO  MENU_CATEGORY VALUES(CATEGORY_SEQ.NEXTVAL, #{newCategory})	
+	</insert>
+	
+	<delete id="deleteCategory">
+		DELETE FROM MENU_CATEGORY WHERE CATEGORY = #{category}
+	</delete>
+	
+<!-- .................................................................................................. -->
+  	
+	<select id="getUserType" resultType="String" parameterType="java.lang.Integer">
+		SELECT
+	USER_TYPE
+FROM
+	USER_INFO
+WHERE
+	USER_NO = #{userNo,jdbcType=INTEGER}
+	
+	</select>
+	
+	<insert id="insertInquiry" parameterType="kr.kro.bbanggil.admin.dto.request.InquiryRequestDto">
+	  INSERT INTO INQUIRY (
+        INQUIRY_NO,
+        USER_NO,
+        INQUIRY_TITLE,
+        INQUIRY_CONTENT,
+        CREATE_DATE,
+        IS_ANSWERED,
+        EMAIL
+    ) VALUES (
+        INQUIRY_SEQ.NEXTVAL,
+        #{userNo,jdbcType=INTEGER},
+        #{inquiryTitle},
+        #{inquiryContent},
+        SYSDATE,
+        'N',
+        #{email}
+    )
+	</insert>
+	
+	<select id="selectInquiryList" resultMap="InqiuryResultMap">
+	
+SELECT
+    i.INQUIRY_NO,
+    i.INQUIRY_TITLE,
+    i.INQUIRY_CONTENT,
+    i.IS_ANSWERED,
+    i.CREATE_DATE,
+    ui.USER_NAME,
+    ui.USER_NO,
+    ir.REPLY_CONTENT,
+    ir.REPLY_DATE
+FROM INQUIRY i
+LEFT JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
+LEFT JOIN INQUIRY_REPLY ir ON i.INQUIRY_NO = ir.INQUIRY_NO
+ORDER BY i.CREATE_DATE DESC
+	</select>
+	
+	
+	
+	<insert id="insertInquiryReply">
+INSERT
+	INTO
+	INQUIRY_REPLY (
+      REPLY_NO,
+	INQUIRY_NO,
+	ADMIN_NO,
+	REPLY_CONTENT,
+	REPLY_DATE)
+VALUES(inquiry_reply_seq.nextval,
+#{inquiryNo},
+#{adminNo},
+#{replyContent},
+sysdate)
+	</insert>
+	
+	<update id="updateInquiryStatusToAnswered">
+	
+	UPDATE INQUIRY
+	SET IS_ANSWERED = 'Y'
+	where inquiry_no = #{inquiryNo}
+	
+	</update>
+
+	<select id="getNewlyOrder">
+		WITH LatestOrders AS (
+		    SELECT recipients_name, 
+		           pickup_status,
+		           menu_name,
+		           pay_request_date,
+		           ROW_NUMBER() OVER (ORDER BY pay_request_date DESC) AS row_num
+		    FROM PAYMENT p 
+		    JOIN PICKUP_STATUS ps ON p.PAY_NO = ps.PAY_NO 
+		    JOIN ORDER_INFO oi  ON oi.PAY_NO = p.PAY_NO
+		    JOIN CART c ON c.CART_NO = oi.CART_NO 
+		    JOIN CART_INFO ci ON c.CART_NO = ci.CART_NO 
+		    JOIN menu m ON ci.MENU_NO = m.MENU_NO
+		)
+		SELECT recipients_name AS recipientsName,
+		       pickup_status AS pickupStatus,
+		       LISTAGG(menu_name, ', ') WITHIN GROUP (ORDER BY menu_name DESC) AS menuList
+		FROM LatestOrders
+		WHERE row_num &lt;= 3
+		GROUP BY recipients_name, pickup_status
+	</select>
+	
+	<select id="getMonthlyOrderCount">
+		SELECT TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM') AS orderMonth, 
+           	   COUNT(*) AS orderCount
+	    FROM PAYMENT p 
+	    GROUP BY TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM')
+	    ORDER BY orderMonth
+	</select>
+	
+	<select id="getInquiries">
+		SELECT USER_NAME AS userName,
+			   INQUIRY_TITLE AS inquiryTitle,
+			   IS_ANSWERED AS isAnswered
+		FROM INQUIRY i 
+		JOIN USER_INFO ui ON ui.USER_NO = i.USER_NO
+		ORDER BY INQUIRY_NO desc
+		FETCH FIRST 3 ROWS ONLY
+	</select>
+	
+	<select id="reportList">
+		SELECT rrui.USER_id AS reporter,
+			   rr.REPORT_DETAIL AS reportDetail,
+			   rui.USER_id  AS  reportedUser,
+			   r.REVIEW_DETAIL AS reviewDetail,
+			   rr.REPORT_DATE AS reportDate,
+			   rr.REPORT_NO AS reportNo
+		FROM REVIEW_REPORT rr
+		JOIN REVIEW r ON rr.REVIEW_NO = r.REVIEW_NO
+		LEFT JOIN USER_INFO rui ON rui.USER_NO = r.USER_NO 
+		LEFT JOIN USER_INFO rrui ON rrui.USER_NO = rr.USER_NO
+	</select>
+	<insert id="insertReport">
+		INSERT INTO REVIEW_REPORT_RESULT rrr values(#{reportDTO.reportNo},
+													#{reportDTO.reportResult},
+													sysdate,
+													NULL,
+													#{reportDTO.unfreezeDetail},
+													#{userId})
+	</insert>
+	<select id="reportDetail">
+		SELECT rrui.USER_id AS reporter,
+			   rr.REPORT_DETAIL AS reportDetail,
+			   rui.USER_id  AS  reportedUser,
+			   r.REVIEW_DETAIL AS reviewDetail
+		FROM REVIEW_REPORT rr 
+		JOIN REVIEW r ON rr.REVIEW_NO = r.REVIEW_NO
+		LEFT JOIN USER_INFO rui ON rui.USER_NO = r.USER_NO 
+		LEFT JOIN USER_INFO rrui ON rrui.USER_NO = rr.USER_NO
+		WHERE report_no = #{reportNo}
+	</select>
+	<select id="getReportReplyCount">
+		SELECT count(*) FROM REVIEW_REPORT_RESULT rrr 
+		WHERE REPORT_NO = #{reportNo}
+	</select>
+	
+	<select id="getInquiryEmailInfo" resultType="kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto">
+
+SELECT
+	i.INQUIRY_TITLE AS title,
+	i.INQUIRY_CONTENT AS content,
+	ir.REPLY_CONTENT AS reply,
+	COALESCE(UI.USER_EMAIL, i.EMAIL) AS email
+FROM
+	INQUIRY i
+LEFT JOIN USER_INFO ui ON
+	i.USER_NO = ui.USER_NO
+LEFT JOIN INQUIRY_REPLY ir ON
+	i.INQUIRY_NO = ir.INQUIRY_NO
+WHERE
+	i.INQUIRY_NO = #{inquiryNo}
+	
+	
+	</select>
+	
+	
+	<select id="selectInquiryByNo" resultType="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
+    SELECT
+        i.INQUIRY_NO,
+        i.USER_NO,
+        NVL(ui.USER_NAME, '비회원') AS userName,
+        i.INQUIRY_TITLE,
+        i.INQUIRY_CONTENT,
+        i.IS_ANSWERED,
+        TO_CHAR(i.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS createDate,
+        ir.REPLY_CONTENT,
+        TO_CHAR(ir.REPLY_DATE, 'YYYY-MM-DD HH24:MI:SS') AS replyDate
+    FROM INQUIRY i
+    LEFT JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
+    LEFT JOIN INQUIRY_REPLY ir ON i.INQUIRY_NO = ir.INQUIRY_NO
+    WHERE i.INQUIRY_NO = #{inquiryNo}
+</select>
+	
+	
+	
+	
+</mapper>

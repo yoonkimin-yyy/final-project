@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
-<mapper namespace="kr.kro.bbanggil.member.mapper.MypageMapper">
+<mapper namespace="kr.kro.bbanggil.user.member.mapper.MypageMapper">
 
-	<resultMap id="myPageDto" type="kr.kro.bbanggil.mypage.model.dto.response.MypageListResponseDto">
-		<association property="bakeryInfoDto" javaType="kr.kro.bbanggil.mypage.model.dto.response.MypageBakeryInfoResponseDto">
+	<resultMap id="myPageDto" type="kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto">
+		<association property="bakeryInfoDto" javaType="kr.kro.bbanggil.user.member.dto.response.MypageBakeryInfoResponseDto">
 			<result property = "bakeryName" column="bakery_name"></result>
 			<result property = "bakeryList" column = "menu_list"></result>
 		</association>
-		<association property="paymentDto" javaType="kr.kro.bbanggil.mypage.model.dto.response.MypagePaymentResponseDto">
+		<association property="paymentDto" javaType="kr.kro.bbanggil.user.member.dto.response.MypagePaymentResponseDto">
 			<result property = "amount" column="amount"></result>
 		</association>
-		<association property="pickupDto" javaType="kr.kro.bbanggil.mypage.model.dto.response.MypagePickupResponseDto">
+		<association property="pickupDto" javaType="kr.kro.bbanggil.user.member.dto.response.MypagePickupResponseDto">
 			<result property = "pickupStatus" column="pickup_status"></result>
 		</association>
-		<association property="reviewDto" javaType="kr.kro.bbanggil.mypage.model.dto.response.MypageReviewResponseDto">
+		<association property="reviewDto" javaType="kr.kro.bbanggil.user.member.dto.response.MypageReviewResponseDto">
 			<result property = "reviewNo" column="review_no"></result>
 			<result property = "orderNo" column="order_no"></result>
 			<result property = "userNo" column="user_no"></result>
@@ -24,7 +24,7 @@
 			<result property = "reviewDate" column="review_date"></result>
 			<result property = "bakeryNo" column="bakery_no"></result>
 		</association>
-		<association property="reviewTagDto" javaType="kr.kro.bbanggil.mypage.model.dto.response.MypageReviewTagResponseDto">
+		<association property="reviewTagDto" javaType="kr.kro.bbanggil.user.member.dto.response.MypageReviewTagResponseDto">
 			<result property = "tagNo" column="tag_no"></result>
 			<result property = "reviewNo" column="review_no"></result>
 			<result property = "tagFirst" column="tag_first"></result>
@@ -33,7 +33,7 @@
 			<result property = "tagForth" column="tag_forth"></result>
 			<result property = "tagFive" column="tag_five"></result>
 		</association>
-		<association property="userDto" javaType="kr.kro.bbanggil.mypage.model.dto.response.MypageUserResponseDto">
+		<association property="userDto" javaType="kr.kro.bbanggil.user.member.dto.response.MypageUserResponseDto">
 			<result property = "userNo" column="user_no"></result>
 			<result property = "userName" column="user_name"></result>
 			<result property = "userId" column="user_id"></result>
@@ -47,7 +47,7 @@
 		</association>
 	</resultMap>
 	
-	<resultMap id="ownerResultMap" type="kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO">
+	<resultMap id="ownerResultMap" type="kr.kro.bbanggil.user.member.dto.response.OwnerMypageResponseDTO">
 		<result property="bakeryNo" column="bakery_no"></result>
 		<result property="bakeryName" column="bakery_name"></result>
 		<result property="createdDate" column="submission_date"></result>

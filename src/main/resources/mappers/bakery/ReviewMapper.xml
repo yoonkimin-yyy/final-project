@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="kr.kro.bbanggil.bakery.mapper.ReviewMapper">
+<mapper namespace="kr.kro.bbanggil.user.bakery.mapper.ReviewMapper">
 
 
 <resultMap id="ReviewResultMap"
-	type="kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto">
+	type="kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto">
 	<result property="reviewNo" column="review_no"></result>
 	<result property="userNo" column="user_no"></result>
 	<result property="userId" column="user_id"></result>
@@ -43,7 +43,7 @@
 
 
 
-<insert id="insertReview" parameterType="kr.kro.bbanggil.bakery.dto.request.ReviewRequestDto" useGeneratedKeys="true" keyProperty="reviewNo">
+<insert id="insertReview" parameterType="kr.kro.bbanggil.user.bakery.dto.request.ReviewRequestDto" useGeneratedKeys="true" keyProperty="reviewNo">
     <selectKey keyProperty="reviewNo" resultType="int" order="BEFORE">
         SELECT review_seq.nextval FROM DUAL
     </selectKey>
@@ -203,7 +203,7 @@ WHERE
 
 </select>
 
-<select id="getReviewById" resultType="kr.kro.bbanggil.bakery.dto.response.ReviewResponseDto">
+<select id="getReviewById" resultType="kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto">
 
  SELECT
         r.REVIEW_NO,
