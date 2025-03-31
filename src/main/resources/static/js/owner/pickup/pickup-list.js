@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function approveOrder(orderNo) {
 		const popup = document.getElementById("popup-" + orderNo);
+		console.log(orderNo);
 		
 		if (popup) {
 		    popup.style.display = "none";  // 팝업 숨기기
@@ -63,8 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (row) {
 			        const orderNo = row.querySelector("td:first-child").textContent.trim();  // 주문 번호 추출
 			        showOrderPopup(orderNo);  // 주문 번호를 전달하여 팝업을 열기
-			    }
-	    });
+			}
+	});
 
     function rejectOrder(orderNo) {
 		const popup = document.getElementById("popup-" + orderNo);
@@ -154,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	        // 주문 날짜가 유효하고, 선택된 날짜와 비교
 			row.style.display = (orderDateObj.getMonth() === selectedDateObj.getMonth() && orderDateObj.getDate() === selectedDateObj.getDate()) &&
-			                    (status === "전체" || orderStatus === status) ? "teble-row" : "none";
+			                    (status === "전체" || orderStatus === status) ? "table-row" : "none";
 	    });
 
 	    updateOrderCounts();
@@ -180,12 +181,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	            // 필터링을 새로 적용하도록
 	            const activeStatus = document.querySelector(".filter-btn.active")?.getAttribute("data-filter") || "전체";
 	            filterOrders(activeStatus);  // 필터링을 다시 실행
-	            
+				applyRowColors();  // 색상도 다시 적용
 				
-				const 
-				if(){
-					
-				}				
+								
 				
 	        }
 	    });
@@ -232,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const completeBtn = document.getElementById("complete-btn");
 
 	    // 이벤트 리스너 추가하기 전에 버튼이 존재하는지 확인
-	    if (approveBtn && rejectBtn && completeBtn) {
+	    if (approveBtn && rejectBtn) {
 	        approveBtn.addEventListener("click", () => {
 	            approveOrder(orderNo); // 승인 처리
 				

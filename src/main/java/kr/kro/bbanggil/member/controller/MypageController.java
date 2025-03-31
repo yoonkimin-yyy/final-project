@@ -108,7 +108,7 @@ public class MypageController {
 		return "redirect:/register/mypage";
 	}
 	
-	@GetMapping("owner/mypage")
+	@GetMapping("/owner/mypagee")
 	public String ownerMypage(@SessionAttribute("userNum") int userNum,
 							  Model model) {
 		List<OwnerMypageResponseDTO> result = mypageService.ownerMypage(userNum);
