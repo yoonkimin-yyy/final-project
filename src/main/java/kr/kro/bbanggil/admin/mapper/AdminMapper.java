@@ -56,7 +56,7 @@ public interface AdminMapper {
 	@Select("SELECT count(*) FROM order_info")
 	int getTotalOrder();
 
-	@Select("SELECT COUNT(*) FROM user_info WHERE created_date >= SYSDATE - INTERVAL '1' MONTH")
+	@Select("SELECT COUNT(*) FROM user_info WHERE created_date >= ADD_MONTHS(SYSDATE,-1)")
 	int getNewUser();
 
 	List<NewlyResponseDTO> getNewlyOrder();
