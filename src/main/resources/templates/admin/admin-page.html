@@ -13,7 +13,7 @@
 	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 	<div class="dashboard wrapper">
 		<div class="tabs">
-			<button class="tab active" onclick="showTab('traffic')">트래픽
+			<button class="tab" onclick="showTab('traffic')">트래픽
 				모니터링</button>
 			<button class="tab" onclick="showTab('bakery')">베이커리 관리</button>
 			<button class="tab" onclick="showTab('user')">사용자 관리</button>
@@ -23,7 +23,7 @@
 				<a href="/admin/inquiry/list">문의 리스트</a>
 				<button class="tab">
 					<a href="/admin/order/list">주문 리스트</a>
-					<button class="tab" href="#" onclick="showTab('report')">신고관리</button>
+					<button class="tab" onclick="showTab('report')">신고관리</button>
 		</div>
 
 		<div id="traffic" class="tab-content bg-brown active-content">
