@@ -56,19 +56,23 @@
       <div class="newsletter-preview">
         <h2>최근 발송된 뉴스레터</h2>
         <div class="preview-content">
-          <img src="https://api.a0.dev/assets/image?text=cozy%20bakery%20fresh%20bread%20display" alt="최근 빵집">
+           <img th:src="@{${newsletter.resourcesPath + newsletter.changeName}}" alt="최근 빵집" />
           <div class="preview-details">
-            <h3>서천 파티세리 수</h3>
-            <p>🕒 영업시간: 09:00 ~ 20:00</p>
-            <p>📍 위치: 서울시 서초구</p>
+            <h3 th:text="${newsletter.bakeryName}">서천 파티세리 수</h3>
+            <p>🕒 영업시간: 
+             <span th:if="${newsletter.openTime != null}" 
+                th:text="${newsletter.openTime + ' ~ ' + newsletter.closeTime}">09:00 ~ 20:00</span>
+          <span th:unless="${newsletter.openTime != null}">정보 없음</span>
+            </p>
+            <p>📍 위치: <span th:text="${newsletter.location}">서울시 서초구</span></p>
             <div class="stats">
               <div>
                 <span class="material-icons">mail</span>
-                2,458명 발송
+                <span th:text="${subscribers.size()} + '명 발송'">2,458명 발송</span>
               </div>
               <div>
                 <span class="material-icons">schedule</span>
-                03/25 발송
+                <span th:text="${#temporals.format(newsletter.sendDate, 'MM/dd')} + ' 발송'">03/25 발송</span>
               </div>
             </div>
           </div>

@@ -8,21 +8,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	
     // ===== 탭 전환 기능 =====
-    const tabButtons = document.querySelectorAll('.tab-button');
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            const tab = button.dataset.tab;
-            const allTabs = ['menu', 'reviews', 'interior', 'exterior', 'parking'];
-            allTabs.forEach(tabId => {
-                const tabElement = document.getElementById(tabId);
-                if (tabElement) {
-                    tabElement.style.display = tab === tabId ? 'block' : 'none';
-                }
-            });
-        });
-    });
+	const tabButtons = document.querySelectorAll('.tab-button');
+	tabButtons.forEach(button => {
+	    button.addEventListener('click', () => {
+	        // 탭 버튼 클래스 토글
+	        tabButtons.forEach(btn => btn.classList.remove('active'));
+	        button.classList.add('active');
+
+	        const tab = button.dataset.tab;
+	        const allTabs = ['menu', 'reviews', 'interior', 'exterior', 'parking'];
+
+	        allTabs.forEach(tabId => {
+	            const tabElement = document.getElementById(tabId);
+	            if (tabElement) {
+	                tabElement.style.display = (tab === tabId) ? 'block' : 'none';
+	            }
+	        });
+
+	        // ✅ Swiper 슬라이드 초기화 (탭 ID에 따라 실행)
+	        if (tab === 'interior') {
+	            initInteriorSlider();
+	        } else if (tab === 'exterior') {
+	            initExteriorSlider();
+	        } else if (tab === 'parking') {
+	            initParkingSlider();
+	        }
+	    });
+	});
     
    
       // ===== 리뷰 별점 기능 =====
@@ -91,6 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+	
+	
+	
+	
 
 // 모달 제어 함수
 function openReviewModal() {
@@ -903,14 +919,52 @@ window.addEventListener('DOMContentLoaded', () => {
             targetButton.click();
         }
 
-        // ✅ 플래그 삭제 (한 번만 실행되도록)
+        //  플래그 삭제 (한 번만 실행되도록)
         sessionStorage.removeItem("goToReviewTab");
     }
 });
 
 
+let interiorSwiper, exteriorSwiper, parkingSwiper;
 
+function initInteriorSlider() {
+  if (!interiorSwiper) {
+    interiorSwiper = new Swiper('.mySwiper', {
+      loop: true,
+      pagination: {
+        el: '.interior-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.interior-next',
+        prevEl: '.interior-prev'
+      },
+      spaceBetween: 20
+    });
+  }
+}
 
+function initExteriorSlider() {
+  if (!exteriorSwiper) {
+    exteriorSwiper = new Swiper('.exteriorSwiper', {
+      loop: true,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      spaceBetween: 20,
+    });
+  }
+}
+
+function initParkingSlider() {
+  if (!parkingSwiper) {
+    parkingSwiper = new Swiper('.parkingSwiper', {
+      loop: true,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      spaceBetween: 20,
+    });
+  }
+}
 
 
 

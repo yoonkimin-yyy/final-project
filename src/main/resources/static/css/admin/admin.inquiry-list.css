@@ -1,6 +1,5 @@
  body {
       background-color: #FFF8E7;
-      padding: 40px;
       font-family: 'Arial', sans-serif;
     }
 
@@ -126,3 +125,20 @@
     .admin-inquiry-answer-box button:hover {
       background-color: #C28B55;
     }
+    
+    .admin-inquiry-item-content {
+   
+  margin-top: 12px;
+  padding: 14px 16px;
+  background-color: #fffaf3; /* 아이보리 느낌 */
+  border: 1px dashed #f4cfa4; /* 연한 주황색 점선 테두리 */
+  border-radius: 10px;
+  font-size: 15px;
+  color: #4a4a4a;
+  line-height: 1.6;
+  white-space: pre-line; /* 줄바꿈 유지 */
+  margin-bottom : 20px;
+}
+    
+    
+ 

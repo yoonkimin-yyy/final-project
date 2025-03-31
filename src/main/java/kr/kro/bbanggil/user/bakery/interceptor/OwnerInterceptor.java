@@ -19,8 +19,9 @@ public class OwnerInterceptor implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		Object userRole = session.getAttribute("role");
 		if(userRole==null || !userRole.equals("owner")) {
-			response.sendRedirect("/");
-			return false;  
+			response.setContentType("text/html;charset=UTF-8");
+	        response.getWriter().write("<html><head><script>alert('사장이 아닙니다.'); window.location.href = '/';</script></head><body></body></html>");
+	        return false; 
 		}
 		return true;
 	}

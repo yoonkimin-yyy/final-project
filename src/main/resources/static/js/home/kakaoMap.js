@@ -10,6 +10,7 @@ function fetchBakeriesByRegion() {
         data: { region: region },
         dataType: "json",
         success: function (data) {
+			console.log("✅ AJAX 응답 data:", data);
             updateMap(region, data);  // 지도 업데이트
             updateRegionButton(region, data.length, "개"); // 버튼 개수 업데이트
         },
