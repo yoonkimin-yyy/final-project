@@ -178,3 +178,91 @@ document.getElementById('submitBtn').addEventListener('click', function(event) {
         alert('실패!');
     });
 });
+
+let isAllSelected = false;  // 전체 선택 여부를 추적하는 변수
+
+// 전체선택/전체해제 기능
+function toggleSelectAll() {
+    const checkboxes = document.querySelectorAll('input[name="check2"]');
+    isAllSelected = !isAllSelected;  // 전체 선택 상태를 반전
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = isAllSelected;
+    });
+}
+
+// 체크박스 클릭 시 호출되는 함수
+function handleCheckboxClick(event, checkbox) {
+    event.stopPropagation();  // 클릭 이벤트의 전파를 방지
+	
+}
+
+// 추가 버튼 클릭 시 입력창을 보여주는 함수
+function openAddCategoryModal() {
+    document.getElementById('addCategoryModal').style.display = 'block';
+}
+
+// 추가된 카테고리를 리스트에 추가하는 함수
+function addCategory() {
+    const newCategory = document.getElementById('newCategory').value.trim();
+    if (newCategory) {
+        // 새로운 카테고리를 테이블에 추가하는 로직 (여기서는 예시로 콘솔 출력)
+		$.ajax({
+		        type: 'POST',
+		        url: '/api/admin/addCategory',
+		        data: { category: newCategory }
+		    }).then(function (res) {
+		        if (res) {
+		            alert('추가완료!');
+					location.reload();
+		        }
+		    }).catch(function (err) {
+		        alert('실패!');
+		    });
+        document.querySelector('tbody').appendChild(newRow);
+        closeAddCategoryModal();
+    } else {
+        alert('카테고리를 입력하세요.');
+    }
+}
+
+// 모달을 닫는 함수
+function closeAddCategoryModal() {
+    document.getElementById('addCategoryModal').style.display = 'none';
+    document.getElementById('newCategory').value = '';  // 입력창 초기화
+}
+
+// 선택된 항목 삭제 함수
+function deleteSelectedCategories() {
+	const checkboxes = document.querySelectorAll('input[name="check2"]:checked');
+    // 체크된 항목이 없을 경우 경고
+    if (checkboxes.length === 0) {
+        alert('선택된 카테고리가 없습니다.');
+        return;  // 체크된 항목이 없으면 함수 종료
+    }
+    // 삭제 확인 경고창
+    let confirmation = confirm("이 항목을 정말로 삭제하시겠습니까?");
+    
+    if (confirmation) {
+        // 체크된 항목들이 있을 경우 삭제 요청
+		
+		const selectedCategories = Array.from(checkboxes).map(checkbox => checkbox.dataset.category);
+		
+		console.log(selectedCategories);
+		
+        $.ajax({
+            type: 'POST',
+            url: '/api/admin/deleteCategory',
+			contentType: 'application/json',  // 서버에 JSON 형식으로 데이터 전송
+            data: JSON.stringify({ selectedCategories: selectedCategories }),  // selectedCategories 키로 카테고리 배열을 보내기
+        }).then(function (res) {
+            if (res) {
+                alert('삭제완료!');
+                location.reload();  // 삭제 후 페이지 새로고침
+            }
+        }).catch(function (err) {
+            alert('삭제 실패!');
+        });
+    }
+}
+
+

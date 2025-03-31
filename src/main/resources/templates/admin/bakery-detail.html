@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head th:replace="~{fragments/head :: HeadFragment}"></head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" th:href="@{/css/admin/bakery-detail.css}">
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" th:href="@{/css/admin/bakery-detail.css}">
 </head>
 <header th:replace="~{fragments/header :: HeaderFragment}"></header>
 <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 <body>
-    <div class="containers">
-        <h2>빵집 상세 정보</h2>
-        <!-- <div class="detail">
+	<div class="containers">
+		<h2>빵집 상세 정보</h2>
+		<!-- <div class="detail">
             <div class="box">
                 <h1>주문량</h1>
                 <div class="text-size">345</div>
@@ -21,48 +21,50 @@
                 <div class="text-size">3</div>
             </div>
         </div> -->
-        <table>
-            <tr>
-                <th>유저 ID</th>
-                <td th:text="${result.userId}"></td>
-            </tr>
-            <tr>
-                <th>이름</th>
-                <td th:text="${result.userName}"></td>
-            </tr>
-            <tr>
-                <th>연락처</th>
-                <td th:text="${result.userPhoneNum}"></td>
-            </tr>
-            <tr>
-                <th>사업자번호</th>
-                <td th:text="${result.userBusinessNo}"></td>
-            </tr>
-            <tr>
-                <th>가게명</th>
-                <td th:text="${result.bakeryName}"></td>
-            </tr>
-            <tr>
-                <th>가게주소</th>
-                <td th:text="${result.bakeryAddress}"></td>
-            </tr>
-            <tr>
-					<th>실내정보</th>
-					<td th:text="${result.insideInfo}"></td>
-				</tr>
-				<tr>
-					<th>실외정보</th>
-					<td th:text="${result.outsideInfo}"></td>
-				</tr>
-				<tr>
-					<th>주차장</th>
-					<td th:text="${result.amenity}"></td>
-				</tr>
-        </table>
-
-    </div>
-    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
-    <!--
+		<table>
+			<tr>
+				<th>유저 ID</th>
+				<td th:text="${result.userId}"></td>
+			</tr>
+			<tr>
+				<th>이름</th>
+				<td th:text="${result.userName}"></td>
+			</tr>
+			<tr>
+				<th>연락처</th>
+				<td th:text="${result.userPhoneNum}"></td>
+			</tr>
+			<tr>
+				<th>사업자번호</th>
+				<td th:text="${result.userBusinessNo}"></td>
+			</tr>
+			<tr>
+				<th>가게명</th>
+				<td th:text="${result.bakeryName}"></td>
+			</tr>
+			<tr>
+				<th>가게주소</th>
+				<td th:text="${result.bakeryAddress}"></td>
+			</tr>
+			<tr>
+				<th>실내정보</th>
+				<td th:text="${result.insideInfo}"></td>
+			</tr>
+			<tr>
+				<th>실외정보</th>
+				<td th:text="${result.outsideInfo}"></td>
+			</tr>
+			<tr>
+				<th>주차장</th>
+				<td th:text="${result.amenity}"></td>
+			</tr>
+		</table>
+		<div class="btn-container">
+			<button class="btn back-btn" onclick="window.history.back();">뒤로가기</button>
+		</div>
+	</div>
+	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+	<!--
 
 <script>
     // 주문량 & 매출 순위 데이터

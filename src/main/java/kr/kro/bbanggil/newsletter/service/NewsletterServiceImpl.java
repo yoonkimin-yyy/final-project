@@ -3,8 +3,10 @@ package kr.kro.bbanggil.newsletter.service;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.admin.dto.response.NewsletterResponseDto;
-import kr.kro.bbanggil.email.mapper.NewsletterMapper;
+import kr.kro.bbanggil.common.mapper.NewsletterMapper;
 import lombok.RequiredArgsConstructor;
+
+
 
 @Service
 @RequiredArgsConstructor

@@ -9,12 +9,13 @@ import org.apache.ibatis.annotations.Select;
 
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
+import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
-import kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto;
+import kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto;
 
 @Mapper
 public interface AdminMapper {
@@ -55,7 +56,7 @@ public interface AdminMapper {
 	@Select("SELECT count(*) FROM order_info")
 	int getTotalOrder();
 
-	@Select("SELECT COUNT(*) FROM user_info WHERE created_date >= SYSDATE - INTERVAL '1' MONTH")
+	@Select("SELECT COUNT(*) FROM user_info WHERE created_date >= ADD_MONTHS(SYSDATE,-1)")
 	int getNewUser();
 
 	List<NewlyResponseDTO> getNewlyOrder();
@@ -64,8 +65,23 @@ public interface AdminMapper {
 
 	List<InquiryResponseDto> getInquiries();
 
+	List<MenuResponseDto> categoryList();
+
+	void addCategory(@Param("newCategory") String newCategory);
+
+	void deleteCategory(@Param("category") String category);
+
 	InquiryEmailInfoDto getInquiryEmailInfo(@Param("inquiryNo")int inquiryNo);
 
 	InquiryResponseDto selectInquiryByNo(@Param("inquiryNo")int inquiryNo);
+
+	List<AdminResponseDto> reportList();
+
+	int getReportReplyCount(int reportNo);
+
+	void insertReport(@Param("reportDTO")ReportRequestDTO reportDTO, 
+					  @Param("userId")String userId);
+
+	AdminResponseDto reportDetail(int reportNo);
 	
 }

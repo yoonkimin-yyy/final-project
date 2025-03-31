@@ -1,8 +1,10 @@
 package kr.kro.bbanggil.admin.dto.response;
 
 import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -32,14 +34,23 @@ public class AdminResponseDto {
 	
 	// 신고 답변 DTO
 	// 신고 당한 유저
-	private int reportNo;
+	
 	private int reviewNo;
+	private int reportNo;
 	private String reportDetail;
 	private String reportDate;
 	private String reportResult;
 	private String reportResultDate;
 	private String reportUnfreeze;
 	private String unfreezeDetail;
+	private String reviewDetail;
+	private String reporter;
+	private String reportedUser;
 	
+	@Setter
+	private String answer;
+	
+	@Setter
+	private String adminId;
 
 }
