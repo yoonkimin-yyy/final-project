@@ -46,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function approveOrder(orderNo) {
 		const popup = document.getElementById("popup-" + orderNo);
-		console.log(orderNo);
 		
 		if (popup) {
 		    popup.style.display = "none";  // 팝업 숨기기
@@ -70,16 +69,18 @@ document.addEventListener("DOMContentLoaded", () => {
     function rejectOrder(orderNo) {
 		const popup = document.getElementById("popup-" + orderNo);
 				
+        const reasonInput = document.getElementById("rejection-reason-"+orderNo);
+        const reason = reasonInput ? reasonInput.value.trim() : "";
+		
+		if(!reason || reason.trim() === ""){
+			alert("거절 사유를 입력해주세요.");
+			return;
+		}
+		
 		if (popup) {
 			popup.style.display = "none";  // 팝업 숨기기
 		}
-        const reasonInput = document.getElementById("rejection-reason");
-        const reason = reasonInput ? reasonInput.value.trim() : "";
-        if (!reason) {
-            alert("거절 사유를 입력하세요.");
-            return;
-        }
-
+        
         updateOrderCounts();
         applyRowColors();
 		updateOrderStatus(orderNo, "거절", reason);
@@ -183,11 +184,49 @@ document.addEventListener("DOMContentLoaded", () => {
 	            filterOrders(activeStatus);  // 필터링을 다시 실행
 				applyRowColors();  // 색상도 다시 적용
 				
-								
+				
+				// 밑에 완료 버튼 없애는 로직 추가
+				document.querySelectorAll("tr[data-order-no]").forEach(row => {
+				        const orderNo = row.getAttribute("data-order-no");  // 주문 번호
+				        const status = row.getAttribute("data-status");  // 상태 값 가져오기
+
+
+				        // 주문 번호를 기반으로 팝업을 찾음
+				        const popup = document.querySelector(`#popup-${orderNo}`);
+				        
+				        // 팝업이 있으면 그 안에서 버튼을 찾음
+				        if (popup) {
+				            const approveBtn = popup.querySelector(`#approve-btn-${orderNo}`);
+				            const rejectBtn = popup.querySelector(`#reject-btn-${orderNo}`);
+				            const completeBtn = popup.querySelector(`#complete-btn-${orderNo}`);
+							const rejectDetail = popup.querySelector(`#rejection-reason-${orderNo}`);
+
+
+				            // 상태에 따라 버튼 보이기/숨기기
+				            if (approveBtn && rejectBtn && completeBtn) {
+				                if (status === "대기") {
+				                    approveBtn.style.display = "inline-block";
+				                    rejectBtn.style.display = "inline-block";
+				                    completeBtn.style.display = "none";
+									rejectDetail.style.display = "inline-block";
+				                } else if (status === "승인") {
+				                    approveBtn.style.display = "none";
+				                    rejectBtn.style.display = "none";
+				                    completeBtn.style.display = "inline-block";
+									rejectDetail.style.display = "none";
+				                } else if (status === "거절" || status === "완료") {
+				                    approveBtn.style.display = "none";
+				                    rejectBtn.style.display = "none";
+				                    completeBtn.style.display = "none";
+									rejectDetail.style.display = "none";
+				                }
+				            }
+				        }
+				    });			
 				
 	        }
 	    });
-	}, 5000);
+	}, 2000);
 	
 	
 	
@@ -225,27 +264,27 @@ document.addEventListener("DOMContentLoaded", () => {
 		
 		
 
-	    const approveBtn = document.getElementById("approve-btn");
-	    const rejectBtn = document.getElementById("reject-btn");
-		const completeBtn = document.getElementById("complete-btn");
+	    const approveBtn = document.getElementById("approve-btn-"+orderNo);
+	    const rejectBtn = document.getElementById("reject-btn-"+orderNo);
+		const completeBtn = document.getElementById("complete-btn-"+orderNo);
 
 	    // 이벤트 리스너 추가하기 전에 버튼이 존재하는지 확인
-	    if (approveBtn && rejectBtn) {
+	    if (approveBtn) {
 	        approveBtn.addEventListener("click", () => {
 	            approveOrder(orderNo); // 승인 처리
 				
 	        });
-
+		}
+		if(rejectBtn){
+			
 	        rejectBtn.addEventListener("click", () => {
-	            const reason = document.getElementById("rejection-reason").value.trim();
-	            if (!reason) {
-	                alert("거절 사유를 입력하세요.");
-	            } else {
-	                rejectOrder(orderNo); // 거절 처리
-	            }
+	            
+	            rejectOrder(orderNo); // 거절 처리
+	            
 	        });
+		}
 			
-			
+		if(completeBtn){	
 			completeBtn.addEventListener("click", () => {
 				    completeOrder(orderNo);
 			
@@ -311,14 +350,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	    })
 	    .then(response => response.json())
 	    .then(data => {
-	        if (data.success) {
-	            // UI 업데이트 추가
-	        } else {
-	        }
-	    })
-	    .catch(error => {
 			
-	    });
+		})
+		.catch(error => {
+			   // 에러 처리
+		});
 		
 	}
 
@@ -339,7 +375,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	    // 승인 버튼 클릭 시
 	    if (target.classList.contains("approve-btn")) {
 	        updateOrderStatus(orderNumber, "승인", "");
-			console.log(orderNumber);
 	    }
 
 	    // 거절 버튼 클릭 시
@@ -347,10 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	        const rejectionReasonElement = document.querySelector(`textarea[data-order-no='${orderNo}']`);
 	        const rejectionReason = rejectionReasonElement ? rejectionReasonElement.value.trim() : "";
 
-	        if (!rejectionReason) {
-	            alert("거절 사유를 입력하세요.");
-	            return;
-	        }
+	        
 
 	        updateOrderStatus(orderNumber, "거절", rejectionReason);
 	    }
