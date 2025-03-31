@@ -406,10 +406,10 @@
 		</update>
 		<update id="bakeryAccessUpdate">
 			UPDATE bakery_Access
-			SET agree = '대기'
-			WHERE bakery_no
-			=
-			#{bakeryNo}
+			SET agree = '대기',
+				reject = null,
+				Accept_date = null
+			WHERE bakery_no	= #{bakeryNo}
 		</update>
 
 

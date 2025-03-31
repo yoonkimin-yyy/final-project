@@ -315,7 +315,7 @@ public class BakeryController {
 	public String bakeryUpdate(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,
 			@SessionAttribute("userNum") int userNo) {
 		bakeryService.bakeryUpdate(bakeryRequestDTO, bakeryImgRequestDTO, userNo);
-		return "/owner/owner-mypage";
+		return "redirect:/register/owner/mypage";
 	}
 
 	@GetMapping("menu/list/form")
