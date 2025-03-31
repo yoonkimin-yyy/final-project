@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
@@ -36,8 +37,9 @@ public class MypageServiceImpl implements MypageService {
 										   int userNo) {
 		// 페이징 처리
 		MypagePageInfoDto pi = mypagePagination.getMyList(postCount, currentPage, pageLimit, boardLimit);
-		List<MypageListResponseDto> getBuyHistory = mypageMapper.getBuyHistory(userNo);
+		List<MypageListResponseDto> getBuyHistory = mypageMapper.getBuyHistory(userNo,pi);
 		
+
 		
 		Map<String, Object> result = new HashMap<>();
 		
@@ -73,8 +75,9 @@ public class MypageServiceImpl implements MypageService {
 		return result;
 	}
 
+    @Override
 	public int updatePassword(int userNo, PasswordRequestDto passwordDto) {
-		
+
 		String currentPassword = mypageMapper.getPassword(userNo);
 		
 		if(currentPassword == null) {
@@ -97,6 +100,11 @@ public class MypageServiceImpl implements MypageService {
 	}
 	
     @Override
+    public int updateAddress(MemberRequestSignupDto signupRequestDto,int userNo) {
+    	int result = mypageMapper.updateAddress(signupRequestDto, userNo);
+    	return result;
+    }
+    @Override
 	public List<OwnerMypageResponseDTO> ownerMypage(int userNum) {
     		
 		return mypageMapper.ownerMypage(userNum);
@@ -114,6 +122,22 @@ public class MypageServiceImpl implements MypageService {
 	}
 
     
+    @Override
+    public int writeReview(MypageListResponseDto mypageListDto, int userNo) {
+    	System.out.println("서비스 리뷰내용" + mypageListDto.getReviewDto().getReviewNo());
+    	System.out.println("서비스 주문번호" + mypageListDto.getReviewDto().getOrderNo());
+    	System.out.println("서비스 평점" + mypageListDto.getReviewDto().getReviewRating());
+    	int result = mypageMapper.writeReview(mypageListDto,userNo);
+    	
+    	return result;
+    }
     
+    @Override
+    public int deleteReview(MypageListResponseDto mypageListDto) {
+    	
+    	System.out.println(mypageListDto.getReviewDto().getOrderNo());
+    	int result = mypageMapper.deleteReview(mypageListDto);
+    	return result;
+    }
    
 }

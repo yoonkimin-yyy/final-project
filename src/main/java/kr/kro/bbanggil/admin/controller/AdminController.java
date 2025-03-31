@@ -70,7 +70,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
-		model.addAttribute("reportLists", reportList);
+		
 		
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));

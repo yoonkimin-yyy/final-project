@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 등록 버튼 클릭 시 처리
-    submitButton.addEventListener('click', () => {
+    /*submitButton.addEventListener('click', () => {
         const reviewText = reviewTextarea.value.trim();
         let errorMessage = '';
 
@@ -128,11 +128,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 초기화 작업
         resetReviewForm();
-    });
+    });*/
 
 
     // 별점 클릭 처리
-    stars.forEach((star, index) => {
+	const starGroups = document.querySelectorAll(".stars"); // 모든 별 그룹 가져오기
+
+	    starGroups.forEach((starsContainer, formIndex) => {
+	        const stars = starsContainer.querySelectorAll("i"); // 현재 그룹의 별들 가져오기
+	        let selectedRating = 0; // 선택된 별점 값
+
+	        stars.forEach((star, starIndex) => {
+	            star.addEventListener("click", () => {
+	                let ratingCount = starIndex % 5; // 0~4 값 (각 그룹별 별점 인덱스)
+
+	                if (selectedRating === ratingCount + 0.5) {
+	                    selectedRating = ratingCount + 1; // 반 별 → 꽉 찬 별
+	                } else if (selectedRating === ratingCount + 1) {
+	                    selectedRating = 0; // 초기화
+	                } else {
+	                    selectedRating = ratingCount + 0.5; // 반 별 선택
+	                }
+
+	                fillStars(stars, starIndex); // 별 색상 변경
+
+	                // 해당 리뷰 폼의 input 태그 찾기
+	                let ratingInput = document.getElementById(`review-rating-${formIndex}`);
+	                if (ratingInput) {
+	                    ratingInput.value = selectedRating; // 선택한 평점 값 저장
+	                    console.log(`review-rating-${formIndex} 값 설정됨:`, ratingInput.value);
+	                } 
+	            });
+	        });
+	    });
+   /*stars.forEach((star, index) => {
         star.addEventListener('click', () => {
             if (selectedRating === index + 0.5) {
                 selectedRating = index + 1; // 반 별 → 꽉 찬 별
@@ -142,13 +171,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectedRating = index + 0.5; // 초기화 또는 다른 경우 반 별
             }
             fillStars(selectedRating);
+				console.log(index)
             console.log('현재 선택된 평점:', selectedRating);
+			
+			// 0 ~ 4
+			// 5 ~ 9
+			// 10~14
+			// 15~19
+			// 20~24
 			
 			const ratingInput = document.getElementById("review-rating");
 			ratingInput.value = selectedRating;  // input 태그에 selectedRating 값 설정
 			console.log(ratingInput.value)
         });
-    });
+    });*/
 
 	document.querySelectorAll(".stars").forEach(starContainer => {
 	        const rating = document.getElementById("rating-value").textContent; // 별점 값 가져오기
@@ -158,25 +194,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	    });
 
 
-	
-	
-	
-	
-		
     // 별점 채우기
-    function fillStars(rating) {
-        stars.forEach((star, i) => {
-            star.classList.remove('fas', 'fa-star', 'fa-star-half-alt', 'far');
-            
-            if (i < Math.floor(rating)) {
-                star.classList.add('fas', 'fa-star'); // 꽉 찬 별
-            } else if (i === Math.floor(rating) && rating % 1 !== 0) {
-                star.classList.add('fas', 'fa-star-half-alt'); // 반 별
-            } else {
-                star.classList.add('far', 'fa-star'); // 빈 별
-            }
-        });
-    }
+	function fillStars(stars, selectedRating) {
+	    stars.forEach((star, i) => {
+	        star.classList.remove('fas', 'fa-star', 'fa-star-half-alt', 'far');
+
+	        if (selectedRating === 0) {
+	            star.classList.add('far', 'fa-star'); // 모든 별 빈 상태
+	        } else if (i < selectedRating) {
+	            star.classList.add('fas', 'fa-star'); // 꽉 찬 별
+	        } else {
+	            star.classList.add('far', 'fa-star'); // 빈 별
+	        }
+	    });
+	}
+
+
 
 	
    
@@ -211,4 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		       });
 		   });
 	   });
+	   
+const reviewDetail = document.getElementById('review-text-textarea').value;
+console.log(reviewDetail)
 

@@ -187,8 +187,9 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.getMonthlyOrderCount();
 	}
 
-	public Map<String, Object> bottomContent() {
-		// 최근 주문
+	public Map<String,Object> bottomContent(){
+		//최근 주문
+
 		List<NewlyResponseDTO> newlyOrder = adminMapper.getNewlyOrder();
 
 		// 신고 내역

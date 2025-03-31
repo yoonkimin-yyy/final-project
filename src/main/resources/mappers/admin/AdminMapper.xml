@@ -268,6 +268,7 @@ sysdate)
 		FETCH FIRST 3 ROWS ONLY
 	</select>
 	
+
 	<select id="reportList">
 		SELECT rrui.USER_id AS reporter,
 			   rr.REPORT_DETAIL AS reportDetail,
@@ -344,4 +345,5 @@ WHERE
 	
 	
 	
+
 </mapper>

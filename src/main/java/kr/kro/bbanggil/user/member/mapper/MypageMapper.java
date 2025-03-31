@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
+import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageUserResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
 import kr.kro.bbanggil.user.member.dto.response.OwnerMypageResponseDTO;
@@ -20,7 +22,8 @@ public interface MypageMapper {
 	public List<MypageListResponseDto> getUserInfo(@Param("userNo")int userNo);
 	
 	//구매내역 정보
-	public List<MypageListResponseDto> getBuyHistory(@Param("userNo")int userNo);
+	public List<MypageListResponseDto> getBuyHistory(@Param("userNo")int userNo,
+													@Param("pi")MypagePageInfoDto pageInfoDto);
 	
 	// 회원정보수정
 	public int updateUser(@Param("userDto")MypageUserResponseDto userDto,
@@ -32,8 +35,20 @@ public interface MypageMapper {
 	//비밀번호수정
 	public int updatePassword(@Param("userNo")int userNo,
 							  @Param("userPassword")String userPassword);
+	
+	//주소 수정
+	public int updateAddress(@Param("signupRequestDto")MemberRequestSignupDto signupRequestDto,
+							@Param("userNo")int userNo);
+
+	
+	public int writeReview(@Param("mypageListDto")MypageListResponseDto mypageListDto,
+							@Param("userNo")int userNo);
+	
+	public int deleteReview(@Param("mypageListDto")MypageListResponseDto mypageListDto);
+
 
 	public List<OwnerMypageResponseDTO> ownerMypage(int userNum);
 
 	public OwnerInfoResponseDTO ownerInfo(int userNum);
+
 }

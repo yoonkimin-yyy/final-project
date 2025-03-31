@@ -79,27 +79,37 @@
                             </div>
                         </div>
 					</form>
+					<form method="POST" action="/register/updateAddress">
                         <div class="info-address-btn-div">
                             <button class="change-ar-btn" type="button">주소 변경</button>
-
                             <div class="postcode-div" id="postcode-div">
-                                <input class="change-postcode" type="text" id="postcode" name="postcode" placeholder="우편번호">
-                                <button class="change-address-btn" type="button" onclick="addrBtn()">우편번호 검색</button>
+                                <label for="postcode"></label>
+	                            <input class="change-address postcode-input" type="text" placeholder="우편번호"
+	                                   id="sample6_postcode" name="requestAddressDto.userPostcode" required>
+	                            <button id="postcode-btn" class="change-address-btn" type="button" onclick="sample6_execDaumPostcode()">우편번호찾기</button>
                             </div>
 
                             <div class="addr-div" id="addr-div">
-                                <input class="change-address" type="text" id="address" name="address" placeholder="주소">
-                                <input class="change-address" type="text" id="detailAddress" 
-                                        name="detailAddress" placeholder="상세주소 (선택)">
-                                <button class="addr-btn" id="addr-btn" type="button">변경하기</button>
+                                <input class="change-address" type="text" id="sample6_address" 
+	                                   name="address" placeholder="주소" required>
+	                            <input type="hidden" name="requestAddressDto.userCity" id="city">
+	                            <input type="hidden" name="requestAddressDto.userDistrict" id="district">
+	                            <input type="hidden" name="requestAddressDto.userStreet" id="street">
+	                            <input type="hidden" name="requestAddressDto.userNumber" id="number">
+	                            <input class="change-address" type="text" id="sample6_detailAddress" 
+	                                   style="border-top: 0px;" name="requestAddressDto.userDetailaddress" placeholder="상세주소 (선택)">
+
+                                <button class="addr-btn" id="addr-btn" type="submit" onclick="checkValue()">변경하기</button>
                             </div>
                         </div>
+                     </form>
                     </div>
         	</div>
     	</div>
     
 </div> 
 </main>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> 
 </body>
 <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
 </html>
