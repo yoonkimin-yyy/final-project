@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.owner.pickup.response.dto.PickupBakeryInfoResponseDTO;
+import kr.kro.bbanggil.owner.pickup.response.dto.PickupMenuResponseDTO;
 import kr.kro.bbanggil.owner.pickup.service.PickupServiceImpl;
 
 @Controller
