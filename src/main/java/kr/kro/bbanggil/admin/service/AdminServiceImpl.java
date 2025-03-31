@@ -49,20 +49,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public AdminResponseDto reportDetail(int reportNo) {
-		return adminMapper.reportDetail(reportNo);
-	}
-
-	@Override
-	public void insertReport(ReportRequestDTO reportDTO, String userId, int reportNo) {
-		String time = reportDTO.getReportResult();
-		reportDTO.setReportNo(reportNo);
-		if (time != "경고") {
-			adminMapper.insertReport(reportDTO, userId);
-		}
-	}
-
-	@Override
 	public List<AdminResponseDto> bakeryList() {
 		return adminMapper.bakeryList();
 	}
@@ -70,31 +56,6 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<AdminResponseDto> userList() {
 		return adminMapper.userList();
-	}
-
-	@Override
-	public AdminResponseDto bakeryDetailList(int bakeryNo, int userNo) {
-		return adminMapper.bakeryDetailList(bakeryNo, userNo);
-	}
-
-	@Override
-	public AdminResponseDto userDetailList(int userNo) {
-		return adminMapper.userDetailList(userNo);
-	}
-
-	@Override
-	public AdminResponseDto acceptList(int bakeryNo, int userNo) {
-		return adminMapper.acceptList(bakeryNo, userNo);
-	}
-
-	@Override
-	public List<MenuResponseDto> menuList(int bakeryNo) {
-		return adminMapper.menuList(bakeryNo);
-	}
-
-	@Override
-	public void update(String action, int bakeryNo, String rejectReason) {
-		adminMapper.update(action, bakeryNo, rejectReason);
 	}
 
 	@Override
@@ -133,27 +94,7 @@ public class AdminServiceImpl implements AdminService {
 
 	}
 
-	@Override
-	public List<InquiryResponseDto> getInquiryList() {
-		return adminMapper.selectInquiryList();
-	}
-
-	@Override
-	public void saveAnswer(InquiryReplyRequestDto inquiryReplyDto) {
-		// 현재 시간 세팅 (replyDate가 null이면)
-		if (inquiryReplyDto.getReplyDate() == null || inquiryReplyDto.getReplyDate().isEmpty()) {
-			inquiryReplyDto
-					.setReplyDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		}
-
-		// 답변 INSERT
-		adminMapper.insertInquiryReply(inquiryReplyDto);
-
-		// 문의 상태 "답변 완료"로 변경
-		adminMapper.updateInquiryStatusToAnswered(inquiryReplyDto.getInquiryNo());
-
-		sendAnswerEmail(inquiryReplyDto.getInquiryNo());
-	}
+	
 
 	@Override
 	public void sendEmail(AdminEmailRequestDto adminRequestDto) {
@@ -204,31 +145,9 @@ public class AdminServiceImpl implements AdminService {
 
 	}
 
-	private void sendAnswerEmail(int inquiryNo) {
-		InquiryEmailInfoDto info = adminMapper.getInquiryEmailInfo(inquiryNo);
+	
 
-		if (info == null || info.getEmail() == null) {
-			logger.warn("이메일 전송 실패: 이메일 정보 없음 - inquiryNo: {}", inquiryNo);
-			return;
-		}
-
-		String subject = "[빵모아] 문의에 대한 답변이 등록되었습니다";
-		String body = """
-				    안녕하세요, 빵모아입니다.<br><br>
-				    문의 제목: %s<br>
-				    문의 내용: %s<br><br>
-				    <strong>[답변]</strong><br>
-				    %s<br><br>
-				    감사합니다.
-				""".formatted(info.getTitle(), info.getContent(), info.getReply());
-
-		emailServiceImpl.sendEmail(info.getEmail(), subject, body);
-	}
-
-	@Override
-	public InquiryResponseDto getInquiryByNo(int inquiryNo) {
-		return adminMapper.selectInquiryByNo(inquiryNo);
-	}
+	
 
 	@Override
 	public List<MenuResponseDto> categoryList() {
@@ -250,5 +169,6 @@ public class AdminServiceImpl implements AdminService {
 			adminMapper.deleteCategory(category);
 		}
 	}
+
 
 }

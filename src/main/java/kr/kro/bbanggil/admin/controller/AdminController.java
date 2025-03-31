@@ -11,29 +11,19 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.HttpSession;
-import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
-import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
-import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
-import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.NewsletterResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
 import kr.kro.bbanggil.common.dto.response.SubscriptionResponseDto;
 import kr.kro.bbanggil.common.mapper.EmailMapper;
 import kr.kro.bbanggil.common.service.EmailServiceImpl;
-import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.newsletter.service.NewsletterServiceImpl;
-import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.owner.order.service.OrderServiceImpl;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -78,120 +68,6 @@ public class AdminController {
 		return "admin/admin-page";
 	}
 
-	@GetMapping("/report/form")
-	public String reportForm(@RequestParam("reportNo")int reportNo,
-							 Model model) {
-		AdminResponseDto result = adminService.reportDetail(reportNo);
-		model.addAttribute("result",result);
-		model.addAttribute("reportNo",reportNo);
-		return "admin/report-reply";
-	}
-	@PostMapping("report")
-	public String report(ReportRequestDTO reportDTO,
-						 @SessionAttribute("userId")String userId,
-						 @RequestParam("reportNo")int reportNo) {
-		adminService.insertReport(reportDTO,userId,reportNo);
-		return "redirect:/admin/form";
-	}
-	
-	@GetMapping("/bakery/detail")
-	public String bakeryDetailForm(@RequestParam("bakeryNo") int bakeryNo,
-			   					   @RequestParam("userNo") int userNo,
-			   					   Model model) {
-
-		AdminResponseDto result = adminService.bakeryDetailList(bakeryNo, userNo);
-		
-		model.addAttribute("result", result);
-
-		return "admin/bakery-detail";
-	}
-
-	@GetMapping("/user/detail")
-	public String userDetailForm(@RequestParam("userNo") int userNo,
-								 Model model) {
-		
-		AdminResponseDto result = adminService.userDetailList(userNo);
-		
-		model.addAttribute("result", result);
-		
-		return "admin/user-detail";
-	}
-
-	@GetMapping("/bakery/accept")
-	public String bakeryAcceptForm(@RequestParam("listNum") int listNum,
-								   @RequestParam("bakeryNo") int bakeryNo,
-								   @RequestParam("userNo") int userNo,
-								   Model model) {
-		
-		AdminResponseDto result = adminService.acceptList(bakeryNo, userNo);
-		List<MenuResponseDto> menuList = adminService.menuList(bakeryNo);
-		
-		model.addAttribute("result", result);
-		model.addAttribute("listNum", listNum);
-		model.addAttribute("menuList", menuList);
-
-		return "admin/bakery-accept";
-	}
-
-	@PostMapping("/bakery/update")
-	public String bakeryUpdateForm(@RequestParam("action") String action,
-								   @RequestParam("bakeryNo") int bakeryNo,
-								   @RequestParam("rejectReason") String rejectReason) {
-		
-		adminService.update(action, bakeryNo, rejectReason);
-		
-		return "redirect:/admin/form";
-	}
-
-	
-  
-	@GetMapping("/inquiry/list")
-	public String inquiryList(Model model) {
-		List<InquiryResponseDto> inquiries = adminService.getInquiryList();
-		
-		 model.addAttribute("inquiries", inquiries);
-		 
-	      return "admin/inquiry-list";
-	}
-	
-	@PostMapping("/inquiry/answer")
-	public String saveAnswer(@ModelAttribute InquiryReplyRequestDto inquiryReplyDto,
-						HttpSession session){
-		
-		
-		  Integer adminNo = (Integer) session.getAttribute("userNum");
-		  inquiryReplyDto.setAdminNo(adminNo);
-		
-		  adminService.saveAnswer(inquiryReplyDto);
-		  
-		  int inquiryNo = inquiryReplyDto.getInquiryNo();
-
-		  
-		  InquiryResponseDto answer = adminService.getInquiryByNo(inquiryNo);
-			
-			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
-	}
-	
-	@GetMapping("/order/list")
-	public String getOrderList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
-			@RequestParam(value = "keyword", required = false) String keyword,Model model) {
-		
-		
-		int listCount = orderService.getOrderCount(keyword); // 전체 주문수
-		int pageLimit = 5;
-		int boardLimit = 10;
-		
-		PageResponseDto pi = PaginationUtil.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		
-		List<OrderResponseDto> orderList = orderService.getPagedOrders(pi,keyword);
-		model.addAttribute("orderList", orderList);
-		model.addAttribute("pi", pi);
-		model.addAttribute("keyword", keyword);
-		
-		return "admin/admin-order-list";
-	}
-	
-	
 	@GetMapping("/newsLetter")
 	public String goNewsLetter(Model model) {
 		

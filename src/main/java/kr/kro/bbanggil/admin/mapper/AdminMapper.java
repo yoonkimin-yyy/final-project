@@ -26,20 +26,8 @@ public interface AdminMapper {
 
 	List<AdminResponseDto> userList();
 	
-	AdminResponseDto bakeryDetailList(@Param("bakeryNo") int bakeryNo, 
-		    						  @Param("userNo") int userNo);
-	
 	AdminResponseDto userDetailList(int userNo);
 	
-	AdminResponseDto acceptList(@Param("bakeryNo") int bakeryNo, 
-							    @Param("userNo") int userNo);
-
-	List<MenuResponseDto> menuList(int bakeryNo);
-	
-	void update(@Param("action") String action,
-				@Param("bakeryNo") int listNum,
-				@Param("rejectReason") String rejectReason);
-
 	void insertInquiry(InquiryRequestDto inquiryRequestDto);
 	
 	public String getUserType(int userNo);
