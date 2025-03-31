@@ -35,7 +35,7 @@ public class APiAdminController {
 		
 		adminService.sendEmail(adminReqeustDto);
 		
-		logger.info("이메일 수신자: ", adminReqeustDto.getAddress());
+		logger.info("/sendEmail: '{}'", adminReqeustDto.getAddress());
 		
 		return "ok";
 	}
@@ -50,7 +50,7 @@ public class APiAdminController {
 		
 		adminService.addCategory(newCategory);
 		
-		logger.info("카테고리 추가: ", newCategory);
+		logger.info("/addCategory: '{}'", newCategory);
 		
 		return "ok";
 	}
@@ -59,6 +59,8 @@ public class APiAdminController {
 	public String deleteCategory(@RequestBody Map<String, List<String>> requestBody) {
 		
 		adminService.deleteCategory(requestBody);
+				
+		logger.info("/deleteCategory: '{}'", requestBody);
 		
 	    return "ok";
     }
