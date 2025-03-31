@@ -22,8 +22,6 @@
                 <p>연락처 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.userPhone}"></span></p>
                 <p>사업자 등록 번호 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.businessNo}"></span></p>
             <div class="mypage-menu">
-                <a href="./edit.html">회원정보 수정 ✎</a>
-                <!-- <a href="#">내가 쓴 리뷰 ✎</a> -->
             </div>
         </div>
             <div class="mypage-order">
@@ -51,7 +49,7 @@
                             <td th:text="${menu.category}"></td>
                             <td th:text="${menu.menuInfo}"></td>
                             <td>
-	                            	<button class="btn" type="button" th:attr="onclick='openUpdateMenu(' + ${menu.menuNo} + ')'">수정</button>
+	                            	<button class="btn" type="button" th:attr="onclick='openUpdateMenu(' + ${menu.menuNo} +','+${no}+ ')'">수정</button>
 	                           		<form id="deleteForm" th:action="@{/bakery/menu/delete}" method="post" class="inline">
 			                            <input type="hidden" name="menuNo" th:value="${menu.menuNo}">
 			                            <input type="hidden" name="no" th:value="${no}">

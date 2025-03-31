@@ -21,15 +21,25 @@
     <div class="admin-inquiry-list" id="inquiryList">
     <div th:each="inquiry : ${inquiries}" class="admin-inquiry-list-item">
     <div class="admin-inquiry-item-title" th:text="${inquiry.inquiryTitle}">문의 제목</div>
+    
+      <div class="admin-inquiry-item-content" th:text="${inquiry.inquiryContent}">
+    문의 내용이 들어갑니다.
+  </div>
+    
 
   <!-- 작성자 | 날짜 | 상태 -->
   <div class="admin-inquiry-item-meta">
-  <span th:text="(${inquiry.userName} != null ? ${inquiry.userName} : '비회원') + ' | ' + ${inquiry.createDate}"></span>
-    <span class="admin-inquiry-status"
-          th:classappend="'admin-inquiry-status-' + (${inquiry.isAnswered} == 'Y' ? 'answered' : 'pending')">
-      <span th:text="${inquiry.isAnswered} == 'Y' ? '답변완료' : '답변대기'">답변 상태</span>
-    </span>
-  </div>
+  <span>
+    <span th:text="${inquiry.userName != null ? inquiry.userName : '비회원'}"></span>
+    (<span th:text="${inquiry.email != null ? inquiry.email : '이메일 없음'}"></span>)
+    | <span th:text="${inquiry.createDate}"></span>
+  </span>
+  
+  <span class="admin-inquiry-status"
+        th:classappend="'admin-inquiry-status-' + (${inquiry.isAnswered} == 'Y' ? 'answered' : 'pending')">
+    <span th:text="${inquiry.isAnswered} == 'Y' ? '답변완료' : '답변대기'">답변 상태</span>
+  </span>
+</div>
 
   <!--  답변 입력 & 저장 (form 방식) -->
   <form class="admin-inquiry-answer-box" th:action="@{/admin/inquiry/answer}" method="post">

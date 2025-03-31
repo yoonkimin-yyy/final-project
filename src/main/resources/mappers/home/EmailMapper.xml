@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="kr.kro.bbanggil.email.mapper.EmailMapper">
+<mapper namespace="kr.kro.bbanggil.common.mapper.EmailMapper">
 
 <resultMap id="EmailResultMap"
-	type="kr.kro.bbanggil.bakery.dto.BakeryDto">
+	type="kr.kro.bbanggil.user.bakery.dto.BakeryDto">
 	<result property="no" column="bakery_no"></result>
 	<result property="name" column="bakery_name"></result>
 	<result property="latitude" column="latitude"></result>
@@ -15,7 +15,7 @@
 
 
 	<association property="response"
-		javaType="kr.kro.bbanggil.bakery.dto.response.BakeryResponseDto">
+		javaType="kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto">
 
 		<result property="reviewRating" column="review_rating"></result>
 
@@ -43,7 +43,7 @@
 </resultMap>
 
 
-<resultMap id="subscriberResultMap" type="kr.kro.bbanggil.email.dto.response.SubscriptionResponseDto">
+<resultMap id="subscriberResultMap" type="kr.kro.bbanggil.common.dto.response.SubscriptionResponseDto">
     <result property="email" column="EMAIL" />
     <result property="subscribeDate" column="SUBSCRIBE_DATE" />
 </resultMap>
@@ -132,25 +132,43 @@ ORDER BY
 
 
 
-<insert id="insertNewsletterHistory">
-    INSERT INTO NEWSLETTER_HISTORY (
-        HISTORY_NO, BAKERY_NAME, RESOURCES_PATH, CHANGE_NAME, OPEN_TIME, CLOSE_TIME
-    ) VALUES (
-        NEWSLETTER_HISTORY_SEQ.NEXTVAL,
-        #{bakeryName},
-        #{resourcesPath},
-        #{changeName},
-        #{openTime},
-        #{closeTime}
-    )
-</insert>
-
-
 <select id="getImageInfoByImgNo" resultType="map">
     SELECT CHANGE_NAME, RESOURCES_PATH
     FROM BAKERY_IMAGE
     WHERE IMG_NO = #{imgNo}
 </select>
+
+
+
+<insert id="insertNewsletterHistory">
+  INSERT INTO NEWSLETTER_HISTORY (
+    HISTORY_NO,
+    BAKERY_NAME,
+    RESOURCES_PATH,
+    CHANGE_NAME,
+    OPEN_TIME,
+    CLOSE_TIME,
+    LOCATION,
+    SENT_DATE
+  ) VALUES (
+    SEQ_NEWSLETTER_HISTORY.NEXTVAL,
+    #{bakeryName},
+    #{resourcesPath},
+    #{changeName},
+    #{openTime},
+    #{closeTime},
+    #{location},
+    SYSDATE
+  )
+</insert>
+
+
+
+
+
+
+
+
 
 
 </mapper>

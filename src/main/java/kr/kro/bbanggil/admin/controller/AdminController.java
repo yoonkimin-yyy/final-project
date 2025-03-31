@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
@@ -25,14 +26,17 @@ import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.admin.dto.response.NewsletterResponseDto;
 import kr.kro.bbanggil.admin.service.AdminService;
-import kr.kro.bbanggil.bakery.dto.response.PageResponseDto;
+import kr.kro.bbanggil.admin.service.AdminServiceImpl;
+import kr.kro.bbanggil.common.dto.response.SubscriptionResponseDto;
+import kr.kro.bbanggil.common.mapper.EmailMapper;
+import kr.kro.bbanggil.common.service.EmailServiceImpl;
 import kr.kro.bbanggil.common.util.PaginationUtil;
-import kr.kro.bbanggil.email.dto.response.SubscriptionResponseDto;
-import kr.kro.bbanggil.email.mapper.EmailMapper;
-import kr.kro.bbanggil.email.service.EmailServiceImpl;
-import kr.kro.bbanggil.order.dto.response.OrderResponseDto;
-import kr.kro.bbanggil.order.service.OrderServiceImpl;
+import kr.kro.bbanggil.newsletter.service.NewsletterServiceImpl;
+import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
+import kr.kro.bbanggil.owner.order.service.OrderServiceImpl;
+import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -44,6 +48,8 @@ public class AdminController {
 	private final OrderServiceImpl orderService;
 	private final EmailServiceImpl emailService;
 	private final EmailMapper emailMapper;
+	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
+	private final NewsletterServiceImpl newsletterService;
 	
 	@GetMapping("/login")
 	public String adminLoginForm() {
@@ -68,7 +74,7 @@ public class AdminController {
 		model.addAttribute("sublists", sublist);
 		model.addAttribute("bakeryLists", bakeryList);
 		model.addAttribute("userLists", userList);
-		model.addAttribute("reportLists", reportList);
+		
 		
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));
@@ -89,6 +95,7 @@ public class AdminController {
 						 @SessionAttribute("userId")String userId,
 						 @RequestParam("reportNo")int reportNo) {
 		adminService.insertReport(reportDTO,userId,reportNo);
+		logger.info("report: '{}'", userId);
 		return "redirect:/admin/form";
 	}
 	
@@ -127,6 +134,8 @@ public class AdminController {
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
 		model.addAttribute("menuList", menuList);
+		
+		logger.info("/bakery/accept: '{}'", bakeryNo);
 
 		return "admin/bakery-accept";
 	}
@@ -137,6 +146,8 @@ public class AdminController {
 								   @RequestParam("rejectReason") String rejectReason) {
 		
 		adminService.update(action, bakeryNo, rejectReason);
+		
+		logger.info("/bakery/update: '{}'", bakeryNo);
 		
 		return "redirect:/admin/form";
 	}
@@ -166,8 +177,10 @@ public class AdminController {
 
 		  
 		  InquiryResponseDto answer = adminService.getInquiryByNo(inquiryNo);
+		  
+		  logger.info("/inquiry/answer: '{}'", inquiryNo);
 			
-			return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
+		  return "redirect:/admin/inquiry/list"; // 저장 후 리스트로 리다이렉트
 	}
 	
 	@GetMapping("/order/list")
@@ -220,7 +233,14 @@ public class AdminController {
 		int successRate = emailService.getSendSuccessRate();
 	    model.addAttribute("sendSuccessRate", successRate);
 		
-	    System.out.println(successRate);
+	    /*
+	     * 최근 뉴스레터 1건 조회에서 추가
+	     */
+	    NewsletterResponseDto recentNewsletter = newsletterService.getLatestNewsletter();
+	    
+	    model.addAttribute("newsletter", recentNewsletter);
+	    
+	    
 		
 		return "admin/admin-news-letter";
 	}
@@ -234,14 +254,9 @@ public class AdminController {
 		
 		redirectAttributes.addFlashAttribute("message", "구독이 정상적으로 해지되었습니다.");
 		
+		logger.info("/unsubscribe: '{}'", email);
+		
 		return "redirect:/admin/newsLetter";
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

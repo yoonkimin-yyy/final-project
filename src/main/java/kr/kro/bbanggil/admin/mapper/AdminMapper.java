@@ -15,7 +15,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
-import kr.kro.bbanggil.bakery.dto.InquiryEmailInfoDto;
+import kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto;
 
 @Mapper
 public interface AdminMapper {
@@ -50,13 +50,14 @@ public interface AdminMapper {
 
 	void updateInquiryStatusToAnswered(@Param("inquiryNo")int inquiryNo);
 
+
 	@Select("SELECT SUM(user_count) FROM user_count")
 	int getTodayUser();
 
 	@Select("SELECT count(*) FROM order_info")
 	int getTotalOrder();
 
-	@Select("SELECT COUNT(*) FROM user_info WHERE created_date >= SYSDATE - INTERVAL '1' MONTH")
+	@Select("SELECT COUNT(*) FROM user_info WHERE created_date >= ADD_MONTHS(SYSDATE,-1)")
 	int getNewUser();
 
 	List<NewlyResponseDTO> getNewlyOrder();

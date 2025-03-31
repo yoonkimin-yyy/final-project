@@ -2,6 +2,8 @@ package kr.kro.bbanggil.admin.interceptor;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -9,10 +11,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import kr.kro.bbanggil.admin.exception.AdminException;
+import kr.kro.bbanggil.admin.service.AdminServiceImpl;
+import kr.kro.bbanggil.global.exception.BbanggilException;
 
 @Component
 public class AdminAuthInterceptor implements HandlerInterceptor{
+	
+	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
 
 	@Override
 	public boolean preHandle(HttpServletRequest request,
@@ -21,7 +26,8 @@ public class AdminAuthInterceptor implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		Object userRole = session.getAttribute("role");
 		if(userRole==null || !userRole.equals("admin")) {
-			throw new AdminException("Admin이 아닙니다","common/error",HttpStatus.NOT_ACCEPTABLE);
+			logger.info("session: '{}', userRole: '{}'", session, userRole);
+			throw new BbanggilException("Admin이 아닙니다","common/error",HttpStatus.NOT_ACCEPTABLE);
 		}
 		return true;
 	}
