@@ -20,7 +20,7 @@ public class BakeryRequestDTO {
 	@NotBlank(message = "주소는 비어있으면 안됩니다")
 	private String bakeryAddress;
 	
-	@Pattern(regexp="^\\d{10,12}$", message="전화번호 형식이 올바르지 않습니다. -없이 숫자만 입력해야합니다")
+	@Pattern(regexp="^\\d{9,12}$", message="전화번호 형식이 올바르지 않습니다. -없이 숫자만 입력해야합니다")
 	private String bakeryPhone;
 	
 	private String createdDate;
