@@ -1,8 +1,11 @@
 package kr.kro.bbanggil.admin.api;
 
 import java.util.List;
+
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.service.AdminService;
+import kr.kro.bbanggil.admin.service.AdminServiceImpl;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -23,12 +27,15 @@ import lombok.AllArgsConstructor;
 public class APiAdminController {
 	
 	private final AdminService adminService;
+	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
 	
 	@PostMapping("/sendEmail")
 	@ResponseBody
 	public String sendEmail(@RequestBody AdminEmailRequestDto adminReqeustDto) {
 		
 		adminService.sendEmail(adminReqeustDto);
+		
+		logger.info("이메일 수신자 : ", adminReqeustDto.getAddress());
 		
 		return "ok";
 	}
