@@ -61,28 +61,32 @@ function submitReview() {
         method: "POST",
         body: formData
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("서버 응답 오류");
-        }
-        return response.text();
-    })
-    .then(data => {
-        alert("리뷰가 등록되었습니다!");
-        closeReviewModal();
-        document.getElementById("reviewForm").reset();
-        document.getElementById("preview").innerHTML = '';
+	.then(async response => {
+	    const text = await response.text();
+
+	    if (!response.ok) {
+	        // 
+	        throw text;
+	    }
+
+	    return text;
+	})
+	.then(data => {
+	    alert("리뷰가 등록되었습니다!");
+	    closeReviewModal();
 		
-		const bakeryNo = document.getElementById("bakeryNo").value;
-		
-		sessionStorage.setItem("goToReviewTab", "true");
-		
-		window.location.replace(`/bakery/detail?bakeryNo=${bakeryNo}#reviews`);
-		
-    })
-    .catch(error => {
-        alert("리뷰 작성 실패: " + error.message);
-    });
+		window.location.reload();
+	    document.getElementById("reviewForm").reset();
+	    document.getElementById("preview").innerHTML = '';
+
+	    const bakeryNo = document.getElementById("bakeryNo").value;
+	    sessionStorage.setItem("goToReviewTab", "true");
+	    window.location.replace(`/bakery/detail?bakeryNo=${bakeryNo}#reviews`);
+	})
+	.catch(errorMessage => {
+	    // 
+	    alert("리뷰 작성 실패: " + errorMessage);
+	});
 }
 
 
@@ -170,24 +174,24 @@ function deleteReview(reviewNo, fileName) {
     formData.append("reviewNo", reviewNo);
     formData.append("fileName", fileName ? fileName:"none");
 	
-	console.log(reviewNo);
-	console.log(fileName);
-	
 
     fetch("/review/delete", {
         method: "POST",
         body: formData
     })
-    .then(response => response.json())  // JSON 응답을 받음
-    .then(data => {
-        if (data.success) {
-            alert("리뷰가 삭제되었습니다!");
-            location.reload(); //  삭제 후 페이지 새로고침
-        } else {
-            alert("리뷰 삭제에 실패했습니다.");
-        }
-    })
-    .catch(error => console.error("리뷰 삭제 실패", error));
+	.then(response => response.text()) 
+	.then(data => {
+	    if (data.includes("리뷰 삭제 성공")) {
+	        alert("리뷰가 삭제되었습니다!");
+	        window.location.reload(); 
+	    } else {
+	        alert("리뷰 삭제에 실패했습니다.");
+	    }
+	})
+	.catch(error => {
+	    console.error("리뷰 삭제 실패", error);
+	    alert("서버 오류로 리뷰 삭제에 실패했습니다.");
+	});
 }
 
 

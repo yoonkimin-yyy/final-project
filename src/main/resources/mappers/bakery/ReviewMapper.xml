@@ -41,6 +41,11 @@
     SELECT COUNT(*) FROM ORDER_INFO WHERE ORDER_NO = #{orderNo}
 </select>
 
+<select id="checkReviewExistsByOrderNo" resultType="int">
+
+ SELECT COUNT(*) FROM REVIEW WHERE ORDER_NO = #{orderNo}
+
+</select>
 
 
 <insert id="insertReview" parameterType="kr.kro.bbanggil.user.bakery.dto.request.ReviewRequestDto" useGeneratedKeys="true" keyProperty="reviewNo">
