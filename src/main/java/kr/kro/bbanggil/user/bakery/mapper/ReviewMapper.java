@@ -86,4 +86,5 @@ public interface ReviewMapper {
     	    @Param("tagForth") String tagForth,
     	    @Param("tagFive") String tagFive
     	);
+	public int checkReviewExistsByOrderNo(@Param("orderNo") int orderNo);
 }

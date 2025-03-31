@@ -191,6 +191,7 @@ SELECT
     i.INQUIRY_CONTENT,
     i.IS_ANSWERED,
     i.CREATE_DATE,
+    i.email,
     ui.USER_NAME,
     ui.USER_NO,
     ir.REPLY_CONTENT,

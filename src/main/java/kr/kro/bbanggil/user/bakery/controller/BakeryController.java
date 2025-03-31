@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -156,7 +157,7 @@ public class BakeryController {
 			model.addAttribute("reviewReplies", reviewReplies);
 
 			// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
-			if (session.getAttribute("userNum") != null) {
+			if (userNum != null) {
 				int userNo = (int) userNum;
 				int resultValue = reviewService.byIdCheck(userNo, no);
 				if (resultValue == 0) {
@@ -314,7 +315,7 @@ public class BakeryController {
 	public String bakeryUpdate(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,
 			@SessionAttribute("userNum") int userNo) {
 		bakeryService.bakeryUpdate(bakeryRequestDTO, bakeryImgRequestDTO, userNo);
-		return "/owner/owner-mypage";
+		return "redirect:/register/owner/mypage";
 	}
 
 	@GetMapping("menu/list/form")
@@ -326,6 +327,7 @@ public class BakeryController {
 		model.addAttribute("menu", result.get("list"));
 		model.addAttribute("bakery", result.get("bakery"));
 		model.addAttribute("no", bakeryNo);
+		model.addAttribute("goMyPage",true);
 		return "/owner/menu-list";
 	}
 
@@ -338,11 +340,11 @@ public class BakeryController {
 	}
 
 	@PostMapping("/menu/insert")
-	public String menuInsert(MenuRequestDTO menuDTO,
+	public ResponseEntity<?> menuInsert(MenuRequestDTO menuDTO,
 							 @RequestParam("bakeryNo") int bakeryNo,
 							 @RequestParam("menuImage") MultipartFile file) {
 			bakeryService.menuInsert(menuDTO,bakeryNo,file);
-		return "/owner/menu-insert";
+		return ResponseEntity.ok().body("{\"message\": \"메뉴 추가 성공\"}");
 	}
 
 	@GetMapping("/info/form")
@@ -353,6 +355,7 @@ public class BakeryController {
 		model.addAttribute("info", info);
 		model.addAttribute("bakery", result);
 		model.addAttribute("no", bakeryNo);
+		model.addAttribute("goMyPage",true);
 		return "/owner/bakery-info";
 	}
 
@@ -365,19 +368,23 @@ public class BakeryController {
 	}
 
 	@GetMapping("/menu/update/form")
-	public String menuUpdateForm(@RequestParam("menuNo") int menuNo, Model model) {
+	public String menuUpdateForm(@RequestParam("menuNo") int menuNo,
+								 @RequestParam("bakeryNo") int bakeryNo,
+								 Model model) {
 		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail(menuNo);
-
 		model.addAttribute("menu", menuDTO);
 		model.addAttribute("menuNo", menuNo);
+		model.addAttribute("bakeryNo",bakeryNo);
 		return "/owner/menu-update";
 	}
 
 	@PostMapping("/menu/update")
-	public String menuUpdate(MenuRequestDTO menuDTO,
-							 @RequestParam("menuImage") MultipartFile file) {
+	public ResponseEntity<?> menuUpdate(MenuRequestDTO menuDTO,
+							 @RequestParam("menuImage") MultipartFile file,
+							 @RequestParam("bakeryNo")int bakeryNo) {
+		System.out.println(bakeryNo);
 		bakeryService.updateMenu(menuDTO,file);
-		return "/owner/menu-update";
+		return ResponseEntity.ok().body("{\"message\": \"메뉴 수정 성공\"}");
 	}
 	
 }

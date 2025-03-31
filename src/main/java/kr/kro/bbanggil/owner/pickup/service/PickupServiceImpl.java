@@ -50,7 +50,7 @@ public class PickupServiceImpl implements PickupService{
 	        }
 	        return orderList;
 	    } 
-	    	throw new BbanggilException("본인의 가게가 아닙니다a.","common/error",HttpStatus.BAD_REQUEST);
+	    	throw new BbanggilException("본인의 가게가 아닙니다.","common/error",HttpStatus.BAD_REQUEST);
 	    
 	}
 	

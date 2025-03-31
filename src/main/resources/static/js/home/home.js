@@ -121,10 +121,22 @@ function updateMap(region, bakeries) {
     const addedPlaces = new Set();
 
     bakeries.forEach(bakery => {
-        if (addedPlaces.has(bakery.name)) return;
-        addedPlaces.add(bakery.name);
+        const name = bakery.bakeryName;
+        const address = bakery.bakeryAddress;
+        const lat = bakery.bakeryLat;
+        const lng = bakery.bakeryLog; // 👉 가능하면 bakeryLng로 바꾸는 걸 추천
+		const bakeryNo = bakery.bakeryNo;
+		const phone = bakery.bakeryPhone;
 
-        const position = new kakao.maps.LatLng(bakery.latitude, bakery.longitude);
+        if (!lat || !lng) {
+            console.warn("⚠️ 위도/경도 정보가 없어 마커 생략:", bakery);
+            return;
+        }
+
+        if (addedPlaces.has(name)) return;
+        addedPlaces.add(name);
+
+        const position = new kakao.maps.LatLng(lat, lng);
         const marker = new kakao.maps.Marker({
             position: position,
             map: map,
@@ -137,9 +149,10 @@ function updateMap(region, bakeries) {
 
         const content = `
             <div style="padding:10px; width: 250px; font-size: 14px;">
-                <strong style="font-size: 16px;">🍞 ${bakery.name}</strong><br>
-                📍 <span>${bakery.address}</span><br>
-                <button onclick="viewDetails('${bakery.name}')" 
+                <strong style="font-size: 16px;">🍞 ${name}</strong><br>
+                📍 <span>${address}</span><br>
+				☎️ <span>${phone}</span><br>
+                <button onclick="viewDetails('${bakeryNo}')" 
                     style="margin-top: 5px; padding: 5px; border: none; background: #ffcc00; cursor: pointer;">
                     상세보기
                 </button>
@@ -190,8 +203,8 @@ function updateRegionButton(region, count, unit) {
 }
 
 // ✅ 상세보기 클릭 시 이동 (예시)
-function viewDetails(bakeryName) {
-    window.location.href = `/bbanggil/bakery/detail?name=${encodeURIComponent(bakeryName)}`;
+function viewDetails(bakeryNo) {
+window.location.href = `/bakery/detail?bakeryNo=${bakeryNo}`;
 }
 
 
