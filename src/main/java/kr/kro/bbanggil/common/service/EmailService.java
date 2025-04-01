@@ -15,5 +15,7 @@ public interface EmailService {
 	 List<SubscriptionResponseDto> getAllSubscribers();
 	
 	 int getSendSuccessRate();
+	 
+	public void sendEmail(String email, String subject, String body);
 	
 }

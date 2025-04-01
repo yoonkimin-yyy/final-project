@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 
 public interface AdminBakeryService {
 
@@ -14,5 +15,7 @@ public interface AdminBakeryService {
 	List<MenuResponseDto> menuList(int bakeryNo);
 
 	void update(String action, int bakeryNo, String rejectReason);
+
+	myBakeryResponseDTO bakeryInfo(int bakeryNo);
 	
 }

@@ -12,7 +12,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 
-public interface AdminService {
+public interface AdminMainService {
 
 	List<AdminResponseDto> subList();
 

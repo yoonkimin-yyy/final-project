@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.NewsletterResponseDto;
-import kr.kro.bbanggil.admin.service.AdminService;
+import kr.kro.bbanggil.admin.service.AdminMainService;
 import kr.kro.bbanggil.common.dto.response.SubscriptionResponseDto;
 import kr.kro.bbanggil.common.mapper.EmailMapper;
 import kr.kro.bbanggil.common.service.EmailServiceImpl;
@@ -29,9 +29,9 @@ import lombok.AllArgsConstructor;
 @Controller
 @RequestMapping("/admin")
 @AllArgsConstructor
-public class AdminController {
+public class AdminMainController {
 
-	private final AdminService adminService;
+	private final AdminMainService adminMainService;
 	private final OrderServiceImpl orderService;
 	private final EmailServiceImpl emailService;
 	private final EmailMapper emailMapper;
@@ -44,14 +44,14 @@ public class AdminController {
 	
 	@GetMapping("/form")
 	public String adminForm(Model model) {
-		Map<String,Object> topContent = adminService.trafficMonitoring();
-		Map<String,Object> bottomContent = adminService.bottomContent();
-		List<AdminResponseDto> reportList = adminService.reportList();
+		Map<String,Object> topContent = adminMainService.trafficMonitoring();
+		Map<String,Object> bottomContent = adminMainService.bottomContent();
+		List<AdminResponseDto> reportList = adminMainService.reportList();
 		
-		List<AdminResponseDto> sublist = adminService.subList();
+		List<AdminResponseDto> sublist = adminMainService.subList();
 
-		List<AdminResponseDto> bakeryList = adminService.bakeryList();
-		List<AdminResponseDto> userList = adminService.userList();
+		List<AdminResponseDto> bakeryList = adminMainService.bakeryList();
+		List<AdminResponseDto> userList = adminMainService.userList();
 		
 		
 		model.addAttribute("today", topContent.get("today"));

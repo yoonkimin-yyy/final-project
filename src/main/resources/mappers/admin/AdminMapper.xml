@@ -62,7 +62,21 @@
 		<result property="createDate" column="create_date"/>
 		<result property="replyContent" column="reply_content"/>
 		<result property="replyDate" column="reply_date"/>
+	</resultMap>
 	
+	<resultMap id="orderResultMap" type="kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto">
+		<result property="bakeryName" column="BAKERY_NAME"></result>
+		<result property="menuPrice" column="MENU_PRICE"></result>
+		<result property="menuName" column="MENU_NAME"></result>
+		<result property="menuCount" column="MENU_COUNT"></result>
+		<result property="resourcesPath" column="RESOURCES_PATH"></result>
+		<result property="changeName" column="CHANGE_NAME"></result>
+		<result property="payNo" column="pay_no"></result>
+		<result property="paymentCode" column="merchant_uid"></result>
+		<result property="userName" column="user_name"></result>
+		<result property="status" column="status"></result>
+		<result property="paymentDate" column="pay_request_date"></result>
+		<result property="amount" column="amount"></result>
 	</resultMap>
 	
 	
@@ -150,6 +164,50 @@
 	<delete id="deleteCategory">
 		DELETE FROM MENU_CATEGORY WHERE CATEGORY = #{category}
 	</delete>
+	
+	<select id="selectOrderCount" resultType="int" parameterType="String">
+		SELECT COUNT(DISTINCT p.MERCHANT_UID || '_' || oi.ORDER_NO)
+	  	FROM PAYMENT p
+	  	JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
+		JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
+		JOIN USER_INFO ui ON r.USER_NO = ui.USER_NO
+		JOIN BAKERY_INFO bi ON bi.BAKERY_NO = r.BAKERY_NO
+		WHERE 1=1
+	  	<if test="keyword != null and keyword != ''">
+		    AND (
+		      LOWER(ui.USER_NAME) LIKE '%' || LOWER(#{keyword}) || '%'
+		      OR LOWER(p.MERCHANT_UID) LIKE '%' || LOWER(#{keyword}) || '%'
+		    )
+	  	</if>
+	</select>
+	
+<select id="selectPagedOrders" resultMap="orderResultMap" parameterType="map">
+  SELECT *
+  FROM (
+    SELECT
+      ROW_NUMBER() OVER (ORDER BY p.PAY_REQUEST_DATE DESC) AS rn,
+      p.PAY_NO,
+      p.MERCHANT_UID,
+      p.AMOUNT,
+      p.STATUS,
+      p.PAY_REQUEST_DATE,
+      ui.USER_NAME,
+      bi.BAKERY_NAME
+    FROM PAYMENT p
+    JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
+    JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
+    JOIN USER_INFO ui ON r.USER_NO = ui.USER_NO
+    JOIN BAKERY_INFO bi ON bi.BAKERY_NO = r.BAKERY_NO
+    WHERE 1=1
+    <if test="keyword != null and keyword != ''">
+      AND (
+        LOWER(ui.USER_NAME) LIKE '%' || LOWER(#{keyword}) || '%'
+        OR LOWER(p.MERCHANT_UID) LIKE '%' || LOWER(#{keyword}) || '%'
+      )
+    </if>
+  )
+  WHERE rn BETWEEN #{pi.offset} AND #{pi.limit}
+</select>
 	
 <!-- .................................................................................................. -->
   	
@@ -267,6 +325,21 @@ sysdate)
 		ORDER BY INQUIRY_NO desc
 		FETCH FIRST 3 ROWS ONLY
 	</select>
+	
+	<select id="bakeryInfo" >
+			SELECT bi.BAKERY_NAME AS bakeryName,
+				   bi.BAKERY_ADDRESS AS bakeryAddress,
+				   bi.BAKERY_PHONE AS bakeryPhone,
+				   bd.INSIDE_INFO AS insideInfo,
+				   bd.OUTSIDE_INFO AS outsideInfo,
+				   bd.AMENITY AS parkingInfo,
+				   ba.AGREE,
+				   ba.reject
+			FROM BAKERY_INFO bi
+			JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
+			JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO
+			WHERE bi.BAKERY_NO = ${bakeryNo}	
+		</select>
 	
 	<select id="reportList">
 		SELECT rrui.USER_id AS reporter,

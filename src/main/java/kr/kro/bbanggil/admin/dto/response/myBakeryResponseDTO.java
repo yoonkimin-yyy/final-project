@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.user.bakery.dto.response;
+package kr.kro.bbanggil.admin.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;

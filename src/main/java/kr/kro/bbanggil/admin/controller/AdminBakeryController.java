@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.admin.service.AdminBakeryService;
+import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
+import kr.kro.bbanggil.user.member.service.MypageService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -19,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminBakeryController {
 	private final AdminBakeryService adminBakeryService;
+	private final MypageService mypageService;
 
 	@GetMapping("/detail")
 	public String bakeryDetailForm(@RequestParam("bakeryNo") int bakeryNo,
@@ -56,5 +61,17 @@ public class AdminBakeryController {
 		adminBakeryService.update(action, bakeryNo, rejectReason);
 		
 		return "redirect:/admin/form";
+	}
+	
+	@GetMapping("/info/form")
+	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo, @SessionAttribute("userNum") int userNum,
+			Model model) {
+		myBakeryResponseDTO result = adminBakeryService.bakeryInfo(bakeryNo);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info", info);
+		model.addAttribute("bakery", result);
+		model.addAttribute("no", bakeryNo);
+		model.addAttribute("goMyPage",true);
+		return "/owner/bakery-info";
 	}
 }

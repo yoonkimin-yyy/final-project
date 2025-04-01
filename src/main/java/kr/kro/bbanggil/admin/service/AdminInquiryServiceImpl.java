@@ -10,11 +10,16 @@ import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
+import kr.kro.bbanggil.admin.mapper.AdminMapper;
+import kr.kro.bbanggil.common.service.EmailService;
 import kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AdminInquiryServiceImpl implements AdminInquiryService{
-	
+	private final AdminMapper adminMapper;
+	private final EmailService emailService;
 	private final Logger logger = LogManager.getLogger(AdminInquiryServiceImpl.class);
 	
 	
@@ -63,6 +68,6 @@ public class AdminInquiryServiceImpl implements AdminInquiryService{
 				    감사합니다.
 				""".formatted(info.getTitle(), info.getContent(), info.getReply());
 
-		emailServiceImpl.sendEmail(info.getEmail(), subject, body);
+		emailService.sendEmail(info.getEmail(), subject, body);
 	}
 }

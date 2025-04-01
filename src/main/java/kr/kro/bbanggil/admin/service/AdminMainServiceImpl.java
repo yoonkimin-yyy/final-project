@@ -26,11 +26,11 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class AdminServiceImpl implements AdminService {
+public class AdminMainServiceImpl implements AdminMainService {
 
 	private final EmailServiceImpl emailServiceImpl;
 	private final AdminMapper adminMapper;
-	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
+	private final Logger logger = LogManager.getLogger(AdminMainServiceImpl.class);
 
 	@Override
 	public List<AdminResponseDto> subList() {

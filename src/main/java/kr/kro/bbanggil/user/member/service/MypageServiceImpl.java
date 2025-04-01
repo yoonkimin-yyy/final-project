@@ -101,7 +101,8 @@ public class MypageServiceImpl implements MypageService {
     		
 		return mypageMapper.ownerMypage(userNum);
 	}
-
+    
+    @Override
 	public OwnerInfoResponseDTO ownerInfo(int userNum) {
 		OwnerInfoResponseDTO result = mypageMapper.ownerInfo(userNum);
 		result.setBusinessNo(result.getBusinessNo().replaceAll("(\\d{3})(\\d{2})(\\d{5})", "$1-$2-$3"));

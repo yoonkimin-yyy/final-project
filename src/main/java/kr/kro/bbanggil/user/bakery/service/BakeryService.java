@@ -35,8 +35,6 @@ public interface BakeryService {
 
 	public int bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo,String role) throws Exception;
   
-	public void saveBakery(BakeryDto bakery);
-	
 	List<BakeryDto> getBakeriesByRegion(String region);
 	
 	List<BakeryDto> getPopularBakeries();
@@ -63,26 +61,12 @@ public interface BakeryService {
 
 	void bakeryUpdate(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo);
 
-	void imgInsert(MultipartFile file);
 	
-	List<CategoryResponseDTO> getCategory();
-	
-	
-	Map<String, Object> getMenuList(int bakeryNo);
-	
-	void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file);
-	
-	void menuDelete(int bakeryNo);
-	
-	MenuUpdateResponseDTO getMenuDetail(int menuNo);
-	
-	void updateMenu(MenuRequestDTO menuDTO, MultipartFile file);
 	
 	void updateUserCount(int bakeryNo);
 	
 	List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
 	List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
-	
 	List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
 	
 

@@ -4,10 +4,15 @@ import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
+import kr.kro.bbanggil.admin.mapper.AdminMapper;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AdminReportServiceImpl implements AdminReportService{
 
+	private final AdminMapper adminMapper;
+	
 	@Override
 	public AdminResponseDto reportDetail(int reportNo) {
 		return adminMapper.reportDetail(reportNo);
