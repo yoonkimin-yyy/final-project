@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.kro.bbanggil.user.bakery.dto.ReviewImageDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,6 +50,9 @@ public class ReviewResponseDto {
 	}
 	private String reviewReply;
 	private String reviewReplyDate;
+	
+	private List<ReviewImageDto> reviewImages = new ArrayList<>();
+	
 	
 		
 }

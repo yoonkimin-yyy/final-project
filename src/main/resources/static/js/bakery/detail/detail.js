@@ -1,4 +1,50 @@
 
+let interiorSwiper, exteriorSwiper, parkingSwiper;
+
+function initInteriorSlider() {
+  if (!interiorSwiper) {
+    interiorSwiper = new Swiper('.mySwiper', {
+      loop: true,
+      pagination: {
+        el: '.interior-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.interior-next',
+        prevEl: '.interior-prev'
+      },
+	  
+      spaceBetween: 20
+    });
+  }
+}
+
+function initExteriorSlider() {
+  if (!exteriorSwiper) {
+    exteriorSwiper = new Swiper('.exteriorSwiper', {
+      loop: true,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      spaceBetween: 20,
+    });
+  }
+}
+
+function initParkingSlider() {
+  if (!parkingSwiper) {
+    parkingSwiper = new Swiper('.parkingSwiper', {
+      loop: true,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      spaceBetween: 20,
+    });
+  }
+}
+
+console.log(document.querySelectorAll('.mySwiper .swiper-slide').length);
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
 	const bakeryNo = getBakeryNoFromURL();
@@ -925,46 +971,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-let interiorSwiper, exteriorSwiper, parkingSwiper;
 
-function initInteriorSlider() {
-  if (!interiorSwiper) {
-    interiorSwiper = new Swiper('.mySwiper', {
-      loop: true,
-      pagination: {
-        el: '.interior-pagination',
-        clickable: true
-      },
-      navigation: {
-        nextEl: '.interior-next',
-        prevEl: '.interior-prev'
-      },
-      spaceBetween: 20
-    });
-  }
-}
-
-function initExteriorSlider() {
-  if (!exteriorSwiper) {
-    exteriorSwiper = new Swiper('.exteriorSwiper', {
-      loop: true,
-      pagination: { el: '.swiper-pagination', clickable: true },
-      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-      spaceBetween: 20,
-    });
-  }
-}
-
-function initParkingSlider() {
-  if (!parkingSwiper) {
-    parkingSwiper = new Swiper('.parkingSwiper', {
-      loop: true,
-      pagination: { el: '.swiper-pagination', clickable: true },
-      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-      spaceBetween: 20,
-    });
-  }
-}
 
 
 

@@ -32,6 +32,7 @@ import kr.kro.bbanggil.common.util.FileUploadUtil;
 import kr.kro.bbanggil.global.exception.BbanggilException;
 import kr.kro.bbanggil.user.bakery.api.KakaoController;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryTimeSetDTO;
@@ -350,12 +351,12 @@ public class BakeryServiceImpl implements BakeryService{
 		return bakeryMapper.getBakeryDetail(no);
 	}
 	@Override
-	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo) {
+	public List<BakeryImageDTO> getInsideImages(double bakeryNo) {
 	    return bakeryMapper.getInsideImages(bakeryNo);
 	}
 
 	@Override
-	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo) {
+	public List<BakeryImageDTO> getOutsideImages(double bakeryNo) {
 	    return bakeryMapper.getOutsideImages(bakeryNo);
 	}	
 	

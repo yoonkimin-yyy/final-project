@@ -165,14 +165,15 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public ReviewResponseDto getReviewId(int reviewNo) {
+		
+		
+		 
 		return reviewMapper.getReviewById(reviewNo);
 	}
 
 	@Override
 	public int editReview(ReviewRequestDto reviewRequestDto, List<MultipartFile> files) {
 		ReviewResponseDto existingReview = reviewMapper.getReviewById(reviewRequestDto.getReviewNo());
-		System.out.println("sfsfsf");
-		System.out.println(existingReview);
 
 		if (existingReview == null) {
 			return 0; // 리뷰가 존재하지 않으면 수정할 수 없음
@@ -199,11 +200,6 @@ public class ReviewServiceImpl implements ReviewService {
 				tagFive = tagList.get(4);
 		}
 
-		System.out.println("tagFirst: " + tagFirst);
-		System.out.println("tagSecond: " + tagSecond);
-		System.out.println("tagThird: " + tagThird);
-		System.out.println("tagForth: " + tagForth);
-		System.out.println("tagFive: " + tagFive);
 
 		reviewMapper.updateReviewTags(reviewRequestDto.getReviewNo(), tagFirst, tagSecond, tagThird, tagForth, tagFive);
 
@@ -237,6 +233,7 @@ public class ReviewServiceImpl implements ReviewService {
 		logger.info("리뷰 삭제 요청 - reviewNo: {}, userNo: {}, fileName: {}", reviewNo, userNo, fileName);
 
 		ReviewResponseDto review = reviewMapper.getReviewById(reviewNo);
+		
 
 		if (review == null || !Objects.equals(review.getUserNo(), userNo)) {
 			logger.warn("리뷰가 없거나 작성자가 아닙니다. reviewNo: {}, 요청한 userNo: {}, 실제 userNo: {}", reviewNo, userNo,
