@@ -79,6 +79,7 @@ public class MypageController {
 		
 	}
 	
+	//회원 정보 수정
 	
 	@GetMapping("/edit/form")
 	public String editForm(  @SessionAttribute(value="userNum",required=false)Integer userNo,

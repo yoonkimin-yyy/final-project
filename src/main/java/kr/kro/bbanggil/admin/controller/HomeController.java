@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
-import kr.kro.bbanggil.admin.service.AdminServiceImpl;
+import kr.kro.bbanggil.admin.service.AdminMainServiceImpl;
 import kr.kro.bbanggil.common.dto.request.SubscriptionRequsetDto;
 import kr.kro.bbanggil.common.scheduler.NewsletterScheduler;
 import kr.kro.bbanggil.common.service.EmailServiceImpl;
@@ -38,7 +38,7 @@ public class HomeController {
 	private final EmailServiceImpl emailService;
 	private final NewsletterScheduler newsletterScheduler;
 	private final BakeryServiceImpl bakeryService;
-	private final AdminServiceImpl adminService;
+	private final AdminMainServiceImpl adminService;
 	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
 	
 	/*

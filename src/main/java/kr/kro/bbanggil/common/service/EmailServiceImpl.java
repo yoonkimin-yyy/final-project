@@ -73,6 +73,7 @@ public class EmailServiceImpl implements EmailService {
 	/**
 	 * 이메일만 보내는 기능
 	 */
+	@Override
 	public void sendEmail(String toEmail, String subject, String body) {
 
 		try {

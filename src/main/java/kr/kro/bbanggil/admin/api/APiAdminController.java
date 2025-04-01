@@ -1,7 +1,6 @@
 package kr.kro.bbanggil.admin.api;
 
 import java.util.List;
-
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
-import kr.kro.bbanggil.admin.service.AdminService;
-import kr.kro.bbanggil.admin.service.AdminServiceImpl;
+import kr.kro.bbanggil.admin.service.AdminMainService;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -26,14 +24,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class APiAdminController {
 	
-	private final AdminService adminService;
-	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
+	private final AdminMainService adminMainService;
+	private final Logger logger = LogManager.getLogger(APiAdminController.class);
 	
 	@PostMapping("/sendEmail")
 	@ResponseBody
 	public String sendEmail(@RequestBody AdminEmailRequestDto adminReqeustDto) {
 		
-		adminService.sendEmail(adminReqeustDto);
+		adminMainService.sendEmail(adminReqeustDto);
 		
 		logger.info("/sendEmail: '{}'", adminReqeustDto.getAddress());
 		
@@ -42,13 +40,13 @@ public class APiAdminController {
 	
 	@GetMapping("/monthly-count")
 	public ResponseEntity<List<MonthlyOrderResponseDTO>> getMonthlyOrderCount(){
-		return ResponseEntity.ok(adminService.getMonthlyOrderCount());
+		return ResponseEntity.ok(adminMainService.getMonthlyOrderCount());
 	}
 	
 	@PostMapping("/addCategory")
 	public String addCategory(@RequestParam("category") String newCategory) {
 		
-		adminService.addCategory(newCategory);
+		adminMainService.addCategory(newCategory);
 		
 		logger.info("/addCategory: '{}'", newCategory);
 		
@@ -58,7 +56,7 @@ public class APiAdminController {
 	@PostMapping("/deleteCategory")
 	public String deleteCategory(@RequestBody Map<String, List<String>> requestBody) {
 		
-		adminService.deleteCategory(requestBody);
+		adminMainService.deleteCategory(requestBody);
 				
 		logger.info("/deleteCategory: '{}'", requestBody);
 		

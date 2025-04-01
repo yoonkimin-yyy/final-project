@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.owner.order.service.OrderServiceImpl;
@@ -42,7 +43,6 @@ import kr.kro.bbanggil.user.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.bakeryUpdateResponseDTO;
-import kr.kro.bbanggil.user.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.user.bakery.service.BakeryServiceImpl;
 import kr.kro.bbanggil.user.bakery.service.ReviewServiceImpl;
 import kr.kro.bbanggil.user.bakery.util.ListPageNation;
@@ -241,14 +241,11 @@ public class BakeryController {
 				BakeryResponseDto recentOrder = orderService.findOrderNo(userNum, no);
 
 				if (recentOrder != null) {
-					System.out.println("(BakeryController) recentOrder : " + recentOrder.getOrderNo());
 					model.addAttribute("recentOrder", recentOrder);
 				} else {
-					System.out.println("(BakeryController) recentOrder is null");
 				}
 			}
 
-			System.out.println("(BakeryController) if 종료 ");
 
 			return "user/bakery-detail"; // bakeryDetail.html 뷰 반환
 
@@ -317,73 +314,4 @@ public class BakeryController {
 		return "redirect:/register/owner/mypage";
 	}
 
-	@GetMapping("menu/list/form")
-	public String menuListForm(@RequestParam("no") int bakeryNo, @SessionAttribute("userNum") int userNum,
-			Model model) {
-		Map<String, Object> result = bakeryService.getMenuList(bakeryNo);
-		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
-		model.addAttribute("info", info);
-		model.addAttribute("menu", result.get("list"));
-		model.addAttribute("bakery", result.get("bakery"));
-		model.addAttribute("no", bakeryNo);
-		model.addAttribute("goMyPage",true);
-		return "/owner/menu-list";
-	}
-
-	@GetMapping("/menu/insert/form")
-	public String menuInsertForm(@RequestParam("bakeryNo") int bakeryNo, Model model) {
-		List<CategoryResponseDTO> category = bakeryService.getCategory();
-		model.addAttribute("category", category);
-		model.addAttribute("bakeryNo", bakeryNo);
-		return "owner/menu-insert";
-	}
-
-	@PostMapping("/menu/insert")
-	public ResponseEntity<?> menuInsert(MenuRequestDTO menuDTO,
-							 @RequestParam("bakeryNo") int bakeryNo,
-							 @RequestParam("menuImage") MultipartFile file) {
-			bakeryService.menuInsert(menuDTO,bakeryNo,file);
-		return ResponseEntity.ok().body("{\"message\": \"메뉴 추가 성공\"}");
-	}
-
-	@GetMapping("/info/form")
-	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo, @SessionAttribute("userNum") int userNum,
-			Model model) {
-		myBakeryResponseDTO result = bakeryService.bakeryInfo(bakeryNo);
-		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
-		model.addAttribute("info", info);
-		model.addAttribute("bakery", result);
-		model.addAttribute("no", bakeryNo);
-		model.addAttribute("goMyPage",true);
-		return "/owner/bakery-info";
-	}
-
-	@PostMapping("/menu/delete")
-	public String menuDelete(@RequestParam("menuNo") int menuNo, @RequestParam("no") int no,
-			RedirectAttributes redirectAttributes) {
-		bakeryService.menuDelete(menuNo);
-		redirectAttributes.addAttribute("no", no);
-		return "redirect:/bakery/menu/list/form";
-	}
-
-	@GetMapping("/menu/update/form")
-	public String menuUpdateForm(@RequestParam("menuNo") int menuNo,
-								 @RequestParam("bakeryNo") int bakeryNo,
-								 Model model) {
-		MenuUpdateResponseDTO menuDTO = bakeryService.getMenuDetail(menuNo);
-		model.addAttribute("menu", menuDTO);
-		model.addAttribute("menuNo", menuNo);
-		model.addAttribute("bakeryNo",bakeryNo);
-		return "/owner/menu-update";
-	}
-
-	@PostMapping("/menu/update")
-	public ResponseEntity<?> menuUpdate(MenuRequestDTO menuDTO,
-							 @RequestParam("menuImage") MultipartFile file,
-							 @RequestParam("bakeryNo")int bakeryNo) {
-		System.out.println(bakeryNo);
-		bakeryService.updateMenu(menuDTO,file);
-		return ResponseEntity.ok().body("{\"message\": \"메뉴 수정 성공\"}");
-	}
-	
 }

@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
-import kr.kro.bbanggil.admin.service.AdminService;
+import kr.kro.bbanggil.admin.service.AdminMainService;
 import lombok.RequiredArgsConstructor;
 
 @ControllerAdvice
 @RequiredArgsConstructor
 public class CategoryListConfig {
 
-	private final AdminService adminService;
+	private final AdminMainService adminMainService;
 	
 	@ModelAttribute
 	public void categoryList(Model model) {
 		
-		List<MenuResponseDto> categoryList = adminService.categoryList();
+		List<MenuResponseDto> categoryList = adminMainService.categoryList();
 		
 		model.addAttribute("categoryList", categoryList);
 		
