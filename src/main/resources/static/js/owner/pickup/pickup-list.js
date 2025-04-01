@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         infoDivSecond.textContent = `승인 : ${approved}개`;
         infoDivThird.textContent = `거절 : ${rejected}개`;
         infoDivFourth.textContent = `완료 : ${completed}개`;
-        infoDivFifth.textContent = `총 매출 : ${totalSales.toLocaleString()}원`;
+        infoDivFifth.textContent = `총 매출(완료) : ${totalSales.toLocaleString()}원`;
     }
 
 	function filterOrders(status) {

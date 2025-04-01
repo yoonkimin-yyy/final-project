@@ -38,19 +38,22 @@
 
 	<!-- 월별 매출 조회 -->
     <select id="getMonthlySales" resultMap="pickupResultMap">
-        SELECT
-	        EXTRACT(MONTH FROM p.pay_request_date) AS month, 
-	        SUM(p.amount) AS total_sales
-	    FROM PAYMENT p
-	    JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
-	    JOIN cart c ON c.cart_no = oi.cart_no
-	    JOIN cart_info ci ON ci.cart_no = c.cart_no
-	    JOIN menu m ON ci.menu_no = m.menu_no
-	    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
-	    WHERE bi.bakery_no = #{bakeryNo}
-	    AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
-	    GROUP BY EXTRACT(MONTH FROM p.pay_request_date)
-	    ORDER BY month
+        SELECT 
+		    EXTRACT(MONTH FROM p.pay_request_date) AS month,
+		    SUM(p.amount) AS total_sales
+		FROM (
+		    SELECT DISTINCT p.pay_no, p.amount, p.pay_request_date
+		    FROM PAYMENT p
+		    JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
+		    JOIN cart c ON c.cart_no = oi.cart_no
+		    JOIN cart_info ci ON ci.cart_no = c.cart_no
+		    JOIN menu m ON ci.menu_no = m.menu_no
+		    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
+		    WHERE bi.bakery_no = #{bakeryNo}
+		    AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
+		) p
+		GROUP BY EXTRACT(MONTH FROM p.pay_request_date)
+		ORDER BY month;
     </select>
 
     <!-- 연간 총 매출 조회 -->
