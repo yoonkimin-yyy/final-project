@@ -326,21 +326,6 @@ sysdate)
 		FETCH FIRST 3 ROWS ONLY
 	</select>
 	
-	<select id="bakeryInfo" >
-			SELECT bi.BAKERY_NAME AS bakeryName,
-				   bi.BAKERY_ADDRESS AS bakeryAddress,
-				   bi.BAKERY_PHONE AS bakeryPhone,
-				   bd.INSIDE_INFO AS insideInfo,
-				   bd.OUTSIDE_INFO AS outsideInfo,
-				   bd.AMENITY AS parkingInfo,
-				   ba.AGREE,
-				   ba.reject
-			FROM BAKERY_INFO bi
-			JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
-			JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO
-			WHERE bi.BAKERY_NO = ${bakeryNo}	
-		</select>
-	
 	<select id="reportList">
 		SELECT rrui.USER_id AS reporter,
 			   rr.REPORT_DETAIL AS reportDetail,

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
@@ -22,7 +24,7 @@ import kr.kro.bbanggil.user.bakery.util.ListPageNation;
 
 public interface BakeryService {
 
-	public Map<String, Object> bakeryList(ListPageNation pageNation,
+	public Map<String, Object> bakeryList(PaginationUtil pageNation,
 			  int currentPage,
 			  int postCount,
 			  int pageLimit,
@@ -69,6 +71,10 @@ public interface BakeryService {
 	List<BakeryImageDTO> getInsideImages(double bakeryNo);
 	List<BakeryImageDTO> getOutsideImages(double bakeryNo);
 	List<BakeryImageDTO> getParkingImages(double bakeryNo);
+	
+	public List<BakeryDto> getBakeryDetail(double no);
+	
+	myBakeryResponseDTO bakeryInfo(int bakeryNo);
 	
 
 	

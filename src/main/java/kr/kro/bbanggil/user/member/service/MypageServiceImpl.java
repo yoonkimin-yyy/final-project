@@ -9,15 +9,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
-import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageUserResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
 import kr.kro.bbanggil.user.member.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.user.member.mapper.MypageMapper;
-import kr.kro.bbanggil.user.member.util.MypagePagination;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -29,14 +29,14 @@ public class MypageServiceImpl implements MypageService {
 
 
     @Override
-	public Map<String, Object> getMyList(MypagePagination mypagePagination, 
+	public Map<String, Object> getMyList(PaginationUtil mypagePagination, 
 										   int currentPage,
 										   int postCount,
 										   int pageLimit,
 										   int boardLimit,
 										   int userNo) {
 		// 페이징 처리
-		MypagePageInfoDto pi = mypagePagination.getMyList(postCount, currentPage, pageLimit, boardLimit);
+		PageInfoDTO pi = mypagePagination.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		List<MypageListResponseDto> getBuyHistory = mypageMapper.getBuyHistory(userNo,pi);
 		
 
@@ -93,7 +93,6 @@ public class MypageServiceImpl implements MypageService {
 		}
 		
 		String newPassword = passwordEncoder.encode(passwordDto.getNewPassword());
-		System.out.println("인코딩된 비밀번" + newPassword);
 		int result = mypageMapper.updatePassword(userNo, newPassword);
 		
 		return result;
@@ -125,9 +124,6 @@ public class MypageServiceImpl implements MypageService {
     
     @Override
     public int writeReview(MypageListResponseDto mypageListDto, int userNo) {
-    	System.out.println("서비스 리뷰내용" + mypageListDto.getReviewDto().getReviewNo());
-    	System.out.println("서비스 주문번호" + mypageListDto.getReviewDto().getOrderNo());
-    	System.out.println("서비스 평점" + mypageListDto.getReviewDto().getReviewRating());
     	int result = mypageMapper.writeReview(mypageListDto,userNo);
     	
     	return result;
@@ -136,7 +132,6 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public int deleteReview(MypageListResponseDto mypageListDto) {
     	
-    	System.out.println(mypageListDto.getReviewDto().getOrderNo());
     	int result = mypageMapper.deleteReview(mypageListDto);
     	return result;
     }

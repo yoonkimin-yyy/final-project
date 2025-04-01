@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminBakeryController {
 	private final AdminBakeryService adminBakeryService;
-	private final MypageService mypageService;
 
 	@GetMapping("/detail")
 	public String bakeryDetailForm(@RequestParam("bakeryNo") int bakeryNo,
@@ -63,15 +62,5 @@ public class AdminBakeryController {
 		return "redirect:/admin/form";
 	}
 	
-	@GetMapping("/info/form")
-	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo, @SessionAttribute("userNum") int userNum,
-			Model model) {
-		myBakeryResponseDTO result = adminBakeryService.bakeryInfo(bakeryNo);
-		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
-		model.addAttribute("info", info);
-		model.addAttribute("bakery", result);
-		model.addAttribute("no", bakeryNo);
-		model.addAttribute("goMyPage",true);
-		return "/owner/bakery-info";
-	}
+	
 }

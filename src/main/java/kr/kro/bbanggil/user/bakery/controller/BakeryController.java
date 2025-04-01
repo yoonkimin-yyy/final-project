@@ -22,9 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
-import kr.kro.bbanggil.owner.order.service.OrderServiceImpl;
+import kr.kro.bbanggil.owner.order.service.OrderService;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryInfoDTO;
@@ -34,13 +35,13 @@ import kr.kro.bbanggil.user.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.MenuResponseDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.bakeryUpdateResponseDTO;
-import kr.kro.bbanggil.user.bakery.service.BakeryServiceImpl;
-import kr.kro.bbanggil.user.bakery.service.ReviewServiceImpl;
+import kr.kro.bbanggil.user.bakery.service.BakeryService;
+import kr.kro.bbanggil.user.bakery.service.ReviewService;
 import kr.kro.bbanggil.user.bakery.util.ListPageNation;
-import kr.kro.bbanggil.user.member.service.MypageServiceImpl;
+import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
+import kr.kro.bbanggil.user.member.service.MypageService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -48,11 +49,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class BakeryController {
 
-	private final BakeryServiceImpl bakeryService;
-	private final MypageServiceImpl mypageService;
-	private final ReviewServiceImpl reviewService;
-	private final OrderServiceImpl orderService;
-	private final ListPageNation pageNation;
+	private final BakeryService bakeryService;
+	private final MypageService mypageService;
+	private final ReviewService reviewService;
+	private final OrderService orderService;
+	private final PaginationUtil pageNation;
 
 	@GetMapping("/list")
 	public String list(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
@@ -178,7 +179,7 @@ public class BakeryController {
 
 			int totalReviews = reviewService.getTotalReviewCount(no);
 
-			PageResponseDto pageInfo = PaginationUtil.getPageInfo(totalReviews, currentPage, pageLimit, reviewLimit);
+			PageInfoDTO pageInfo = PaginationUtil.getPageInfo(totalReviews, currentPage, pageLimit, reviewLimit);
 
 			Map<String, Object> result = reviewService.list(pageInfo, currentPage, totalReviews, pageLimit, reviewLimit,
 					no, sort);
@@ -305,6 +306,18 @@ public class BakeryController {
 			@SessionAttribute("userNum") int userNo) {
 		bakeryService.bakeryUpdate(bakeryRequestDTO, bakeryImgRequestDTO, userNo);
 		return "redirect:/register/owner/mypage";
+	}
+	
+	@GetMapping("/info/form")
+	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo, @SessionAttribute("userNum") int userNum,
+			Model model) {
+		myBakeryResponseDTO result = bakeryService.bakeryInfo(bakeryNo);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info", info);
+		model.addAttribute("bakery", result);
+		model.addAttribute("no", bakeryNo);
+		model.addAttribute("goMyPage",true);
+		return "/owner/bakery-info";
 	}
 
 }

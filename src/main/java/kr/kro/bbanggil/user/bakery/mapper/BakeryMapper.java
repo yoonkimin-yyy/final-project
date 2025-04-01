@@ -123,6 +123,8 @@ public interface BakeryMapper {
 
 	
 	public List<BakeryDto> getBakeriesTime(@Param("no")double no);
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
 	
 
 }

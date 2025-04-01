@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.user.bakery.dto.BakeryInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.service.BakeryServiceImpl;
-import kr.kro.bbanggil.user.bakery.util.ListPageNation;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApiBakeryController {
 	private final BakeryServiceImpl bakeryService;
-	private final ListPageNation pageNation;
+	private final PaginationUtil pageNation;
 
 	// ajax로 추가 리스트를 불러오기 위한 코드
 		@GetMapping("/list")
@@ -33,7 +33,6 @@ public class ApiBakeryController {
 			int postCount = bakeryService.totalCount(bakerySearchDTO);
 			int pageLimit = 5;
 			int boardLimit = 10;
-			System.out.println("에이젝스");
 			Map<String, Object> result = bakeryService.bakeryList(pageNation,currentPage,postCount,pageLimit,boardLimit,orderType,bakerySearchDTO);
 			PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
 			

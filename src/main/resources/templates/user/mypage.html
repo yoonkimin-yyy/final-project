@@ -50,7 +50,7 @@
 							th:text="${userInfo.userDto.phoneNum}"></span>
 					</p>
 					<div class="mypage-menu">
-						<a href="/register/edit/form">회원정보 수정 ✎</a>
+						<a href="/mypage/edit/form">회원정보 수정 ✎</a>
 					</div>
 				</div>
 				<div class="mypage-order">
@@ -81,7 +81,7 @@
 													th:text="${getBuyHistory.bakeryInfoDto.bakeryList}"></span>
 											</p>
 										</div>
-										<form method="post" action="/register/deleteReview">
+										<form method="post" action="/mypage/deleteReview">
 											<div class="review-info-div"
 												th:if="${getBuyHistory.reviewDto.reviewRating != null}">
 												<input type="hidden" name="reviewDto.orderNo"
@@ -115,7 +115,7 @@
 													th:attr="onclick='writeBtn(' + ${stat.index} + ')'">리뷰
 													작성 하기 ✎</button>
 											</div>
-											<form method="POST" action="/register/writeReview">
+											<form method="POST" action="/mypage/writeReview">
 												<div class="review-text-div"
 													th:id="'review-text-div-' + ${stat.index}">
 													<input type="hidden" th:id="'review-rating-'+ ${stat.index}"
@@ -147,19 +147,14 @@
 						</tbody>
 					</table>
 	<div class="pagination">
-        <a th:if="${pi.currentPage > 1}" th:href="@{/register/mypage(currentPage=${pi.currentPage - 1})}">이전</a>
+        <a th:if="${pi.currentPage > 1}" th:href="@{/mypage(currentPage=${pi.currentPage - 1})}">이전</a>
         <th:block th:each="pageNum : ${#numbers.sequence(pi.startPage, pi.endPage)}">
-            <a th:href="@{/register/mypage(currentPage=${pageNum})}"
+            <a th:href="@{/mypage(currentPage=${pageNum})}"
                th:text="${pageNum}"
                th:classappend="${pageNum == pi.currentPage} ? 'active' : ''">
             </a>
         </th:block>
-		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/register/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
-    </div>
-
-    <!-- 점주 페이지로 이동 (점주일 경우) -->
-    <div th:if="${goOwnerPage}">
-        <a href="/register/owner/mypage">점주 페이지로 이동</a>
+		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/member/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
     </div>
 				</div>
 			</div>

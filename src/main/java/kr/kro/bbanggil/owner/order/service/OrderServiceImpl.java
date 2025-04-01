@@ -18,7 +18,6 @@ import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.owner.order.dto.response.PickupCheckResponseDto;
 import kr.kro.bbanggil.owner.order.mapper.OrderMapper;
 import kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import lombok.AllArgsConstructor;
 
 @Service

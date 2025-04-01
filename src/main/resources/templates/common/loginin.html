@@ -14,7 +14,7 @@
     <!-- 네비게이션 메뉴 -->
     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
     <main>
-    	<form autocomplete="off" action="/register/loginin" method="post">
+    	<form autocomplete="off" action="/member/loginin" method="post">
 	       	<div class="login-container">
 	            <div class="login-h2">
 	                <!-- <h2>로그인</h2> -->
@@ -41,9 +41,9 @@
 		                <button class="login-snsbtn">구글 로그인</button>
 		            </div>
 		            <div class="login-link">
-		                <a th:href="@{/register/findidpw/form}" class="login-find">아이디/비밀번호 찾기</a>
+		                <a th:href="@{/member/findidpw/form}" class="login-find">아이디/비밀번호 찾기</a>
 		                <p>|</p>
-		                <a th:href="@{/register/typeloginup/form}" class="loginup">회원가입</a>
+		                <a th:href="@{/member/typeloginup/form}" class="loginup">회원가입</a>
 		            </div>
 	        </div>
     	</form>

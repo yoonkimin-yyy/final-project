@@ -1,10 +1,13 @@
 package kr.kro.bbanggil.common.util;
 
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
+import org.springframework.stereotype.Component;
 
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+
+@Component
 public class PaginationUtil {
 
-	public static PageResponseDto getPageInfo(int listCount, int currentPage, int pageLimit, int boardLimit) {
+	public static PageInfoDTO getPageInfo(int listCount, int currentPage, int pageLimit, int boardLimit) {
 
 		int maxPage = (int) (Math.ceil((double) listCount / boardLimit));
 
@@ -20,7 +23,7 @@ public class PaginationUtil {
 		if (endPage > maxPage) {
 			endPage = maxPage;
 		}
-		return new PageResponseDto(listCount, currentPage, pageLimit, boardLimit, maxPage, startPage, endPage, row,
+		return new PageInfoDTO(listCount, currentPage, pageLimit, boardLimit, maxPage, startPage, endPage, row,
 				offset, limit);
 
 	}
