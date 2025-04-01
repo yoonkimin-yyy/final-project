@@ -59,27 +59,30 @@
 	<select id="getPopularBakeries" resultMap="BakeryResultMap">
 
 		SELECT
-		bi.bakery_no,
-		bi.BAKERY_NAME,
-		bi.BAKERY_ADDRESS,
-		m.MENU_NAME,
-		TO_CHAR(m.MENU_INFO) AS
-		MENU_INFO,
-		BI2.IMG_NO,
-		BI2.RESOURCES_PATH,
-		BI2.CHANGE_NAME,
-		AVG(r.REVIEW_RATING) as review_rating
-		FROM BAKERY_INFO bi
-		JOIN MENU m ON
-		M.BAKERY_NO = BI.BAKERY_NO
-		JOIN REVIEW r ON R.BAKERY_NO = BI.BAKERY_NO
-		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = BI.BAKERY_NO
-		GROUP BY
-		bi.BAKERY_NAME, bi.BAKERY_ADDRESS, m.MENU_NAME,bi.bakery_no,
-		TO_CHAR(m.MENU_INFO),
-		BI2.RESOURCES_PATH, BI2.IMG_NO, BI2.CHANGE_NAME
-		ORDER BY review_rating DESC
-		FETCH FIRST 10 ROWS ONLY
+	bi.bakery_no,
+	bi.bakery_name,
+	bi.bakery_address,
+	MIN(m.menu_name) AS menu_name,
+	MIN(TO_CHAR(m.menu_info)) AS menu_info,
+	MIN(bi2.img_no) AS img_no,
+	MIN(bi2.resources_path) AS resources_path,
+	MIN(bi2.change_name) AS change_name,
+	AVG(r.review_rating) AS review_rating
+FROM
+	bakery_info bi
+JOIN menu m ON
+	m.bakery_no = bi.bakery_no
+JOIN review r ON
+	r.bakery_no = bi.bakery_no
+JOIN bakery_image bi2 ON
+	bi2.bakery_no = bi.bakery_no
+GROUP BY
+	bi.bakery_no,
+	bi.bakery_name,
+	bi.bakery_address
+ORDER BY
+	review_rating DESC
+FETCH FIRST 10 ROWS ONLY
 
 	</select>
 

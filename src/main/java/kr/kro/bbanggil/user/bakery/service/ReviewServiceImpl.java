@@ -233,6 +233,7 @@ public class ReviewServiceImpl implements ReviewService {
 		logger.info("리뷰 삭제 요청 - reviewNo: {}, userNo: {}, fileName: {}", reviewNo, userNo, fileName);
 
 		ReviewResponseDto review = reviewMapper.getReviewById(reviewNo);
+		logger.info("🔍 조회된 리뷰 정보: {}", review);
 		
 
 		if (review == null || !Objects.equals(review.getUserNo(), userNo)) {
@@ -292,7 +293,6 @@ public class ReviewServiceImpl implements ReviewService {
 			addTagToMap(tagCounts, tag.getTagForth());
 			addTagToMap(tagCounts, tag.getTagFive());
 		}
-		System.out.println(tagCounts);
 		return tagCounts;
 
 	}

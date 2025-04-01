@@ -84,6 +84,7 @@ public class ReviewController {
 			HttpSession session) {
 		
 		Integer userNo = (Integer) session.getAttribute("userNum");
+		System.out.println(fileName);
 		
 	    if (userNo == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");

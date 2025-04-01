@@ -84,9 +84,14 @@ function submitReview() {
 	    window.location.replace(`/bakery/detail?bakeryNo=${bakeryNo}#reviews`);
 	})
 	.catch(errorMessage => {
-	    // 
-	    alert("리뷰 작성 실패: " + errorMessage);
+		let displayMessage = errorMessage;
+	    
+		if (errorMessage.includes("이미 이 주문에 대한 리뷰가 존재합니다")) {
+		        displayMessage = "📝 주문 후 리뷰는 1개만 등록할 수 있습니다.";
+		    }
 	});
+
+	alert("리뷰 작성 실패: " + displayMessage);
 }
 
 
@@ -174,6 +179,8 @@ function deleteReview(reviewNo, fileName) {
     formData.append("reviewNo", reviewNo);
     formData.append("fileName", fileName ? fileName:"none");
 	
+	console.log("fileName 값:", fileName);
+	console.log("typeof:", typeof fileName);
 
     fetch("/review/delete", {
         method: "POST",
