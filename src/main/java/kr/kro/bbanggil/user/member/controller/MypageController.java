@@ -97,7 +97,6 @@ public class MypageController {
 	public String edit(MypageUserResponseDto mypageDto,
 						@SessionAttribute(value="userNum",required=false)Integer userNo
 					   ) {
-		System.out.println(mypageDto.getUserName());
 		 mypageService.updateUser(mypageDto,userNo);
 		return "redirect:/register/mypage";
 	}

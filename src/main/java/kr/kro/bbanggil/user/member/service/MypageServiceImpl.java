@@ -93,7 +93,6 @@ public class MypageServiceImpl implements MypageService {
 		}
 		
 		String newPassword = passwordEncoder.encode(passwordDto.getNewPassword());
-		System.out.println("인코딩된 비밀번" + newPassword);
 		int result = mypageMapper.updatePassword(userNo, newPassword);
 		
 		return result;
@@ -125,9 +124,6 @@ public class MypageServiceImpl implements MypageService {
     
     @Override
     public int writeReview(MypageListResponseDto mypageListDto, int userNo) {
-    	System.out.println("서비스 리뷰내용" + mypageListDto.getReviewDto().getReviewNo());
-    	System.out.println("서비스 주문번호" + mypageListDto.getReviewDto().getOrderNo());
-    	System.out.println("서비스 평점" + mypageListDto.getReviewDto().getReviewRating());
     	int result = mypageMapper.writeReview(mypageListDto,userNo);
     	
     	return result;
@@ -136,7 +132,6 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public int deleteReview(MypageListResponseDto mypageListDto) {
     	
-    	System.out.println(mypageListDto.getReviewDto().getOrderNo());
     	int result = mypageMapper.deleteReview(mypageListDto);
     	return result;
     }

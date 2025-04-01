@@ -86,7 +86,7 @@ public class EmailServiceImpl implements EmailService {
 			helper.setText(body, true);
 
 			mailSender.send(message);
-			System.out.println(" 이메일 발송 성공: " + toEmail);
+			logger.info("이메일 전송 완료");
 		} catch (MessagingException e) {
 			throw new RuntimeException("이메일 전송 실패", e);
 		}

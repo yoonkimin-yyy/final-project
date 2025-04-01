@@ -83,7 +83,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 						FileRequestDTO fileRequestDto = new FileRequestDTO();
 						fileRequestDto.setReviewNo(reviewDto.getReviewNo());
-						System.out.println(fileRequestDto.getReviewNo());
 
 						util.saveFile(file, fileRequestDto);
 
@@ -282,7 +281,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 		List<ReviewResponseDto> tagList = reviewMapper.getTagCounts(bakeryNo);
 
-		System.out.println(tagList);
 		Map<String, Integer> tagCounts = new HashMap<>();
 
 		for (ReviewResponseDto tag : tagList) {
@@ -292,7 +290,6 @@ public class ReviewServiceImpl implements ReviewService {
 			addTagToMap(tagCounts, tag.getTagForth());
 			addTagToMap(tagCounts, tag.getTagFive());
 		}
-		System.out.println(tagCounts);
 		return tagCounts;
 
 	}
