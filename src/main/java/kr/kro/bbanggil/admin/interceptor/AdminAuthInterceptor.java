@@ -26,7 +26,7 @@ public class AdminAuthInterceptor implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		Object userRole = session.getAttribute("role");
 		if(userRole==null || !userRole.equals("admin")) {
-			logger.info("session: '{}', userRole: '{}'", session, userRole);
+			logger.error("session: '{}', userRole: '{}'", session, userRole);
 			throw new BbanggilException("Admin이 아닙니다","common/error",HttpStatus.NOT_ACCEPTABLE);
 		}
 		return true;
