@@ -27,6 +27,35 @@
 </resultMap>
 
 
+<resultMap id="ReviewWithImagesResultMap" type="kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto">
+    <id property="reviewNo" column="review_no"/>
+    <result property="userNo" column="user_no"/>
+    <result property="userId" column="user_id"/>
+    <result property="reviewDetail" column="review_detail"/>
+    <result property="reviewRating" column="review_rating"/>
+    <result property="reviewDate" column="review_date"/>
+    <result property="tagFirst" column="tag_first"/>
+    <result property="tagSecond" column="tag_second"/>
+    <result property="tagThird" column="tag_third"/>
+    <result property="tagForth" column="tag_forth"/>
+    <result property="tagFive" column="tag_five"/>
+    <result property="reviewReply" column="review_reply"/>
+    <result property="reviewReplyDate" column="review_reply_date"/>
+
+    <!-- 이미지 리스트 매핑 -->
+    <collection property="reviewImages"
+                ofType="kr.kro.bbanggil.user.bakery.dto.ReviewImageDto"
+                javaType="ArrayList">
+        <result property="imgNo" column="img_no"/>
+        <result property="changeName" column="change_name"/>
+        <result property="resourcesPath" column="resources_path"/>
+    </collection>
+</resultMap>
+
+
+
+
+
 
 
 <select id="getLatestBakeryNo" resultType="int">
@@ -145,7 +174,7 @@ WHERE bakery_no = #{bakeryNo}
 
 </select>
 
-<select id="list" resultMap="ReviewResultMap">
+<select id="list" resultMap="ReviewWithImagesResultMap">
 
 SELECT
 	*
@@ -208,25 +237,29 @@ WHERE
 
 </select>
 
-<select id="getReviewById" resultType="kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto">
+<select id="getReviewById" resultMap="ReviewWithImagesResultMap">
 
- SELECT
-        r.REVIEW_NO,
-        r.USER_NO,
-        r.REVIEW_DETAIL,
-        r.REVIEW_RATING,
-        r.REVIEW_DATE,
-        ri.CHANGE_NAME AS changeName,  
-        ri.IMG_NO,
-       	ri.RESOURCES_PATH
-    FROM
-        REVIEW r
-    LEFT JOIN REVIEW_IMG ri  
+  SELECT
+  	r.review_no,
+	r.USER_NO ,
+	r.REVIEW_DETAIL ,
+	r.REVIEW_RATING ,
+	r.REVIEW_DATE ,
+	ri.IMG_NO ,
+	ri.CHANGE_NAME ,
+	ri.RESOURCES_PATH
+FROM
+	REVIEW r
+JOIN USER_INFO ui ON
+	r.USER_NO = ui.USER_NO
+LEFT JOIN REVIEW_IMG ri 
     ON
-        r.REVIEW_NO = ri.REVIEW_NO
-    WHERE
-        r.REVIEW_NO = #{reviewNo}
-	FETCH FIRST 1 ROWS ONLY
+	ri.REVIEW_NO = r.REVIEW_NO
+WHERE
+	r.review_no = #{reviewNo}
+ORDER BY
+	r.REVIEW_DATE DESC
+    
 
 </select>
 
@@ -255,17 +288,14 @@ WHERE
 
 
 SELECT
-	r.USER_NO ,
-	ri.IMG_NO ,
-	ri.CHANGE_NAME ,
-	ri.LOCAL_PATH,
-	ri.RESOURCES_PATH 
+	IMG_NO,
+	CHANGE_NAME,
+	LOCAL_PATH,
+	RESOURCES_PATH
 FROM
-	REVIEW r
-JOIN REVIEW_IMG ri ON
-	r.REVIEW_NO = ri.REVIEW_NO
+	REVIEW_IMG
 WHERE
-	 r.user_no = 1
+REVIEW_NO = #{reviewNo}
 	
 
 

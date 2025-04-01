@@ -32,13 +32,6 @@ public interface ReviewMapper {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	// 기존 리뷰 정보 가져오기 (리뷰 내용 + 기존 이미지 리스트)
 	public ReviewResponseDto getReviewById(@Param("reviewNo")int reviewNo);
 	

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryTimeSetDTO;
@@ -156,11 +157,11 @@ public interface BakeryMapper {
 
 	public void resetDailyVisitCount();
 
-	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
+	public List<BakeryImageDTO> getInsideImages(@Param("bakeryNo")double bakeryNo);
+	public List<BakeryImageDTO> getOutsideImages(@Param("bakeryNo")double bakeryNo);
+	public List<BakeryImageDTO> getParkingImages(@Param("bakeryNo")double bakeryNo);
 
-	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
-	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
-
+	
 	public List<BakeryDto> getBakeriesTime(@Param("no")double no);
 	
 

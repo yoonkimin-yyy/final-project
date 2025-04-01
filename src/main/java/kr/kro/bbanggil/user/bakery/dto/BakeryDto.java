@@ -27,7 +27,7 @@ public class BakeryDto {
     
     private BakeryDetailResponseDto  response = new BakeryDetailResponseDto();
     private List<BakeryResponseScheduleDto> schedule = new ArrayList<>();
-    
+    private List<BakeryImageDTO> images = new ArrayList<>();
     
     
     
