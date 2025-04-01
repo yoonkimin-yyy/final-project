@@ -198,8 +198,10 @@
                   <span class="tag-label" th:utext="${review.tagFive}"></span>
                 </th:block>
               </div>
-              <img th:if="${review.resourcesPath != null and review.changeName != null}"
-                th:src="@{${review.resourcesPath + '/' + review.changeName}}" class="review-image">
+              <div class="review-images" th:if="${review.reviewImages != null}">
+              <img th:each="img : ${review.reviewImages}"
+                th:src="@{${img.resourcesPath + '/' + img.changeName}}" class="review-image">
+              </div>
               <div class="review-actions">
                 <th:block th:if="${review.userNo == userNum}">
                   <button type="button" onclick="editReview(this)" th:data-content="${review.reviewDetail}"
