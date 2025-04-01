@@ -13,13 +13,13 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import kr.kro.bbanggil.admin.service.AdminServiceImpl;
+import kr.kro.bbanggil.admin.service.AdminMainServiceImpl;
 
 @Component
 @WebFilter(urlPatterns = { "/admin/form", "/admin/bakery/detail" })
 public class AdminLogginFilter extends HttpFilter {
 	
-	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class); 
+	private final Logger logger = LogManager.getLogger(AdminMainServiceImpl.class); 
 
 	// 관리자 사이트 필터
 	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

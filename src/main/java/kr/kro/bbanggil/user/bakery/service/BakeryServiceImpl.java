@@ -247,11 +247,10 @@ public class BakeryServiceImpl implements BakeryService{
 						for(int i=0;i<fileCheck.size();i++) {
 							String fileName = fileCheck.get(i).getChangeName();
 							String localPath = fileCheck.get(i).getLocalPath();
-							String s3FileName = fileCheck.get(i).getChangeName();
-							bakeryMapper.deleteFile(s3FileName);
+							bakeryMapper.deleteFile(fileName);
 							bakeryMapper.deleteFile(fileName);
 							fileUpload.deleteFile(localPath, imgLocation, fileName);
-							s3Upload.deleteImage(s3FileName);
+							s3Upload.deleteImage(fileName);
 						}
 						
 						for(int i=0;i<files.size();i++) {
@@ -379,7 +378,7 @@ public class BakeryServiceImpl implements BakeryService{
 		bakeryMapper.updateUserCount(bakeryNo,count);
 	}
 
-	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo) {
+	public List<BakeryImageDTO> getParkingImages(double bakeryNo) {
 		return bakeryMapper.getParkingImages(bakeryNo);
 	}
 

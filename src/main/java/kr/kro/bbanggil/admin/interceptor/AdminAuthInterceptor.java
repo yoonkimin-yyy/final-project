@@ -11,13 +11,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import kr.kro.bbanggil.admin.service.AdminServiceImpl;
+import kr.kro.bbanggil.admin.service.AdminMainServiceImpl;
 import kr.kro.bbanggil.global.exception.BbanggilException;
 
 @Component
 public class AdminAuthInterceptor implements HandlerInterceptor{
 	
-	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
+	private final Logger logger = LogManager.getLogger(AdminMainServiceImpl.class);
 
 	@Override
 	public boolean preHandle(HttpServletRequest request,

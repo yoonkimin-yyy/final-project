@@ -39,7 +39,7 @@ public class HomeController {
 	private final NewsletterScheduler newsletterScheduler;
 	private final BakeryServiceImpl bakeryService;
 	private final AdminMainServiceImpl adminService;
-	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
+	private final Logger logger = LogManager.getLogger(AdminMainServiceImpl.class);
 	
 	/*
 	 * 이메일로 구독 알림 보내는 기능
