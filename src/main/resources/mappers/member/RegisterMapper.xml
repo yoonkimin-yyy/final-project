@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="kr.kro.bbanggil.member.mapper.MemberMapper">
+<mapper namespace="kr.kro.bbanggil.user.member.mapper.MemberMapper">
 
-	<resultMap id="loginupMap" type="kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto">
+	<resultMap id="loginupMap" type="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
 		<result property="userNo" column="USER_NO"></result>
 		<result property="userName" column="USER_NAME"></result>
 		<result property="userId" column="USER_ID"></result>
@@ -16,7 +16,7 @@
 		<result property="createdDate" column="CREATED_DATE"></result>
 	</resultMap>
 	
-	<resultMap id="addressResultMap" type="kr.kro.bbanggil.member.model.dto.request.MemberRequestAddressDto">
+	<resultMap id="addressResultMap" type="kr.kro.bbanggil.user.member.dto.request.MemberRequestAddressDto">
 		<result property="userNo" column="USER_NO"></result>
 		<result property="userPostcode" column="USER_POSTCODE"></result>
 		<result property="userCity" column="USER_CITY"></result>
@@ -26,19 +26,11 @@
 		<result property="userDetailaddress" column="USER_DETAILADDRESS"></result>
 	</resultMap>
 	
-	<resultMap id="ownerResultMap" type="kr.kro.bbanggil.member.model.dto.response.OwnerMypageResponseDTO">
-		<result property="bakeryNo" column="bakery_no"></result>
-		<result property="bakeryName" column="bakery_name"></result>
-		<result property="createdDate" column="submission_date"></result>
-		<result property="bakeryPhone" column="bakery_phone"></result>
-		<result property="bakeryAddress" column="bakery_address"></result>
-		<result property="agree" column="agree"></result>
-	</resultMap>
 	
 
 	
 
-	<insert id="loginup" parameterType="kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto">
+	<insert id="loginup" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestCheckBoxDto">
 	<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
 			SELECT user_info_seq.nextval FROM dual
 	</selectKey>
@@ -55,7 +47,7 @@
 								 )
 	</insert>
 	
-	<insert id="insertCheckbox" parameterType="kr.kro.bbanggil.member.model.dto.request.MemberRequestCheckBoxDto">
+	<insert id="insertCheckbox" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestCheckBoxDto">
 	 INSERT INTO AGREE VALUES (#{userNo}, 
 	 						   SYSDATE, 
 	 						   #{termsofuse}, 
@@ -66,7 +58,7 @@
 	 						   #{sms})
 	</insert>
 	
-	<insert id="insertAddress" parameterType="kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto">
+	<insert id="insertAddress" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
 	INSERT INTO ADDRESS VALUES(#{userNo},
 							   #{requestAddressDto.userPostcode},
 							   #{requestAddressDto.userCity},
@@ -76,7 +68,7 @@
 							   #{requestAddressDto.userDetailaddress})
 	</insert>
 
-	<insert id="businessloginup" parameterType="kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto">
+	<insert id="businessloginup" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
 	<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
 			SELECT user_info_seq.nextval FROM dual
 		</selectKey>
@@ -93,7 +85,7 @@
 								 )
 	</insert>
 	
-	<insert id="insertbusiness" parameterType="kr.kro.bbanggil.member.model.dto.request.MemberRequestSignupDto">
+	<insert id="insertbusiness" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
 	INSERT INTO BUSINESSNO VALUES(#{userNo},
 								  #{businessNoDto.businessNo})
 	</insert>
@@ -120,18 +112,35 @@
         WHERE USER_ID = #{userId}
     </select>
     
-    <select id="ownerMypage" resultMap="ownerResultMap">
-		SELECT bi.BAKERY_NO,
-			   bi.BAKERY_NAME,
-			   bi.BAKERY_ADDRESS,
-			   bi.BAKERY_PHONE,
-			   ba.AGREE,
-			   TO_CHAR(TO_DATE(SUBMISSION_DATE, 'YY/MM/DD'), 'YYYY-MM-DD') AS SUBMISSION_DATE 
-		FROM BAKERY_INFO bi 
-		JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO =ba.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO  
-		WHERE USER_NO = #{userNum}
-	</select>
+    <!-- 이메일로 아이디 찾기 -->
+    <select id="findUserIdByEmail" resultType="String">
+        SELECT USER_ID FROM USER_INFO WHERE USER_EMAIL = #{userEmail}
+    </select>
 
+    <!-- 이메일로 회원 정보 조회 -->
+    <select id="findUserByEmail" resultMap="loginupMap"
+    		resultType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
+        SELECT * FROM USER_INFO 
+        	WHERE USER_EMAIL = #{userEmail}
+        	AND user_name = #{userName}
+        	AND user_type IN ('owner', 'user')
+    </select>
+    
+    <select id="findUserPassword" resultMap="loginupMap">
+    	SELECT * from user_info 
+    		WHERE user_id = #{userId}
+    		AND user_email = #{userEmail}
+    		AND user_type IN ('owner', 'user')
+    </select>
+
+    <!-- 비밀번호 임시비밀번호로 변경 -->
+    <update id="updatePassword">
+        UPDATE USER_INFO SET USER_PASSWORD = #{userPassword} WHERE USER_EMAIL = #{userEmail}
+    </update>
+    
+    <select id="isBanned">
+    	SELECT user_ban from user_info
+    	WHERE user_id=#{userId}
+    </select>
 
 </mapper>

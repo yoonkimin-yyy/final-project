@@ -19,7 +19,7 @@ function requestPay() {
 		alert("픽업정보를 입력해 주세요");
 		return;
 	}
-
+	
 	$.ajax({
 		type: "POST",
 		url: "/api/order/accountCheck",
@@ -92,15 +92,14 @@ function requestPay() {
 								contentType: "application/json"
 							}).then(function (res) {
 								if (res === '주문정보가 성공적으로 저장되었습니다.') {
-									
 									window.location.href = '/order/complete?bakeryName='+ bakeryName;
 								}
 							}).catch(function (err) {
-								alert("결제 오류로 취소되었습니다.");
+								alert("결제 오류로 취소되었습니다1.");
 								return;
 							});
 						} else {
-							alert("결제 오류로 취소되었습니다.");
+							alert("결제 오류로 취소되었습니다2.");
 							return;
 						}
 					}).catch(function (err) {

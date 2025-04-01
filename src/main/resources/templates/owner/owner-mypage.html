@@ -17,12 +17,10 @@
         <div class="mypage-content">
             <div class="mypage-info">
                 <h3>내 정보🥖</h3>
-                <p>이름 <br> &nbsp; 🥐 &nbsp;이빵이</p>
-                <p>이메일 <br> &nbsp; 🥐 &nbsp;asd123@naver.com</p>
-                <p>핸드폰 <br> &nbsp; 🥐 &nbsp;010.1234.5678</p>
+                <p>이름 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.userName}"></span></p>
+                <p>연락처 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.userPhone}"></span></p>
+                <p>사업자 등록 번호 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.businessNo}"></span></p>
             <div class="mypage-menu">
-                <a href="./edit.html">회원정보 수정 ✎</a>
-                <!-- <a href="#">내가 쓴 리뷰 ✎</a> -->
             </div>
         </div>
             <div class="mypage-order">
@@ -41,13 +39,13 @@
                         </tr>
                     </thead>
                     <tbody class="mypage-table-body">
-                        <tr class="tbody-tr" onclick="toggleDetail(this);" th:each="bakery,iterStat :${bakeries}" th:data-bakery-no="${bakery.bakeryNo}">
+                        <tr class="tbody-tr" th:onclick="|location.href='@{/bakery/info/form(bakeryNo=${bakery.bakeryNo})}'|" th:each="bakery,iterStat :${bakeries}" th:data-bakery-no="${bakery.bakeryNo}">
                             <td th:text="${iterStat.index+1}"></td>
                             <td th:text="${bakery.bakeryName}"></td>
                             <td th:text="${bakery.createdDate}"></td>
                             <td>0</td>
                             <td th:text="${bakery.agree}"></td>
-                            <td class="no-toggle"><button class="additional-btn no-toggle" th:onclick="|location.href='@{/pickup/list(bakeryNo=${bakery.bakeryNo})}'|">확인</button></td>
+                            <td class="no-toggle" onclick="event.stopPropagation()"><button class="additional-btn no-toggle" th:onclick="|location.href='@{/pickup/list(bakeryNo=${bakery.bakeryNo})}'|">확인</button></td>
                         </tr>
                         
                     </tbody>

@@ -3,219 +3,215 @@
 
 <head>
 
-    <head th:replace="~{fragments/head :: HeadFragment}"></head>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="/css/home/home.css">
-    <script type="text/javascript"
-        src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="/css/home/home.css">
+  <link rel="stylesheet" href="styles.css">
 
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <head th:replace="~{fragments/head :: HeadFragment}"></head>
+  <script type="text/javascript"
+    src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 
 <body>
-    <!-- 헤더 및 네비게이션 -->
-    <header th:replace="~{fragments/header :: HeaderFragment}"></header>
+  <!-- 헤더 및 네비게이션 -->
+  <header th:replace="~{fragments/header :: HeaderFragment}"></header>
 
 
 
-    <!-- 네비게이션 메뉴 -->
-    <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+  <!-- 네비게이션 메뉴 -->
+  <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
 
 
 
-    <!-- 히어로 섹션 -->
-    <section class="hero-section">
-        <img src="/img/common/성심당.jpg" alt="베이커리 이미지" class="hero-image">
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <h2 class="hero-title">전국 빵집을 한눈에</h2>
-                <p class="hero-subtitle">장인의 손길로 탄생한 맛있는 빵집들을 소개합니다</p>
-                <button class="hero-button"
-                    th:attr="onclick=|location.href='@{/bakery/list(searchText='', orderType='popular')}'|">
-                    빵집 탐색하기
-                </button>
+  <!-- 히어로 섹션 -->
+  <section class="hero-section">
+    <img src="/img/common/성심당.jpg" alt="베이커리 이미지" class="hero-image">
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h2 class="hero-title">전국 빵집을 한눈에</h2>
+        <p class="hero-subtitle">장인의 손길로 탄생한 맛있는 빵집들을 소개합니다</p>
+        <button class="hero-button"
+          th:attr="onclick=|location.href='@{/bakery/list(searchText='', orderType='popular')}'|">
+          빵집 탐색하기
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 인기 빵집 섹션 -->
+  <section class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">인기 빵집</h2>
+      <a th:href="@{/bakery/list(searchText='', orderType='popular')}" class="view-all-button">
+        전체보기
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+
+    <!-- Swiper Container -->
+    <div class="swiper swiper-popularBakerySwiper">
+      <div class="swiper-wrapper">
+        <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card"
+        th:if="${bakery.no != null}" th:onclick="|location.href='/bakery/detail?bakeryNo=${bakery.no}'|">
+            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
+              th:alt="${bakery.name}" class="bakery-image">
+          <div class="bakery-info">
+            <h3 class="bakery-name" th:text="${bakery.name}"></h3>
+            <div class="location-container">
+              <i class="fas fa-map-marker-alt"></i>
+              <span class="location-text" th:text="${bakery.address}"></span>
             </div>
-        </div>
-    </section>
-
-    <!-- 인기 빵집 섹션 -->
-    <section class="section-container">
-        <div class="section-header">
-            <h2 class="section-title">인기 빵집</h2>
-            <a th:href="@{/bakery/list(searchText='', orderType='popular')}" class="view-all-button">
-                전체보기
-                <i class="fas fa-chevron-right"></i>
-            </a>
-        </div>
-
-        <!-- Swiper Container -->
-        <div class="swiper swiper-popularBakerySwiper">
-            <div class="swiper-wrapper">
-                <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card">
-                    <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
-                        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
-                            th:alt="${bakery.name}" class="bakery-image">
-                    </a>
-                    <div class="bakery-info">
-                        <h3 class="bakery-name" th:text="${bakery.name}"></h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text" th:text="${bakery.address}"></span>
-                        </div>
-                        <div class="rating-container">
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">
-                                <th:block th:if="${bakery.response != null}"
-                                    th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></th:block>
-                                <th:block th:if="${bakery.response == null}"></th:block>
-                            </span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
-                            <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
-                            <span class="specialty-label" th:text="${bakery.response.categoryName}">인기 메뉴</span>
-                            <span class="specialty-text" th:text="${bakery.response.menuName}">소금빵</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="rating-container">
+              <i class="fas fa-star"></i>
+              <span class="rating-text">
+                <th:block th:if="${bakery.response != null}"
+                  th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></th:block>
+                <th:block th:if="${bakery.response == null}"></th:block>
+              </span>
             </div>
-            <!-- 네비게이션 버튼 -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <!-- 페이지네이션 -->
-            <div class="swiper-pagination"></div>
-        </div>
-    </section>
-
-
-    <!-- 지역별 빵집 섹션 -->
-    <section class="section-container">
-        <div class="section-header">
-            <h2 class="section-title">지역별 빵집</h2>
-            <a th:href="@{/bakery/list(searchText='서울', orderType='recent')}" class="view-all-button">
-                전체보기
-                <i class="fas fa-chevron-right"></i>
-            </a>
-        </div>
-
-
-        <!-- ✅ 카카오맵 표시 -->
-        <div id="map" style="width: 100%; height: 500px;"></div>
-
-
-        <!-- ✅ 지역 선택 버튼 -->
-        <div class="region-container">
-            <button class="region-button" data-region="서울">서울</button>
-            <button class="region-button" data-region="경기">경기</button>
-            <button class="region-button" data-region="인천">인천</button>
-            <button class="region-button" data-region="부산">부산</button>
-            <button class="region-button" data-region="대구">대구</button>
-            <button class="region-button" data-region="광주">광주</button>
-            <button class="region-button" data-region="대전">대전</button>
-            <button class="region-button" data-region="울산">울산</button>
-            <button class="region-button" data-region="세종">세종</button>
-            <button class="region-button" data-region="강원">강원</button>
-            <button class="region-button" data-region="충북">충북</button>
-            <button class="region-button" data-region="충남">충남</button>
-            <button class="region-button" data-region="전북">전북</button>
-            <button class="region-button" data-region="전남">전남</button>
-            <button class="region-button" data-region="경북">경북</button>
-            <button class="region-button" data-region="경남">경남</button>
-            <button class="region-button" data-region="제주">제주</button>
-        </div>
-    </section>
-
-    <section class="section-container">
-        <div class="section-header">
-            <h2 class="section-title">최근 오픈 빵집</h2>
-            <a href="#" class="view-all-button"
-                th:onclick="|location.href='@{/bakery/list(searchText='', orderType='recent')}'|">
-                전체보기
-                <i class="fas fa-chevron-right"></i>
-            </a>
-        </div>
-
-        <!-- Swiper 컨테이너 (최근 오픈 빵집) -->
-        <div class="swiper recentBakerySwiper">
-            <div class="swiper-wrapper">
-                <div th:each="bakery : ${recentBakeries}" class="swiper-slide bakery-card">
-                    <div class="new-badge">NEW</div>
-                    <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
-                        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
-                            th:alt="${bakery.name}" class="bakery-image">
-                    </a>
-                    <div class="bakery-info">
-                        <h3 class="bakery-name" th:text="${bakery.name}">브레드랩</h3>
-                        <div class="location-container">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="location-text" th:text="${bakery.address}">서울시 강남구 신사동</span>
-                        </div>
-                        <div class="open-date-container">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="open-date-text" th:text="${bakery.response.createDate}">오픈일: 2025.02.17</span>
-                        </div>
-                        <div class="specialty-container">
-                            <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
-                            <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
-                        </div>
-                    </div>
-                </div>
+            <div class="specialty-container">
+              <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
+              <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
             </div>
-
-            <!-- 네비게이션 버튼 -->
-            <div class="swiper-button-next recent-next"></div>
-            <div class="swiper-button-prev recent-prev"></div>
-
-            <!-- 페이지네이션 -->
-            <div class="swiper-pagination recent-pagination"></div>
+          </div>
         </div>
-    </section>
+      </div>
+      <!-- 네비게이션 버튼 -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <!-- 페이지네이션 -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
 
-    <!-- 빵 카테고리 섹션 -->
-    <section class="section-container">
-        <div class="section-header">
-            <h2 class="section-title">인기 빵 카테고리</h2>
-            <a th:href="@{/bakery/list(searchText='베이직 빵', orderType='recent')}" class="view-all-button">
-                전체보기
-                <i class="fas fa-chevron-right"></i>
-            </a>
-        </div>
 
-        <div class="categories-container">
-            <div class="category-card" th:each="bakery : ${categoryBakeries}">
-                <img src="https://api.a0.dev/assets/image?text=fresh%20loaves%20of%20bread&aspect=1:1&seed=131" alt="식빵"
-                    class="category-image">
-                <div class="category-info">
-                    <h3 class="category-name" th:text="${bakery.response.category}"></h3>
-                    <p class="category-count" th:text="|${#numbers.formatInteger(bakery.response.totalCount, 0)}개|"></p>
-                </div>
+  <!-- 지역별 빵집 섹션 -->
+  <section class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">지역별 빵집</h2>
+      <a th:href="@{/bakery/list(searchText='서울', orderType='recent')}" class="view-all-button">
+        전체보기
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+
+
+    <!-- ✅ 카카오맵 표시 -->
+    <div id="map" style="width: 100%; height: 500px;"></div>
+
+
+    <!-- ✅ 지역 선택 버튼 -->
+    <div class="region-container">
+      <button class="region-button" data-region="서울">서울</button>
+      <button class="region-button" data-region="경기">경기</button>
+      <button class="region-button" data-region="인천">인천</button>
+      <button class="region-button" data-region="부산">부산</button>
+      <button class="region-button" data-region="대구">대구</button>
+      <button class="region-button" data-region="광주">광주</button>
+      <button class="region-button" data-region="대전">대전</button>
+      <button class="region-button" data-region="울산">울산</button>
+      <button class="region-button" data-region="세종">세종</button>
+      <button class="region-button" data-region="강원">강원</button>
+      <button class="region-button" data-region="충북">충북</button>
+      <button class="region-button" data-region="충남">충남</button>
+      <button class="region-button" data-region="전북">전북</button>
+      <button class="region-button" data-region="전남">전남</button>
+      <button class="region-button" data-region="경북">경북</button>
+      <button class="region-button" data-region="경남">경남</button>
+      <button class="region-button" data-region="제주">제주</button>
+    </div>
+  </section>
+
+  <section class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">최근 오픈 빵집</h2>
+      <a href="#" class="view-all-button"
+        th:onclick="|location.href='@{/bakery/list(searchText='', orderType='recent')}'|">
+        전체보기
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+
+    <!-- Swiper 컨테이너 (최근 오픈 빵집) -->
+    <div class="swiper recentBakerySwiper">
+      <div class="swiper-wrapper">
+        <div th:each="bakery : ${recentBakeries}" class="swiper-slide bakery-card"
+        th:if="${bakery.no != null}" th:onclick="|location.href='/bakery/detail?bakeryNo=${bakery.no}'|" style="cursor: pointer;">
+          <div class="new-badge">NEW</div>
+            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
+              th:alt="${bakery.name}" class="bakery-image">
+          <div class="bakery-info">
+            <h3 class="bakery-name" th:text="${bakery.name}">브레드랩</h3>
+            <div class="location-container">
+              <i class="fas fa-map-marker-alt"></i>
+              <span class="location-text" th:text="${bakery.address}">서울시 강남구 신사동</span>
             </div>
-
-        </div>
-    </section>
-
-    <!-- 뉴스레터 구독 섹션 -->
-    <section class="newsletter-container">
-        <div class="newsletter-content">
-            <i class="fas fa-envelope-open-text newsletter-icon"></i>
-            <h2 class="newsletter-title">이빵 이오 뉴스레터 구독하기</h2>
-            <p class="newsletter-description">
-                매주 새로운 빵집 정보와 할인 소식, 베이킹 팁을 이메일로 받아보세요.
-            </p>
-            <div class="subscribe-container">
-                <input type="email" name="email" class="email-input" placeholder="이메일 주소 입력" required id="email">
-                <button type="submit" class="subscribe-button" onclick="subscribe()">구독하기</button>
+            <div class="open-date-container">
+              <i class="fas fa-calendar-alt"></i>
+              <span class="open-date-text" th:text="${bakery.response.createDate}">오픈일: 2025.02.17</span>
             </div>
-            <p class="subscribed-text" id="subscribed-message" style="display: none;" th:text="${message}"></p>
+            <div class="specialty-container">
+              <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
+              <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- 푸터 -->
-    <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+      <!-- 네비게이션 버튼 -->
+      <div class="swiper-button-next recent-next"></div>
+      <div class="swiper-button-prev recent-prev"></div>
+
+      <!-- 페이지네이션 -->
+      <div class="swiper-pagination recent-pagination"></div>
+    </div>
+  </section>
+
+  <!-- 빵 카테고리 섹션 -->
+  <section class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">인기 빵 카테고리</h2>
+      <a th:href="@{/bakery/list(searchText='베이직 빵', orderType='recent')}" class="view-all-button">
+        
+      </a>
+    </div>
+
+    <div class="categories-container">
+      <a th:each="bakery : ${categoryBakeries}"
+        th:href="@{/bakery/list(searchText=${bakery.response.category}, orderType='recent')}" class="category-card">
+        <img src="https://api.a0.dev/assets/image?text=fresh%20loaves%20of%20bread&aspect=1:1&seed=131"
+          th:alt="${bakery.response.category}" class="category-image">
+        <div class="category-info">
+          <h3 class="category-name" th:text="${bakery.response.category}"></h3>
+          <p class="category-count" th:text="|${#numbers.formatInteger(bakery.response.totalCount, 0)}개|"></p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 뉴스레터 구독 섹션 -->
+  <section class="newsletter-container">
+    <div class="newsletter-content">
+      <i class="fas fa-envelope-open-text newsletter-icon"></i>
+      <h2 class="newsletter-title">이빵 이오 뉴스레터 구독하기</h2>
+      <p class="newsletter-description">
+        매주 새로운 빵집 정보와 할인 소식, 베이킹 팁을 이메일로 받아보세요.
+      </p>
+      <div class="subscribe-container">
+        <input type="email" name="email" class="email-input" placeholder="이메일 주소 입력" required id="email">
+        <button type="submit" class="subscribe-button" onclick="subscribe()">구독하기</button>
+      </div>
+      <p class="subscribed-text" id="subscribed-message" style="display: none;" th:text="${message}"></p>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
 
 
 

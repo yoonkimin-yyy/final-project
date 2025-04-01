@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+<link rel="stylesheet" th:href="@{/css/admin/admin-login.css}">
+<!-- Swiper CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<!-- Swiper JS -->
+<script
+	src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+	<!-- 헤더 및 네비게이션 -->
+	<header th:replace="~{fragments/header :: HeaderFragment}"></header>
+	<!-- 네비게이션 메뉴 -->
+	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+	<main>
+		<form autocomplete="off" action="/register/logininAdmin" method="post">
+			<div class="login-container">
+				<div class="login-h2">
+					<h2>관리자</h2>
+					<img src="/img/common/이빵이.png" style="width: 100px" alt="">
+				</div>
+				<div class="form-group">
+					<label for="userid"></label> <input class="login-input" type="text"
+						placeholder="ID" id="userid" name="userId" required>
+				</div>
+				<div class="form-group">
+					<label for="password"></label> <input class="login-input"
+						type="password" placeholder="Password" id="password"
+						name="userPassword" required>
+				</div>
+				<div th:if="${loginError}"
+					style="color: red; font-size: 13px; margin-bottom: 10px;">
+					<p th:text="${loginError}"></p>
+				</div>
+				<div class="login-btn-div">
+					<button class="login-btn" type="submit">로그인</button>
+				</div>
+			</div>
+		</form>
+	</main>
+	<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head th:replace="~{fragments/head :: HeadFragment}"></head>
+<title>빵길 뉴스레터 관리</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" th:href="@{/css/admin/admin-news-letter.css}">
+
+<body>
+  <header th:replace="~{fragments/header :: HeaderFragment}"></header>
+  <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+  <div class="container">
+    <div class="header">
+      <div class="header-content">
+        <h1>🍞 빵길 뉴스레터 관리</h1>
+        <p>매주 월요일 아침 9시 자동 발송</p>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <span class="material-icons">mail</span>
+        <div class="stat-content">
+          <h3>총 구독자</h3>
+          <p id="totalSubscribers" th:text="${#lists.size(subscribers)} + '명'"></p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <span class="material-icons">schedule</span>
+        <div class="stat-content">
+          <h3>다음 발송</h3>
+          <p id="nextSchedule" th:text="${nextSchedule}"></p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <span class="material-icons">analytics</span>
+        <div class="stat-content">
+          <h3>발송 성공률</h3>
+          <p th:text="${sendSuccessRate} + '%'"></p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <span class="material-icons">store</span>
+        <div class="stat-content">
+          <h3>열람율</h3>
+          <p>100%</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="newsletter-preview">
+        <h2>최근 발송된 뉴스레터</h2>
+        <div class="preview-content">
+           <img th:src="@{${newsletter.resourcesPath + newsletter.changeName}}" alt="최근 빵집" />
+          <div class="preview-details">
+            <h3 th:text="${newsletter.bakeryName}">서천 파티세리 수</h3>
+            <p>🕒 영업시간: 
+             <span th:if="${newsletter.openTime != null}" 
+                th:text="${newsletter.openTime + ' ~ ' + newsletter.closeTime}">09:00 ~ 20:00</span>
+          <span th:unless="${newsletter.openTime != null}">정보 없음</span>
+            </p>
+            <p>📍 위치: <span th:text="${newsletter.location}">서울시 서초구</span></p>
+            <div class="stats">
+              <div>
+                <span class="material-icons">mail</span>
+                <span th:text="${subscribers.size()} + '명 발송'">2,458명 발송</span>
+              </div>
+              <div>
+                <span class="material-icons">schedule</span>
+                <span th:text="${#temporals.format(newsletter.sendDate, 'MM/dd')} + ' 발송'">03/25 발송</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subscriber-list">
+        <h2>구독자 목록</h2>
+
+        <div class="search-bar">
+          <span class="material-icons">search</span>
+          <input type="text" placeholder="이메일로 검색...">
+        </div>
+
+        <div class="subscribers">
+          <!--  DB에서 넘어온 구독자 리스트 반복 출력 -->
+          <div class="subscriber-item" th:each="subscriber : ${subscribers}">
+            <span class="material-icons">person</span>
+            <div class="subscriber-details">
+              <p th:text="${subscriber.email}">user@example.com</p>
+              <span th:text="'구독일: ' + ${subscriber.subscribeDate}">구독일: 2024-03-15</span>
+            </div>
+			<form th:action="@{/admin/unsubscribe}" method="post">
+			    <input type="hidden" name="email" th:value="${subscriber.email}" />
+			    <button type="submit" class="unsubscribe-btn">구독 해지</button>
+			</form>
+          </div>
+          <!-- 더 많은 구독자 항목 -->
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</body>

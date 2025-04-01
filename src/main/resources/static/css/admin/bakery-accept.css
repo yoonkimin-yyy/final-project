@@ -1,13 +1,12 @@
 #back-btn {
-    color: white;
-    background-color: tomato;
-    margin-top: 3px;
-    padding: 17px 19px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    position: absolute;
-    margin-left: 1200px;
+	color: white;
+	background-color: tomato;
+	margin-top: 3px;
+	padding: 17px 19px;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	position: absolute;
+	margin-left: 1200px;
 }
-    
-    
+

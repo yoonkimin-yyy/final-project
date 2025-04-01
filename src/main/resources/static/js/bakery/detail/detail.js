@@ -1,4 +1,50 @@
 
+let interiorSwiper, exteriorSwiper, parkingSwiper;
+
+function initInteriorSlider() {
+  if (!interiorSwiper) {
+    interiorSwiper = new Swiper('.mySwiper', {
+      loop: true,
+      pagination: {
+        el: '.interior-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.interior-next',
+        prevEl: '.interior-prev'
+      },
+	  
+      spaceBetween: 20
+    });
+  }
+}
+
+function initExteriorSlider() {
+  if (!exteriorSwiper) {
+    exteriorSwiper = new Swiper('.exteriorSwiper', {
+      loop: true,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      spaceBetween: 20,
+    });
+  }
+}
+
+function initParkingSlider() {
+  if (!parkingSwiper) {
+    parkingSwiper = new Swiper('.parkingSwiper', {
+      loop: true,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      spaceBetween: 20,
+    });
+  }
+}
+
+console.log(document.querySelectorAll('.mySwiper .swiper-slide').length);
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
 	const bakeryNo = getBakeryNoFromURL();
@@ -8,21 +54,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	
     // ===== 탭 전환 기능 =====
-    const tabButtons = document.querySelectorAll('.tab-button');
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            const tab = button.dataset.tab;
-            const allTabs = ['menu', 'reviews', 'interior', 'exterior', 'parking'];
-            allTabs.forEach(tabId => {
-                const tabElement = document.getElementById(tabId);
-                if (tabElement) {
-                    tabElement.style.display = tab === tabId ? 'block' : 'none';
-                }
-            });
-        });
-    });
+	const tabButtons = document.querySelectorAll('.tab-button');
+	tabButtons.forEach(button => {
+	    button.addEventListener('click', () => {
+	        // 탭 버튼 클래스 토글
+	        tabButtons.forEach(btn => btn.classList.remove('active'));
+	        button.classList.add('active');
+
+	        const tab = button.dataset.tab;
+	        const allTabs = ['menu', 'reviews', 'interior', 'exterior', 'parking'];
+
+	        allTabs.forEach(tabId => {
+	            const tabElement = document.getElementById(tabId);
+	            if (tabElement) {
+	                tabElement.style.display = (tab === tabId) ? 'block' : 'none';
+	            }
+	        });
+
+	        // ✅ Swiper 슬라이드 초기화 (탭 ID에 따라 실행)
+	        if (tab === 'interior') {
+	            initInteriorSlider();
+	        } else if (tab === 'exterior') {
+	            initExteriorSlider();
+	        } else if (tab === 'parking') {
+	            initParkingSlider();
+	        }
+	    });
+	});
     
    
       // ===== 리뷰 별점 기능 =====
@@ -91,6 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+	
+	
+	
+	
 
 // 모달 제어 함수
 function openReviewModal() {
@@ -105,15 +167,26 @@ function closeReviewModal() {
 }
 // ===== 리뷰 작성 버튼 클릭 이벤트 =====
 document.getElementById('openReviewModal')?.addEventListener('click', () => {
-	const userNo = document.getElementById("userNum").value;
-	console.log(userNo);
-	
-	if (!userNo || userNo === "null" || userNo === "") {
-	        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
-			window.location.href = window.location.origin + "/register/loginin/form";
-	        return;
-	    }
-	
+    const userNo = document.getElementById("userNum")?.value;
+    const orderNoElement = document.getElementById("orderNo"); // DOM 요소부터 찾기
+    const orderNo = orderNoElement ? parseInt(orderNoElement.value) : null;
+
+    console.log("userNo:", userNo);
+    console.log("orderNo:", orderNo);
+
+    // 🔐 로그인 체크
+    if (!userNo || userNo === "null" || userNo === "") {
+        alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
+        window.location.href = window.location.origin + "/register/loginin/form";
+        return;
+    }
+
+    // 🛒 주문 내역 존재 여부 체크
+    if (!orderNo || isNaN(orderNo)) {
+        alert("리뷰는 해당 상품을 주문한 고객만 작성할 수 있습니다.");
+        return;
+    }
+
     openReviewModal();
 });
 
@@ -524,7 +597,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
             const menuItem = button.closest('.menu-item');
             const name = menuItem.querySelector('.menu-name').textContent;
             const price = parseInt(menuItem.querySelector('.menu-price').textContent.replace(/[^0-9]/g, ''));
-            
+			const menuNo = menuItem.getAttribute('data-menu-no');
             // 장바구니에 같은 상품이 있는지 확인
             const existingItem = Array.from(cartItems.children).find(item => 
                 item.querySelector('.cart-item-name')?.textContent === name
@@ -544,6 +617,8 @@ function updateTagCountsOnEdit(prevTags, newTags) {
                 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
+				itemDiv.setAttribute('data-menu-no', menuNo);
+				
                 itemDiv.innerHTML = `
                     <div class="cart-item-info">
                         <span class="cart-item-name">${name}</span>
@@ -583,80 +658,49 @@ function updateTagCountsOnEdit(prevTags, newTags) {
         });
     });
 	
-	
-	
 	const checkoutButton = document.querySelector('.checkout-button');
 
-	checkoutButton.addEventListener('click', () => {
-		const userNo = document.getElementById("userNum").value;
-		
-		if (!userNo || userNo === "null") {
-		     alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-			 window.location.href = window.location.origin + "/register/loginin/form";
-		     return;
-		 }
+	checkoutButton.addEventListener('click', function (e) {
+	    e.preventDefault();
 
-		
-	    const cartItems = document.querySelectorAll('.cart-item');
-
-	    if (cartItems.length === 0) {
-	        alert('장바구니가 비어 있습니다.');
+	    const userNo = document.getElementById("userNum").value;
+	    if (!userNo || userNo === "null") {
+	        alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
+	        window.location.href = window.location.origin + "/register/loginin/form";
 	        return;
 	    }
 
-	    // 장바구니 데이터를 JSON으로 변환
-	    let orderList = [];
-	    cartItems.forEach(item => {
-	        const name = item.querySelector('.cart-item-name').textContent;
-	        const price = parseInt(item.querySelector('.cart-item-price').textContent.replace(/[^0-9]/g, ''));
-	        const quantity = parseInt(item.querySelector('.quantity').textContent);
-
-	        orderList.push({
-	            menuName: name,
-	            menuPrice: price,
-	            quantity: quantity
-	        });
-	    });
-
-	    // ✅ AJAX 호출
-	    sendOrderData(orderList);
-	});
-	
-	
-	
-	document.getElementById("orderForm").addEventListener("submit", function(event) {
-	    event.preventDefault(); // 기본 폼 전송 방지
-		const userNo = document.getElementById("userNum").value;
-
-		console.log(userNo);
-		
-		if (!userNo || userNo === "null") {
-		       event.preventDefault(); // 폼 제출 방지
-		       alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-			   window.location.href = window.location.origin + "/register/loginin/form";
+		const cartItems = document.querySelector(".cart-items").children;
+		   if (cartItems.length === 0) {
+		       alert('장바구니가 비어 있습니다.');
 		       return;
 		   }
 
+	    let orderList = [];
 		
-	    let cartItems = [];
+	   
+		Array.from(cartItems).forEach(item => {
+		        const menuNo = item.getAttribute("data-menu-no");
+		        const quantityText = item.querySelector(".quantity")?.innerText ?? "0개";
+		        const quantity = parseInt(quantityText.replace("개", "").trim());
 
-	    document.querySelectorAll(".cart-items .item").forEach(item => {
-	        let menuNo = item.getAttribute("data-menu-no");
-	        let menuCount = item.querySelector(".item-quantity").innerText.replace("개", "").trim();
+		
 
-	        cartItems.push({
+	        orderList.push({
 	            menuNo: parseInt(menuNo),
-	            menuCount: parseInt(menuCount)
+	            menuCount: parseInt(quantity)
 	        });
 	    });
 
-	    // orderData를 JSON 형식으로 변환 후 설정
-	    document.getElementById("orderData").value = JSON.stringify(cartItems);
+	    //  숨겨진 input에 JSON 문자열로 세팅
+	    document.getElementById("orderData").value = JSON.stringify(orderList);
 
-
-	    // 폼 제출
-	    this.submit();
+	    //  폼 전송
+	    document.getElementById("orderForm").submit();
 	});
+	
+	
+	
 	
 
     // ===== 영업시간 토글 기능 =====
@@ -667,10 +711,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
     // 오늘의 영업시간 표시
     const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     const today = new Date().getDay();
-    const todayHours = document.getElementById('today-hours');
-    const timeString = today === 0 || today === 6 ? '09:00 - 20:00' : '07:00 - 22:00';
-    todayHours.textContent = `오늘 ${timeString}`;
-
+    
     hoursToggle.addEventListener('click', () => {
         isExpanded = !isExpanded;
         hoursDetail.style.display = isExpanded ? 'block' : 'none';
@@ -713,7 +754,7 @@ function formatDate(date) {
 // 전역 변수로 현재 수정 중인 리뷰 요소를 저장
 let currentEditingReview = null;
 
-// 리뷰 수정 시작 함수
+
 function closeReviewModal() {
 
     const modal = document.getElementById('reviewModal');
@@ -824,44 +865,60 @@ function initKakaoMap() {
             map.panTo(markerPosition);
         });
     });
+	
+	
 }
+
+
 
 // 페이지 로드 후 지도 초기화 실행
 document.addEventListener("DOMContentLoaded", initKakaoMap);
 
 
 
-
 function editReview(ele) {
+  console.log("editReview() 실행됨!");
 
-    //  모달창 열기
-    document.getElementById("reviewModal").style.display = "block";
+  // 1. 모달창 열기
+  document.getElementById("reviewModal").style.display = "block";
 
-    //  기존 데이터 초기화 (새로 입력하는 방식)
-    document.getElementById("userId").value = "";
-    document.getElementById("content").value = "";
-    document.getElementById("rating").value = "0";
-    document.querySelector(".rating-value").textContent = "0";
+  // 2. 버튼 텍스트 및 이벤트 변경
+  const submitBtn = document.getElementById("reviewSubmitBtn");
+  submitBtn.textContent = "수정 완료";
+  submitBtn.setAttribute("onclick", "submitReviewEdit()");
 
-    //  별점 초기화
-    document.querySelectorAll(".stars i").forEach(star => {
-        star.classList.add("far");
-        star.classList.remove("fas");
-    });
+  // 3. 데이터 속성에서 값 읽기
+  const content = ele.getAttribute("data-content") || "";
+  const rating = parseInt(ele.getAttribute("data-rating")) || 0;
 
-    //  태그 체크박스 초기화
-    document.querySelectorAll(".tag-checkbox").forEach(tag => {
-        tag.checked = false;
-    });
+  // 끝에 붙은 쉼표 제거하고 배열로 변환
+  const rawTags = ele.getAttribute("data-tags") || "";
+  const tags = rawTags.replace(/,+$/, "").split(",");
 
-    //  이미지 미리보기 초기화
-    document.getElementById("preview").innerHTML = "";
-	
-	
-	document.getElementById("reviewSubmitBtn").textContent = "수정 완료";
-	document.getElementById("reviewSubmitBtn").setAttribute("onclick", "submitReviewEdit()");
+  // 4. 리뷰 내용 채우기
+  document.getElementById("content").value = content;
+
+  // 5. 별점 표시
+  document.getElementById("rating").value = rating;
+  document.querySelector(".rating-value").textContent = rating;
+
+  document.querySelectorAll(".stars i").forEach(star => {
+    const starRating = parseInt(star.getAttribute("data-rating"));
+    if (starRating <= rating) {
+      star.classList.remove("far");
+      star.classList.add("fas");
+    } else {
+      star.classList.remove("fas");
+      star.classList.add("far");
+    }
+  });
+
+  // 6. 태그 체크박스 표시
+  document.querySelectorAll(".tag-checkbox").forEach(checkbox => {
+    const tagNum = checkbox.id.replace("tag", ""); // 예: tag3 → "3"
+    checkbox.checked = tags.includes(tagNum);
+  });
 }
-
 
 
 
@@ -871,24 +928,50 @@ function sortReviews() {
 
 
 
-// 카카오 지도 생성 함수
-kakao.maps.load(function () {
-    // 지도를 생성합니다
-    const container = document.getElementById('kakaoMap');
-    const options = {
-        center: new kakao.maps.LatLng(36.3281, 127.4239),
-        level: 3 // 확대 레벨
-    };
+// 리뷰 답글 관련 코드
+function submitReplyBtn(){
+    const Btn = document.getElementById('reply-text').value;
+    console.log(Btn);
 
-    const map = new kakao.maps.Map(container, options);
+    if(Btn === ""){
+        alert("내용을 입력해주세요");
+        return;
+    } else {
+        alert("답글이 등록되었습니다.");
+    }
+}
 
-    // 5️ 현재 선택한 빵집(메인 마커)
-    const bakeryLocation = new kakao.maps.LatLng(36.3281, 127.4239);
-    const mainMarker = new kakao.maps.Marker({
-        position: bakeryLocation,
-        map: map
-    });
 
-   
+// 리뷰 답글 버튼 클릭시
+function showReplyForm(reviewNo) {
+    var replyBox = document.getElementById('reply-box-' + reviewNo);
+
+	
+    // replyBox가 존재하는지 확인
+    if (replyBox) {
+        replyBox.classList.toggle('show');
+    } else {
+        console.error('답글 박스가 존재하지 않습니다. reviewNo:', reviewNo);
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const shouldGoToReviewTab = sessionStorage.getItem("goToReviewTab");
+
+    if (shouldGoToReviewTab === "true") {
+        // 리뷰 탭으로 자동 전환
+        const targetButton = document.querySelector(`.tab-button[data-tab="reviews"]`);
+        if (targetButton) {
+            targetButton.click();
+        }
+
+        //  플래그 삭제 (한 번만 실행되도록)
+        sessionStorage.removeItem("goToReviewTab");
+    }
 });
+
+
+
+
+
 

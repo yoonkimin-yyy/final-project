@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="kr.kro.bbanggil.order.mapper.OrderMapper">
+<mapper namespace="kr.kro.bbanggil.owner.order.mapper.OrderMapper">
 	
-	<resultMap id="orderResultMap" type="kr.kro.bbanggil.order.dto.response.OrderResponseDto">
+	<resultMap id="orderResultMap" type="kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto">
+		<result property="bakeryName" column="BAKERY_NAME"></result>
 		<result property="menuPrice" column="MENU_PRICE"></result>
 		<result property="menuName" column="MENU_NAME"></result>
 		<result property="menuCount" column="MENU_COUNT"></result>
-		<result property="bakeryName" column="BAKERY_NAME"></result>
+		<result property="resourcesPath" column="RESOURCES_PATH"></result>
+		<result property="changeName" column="CHANGE_NAME"></result>
+		<result property="payNo" column="pay_no"></result>
+		<result property="paymentCode" column="merchant_uid"></result>
+		<result property="userName" column="user_name"></result>
+		<result property="status" column="status"></result>
+		<result property="paymentDate" column="pay_request_date"></result>
+		<result property="amount" column="amount"></result>
 	</resultMap>
 	
-	<resultMap id="successResultMap" type="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">
+	<resultMap id="successResultMap" type="kr.kro.bbanggil.owner.order.dto.response.PaymentResponseDto">
 		<result property="merchantUid" column="MERCHANT_UID"></result>
 		<result property="impUid" column="IMP"></result>
 		<result property="account" column="AMOUNT"></result>
@@ -20,14 +28,25 @@
 		<result property="requestContent" column="REQUEST_CONTENT"></result>
 	</resultMap>	
 	
-	<resultMap id="pickupResultMap" type="kr.kro.bbanggil.order.dto.response.PickupCheckResponseDto">
+	<resultMap id="pickupResultMap" type="kr.kro.bbanggil.owner.order.dto.response.PickupCheckResponseDto">
 		<result property="pickupStatusNo" column="PICKUP_STATUS_NO"></result>
 		<result property="pickupStatus" column="PICKUP_STATUS"></result>
 		<result property="refusalDetail" column="REFUSAL_DETAIL"></result>
 	</resultMap>
 	
 	<select id="list" resultMap="orderResultMap">
-		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
+		SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT,
+		       mi.RESOURCES_PATH, mi.CHANGE_NAME
+		FROM CART_INFO ci 
+		JOIN CART c ON ci.CART_NO = c.CART_NO
+		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
+		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
+		JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
+		WHERE c.CART_NO = (SELECT max(cart_no) FROM CART c 
+						   WHERE USER_NO = #{userNo})
+		ORDER BY ci.LIST_NO DESC
+
+		<!-- SELECT BI.BAKERY_NAME, M.MENU_NAME, M.MENU_PRICE, CI.MENU_COUNT
 		FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN ORDER_INFO oi ON OI.CART_NO = c.CART_NO 
@@ -35,8 +54,8 @@
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
 		WHERE oi.CART_NO = (SELECT max(oi.cart_no) FROM ORDER_INFO oi
 						    JOIN cart c ON oi.CART_NO = c.CART_NO 
-					        WHERE user_no = #{userId})
-		ORDER BY oi.pay_no DESC
+					        WHERE user_no = #{userNo})
+		ORDER BY oi.pay_no DESC -->
 	</select>
 	
 	<select id="calculate" resultType="int">
@@ -45,10 +64,9 @@
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
 		JOIN BAKERY_INFO bi ON BI.BAKERY_NO = M.BAKERY_NO
-		WHERE C.USER_NO = #{userId}
-		AND c.CART_NO = (SELECT max(oi.cart_no) FROM ORDER_INFO oi
-						    JOIN cart c ON oi.CART_NO = c.CART_NO 
-					        WHERE user_no = #{userId})
+		WHERE C.USER_NO = #{userNo}
+		AND c.CART_NO = (SELECT max(cart_no) FROM CART c 
+						 WHERE USER_NO = #{userNo})
 		<!-- SELECT SUM(M.MENU_PRICE * CI.MENU_COUNT) AS TOTAL_SUM FROM CART_INFO ci 
 		JOIN CART c ON ci.CART_NO = c.CART_NO
 		JOIN MENU m ON ci.MENU_NO = m.MENU_NO
@@ -56,7 +74,7 @@
 		WHERE C.USER_NO = 1 AND C.CART_NO = 1	 -->		
 	</select>
 	
-	<insert id="save" parameterType="kr.kro.bbanggil.order.dto.response.PaymentResponseDto">
+	<insert id="save" parameterType="kr.kro.bbanggil.owner.order.dto.response.PaymentResponseDto">
 		INSERT INTO PAYMENT VALUES(PAYMENT_SEQ.NEXTVAL,
 						   		   #{merchantUid},
 						   		   #{impUid},
@@ -71,6 +89,8 @@
 	<select id="findcart" resultType="int">
 		SELECT CART_NO FROM CART c
 		WHERE USER_NO = #{userNo}
+		ORDER BY cart_no DESC 
+		FETCH FIRST 1 ROWS ONLY
 	</select>
 		
 	<select id="findpay" resultType="int">
@@ -88,7 +108,8 @@
 		INSERT INTO PICKUP_STATUS VALUES(PICKUP_STATUS_SEQ.NEXTVAL,
 										 #{payNo},
 										 DEFAULT,
-										 DEFAULT)
+										 DEFAULT,
+										 CURRENT_TIMESTAMP)
 	</insert>
 	
 	<select id="pickupPay" resultType="int">
@@ -115,30 +136,46 @@
 	
 	
 	<select id="countByUserAndOrder">
-SELECT
-	c.CART_NO ,
-	oi.ORDER_NO ,
-	oi.PAY_NO ,
-	ui.USER_NO ,
-	ui.USER_ID
-FROM
-	CART c
-JOIN ORDER_INFO oi 
-  ON
-	c.CART_NO = oi.CART_NO
-JOIN USER_INFO ui 
-  ON
-	c.USER_NO = UI.USER_NO
-WHERE
-	ui.USER_NO = #{userNo}
-	AND oi.ORDER_NO = #{orderNo}
+    SELECT COUNT(*)
+    FROM CART c
+    JOIN ORDER_INFO oi ON c.CART_NO = oi.CART_NO
+    JOIN USER_INFO ui ON c.USER_NO = ui.USER_NO
+    WHERE ui.USER_NO = #{userNo}
+      AND oi.ORDER_NO = #{orderNo}
 	</select>
 	
+	<select id="findRecentOrder" resultType="kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto">
+	
+	SELECT
+	oi.ORDER_NO AS orderNo
+FROM
+	ORDER_INFO oi
+JOIN PAYMENT p 
+ON
+	oi.PAY_NO = p.PAY_NO
+JOIN CART c 
+ON
+	c.CART_NO = oi.CART_NO
+JOIN USER_INFO ui 
+ON
+	ui.USER_NO = c.USER_NO
+JOIN CART_INFO ci 
+ON
+	ci.CART_NO = c.CART_NO
+JOIN MENU m 
+ON
+	m.MENU_NO = ci.MENU_NO
+JOIN BAKERY_INFO bi 
+ON
+	bi.BAKERY_NO = m.BAKERY_NO
+WHERE
+	ui.USER_NO = #{userNo}
+	AND bi.BAKERY_NO = #{bakeryNo}
+	ORDER BY oi.ORDER_NO DESC
+FETCH FIRST 1 ROWS ONLY
 	
 	
-	
-	
-	
+	</select>
 	
 	
 	

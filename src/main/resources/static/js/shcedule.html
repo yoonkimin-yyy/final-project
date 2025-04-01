@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빵길 뉴스레터 관리</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./sh.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>🍞 빵길 뉴스레터 관리</h1>
+                <p>매주 월요일 아침 9시 자동 발송</p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <span class="material-icons">mail</span>
+                <div class="stat-content">
+                    <h3>총 구독자</h3>
+                    <p id="totalSubscribers">2,458명</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <span class="material-icons">schedule</span>
+                <div class="stat-content">
+                    <h3>다음 발송</h3>
+                    <p id="nextSchedule">-</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span class="material-icons">analytics</span>
+                <div class="stat-content">
+                    <h3>발송 성공률</h3>
+                    <p>98.5%</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span class="material-icons">store</span>
+                <div class="stat-content">
+                    <h3>열람율</h3>
+                    <p>100%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="newsletter-preview">
+                <h2>최근 발송된 뉴스레터</h2>
+                <div class="preview-content">
+                    <img src="https://api.a0.dev/assets/image?text=cozy%20bakery%20fresh%20bread%20display" alt="최근 빵집">
+                    <div class="preview-details">
+                        <h3>서천 파티세리 수</h3>
+                        <p>🕒 영업시간: 09:00 ~ 20:00</p>
+                        <p>📍 위치: 서울시 서초구</p>
+                        <div class="stats">
+                            <div>
+                                <span class="material-icons">mail</span>
+                                2,458명 발송
+                            </div>
+                            <div>
+                                <span class="material-icons">schedule</span>
+                                03/25 발송
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subscriber-list">
+                <h2>구독자 목록</h2>
+                <div class="search-bar">
+                    <span class="material-icons">search</span>
+                    <input type="text" placeholder="이메일로 검색...">
+                </div>
+                <div class="subscribers">
+                    <div class="subscriber-item">
+                        <span class="material-icons">person</span>
+                        <div class="subscriber-details">
+                            <p>user1@example.com</p>
+                            <span>구독일: 2024-03-15</span>
+                        </div>
+                        <button class="unsubscribe-btn">구독 해지</button>
+                    </div>
+                    <div class="subscriber-item">
+                        <span class="material-icons">person</span>
+                        <div class="subscriber-details">
+                            <p>user2@example.com</p>
+                            <span>구독일: 2024-03-14</span>
+                        </div>
+                        <button class="unsubscribe-btn">구독 해지</button>
+                    </div>
+                    <!-- 더 많은 구독자 항목 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 다음 발송 시간 계산
+        function updateNextSchedule() {
+            const now = new Date();
+            const nextMonday = new Date();
+            nextMonday.setDate(now.getDate() + ((8 - now.getDay()) % 7));
+            nextMonday.setHours(9, 0, 0, 0);
+
+            const options = { 
+                month: 'long', 
+                day: 'numeric', 
+                weekday: 'long',
+                hour: 'numeric',
+                minute: 'numeric'
+            };
+
+            document.getElementById('nextSchedule').textContent = 
+                nextMonday.toLocaleDateString('ko-KR', options);
+        }
+
+        // 페이지 로드시 실행
+        updateNextSchedule();
+    </script>
+</body>
+</html>

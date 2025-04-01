@@ -11,17 +11,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
-import kr.kro.bbanggil.bakery.dto.request.FileRequestDTO;
-import kr.kro.bbanggil.bakery.exception.BakeryException;
+import kr.kro.bbanggil.global.exception.BbanggilException;
+import kr.kro.bbanggil.user.bakery.dto.request.FileRequestDTO;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class AwsS3Util {
 	private final AmazonS3 amazonS3;
-
+	private final String CLOUDFRONT_DOMAIN = "https://d2cbn2na1idn6c.cloudfront.net";
+	
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    
+    
 
     public void saveFile(MultipartFile multipartFile,FileRequestDTO fileDTO) throws IOException {
     	try {
@@ -29,7 +32,7 @@ public class AwsS3Util {
     		String changeName = UUID.randomUUID().toString() + "." + getFileExtension(originalFilename);
     		int urlLength = amazonS3.getUrl(bucket, changeName).toString().length();
     		int changeLength = changeName.length();
-    		int result = urlLength - changeLength+1;
+    		int result = urlLength - changeLength-1;
     		
     		ObjectMetadata metadata = new ObjectMetadata();
     		metadata.setContentLength(multipartFile.getSize());
@@ -43,9 +46,9 @@ public class AwsS3Util {
     		fileDTO.setSize(multipartFile.getSize());
     		fileDTO.setLocalPath("성공!!!");
     		fileDTO.setFolderNamePath("성공?");
-    		fileDTO.setLocalResourcePath(amazonS3.getUrl(bucket, changeName).toString().substring(0, result));
+    		fileDTO.setLocalResourcePath(CLOUDFRONT_DOMAIN);
     	} catch(Exception e) {
-    		throw new BakeryException("S3 업로드 실패","common/error",HttpStatus.METHOD_NOT_ALLOWED);
+    		throw new BbanggilException("S3 업로드 실패","common/error",HttpStatus.METHOD_NOT_ALLOWED);
     	}
     		
     }

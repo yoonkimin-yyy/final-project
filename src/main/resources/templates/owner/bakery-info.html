@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       	<head th:replace="~{fragments/head :: HeadFragment}"></head>
+    	<link rel="stylesheet" th:href="@{/css/owner/mypage/mybakery.css}">
+    	<script src="/js/owner/mypage/mybakery.js"></script>
+   	</head>
+<body>
+     <header class="header" th:replace="~{fragments/header :: HeaderFragment}"></header>
+     <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+<main>
+	<input type="hidden" name="bakeryNo" th:value="${no}">
+    <div class="mypage-container">
+        <div class="mypage-title">
+            <h1>마이페이지</h1>
+            <p>안녕하세요, 사장님!🥖</p>
+        </div>
+        <div class="mypage-content">
+            <div class="mypage-info">
+                <h3>내 정보🥖</h3>
+                <p>이름 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.userName}"></span></p>
+                <p>연락처 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.userPhone}"></span></p>
+                <p>사업자 등록 번호 <br> &nbsp; 🥐 &nbsp;<span th:text="${info.businessNo}"></span></p>
+            <div class="mypage-menu">
+            </div>
+        </div>
+            <div class="mypage-order">
+                <p>🍞 나의가게 간략 정보 🍞</p>
+                <p>  (사진은 생략됩니다)</p>
+                <table class="mypage-table">
+                    <tbody class="mypage-table-body">
+                        <tr class="tbody-tr" >
+                        	<th>가게 이름</th>
+                            <td th:text="${bakery.bakeryName}"></td>
+                        </tr>
+                        <tr>
+                        	<th>가게 연락처</th>
+                        	<td th:text="${bakery.bakeryPhone}"></td>
+                        </tr>
+                        <tr>
+                        	<th>가게 주소</th>
+                        	<td th:text="${bakery.bakeryAddress}"></td>
+                        </tr>
+                        <tr>
+                        	<th>가게 실내정보</th>
+                        	<td th:text="${bakery.insideInfo}"></td>
+                        </tr>
+                        <tr>
+                        	<th>가게 실외정보</th>
+                        	<td th:text="${bakery.outsideInfo}"></td>
+                        </tr>
+                        <tr>
+                        	<th>주차장 정보</th>
+                        	<td th:text="${bakery.parkingInfo}"></td>
+                        </tr>
+                        <tr>
+                        	<th>신청상태</th>
+                        	<td th:text="${bakery.agree}"></td>
+                        </tr>
+                        <tr th:if="${bakery.reject!=null}">
+                        	<th>거절사유</th>
+                        	<td th:text="${bakery.reject}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+		            <button class="btn" th:onclick="|location.href='@{/bakery/update/form(bakeryNo=${no})}'|">가게 수정</button>
+		            <button class="btn" th:onclick="|location.href='@{/bakery/menu/list/form(no=${no})}'|">메뉴 등록</button>
+		            <button class="btn" onclick="history.back()" type="button">뒤로가기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+<footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
+</html>

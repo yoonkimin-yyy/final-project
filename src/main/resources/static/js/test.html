@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>뉴스레터 수정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+        .form-container {
+            width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            color: #ff6600;
+            margin-bottom: 25px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background-color: #ff6600;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e05500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>뉴스레터 수정</h2>
+    <form action="/admin/newsLetter/edit" method="post">
+        <label for="bakeryName">추천 빵집 이름</label>
+        <input type="text" id="bakeryName" name="bakeryName" placeholder="예: 서천 파티세리 수">
+
+        <label for="resourcesPath">이미지 경로</label>
+        <input type="text" id="resourcesPath" name="resourcesPath" placeholder="/uploads/bakery">
+
+        <label for="changeName">이미지 파일명</label>
+        <input type="text" id="changeName" name="changeName" placeholder="example.jpg">
+
+        <label for="openTime">영업 시작 시간</label>
+        <input type="text" id="openTime" name="openTime" placeholder="09:00">
+
+        <label for="closeTime">영업 종료 시간</label>
+        <input type="text" id="closeTime" name="closeTime" placeholder="20:00">
+
+        <label for="location">위치</label>
+        <input type="text" id="location" name="location" placeholder="서울시 서초구">
+
+        <button type="submit">수정 완료</button>
+    </form>
+</div>
+
+</body>
