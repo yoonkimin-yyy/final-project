@@ -295,12 +295,12 @@
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
       <!-- 반복 슬라이드 -->
-      <div class="swiper-slide" th:each="bakery : ${insideImages}">
-        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
-             th:alt="${bakery.name}" class="bakery-image" />
+      <div class="swiper-slide" th:each="img : ${insideImages}">
+        <img th:src="@{${img.resourcesPath} + '/' + ${img.changeName}}"
+             th:alt="${img.name}" class="bakery-image" />
         <div class="photo-description">
           <ul>
-            <li th:text="${bakery.response.insideInfo}">총 좌석: 30석</li>
+            <li th:text="${img.insideInfo}">총 좌석: 30석</li>
           </ul>
         </div>
       </div>
@@ -318,18 +318,18 @@
   <div class="swiper exteriorSwiper">
     <div class="swiper-wrapper">
       <!-- 반복 슬라이드 -->
-      <div class="swiper-slide" th:each="bakery : ${outsideImages}">
-        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
-             th:alt="${bakery.name}" class="bakery-image"
+      <div class="swiper-slide" th:each="img : ${outsideImages}">
+        <img th:src="@{${img.resourcesPath} + '/' + ${img.changeName}}"
+             th:alt="${img.name}" class="bakery-image"
              style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;" />
         <div class="photo-description">
           <ul>
-            <li th:text="${bakery.response.outsideInfo}">실외 정보</li>
+            <li th:text="${img.outsideInfo}">실외 정보</li>
           </ul>
         </div>
       </div>
     </div>
-
+resourcesPath
     <!-- 네비게이션 & 페이지네이션 -->
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
@@ -341,14 +341,14 @@
   <h3 class="park-img">주차 안내</h3>
   <div class="swiper parkingSwiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" th:each="bakery : ${parkingImages}">
-        <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
+      <div class="swiper-slide" th:each="img : ${parkingImages}">
+        <img th:src="@{${img.resourcesPath} + '/' + ${img.changeName}}"
              alt="주차장" class="bakery-image"
              style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;" />
         <div class="parking-details">
           <h4>주차 정보</h4>
           <ul>
-            <li th:text="${bakery.response.amenity}">주차 가능</li>
+            <li th:text="${img.amenity}">주차 가능</li>
           </ul>
         </div>
       </div>

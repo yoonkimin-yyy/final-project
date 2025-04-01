@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.BakeryRequestDTO;
@@ -80,10 +81,10 @@ public interface BakeryService {
 	
 	void updateUserCount(int bakeryNo);
 	
-	List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
-	List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
+	List<BakeryImageDTO> getInsideImages(double bakeryNo);
+	List<BakeryImageDTO> getOutsideImages(double bakeryNo);
 	
-	List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
+	List<BakeryImageDTO> getParkingImages(double bakeryNo);
 	
 
 	

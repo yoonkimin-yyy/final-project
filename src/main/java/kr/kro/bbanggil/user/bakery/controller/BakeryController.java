@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -29,13 +28,13 @@ import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.owner.order.service.OrderServiceImpl;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.BakeryRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.MenuDetailRequestDto;
 import kr.kro.bbanggil.user.bakery.dto.request.MenuRequestDTO;
-import kr.kro.bbanggil.user.bakery.dto.response.BakeryDetailResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.CategoryResponseDTO;
 import kr.kro.bbanggil.user.bakery.dto.response.MenuResponseDto;
@@ -208,9 +207,9 @@ public class BakeryController {
 			 */
 
 			List<BakeryDto> bakeryDetail = bakeryService.getBakeryDetail(no);
-			List<BakeryDetailResponseDto> insideImages = bakeryService.getInsideImages(no);
-			List<BakeryDetailResponseDto> outsideImages = bakeryService.getOutsideImages(no);
-			List<BakeryDetailResponseDto> parkingImages = bakeryService.getParkingImages(no);
+			List<BakeryImageDTO> insideImages = bakeryService.getInsideImages(no);
+			List<BakeryImageDTO> outsideImages = bakeryService.getOutsideImages(no);
+			List<BakeryImageDTO> parkingImages = bakeryService.getParkingImages(no);
 
 			model.addAttribute("bakeryDetail", bakeryDetail);
 			model.addAttribute("insideImages", insideImages);

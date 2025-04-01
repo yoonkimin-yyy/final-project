@@ -18,4 +18,9 @@ public class BakeryImageDTO {
 	private String folderNamePath;
 	private String position;
 	private int bakeryNo;
+	private String name;
+	private String amenity;
+	private String insideInfo;
+	private String outsideInfo;
+	
 }

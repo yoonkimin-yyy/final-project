@@ -67,6 +67,23 @@
     <result property="openTime" column="open_time" />
     <result property="closeTime" column="close_time" />
 	</resultMap>
+	
+	
+	
+	<resultMap id="BakeryImageSlideMap" type="kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO">
+    <result property="bakeryImgNo" column="img_no" />
+    <result property="changeName" column="change_name" />
+    <result property="resourcesPath" column="resources_path" />
+    <result property="position" column="position" />
+    <result property="bakeryNo" column="bakery_no" />
+    <result property="name" column="bakery_name" />
+    <result property="amenity" column="amenity" />
+	<result property="insideInfo" column="inside_info" />
+	<result property="outsideInfo" column="outside_info" />
+	</resultMap>
+	
+	
+	
 		
 
 
@@ -238,7 +255,7 @@ GROUP BY
 
 	</select>
 
-<select id="getInsideImages" resultMap="DetailResultMap">
+<select id="getInsideImages" resultMap="BakeryImageSlideMap">
     SELECT
         bi.bakery_address,
         bi.bakery_name,
@@ -254,12 +271,12 @@ GROUP BY
     FROM BAKERY_DETAIL bd
     JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
     JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
-    WHERE bi.BAKERY_NO = #{no}
+    WHERE bi.BAKERY_NO = #{bakeryNo}
       AND BI2.POSITION = 'inside'
 </select>
 
 
-<select id="getOutsideImages" resultMap="DetailResultMap">
+<select id="getOutsideImages" resultMap="BakeryImageSlideMap">
     SELECT
         bi.bakery_address,
         bi.bakery_name,
@@ -275,12 +292,12 @@ GROUP BY
     FROM BAKERY_DETAIL bd
     JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
     JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
-    WHERE bi.BAKERY_NO = #{no}
+    WHERE bi.BAKERY_NO = #{bakeryNo}
       AND BI2.POSITION = 'outside'
 </select>
 
 
-<select id="getParkingImages" resultMap="DetailResultMap">
+<select id="getParkingImages" resultMap="BakeryImageSlideMap">
  SELECT
         bi.bakery_address,
         bi.bakery_name,
@@ -296,7 +313,7 @@ GROUP BY
     FROM BAKERY_DETAIL bd
     JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
     JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
-    WHERE bi.BAKERY_NO = #{no}
+    WHERE bi.BAKERY_NO = #{bakeryNo}
       AND BI2.POSITION = 'parking'
 
 </select>

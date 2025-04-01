@@ -56,11 +56,10 @@
     <!-- Swiper Container -->
     <div class="swiper swiper-popularBakerySwiper">
       <div class="swiper-wrapper">
-        <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card">
-          <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
+        <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card"
+        th:if="${bakery.no != null}" th:onclick="|location.href='/bakery/detail?bakeryNo=${bakery.no}'|">
             <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
               th:alt="${bakery.name}" class="bakery-image">
-          </a>
           <div class="bakery-info">
             <h3 class="bakery-name" th:text="${bakery.name}"></h3>
             <div class="location-container">
@@ -141,12 +140,11 @@
     <!-- Swiper 컨테이너 (최근 오픈 빵집) -->
     <div class="swiper recentBakerySwiper">
       <div class="swiper-wrapper">
-        <div th:each="bakery : ${recentBakeries}" class="swiper-slide bakery-card">
+        <div th:each="bakery : ${recentBakeries}" class="swiper-slide bakery-card"
+        th:if="${bakery.no != null}" th:onclick="|location.href='/bakery/detail?bakeryNo=${bakery.no}'|" style="cursor: pointer;">
           <div class="new-badge">NEW</div>
-          <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
             <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
               th:alt="${bakery.name}" class="bakery-image">
-          </a>
           <div class="bakery-info">
             <h3 class="bakery-name" th:text="${bakery.name}">브레드랩</h3>
             <div class="location-container">
