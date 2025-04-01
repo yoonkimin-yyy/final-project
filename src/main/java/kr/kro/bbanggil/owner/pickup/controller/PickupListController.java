@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
-import kr.kro.bbanggil.admin.service.AdminServiceImpl;
 import kr.kro.bbanggil.owner.pickup.response.dto.PickupBakeryInfoResponseDTO;
 import kr.kro.bbanggil.owner.pickup.response.dto.PickupMenuResponseDTO;
 import kr.kro.bbanggil.owner.pickup.service.PickupServiceImpl;
@@ -30,7 +29,7 @@ import kr.kro.bbanggil.owner.pickup.service.PickupServiceImpl;
 public class PickupListController {
 	
     private final PickupServiceImpl pickupServiceImpl;
-    private final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(PickupListController.class);
 
     public PickupListController(PickupServiceImpl pickupServiceImpl) {
         this.pickupServiceImpl = pickupServiceImpl;

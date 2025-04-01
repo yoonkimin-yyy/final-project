@@ -378,7 +378,7 @@ public class BakeryServiceImpl implements BakeryService{
 		bakeryMapper.updateUserCount(bakeryNo,count);
 	}
 
-	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo) {
+	public List<BakeryImageDTO> getParkingImages(double bakeryNo) {
 		return bakeryMapper.getParkingImages(bakeryNo);
 	}
 

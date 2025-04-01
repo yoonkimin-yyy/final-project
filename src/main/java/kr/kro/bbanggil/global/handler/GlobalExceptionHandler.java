@@ -11,14 +11,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import kr.kro.bbanggil.admin.service.AdminServiceImpl;
+import kr.kro.bbanggil.admin.service.AdminMainServiceImpl;
 import kr.kro.bbanggil.global.exception.BbanggilException;
 
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	private final Logger logger = LogManager.getLogger(AdminServiceImpl.class); 
+	private final Logger logger = LogManager.getLogger(AdminMainServiceImpl.class); 
 	
 	@ExceptionHandler(BbanggilException.class)
 	public String handleBakeryException(BbanggilException be, Model model) {
