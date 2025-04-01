@@ -28,7 +28,7 @@ import kr.kro.bbanggil.user.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 
 @Controller
-@RequestMapping("/register")
+@RequestMapping("/member")
 @AllArgsConstructor
 public class MemberController {
     private final Logger logger = LogManager.getLogger(MemberController.class);
@@ -70,9 +70,9 @@ public class MemberController {
 
         // 회원가입 페이지로 이동 (일반/사업자)
         if ("business".equals(type)) {
-            return "redirect:/register/businessloginup/form"; // 사업자 회원가입 경로
+            return "redirect:/member/businessloginup/form"; // 사업자 회원가입 경로
         } else {
-            return "redirect:/register/loginup/form"; // 일반 회원가입 경로
+            return "redirect:/member/loginup/form"; // 일반 회원가입 경로
         }
     }
 
@@ -103,7 +103,7 @@ public class MemberController {
         }
 
 
-        return "redirect:/register/loginin/form";
+        return "redirect:/member/loginin/form";
     }
 
     // 아이디 중복 체크
@@ -147,7 +147,7 @@ public class MemberController {
             session.removeAttribute("checkBoxDto");
         }
 
-        return "redirect:/register/loginin/form";
+        return "redirect:/member/loginin/form";
     }
     
     // 사업자번호 중복 체크 
@@ -175,7 +175,7 @@ public class MemberController {
     	// IP 기준으로 계정 잠금 상태 확인
         if (loginAttemptUtil.isAccountLocked(request)) {
             redirectAttributes.addFlashAttribute("loginError", "5회 로그인 실패로 3분 동안 잠금 처리되었습니다.");
-            return "redirect:/register/loginin/form";
+            return "redirect:/member/loginin/form";
         }
         
         // 로그인 검증
@@ -194,7 +194,7 @@ public class MemberController {
     	        // 로그인 실패 → 에러 메시지 세팅 후 로그인 페이지로
     	    	loginAttemptUtil.incrementFailedAttempts(request);  // 실패 횟수 증가  // 실패 횟수 증가
     	        redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
-    	        return "redirect:/register/loginin/form";
+    	        return "redirect:/member/loginin/form";
     	    }
     	}
     
@@ -245,16 +245,16 @@ public class MemberController {
             if (userId == "등록된 정보가 아닙니다.") {
                 // 이메일이 등록되지 않은 경우
                 model.addAttribute("error", "등록된 정보가 아닙니다.");
-                return "redirect:/register/find/form";  // 오류 페이지로 리다이렉트
+                return "redirect:/member/find/form";  // 오류 페이지로 리다이렉트
             }
             
             // 이메일이 등록되어 있는 경우
             model.addAttribute("message", "아이디: " + userId);
-            return "redirect:/register/loginin/form";  // 아이디를 찾았으면 로그인 페이지로 리다이렉트
+            return "redirect:/member/loginin/form";  // 아이디를 찾았으면 로그인 페이지로 리다이렉트
         } catch (Exception e) {
             model.addAttribute("error", "아이디 찾기 중 오류 발생");
             e.printStackTrace();  // 오류 발생 시 로그로 확인
-            return "redirect:/register/find/form";  // 오류가 발생하면 원래 폼 페이지로 리다이렉트
+            return "redirect:/member/find/form";  // 오류가 발생하면 원래 폼 페이지로 리다이렉트
         }
     }
 
@@ -270,13 +270,13 @@ public class MemberController {
         	if ("등록된 정보가 아닙니다.".equals(message)) {
                 // 이메일이 등록되지 않은 경우
                 model.addAttribute("error", "등록된 정보가 아닙니다.");
-                return "redirect:/register/find/form";
+                return "redirect:/member/find/form";
             }
             model.addAttribute("message", message);
-            return "redirect:/register/loginin/form";  // 오류 페이지로 리다이렉트
+            return "redirect:/member/loginin/form";  // 오류 페이지로 리다이렉트
         } catch (Exception e) {
             model.addAttribute("error", "이메일 전송 실패");
-            return "redirect:/register/find/form";
+            return "redirect:/member/find/form";
         }
     }
     

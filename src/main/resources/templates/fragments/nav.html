@@ -49,7 +49,7 @@
                    th:attr="onclick=|location.href='/bakery/list?searchText=${#strings.replace(#strings.replace(list.category, ' ', '+'), '&', '%26')}&orderType=recent'|"></a>
             </div>
     </div>
-            <a th:if="${goOwnerPage}" th:onclick="|location.href='@{/register/owner/mypage}'|" class="nav-item">전환</a>
-            <a th:if="${goMyPage}" th:onclick="|location.href='@{/register/mypage}'|" class="nav-item">전환</a>
+            <a th:if="${goOwnerPage}" th:onclick="|location.href='@{/mypage/owner}'|" class="nav-item">전환</a>
+            <a th:if="${goMyPage}" th:onclick="|location.href='@{/mypage}'|" class="nav-item">전환</a>
 </nav>
 
