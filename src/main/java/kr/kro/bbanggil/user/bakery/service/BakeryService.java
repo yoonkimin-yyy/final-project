@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
 import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
@@ -72,6 +73,8 @@ public interface BakeryService {
 	List<BakeryImageDTO> getParkingImages(double bakeryNo);
 	
 	public List<BakeryDto> getBakeryDetail(double no);
+	
+	myBakeryResponseDTO bakeryInfo(int bakeryNo);
 	
 
 	

@@ -38,8 +38,5 @@ public class AdminBakeryServiceImpl implements AdminBakeryService{
 	public void update(String action, int bakeryNo, String rejectReason) {
 		adminMapper.update(action, bakeryNo, rejectReason);
 	}
-	@Override
-	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
-		return adminMapper.bakeryInfo(bakeryNo);
-	}
+	
 }

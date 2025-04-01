@@ -386,6 +386,11 @@ public class BakeryServiceImpl implements BakeryService{
 	public List<BakeryDto> getBakeriesTime(double no) {
 		return bakeryMapper.getBakeriesTime(no);
 	}
+	
+	@Override
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
+		return bakeryMapper.bakeryInfo(bakeryNo);
+	}
 
 	
 	private void setBakeryOperatingHours(bakeryUpdateResponseDTO bakeryInfo, List<BakeryTimeSetDTO> timeDTO) {

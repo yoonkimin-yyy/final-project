@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.owner.order.service.OrderService;
@@ -39,6 +40,7 @@ import kr.kro.bbanggil.user.bakery.dto.response.bakeryUpdateResponseDTO;
 import kr.kro.bbanggil.user.bakery.service.BakeryService;
 import kr.kro.bbanggil.user.bakery.service.ReviewService;
 import kr.kro.bbanggil.user.bakery.util.ListPageNation;
+import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
 import kr.kro.bbanggil.user.member.service.MypageService;
 import lombok.AllArgsConstructor;
 
@@ -304,6 +306,18 @@ public class BakeryController {
 			@SessionAttribute("userNum") int userNo) {
 		bakeryService.bakeryUpdate(bakeryRequestDTO, bakeryImgRequestDTO, userNo);
 		return "redirect:/register/owner/mypage";
+	}
+	
+	@GetMapping("/info/form")
+	public String bakeryInfoForm(@RequestParam("bakeryNo") int bakeryNo, @SessionAttribute("userNum") int userNum,
+			Model model) {
+		myBakeryResponseDTO result = bakeryService.bakeryInfo(bakeryNo);
+		OwnerInfoResponseDTO info = mypageService.ownerInfo(userNum);
+		model.addAttribute("info", info);
+		model.addAttribute("bakery", result);
+		model.addAttribute("no", bakeryNo);
+		model.addAttribute("goMyPage",true);
+		return "/owner/bakery-info";
 	}
 
 }
