@@ -29,6 +29,7 @@ import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.AwsS3Util;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.global.exception.BbanggilException;
 import kr.kro.bbanggil.user.bakery.api.KakaoController;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
@@ -66,7 +67,7 @@ public class BakeryServiceImpl implements BakeryService{
 	private static final Logger logger = LogManager.getLogger(BakeryServiceImpl.class);
 	
 	@Override
-	public Map<String, Object> bakeryList(ListPageNation pageNation,
+	public Map<String, Object> bakeryList(PaginationUtil pageNation,
 											int currentPage,
 											int postCount,
 											int pageLimit,

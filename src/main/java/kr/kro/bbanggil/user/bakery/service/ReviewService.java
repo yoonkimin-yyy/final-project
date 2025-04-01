@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.ReviewRequestDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto;
 
 
@@ -18,7 +18,7 @@ public interface ReviewService {
 	
 	public int getTotalReviewCount(double bakeryNo);
 	
-	Map<String, Object> list(PageResponseDto pageInfo, int currentPage, int postCount, int pageLimit, int boardLimit,double bakeryNo,String sort);
+	Map<String, Object> list(PageInfoDTO pageInfo, int currentPage, int postCount, int pageLimit, int boardLimit,double bakeryNo,String sort);
 	
 	
 	List<ReviewResponseDto> getReviewImages(double bakeryNo);

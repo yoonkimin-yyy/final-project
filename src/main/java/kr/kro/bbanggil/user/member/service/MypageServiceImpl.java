@@ -9,15 +9,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
-import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageUserResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
 import kr.kro.bbanggil.user.member.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.user.member.mapper.MypageMapper;
-import kr.kro.bbanggil.user.member.util.MypagePagination;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -29,14 +29,14 @@ public class MypageServiceImpl implements MypageService {
 
 
     @Override
-	public Map<String, Object> getMyList(MypagePagination mypagePagination, 
+	public Map<String, Object> getMyList(PaginationUtil mypagePagination, 
 										   int currentPage,
 										   int postCount,
 										   int pageLimit,
 										   int boardLimit,
 										   int userNo) {
 		// 페이징 처리
-		MypagePageInfoDto pi = mypagePagination.getMyList(postCount, currentPage, pageLimit, boardLimit);
+		PageInfoDTO pi = mypagePagination.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		List<MypageListResponseDto> getBuyHistory = mypageMapper.getBuyHistory(userNo,pi);
 		
 

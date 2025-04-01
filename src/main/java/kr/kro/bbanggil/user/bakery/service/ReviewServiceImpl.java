@@ -13,13 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.AwsS3Util;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
 import kr.kro.bbanggil.global.exception.BbanggilException;
 import kr.kro.bbanggil.owner.order.service.OrderServiceImpl;
 import kr.kro.bbanggil.user.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.ReviewRequestDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.user.bakery.mapper.ReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -132,7 +132,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public Map<String, Object> list(PageResponseDto pageInfo, int currentPage, int postCount, int pageLimit,
+	public Map<String, Object> list(PageInfoDTO pageInfo, int currentPage, int postCount, int pageLimit,
 			int boardLimit, double bakeryNo, String sort) {
 
 		String orderBy = "r.review_date DESC";

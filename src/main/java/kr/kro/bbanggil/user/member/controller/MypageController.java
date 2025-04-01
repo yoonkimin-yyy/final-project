@@ -14,27 +14,27 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
-import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageUserResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
 import kr.kro.bbanggil.user.member.dto.response.OwnerMypageResponseDTO;
 import kr.kro.bbanggil.user.member.service.MypageServiceImpl;
-import kr.kro.bbanggil.user.member.util.MypagePagination;
 import lombok.AllArgsConstructor;
 
 @Controller
-@RequestMapping("/register")
+@RequestMapping("/mypage")
 @AllArgsConstructor
 public class MypageController {
 	
 	private final MypageServiceImpl mypageService;
-	private final MypagePagination mypagePagination;
+	private final PaginationUtil mypagePagination;
 	
 
-	@GetMapping("/mypage") 
+	@GetMapping("") 
 	public String myPage(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 						 @SessionAttribute(value="userNum",required=false)Integer userNo,
 				//		 @RequestParam(value="userNo",defaultValue="1") int userNo,
@@ -64,7 +64,7 @@ public class MypageController {
 		model.addAttribute("getBuyHistory",getBuyHistory);
 		 model.addAttribute("userName",userName);
 		 model.addAttribute("userInfo",userInfo);
-		MypagePageInfoDto piResult = (MypagePageInfoDto) result.get("pi");
+		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
 		
 		if(session.getAttribute("role").equals("owner"))
 			model.addAttribute("goOwnerPage",true);
@@ -98,7 +98,7 @@ public class MypageController {
 						@SessionAttribute(value="userNum",required=false)Integer userNo
 					   ) {
 		 mypageService.updateUser(mypageDto,userNo);
-		return "redirect:/register/mypage";
+		return "redirect:/mypage";
 	}
 	
 	@PostMapping("/updatePassword")
@@ -107,7 +107,7 @@ public class MypageController {
 
 		mypageService.updatePassword(userNo,passwordDto);
 	
-		return "redirect:/register/mypage";
+		return "redirect:/mypage";
 	}
 
 
@@ -116,7 +116,7 @@ public class MypageController {
 								@SessionAttribute(value="userNum", required=false)Integer userNo) {
 		mypageService.updateAddress(signupRequestDto, userNo);
 		
-		return "redirect:/register/mypage";
+		return "redirect:/mypage";
 	}
 	
 	@PostMapping("/writeReview")
@@ -124,17 +124,17 @@ public class MypageController {
 								@SessionAttribute(value="userNum", required=false)Integer userNo) {
 		mypageService.writeReview(mypageListDto, userNo);
 		
-		return "redirect:/register/mypage";
+		return "redirect:/mypage";
 	}
 	
 	@PostMapping("/deleteReview")
 	public String deleteReview(MypageListResponseDto mypageListDto) {
 		
 		mypageService.deleteReview(mypageListDto);
-		return "redirect:/register/mypage";
+		return "redirect:/mypage";
 	}
 	
-	@GetMapping("owner/mypage")
+	@GetMapping("/owner")
 	public String ownerMypage(@SessionAttribute("userNum") int userNum,
 							  Model model) {
 		List<OwnerMypageResponseDTO> result = mypageService.ownerMypage(userNum);

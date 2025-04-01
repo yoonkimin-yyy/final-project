@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.kro.bbanggil.admin.service.AdminOrderService;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -29,7 +29,7 @@ public class AdminOrderController {
 		int pageLimit = 5;
 		int boardLimit = 10;
 		
-		PageResponseDto pi = PaginationUtil.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		PageInfoDTO pi = PaginationUtil.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		List<OrderResponseDto> orderList = adminOrderService.getPagedOrders(pi,keyword);
 		model.addAttribute("orderList", orderList);

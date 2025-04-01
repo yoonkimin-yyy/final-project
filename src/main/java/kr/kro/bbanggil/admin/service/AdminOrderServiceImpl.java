@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,7 +21,7 @@ public class AdminOrderServiceImpl implements AdminOrderService{
 	}
 	
 	@Override
-	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi, String keyword) {
+	public List<OrderResponseDto> getPagedOrders(PageInfoDTO pi, String keyword) {
 	    return adminMapper.selectPagedOrders(pi,keyword);
 	}
 }
