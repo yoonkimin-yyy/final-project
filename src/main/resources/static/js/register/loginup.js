@@ -426,6 +426,7 @@ window.sample6_execDaumPostcode = function () {
     });
 }
 
+
 // 인증번호 요청 (SMS 전송)
 function sendSMS() {
     let phoneNumber = $("#phone").val();

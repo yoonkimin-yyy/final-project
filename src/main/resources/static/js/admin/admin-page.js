@@ -42,7 +42,18 @@ function showTab(tabId) {
         tabButtons[i].classList.remove('active');
     }
     event.target.classList.add('active');
+	
+	localStorage.setItem('selectedTab', tabId);
 }
+// 페이지 로드 시 localStorage에서 탭 정보 가져와서 자동 실행
+document.addEventListener("DOMContentLoaded", function () {
+    const selectedTab = localStorage.getItem('selectedTab');
+    if (selectedTab) {
+        showTab(selectedTab); // 저장된 탭을 활성화
+	} else {
+        showTab('traffic'); // localStorage에 값이 없으면 기본 'traffic' 탭 활성화
+    }
+});
 
 fetch('/api/admin/monthly-count')
     .then(response => response.json())

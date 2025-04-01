@@ -44,7 +44,7 @@ public class LoginAttemptUtil {
     public boolean isAccountLocked(HttpServletRequest request) {
         String clientIp = getClientIp(request);
         LoginAttemptInfo attemptInfo = attemptsMap.get(clientIp);
-
+        
         if (attemptInfo == null) {
             return false;  // 로그인 시도 없음
         }

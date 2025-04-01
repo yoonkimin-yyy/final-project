@@ -50,7 +50,7 @@ public class ApiOrderPageController {
 	public Boolean accountCheck(@RequestParam("totalCount") int totalCount,
 								@SessionAttribute("userNum") int userNo) {
 		
-		logger.info(":::::::ApiOrderControllerUserNo:::::::", userNo);
+		logger.info("/accountCheck: '{}'", totalCount);
 		
 		return orderService.accountCheck(totalCount, userNo);
 	}
@@ -82,7 +82,9 @@ public class ApiOrderPageController {
 													OrderRequestDto orderRequestDto,
 													@SessionAttribute("userNum") int userNo) 
 	throws IamportResponseException, IOException {
-
+		
+		logger.info("/validation/{imp_uid}: '{}', '{}'", imp_uid, userNo);
+		
 		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userNo);
 	}
 	
@@ -97,6 +99,7 @@ public class ApiOrderPageController {
 			return ResponseEntity.ok("주문정보가 성공적으로 저장되었습니다.");
 		}	
 		
+		logger.info("/success: '{}'", userNo);
 		return ResponseEntity.badRequest().body("주문 저장에 실패했습니다");
 	}
 	
@@ -106,6 +109,7 @@ public class ApiOrderPageController {
 	@PostMapping("/cancel/{imp_uid}")
 	public IamportResponse<Payment> cancelPayment(@PathVariable String imp_uid) 
 			throws IamportResponseException, IOException {
+		logger.info("/cancel/{imp_uid}: '{}'", imp_uid);
 		return orderService.cancelPayment(imp_uid);
 	}
 	

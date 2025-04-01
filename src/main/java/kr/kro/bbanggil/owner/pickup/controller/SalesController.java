@@ -33,13 +33,12 @@ public class SalesController {
         
         // bakeryNo가 0인 경우 처리
     	int bakeryNo = (int) session.getAttribute("bakeryNo");
+    	
         if (bakeryNo == 0) {
-            // bakeryNo 값이 잘못 전달된 경우에 대한 처리 로직
+        	throw new BbanggilException("잘못된 접근입니다.","common/error",HttpStatus.BAD_REQUEST);
         }
         
-        if (year == null) {
-        	throw new BbanggilException("아직 가게의 매출이 없습니다.","common/error",HttpStatus.BAD_REQUEST);
-        }
+        
         
         if (year == null) {
              

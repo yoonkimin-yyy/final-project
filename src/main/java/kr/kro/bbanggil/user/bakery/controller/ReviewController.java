@@ -105,7 +105,7 @@ public class ReviewController {
 	public String reiewReply(@RequestParam("reviewNo") int reviewNo,
 								@RequestParam("bakeryNo") Double bakeryNoDouble,
 								@RequestParam("replyText") String reviewReply,
-								@RequestParam("userNum") int userNo,
+								@SessionAttribute("userNum") int userNo,
 								HttpSession session,
 								Model model) {
 		

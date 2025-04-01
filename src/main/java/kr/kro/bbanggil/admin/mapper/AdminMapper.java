@@ -41,6 +41,7 @@ public interface AdminMapper {
 
 	void updateInquiryStatusToAnswered(@Param("inquiryNo")int inquiryNo);
 
+
 	@Select("SELECT SUM(user_count) FROM user_count")
 	int getTodayUser();
 

@@ -3,6 +3,8 @@ package kr.kro.bbanggil.admin.api;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +25,15 @@ import lombok.AllArgsConstructor;
 public class APiAdminController {
 	
 	private final AdminMainService adminMainService;
+	private final Logger logger = LogManager.getLogger(APiAdminController.class);
 	
 	@PostMapping("/sendEmail")
 	@ResponseBody
 	public String sendEmail(@RequestBody AdminEmailRequestDto adminReqeustDto) {
 		
 		adminMainService.sendEmail(adminReqeustDto);
+		
+		logger.info("/sendEmail: '{}'", adminReqeustDto.getAddress());
 		
 		return "ok";
 	}
@@ -43,6 +48,8 @@ public class APiAdminController {
 		
 		adminMainService.addCategory(newCategory);
 		
+		logger.info("/addCategory: '{}'", newCategory);
+		
 		return "ok";
 	}
 	
@@ -50,7 +57,9 @@ public class APiAdminController {
 	public String deleteCategory(@RequestBody Map<String, List<String>> requestBody) {
 		
 		adminMainService.deleteCategory(requestBody);
-		    
+				
+		logger.info("/deleteCategory: '{}'", requestBody);
+		
 	    return "ok";
     }
 	

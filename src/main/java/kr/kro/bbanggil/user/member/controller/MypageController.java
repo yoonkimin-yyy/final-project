@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.request.PasswordRequestDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
@@ -44,7 +45,7 @@ public class MypageController {
 
 		
 		int postCount = mypageService.getTotalCount(userNo);
-		int pageLimit = 10;
+		int pageLimit = 5;
 		int boardLimit = 10;
 		
 		
@@ -59,6 +60,7 @@ public class MypageController {
 		
 		List<MypageListResponseDto> getBuyHistory = (List<MypageListResponseDto>) result.get("getBuyHistory");
 		
+
 		model.addAttribute("getBuyHistory",getBuyHistory);
 		 model.addAttribute("userName",userName);
 		 model.addAttribute("userInfo",userInfo);
@@ -108,6 +110,30 @@ public class MypageController {
 	
 		return "redirect:/register/mypage";
 	}
+
+
+	@PostMapping("/updateAddress")
+	public String updateAddress(@ModelAttribute MemberRequestSignupDto signupRequestDto,
+								@SessionAttribute(value="userNum", required=false)Integer userNo) {
+		mypageService.updateAddress(signupRequestDto, userNo);
+		
+		return "redirect:/register/mypage";
+	}
+	
+	@PostMapping("/writeReview")
+	public String writeReview(MypageListResponseDto mypageListDto,
+								@SessionAttribute(value="userNum", required=false)Integer userNo) {
+		mypageService.writeReview(mypageListDto, userNo);
+		
+		return "redirect:/register/mypage";
+	}
+	
+	@PostMapping("/deleteReview")
+	public String deleteReview(MypageListResponseDto mypageListDto) {
+		
+		mypageService.deleteReview(mypageListDto);
+		return "redirect:/register/mypage";
+	}
 	
 	@GetMapping("owner/mypage")
 	public String ownerMypage(@SessionAttribute("userNum") int userNum,
@@ -119,6 +145,7 @@ public class MypageController {
 		model.addAttribute("goMyPage",true);
 		
 		return "owner/owner-mypage";
+
 	}
 	
 }
