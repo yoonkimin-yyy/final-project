@@ -64,6 +64,7 @@ public class AdminMainController {
 		
 		model.addAttribute("newOrder", bottomContent.get("new"));
 		model.addAttribute("inquiries", bottomContent.get("inquiry"));
+		model.addAttribute("report",bottomContent.get("report"));
 		
 		return "admin/admin-page";
 	}

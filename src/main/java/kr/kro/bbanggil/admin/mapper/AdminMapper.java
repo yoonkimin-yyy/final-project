@@ -15,6 +15,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
+import kr.kro.bbanggil.admin.dto.response.ReportResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
@@ -93,5 +94,9 @@ public interface AdminMapper {
 	List<OrderResponseDto> selectPagedOrders(@Param("pi")PageInfoDTO pi,@Param("keyword") String keyword);
 
 	myBakeryResponseDTO bakeryInfo(int bakeryNo);
+
+	List<ReportResponseDTO> getReport();
+
+	String answer(int reportNo);
 	
 }

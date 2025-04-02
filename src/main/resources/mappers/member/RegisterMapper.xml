@@ -142,5 +142,11 @@
     	SELECT user_ban from user_info
     	WHERE user_id=#{userId}
     </select>
+    <select id="alert">
+		SELECT report_result FROM REVIEW_REPORT_RESULT rrr 
+		JOIN REVIEW_REPORT rr ON rrr.REPORT_NO = rr.REPORT_NO 
+		JOIN REVIEW r ON r.REVIEW_NO =rr.REVIEW_NO
+		WHERE r.USER_NO = #{userNo}    
+    </select>
 
 </mapper>
