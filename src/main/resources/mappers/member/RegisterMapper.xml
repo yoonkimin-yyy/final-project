@@ -30,25 +30,31 @@
 
 	
 
-	<insert id="loginup" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestCheckBoxDto">
-	<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
-			SELECT user_info_seq.nextval FROM dual
-	</selectKey>
-	INSERT INTO USER_INFO VALUES(#{userNo},
+<insert id="loginup" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestCheckBoxDto">
+<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
+	SELECT user_info_seq.nextval FROM dual
+</selectKey>
+INSERT
+	INTO
+	USER_INFO
+VALUES(#{userNo},
 								 #{userName},
 								 #{userId},
 								 #{userPassword},
 								 #{userEmail},
 								 #{userBirthDate},
 								 #{userPhoneNum},
-								 default,
-								 default,
+								 DEFAULT,
+								 DEFAULT,
 								 SYSDATE
 								 )
-	</insert>
+</insert>
 	
-	<insert id="insertCheckbox" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestCheckBoxDto">
-	 INSERT INTO AGREE VALUES (#{userNo}, 
+<insert id="insertCheckbox" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestCheckBoxDto">
+INSERT
+	INTO
+	AGREE
+VALUES (#{userNo}, 
 	 						   SYSDATE, 
 	 						   #{termsofuse}, 
 	 						   #{information},
@@ -56,23 +62,29 @@
 	 						   #{marketing},
 	 						   #{email},
 	 						   #{sms})
-	</insert>
+</insert>
 	
-	<insert id="insertAddress" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
-	INSERT INTO ADDRESS VALUES(#{userNo},
+<insert id="insertAddress" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
+INSERT
+	INTO
+	ADDRESS
+VALUES(#{userNo},
 							   #{requestAddressDto.userPostcode},
 							   #{requestAddressDto.userCity},
 							   #{requestAddressDto.userDistrict},
 							   #{requestAddressDto.userStreet},
 							   #{requestAddressDto.userNumber},
 							   #{requestAddressDto.userDetailaddress})
-	</insert>
+</insert>
 
-	<insert id="businessloginup" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
-	<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
+<insert id="businessloginup" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
+<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
 			SELECT user_info_seq.nextval FROM dual
 		</selectKey>
-	INSERT INTO USER_INFO VALUES(#{userNo},
+INSERT
+	INTO
+	USER_INFO
+VALUES(#{userNo},
 								 #{userName},
 								 #{userId},
 								 #{userPassword},
@@ -80,73 +92,108 @@
 								 #{userBirthDate},
 								 #{userPhoneNum},
 								 'owner',
-								 default,
+								 DEFAULT,
 								 SYSDATE
 								 )
 	</insert>
 	
-	<insert id="insertbusiness" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
-	INSERT INTO BUSINESSNO VALUES(#{userNo},
+<insert id="insertbusiness" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
+INSERT
+	INTO
+	BUSINESSNO
+VALUES(#{userNo},
 								  #{businessNoDto.businessNo})
-	</insert>
+</insert>
 	
-	<select id="userIdCheck" resultType="int">
-			SELECT COUNT(*) FROM USER_INFO WHERE USER_ID = #{userId}
-	</select>
+<select id="userIdCheck" resultType="int">
+SELECT
+	COUNT(*)
+FROM
+	USER_INFO
+WHERE
+	USER_ID = #{userId}
+</select>
 	
-	<select id="userEmailCheck" resultType="int">
-		SELECT COUNT(*) FROM USER_INFO WHERE USER_EMAIL = #{userEmail}
-	</select>
+<select id="userEmailCheck" resultType="int">
+SELECT
+	COUNT(*)
+FROM
+	USER_INFO
+WHERE
+	USER_EMAIL = #{userEmail}
+</select>
 	
-	<select id="businessNoCheck" resultType="int">
-		SELECT COUNT(*) FROM BUSINESSNO WHERE USER_BUSINESSNO = #{businessNo}
-	</select>
+<select id="businessNoCheck" resultType="int">
+SELECT
+	COUNT(*)
+FROM
+	BUSINESSNO
+WHERE
+	USER_BUSINESSNO = #{businessNo}
+</select>
 
-	<select id="loginIn" resultMap="loginupMap">
-		  SELECT USER_NO,
-               	 USER_ID,
-               	 USER_NAME,
-               	 USER_PASSWORD,
-               	 USER_TYPE
-        FROM USER_INFO
-        WHERE USER_ID = #{userId}
-    </select>
+<select id="loginIn" resultMap="loginupMap">
+SELECT
+	USER_NO,
+	USER_ID,
+	USER_NAME,
+	USER_PASSWORD,
+	USER_TYPE
+FROM
+	USER_INFO
+WHERE
+	USER_ID = #{userId}
+ </select>
     
-    <!-- 이메일로 아이디 찾기 -->
-    <select id="findUserIdByEmail" resultType="String">
-        SELECT USER_ID FROM USER_INFO WHERE USER_EMAIL = #{userEmail}
-    </select>
+<select id="findUserIdByEmail" resultType="String">
+SELECT
+	USER_ID
+FROM
+	USER_INFO
+WHERE
+	USER_EMAIL = #{userEmail}
+</select>
 
-    <!-- 이메일로 회원 정보 조회 -->
-    <select id="findUserByEmail" resultMap="loginupMap"
+<select id="findUserByEmail" resultMap="loginupMap"
     		resultType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">
-        SELECT * FROM USER_INFO 
-        	WHERE USER_EMAIL = #{userEmail}
-        	AND user_name = #{userName}
-        	AND user_type IN ('owner', 'user')
-    </select>
+SELECT
+	*
+FROM
+	USER_INFO
+WHERE
+	USER_EMAIL = #{userEmail}
+	AND user_name = #{userName}
+	AND user_type IN ('owner', 'user')
+</select>
     
-    <select id="findUserPassword" resultMap="loginupMap">
-    	SELECT * from user_info 
-    		WHERE user_id = #{userId}
-    		AND user_email = #{userEmail}
-    		AND user_type IN ('owner', 'user')
-    </select>
+<select id="findUserPassword" resultMap="loginupMap">
+SELECT
+	*
+FROM
+	user_info
+WHERE
+	user_id = #{userId}
+	AND user_email = #{userEmail}
+	AND user_type IN ('owner', 'user')
+</select>
 
-    <!-- 비밀번호 임시비밀번호로 변경 -->
-    <update id="updatePassword">
-        UPDATE USER_INFO SET USER_PASSWORD = #{userPassword} WHERE USER_EMAIL = #{userEmail}
-    </update>
+<update id="updatePassword">
+UPDATE
+	USER_INFO
+SET
+	USER_PASSWORD = #{userPassword}
+WHERE
+	USER_EMAIL = #{userEmail}
+
+</update>
     
-    <select id="isBanned">
-    	SELECT user_ban from user_info
-    	WHERE user_id=#{userId}
-    </select>
-    <select id="alert">
-		SELECT report_result FROM REVIEW_REPORT_RESULT rrr 
-		JOIN REVIEW_REPORT rr ON rrr.REPORT_NO = rr.REPORT_NO 
-		JOIN REVIEW r ON r.REVIEW_NO =rr.REVIEW_NO
-		WHERE r.USER_NO = #{userNo}    
-    </select>
+<select id="isBanned">
+SELECT
+	user_ban
+FROM
+	user_info
+WHERE
+	user_id =#{userId}
+</select>
 
 </mapper>

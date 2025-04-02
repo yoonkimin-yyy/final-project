@@ -87,9 +87,9 @@
 		
 
 
-	<select id="findBakeryImages" resultMap="DetailResultMap">
+<select id="findBakeryImages" resultMap="DetailResultMap">
 
-		SELECT
+SELECT
 		bi2.CHANGE_NAME,
 		bi2.IMG_NO,
 		bi2.RESOURCES_PATH ,
@@ -97,64 +97,70 @@
 		bi.BAKERY_NAME ,
 		bi.BAKERY_ADDRESS,
 		bi.BAKERY_PHONE
-		FROM
+FROM
 		BAKERY_INFO bi
-		JOIN BAKERY_IMAGE
+JOIN BAKERY_IMAGE
 		bi2
 		ON
 		bi.BAKERY_NO = bi2.BAKERY_NO
-		WHERE
+WHERE
 		BI.BAKERY_NO = #{no}
-		AND BI2."POSITION" ='main'
+	AND BI2."POSITION" ='main'
 		
 
-	</select>
+</select>
 
-	<select id="findBakeriesInfo" resultMap="DetailResultMap">
+<select id="findBakeriesInfo" resultMap="DetailResultMap">
 SELECT
-    bi.BAKERY_NAME,
-    bi.BAKERY_NO,
-    bi.BAKERY_ADDRESS,
-    bi.BAKERY_PHONE,
-    bi2.IMG_NO,
-    bs.day,
-    bs.open_time,
-    bs.close_time,
-    bi2.CHANGE_NAME,
-    bi2.RESOURCES_PATH,
-    NVL(ROUND(AVG(r.REVIEW_RATING), 1), 0) AS REVIEW_RATING  
-FROM BAKERY_INFO bi
-JOIN BAKERY_IMAGE bi2 ON bi.BAKERY_NO = bi2.BAKERY_NO
-JOIN BAKERY_SCHEDULE bs ON bi2.BAKERY_NO = bs.BAKERY_NO
-LEFT JOIN REVIEW r ON bi.BAKERY_NO = r.BAKERY_NO  
-WHERE bi.BAKERY_NO = #{no}
+	bi.BAKERY_NAME,
+	bi.BAKERY_NO,
+	bi.BAKERY_ADDRESS,
+	bi.BAKERY_PHONE,
+	bi2.IMG_NO,
+	bs.day,
+	bs.open_time,
+	bs.close_time,
+	bi2.CHANGE_NAME,
+	bi2.RESOURCES_PATH,
+	NVL(ROUND(AVG(r.REVIEW_RATING), 1), 0) AS REVIEW_RATING
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_IMAGE bi2 ON
+	bi.BAKERY_NO = bi2.BAKERY_NO
+JOIN BAKERY_SCHEDULE bs ON
+	bi2.BAKERY_NO = bs.BAKERY_NO
+LEFT JOIN REVIEW r ON
+	bi.BAKERY_NO = r.BAKERY_NO
+WHERE
+	bi.BAKERY_NO = #{no}
 GROUP BY
-    bi.BAKERY_NAME,
-    bi.BAKERY_NO,
-    bi.BAKERY_ADDRESS,
-    bi.BAKERY_PHONE,
-    bi2.IMG_NO,
-    bi2.CHANGE_NAME,
-    bi2.RESOURCES_PATH,
-    bs.day,
-    bs.open_time,
-    bs.close_time
-    ORDER BY
-    CASE bs.day
+	bi.BAKERY_NAME,
+	bi.BAKERY_NO,
+	bi.BAKERY_ADDRESS,
+	bi.BAKERY_PHONE,
+	bi2.IMG_NO,
+	bi2.CHANGE_NAME,
+	bi2.RESOURCES_PATH,
+	bs.day,
+	bs.open_time,
+	bs.close_time
+ORDER BY
+	CASE
+		bs.day
         WHEN '월' THEN 1
-        WHEN '화' THEN 2
-        WHEN '수' THEN 3
-        WHEN '목' THEN 4
-        WHEN '금' THEN 5
-        WHEN '토' THEN 6
-        WHEN '일' THEN 7
-        ELSE 8
-    END
-	</select>
+		WHEN '화' THEN 2
+		WHEN '수' THEN 3
+		WHEN '목' THEN 4
+		WHEN '금' THEN 5
+		WHEN '토' THEN 6
+		WHEN '일' THEN 7
+		ELSE 8
+	END
+</select>
 
 
-	<select id="getMenuInfo" resultMap="MenuResultMap">
-		SELECT
+<select id="getMenuInfo" resultMap="MenuResultMap">
+SELECT
 		m.MENU_NO,
 		m.MENU_NAME ,
 		m.MENU_PRICE ,
@@ -162,55 +168,61 @@ GROUP BY
 		mi.IMG_NO ,
 		mi.CHANGE_NAME ,
 		mi.RESOURCES_PATH ,
-		bi.BAKERY_NO 
-		FROM BAKERY_INFO bi 
-		LEFT JOIN MENU m ON BI.BAKERY_NO = M.BAKERY_NO 
-		LEFT JOIN MENU_IMEGE mi 
-		ON MI.MENU_NO = M.MENU_NO 
-		WHERE BI.BAKERY_NO = #{no}
+		bi.BAKERY_NO
+FROM
+	BAKERY_INFO bi
+LEFT JOIN MENU m ON
+	BI.BAKERY_NO = M.BAKERY_NO
+LEFT JOIN MENU_IMEGE mi 
+		ON
+	MI.MENU_NO = M.MENU_NO
+WHERE
+	BI.BAKERY_NO = #{no}
 
-	</select>
 
-	<insert id="insertCart" parameterType="int">
-		INSERT
+</select>
+
+<insert id="insertCart" parameterType="int">
+INSERT
 		INTO
 		CART(cart_no,
 		user_no)
-		VALUES(cart_seq.nextval,
+VALUES(cart_seq.nextval,
 		#{userNo})
-	</insert>
+</insert>
 
-	<select id="getCartNoByUserNo" parameterType="int"
+<select id="getCartNoByUserNo" parameterType="int"
 		resultType="int">
-		SELECT
+SELECT
 			cart_no
-		FROM
+FROM
 			CART
-		WHERE
-			user_no = #{userNo} 
-		ORDER BY cart_no DESC
+WHERE
+			user_no = #{userNo}
+ORDER BY
+	cart_no DESC
 		FETCH FIRST 1 ROWS ONLY
 
-	</select>
+</select>
 
-	<insert id="insertCartInfo">
-		INSERT
+<insert id="insertCartInfo">
+INSERT
 		INTO
 		CART_INFO (list_no,
 					cart_no,
 					menu_no,
 					menu_count)
-		VALUES (cart_info_seq.nextval,
+VALUES (cart_info_seq.nextval,
 				#{cartNo},
 				#{menuNo},
 				#{menuCount})
 
-	</insert>
+</insert>
 
 
-	<select id="getBakeryDetail" resultMap="DetailResultMap">
+<select id="getBakeryDetail" resultMap="DetailResultMap">
 
-		SELECT
+SELECT
 		bi.bakery_address,
 		bi.bakery_name,
 		bi.bakery_phone,
@@ -224,98 +236,108 @@ GROUP BY
 		BI2.RESOURCES_PATH,
 		BI2.CHANGE_NAME,
 		BI2.position
-		FROM
+FROM
 		BAKERY_DETAIL bd
-		JOIN BAKERY_INFO bi
+JOIN BAKERY_INFO bi
 		ON
 		bd.BAKERY_NO = bi.BAKERY_NO
-		JOIN
+JOIN
 		BAKERY_IMAGE bi2
 		ON
 		bi.BAKERY_NO = BI2.BAKERY_NO
-		WHERE
+WHERE
 		bi.BAKERY_NO =
 		#{no}
 
-	</select>
+</select>
 
-	<select id="findBakeryByNo" resultMap="DetailResultMap">
+<select id="findBakeryByNo" resultMap="DetailResultMap">
 
 
-		SELECT
+SELECT
 		bi.LATITUDE ,
 		bi.LONGITUDE ,
 		bi.BAKERY_NAME,
 		bi.BAKERY_NO
-		FROM
+FROM
 		BAKERY_INFO bi
-		WHERE
+WHERE
 		BAKERY_NO = #{no}
 
-
-	</select>
+</select>
 
 <select id="getInsideImages" resultMap="BakeryImageSlideMap">
-    SELECT
-        bi.bakery_address,
-        bi.bakery_name,
-        bi.bakery_phone,
-        bi.BAKERY_NO,
-        bd.AMENITY,
-        bd.INSIDE_INFO,
-        bd.CREATED_DATE,
-        BI2.IMG_NO,
-        BI2.RESOURCES_PATH,
-        BI2.CHANGE_NAME,
-        BI2.POSITION
-    FROM BAKERY_DETAIL bd
-    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
-    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
-    WHERE bi.BAKERY_NO = #{bakeryNo}
-      AND BI2.POSITION = 'inside'
+SELECT
+	bi.bakery_address,
+	bi.bakery_name,
+	bi.bakery_phone,
+	bi.BAKERY_NO,
+	bd.AMENITY,
+	bd.INSIDE_INFO,
+	bd.CREATED_DATE,
+	BI2.IMG_NO,
+	BI2.RESOURCES_PATH,
+	BI2.CHANGE_NAME,
+	BI2.POSITION
+FROM
+	BAKERY_DETAIL bd
+JOIN BAKERY_INFO bi ON
+	bd.BAKERY_NO = bi.BAKERY_NO
+JOIN BAKERY_IMAGE BI2 ON
+	bi.BAKERY_NO = BI2.BAKERY_NO
+WHERE
+	bi.BAKERY_NO = #{bakeryNo}
+	AND BI2.POSITION = 'inside'
 </select>
 
 
 <select id="getOutsideImages" resultMap="BakeryImageSlideMap">
-    SELECT
-        bi.bakery_address,
-        bi.bakery_name,
-        bi.bakery_phone,
-        bi.BAKERY_NO,
-        bd.AMENITY,
-        bd.OUTSIDE_INFO,
-        bd.CREATED_DATE,
-        BI2.IMG_NO,
-        BI2.RESOURCES_PATH,
-        BI2.CHANGE_NAME,
-        BI2.POSITION
-    FROM BAKERY_DETAIL bd
-    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
-    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
-    WHERE bi.BAKERY_NO = #{bakeryNo}
-      AND BI2.POSITION = 'outside'
+SELECT
+	bi.bakery_address,
+	bi.bakery_name,
+	bi.bakery_phone,
+	bi.BAKERY_NO,
+	bd.AMENITY,
+	bd.OUTSIDE_INFO,
+	bd.CREATED_DATE,
+	BI2.IMG_NO,
+	BI2.RESOURCES_PATH,
+	BI2.CHANGE_NAME,
+	BI2.POSITION
+FROM
+	BAKERY_DETAIL bd
+JOIN BAKERY_INFO bi ON
+	bd.BAKERY_NO = bi.BAKERY_NO
+JOIN BAKERY_IMAGE BI2 ON
+	bi.BAKERY_NO = BI2.BAKERY_NO
+WHERE
+	bi.BAKERY_NO = #{bakeryNo}
+	AND BI2.POSITION = 'outside'
 </select>
 
 
 <select id="getParkingImages" resultMap="BakeryImageSlideMap">
- SELECT
-        bi.bakery_address,
-        bi.bakery_name,
-        bi.bakery_phone,
-        bi.BAKERY_NO,
-        bd.AMENITY,
-        bd.OUTSIDE_INFO,
-        bd.CREATED_DATE,
-        BI2.IMG_NO,
-        BI2.RESOURCES_PATH,
-        BI2.CHANGE_NAME,
-        BI2.POSITION
-    FROM BAKERY_DETAIL bd
-    JOIN BAKERY_INFO bi ON bd.BAKERY_NO = bi.BAKERY_NO
-    JOIN BAKERY_IMAGE BI2 ON bi.BAKERY_NO = BI2.BAKERY_NO
-    WHERE bi.BAKERY_NO = #{bakeryNo}
-      AND BI2.POSITION = 'parking'
-
+SELECT
+	bi.bakery_address,
+	bi.bakery_name,
+	bi.bakery_phone,
+	bi.BAKERY_NO,
+	bd.AMENITY,
+	bd.OUTSIDE_INFO,
+	bd.CREATED_DATE,
+	BI2.IMG_NO,
+	BI2.RESOURCES_PATH,
+	BI2.CHANGE_NAME,
+	BI2.POSITION
+FROM
+	BAKERY_DETAIL bd
+JOIN BAKERY_INFO bi ON
+	bd.BAKERY_NO = bi.BAKERY_NO
+JOIN BAKERY_IMAGE BI2 ON
+	bi.BAKERY_NO = BI2.BAKERY_NO
+WHERE
+	bi.BAKERY_NO = #{bakeryNo}
+	AND BI2.POSITION = 'parking'
 </select>
 
 <select id="getBakeriesTime" resultMap="BakeryScheduleResultMap">

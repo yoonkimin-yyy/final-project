@@ -46,18 +46,15 @@ public class PickupListController {
     						@RequestParam("bakeryNo") int bakeryNo
     						) {	
     	
-    	// 로그인 된 사용자의 빵집 번호 세션에 저장
     	session.setAttribute("bakeryNo", bakeryNo);
     	
         List<PickupBakeryInfoResponseDTO> orderList = pickupServiceImpl.getAllOrders(userNo, bakeryNo);
         
         for (PickupBakeryInfoResponseDTO order : orderList) {
             List<PickupMenuResponseDTO> menuList = pickupServiceImpl.getMenusByOrderNo(order.getPayDTO().getOrderNo());
-            order.setMenuList(menuList);  // 주문 객체에 메뉴 리스트 추가
-            
-            
+            // 주문 객체에 메뉴 리스트 추가
+            order.setMenuList(menuList);  
         }
-        
         
         model.addAttribute("orders",orderList);
         model.addAttribute("bakeryNo",bakeryNo);
@@ -78,10 +75,7 @@ public class PickupListController {
 
         Map<String, Object> response = new HashMap<>();
         try {
-            // 상태 업데이트 서비스 호출
-            boolean isUpdated = pickupServiceImpl.updateOrderStatus(orderNo, status, rejectionReason);
-            
-
+            pickupServiceImpl.updateOrderStatus(orderNo, status, rejectionReason);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
         	logger.info("/update-status: '{}'", e);

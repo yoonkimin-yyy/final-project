@@ -109,6 +109,7 @@
 						<th>사용자ID</th>
 						<th>연락처</th>
 						<th>가게주소</th>
+						<th>삭제</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -119,6 +120,7 @@
 						<td th:text="${list.userId}"></td>
 						<td th:text="${list.userPhoneNum}"></td>
 						<td th:text="${list.bakeryAddress}"></td>
+						<td onclick="event.stopPropagation();"><button class="delete-btn" th:onclick="|location.href='@{/admin/bakery/delete(bakeryNo=${list.bakeryNo})}'|">삭제</button></td>
 					</tr>
 				</tbody>
 			</table>
