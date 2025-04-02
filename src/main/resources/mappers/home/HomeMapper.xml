@@ -58,7 +58,7 @@
 
 	<select id="getPopularBakeries" resultMap="BakeryResultMap">
 
-		SELECT
+	SELECT
 	bi.bakery_no,
 	bi.bakery_name,
 	bi.bakery_address,
@@ -76,13 +76,17 @@ JOIN review r ON
 	r.bakery_no = bi.bakery_no
 JOIN bakery_image bi2 ON
 	bi2.bakery_no = bi.bakery_no
+JOIN BAKERY_ACCESS ba ON
+	ba.BAKERY_NO = bi.BAKERY_NO
+WHERE
+	ba.AGREE = '승인'
 GROUP BY
 	bi.bakery_no,
 	bi.bakery_name,
 	bi.bakery_address
 ORDER BY
 	review_rating DESC
-FETCH FIRST 10 ROWS ONLY
+FETCH FIRST 10 ROWS ONLY	
 
 	</select>
 
