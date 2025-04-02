@@ -139,7 +139,7 @@
 			ORDER BY bi.bakery_no DESC
 		</otherwise>
 	</choose>
-	OFFSET ${pi.offset} ROWS FETCH NEXT ${pi.boardLimit} ROWS ONLY
+	OFFSET ${pi.offset - 1} ROWS FETCH NEXT ${pi.boardLimit} ROWS ONLY
 </select>
 
 <select id = "getLocationAgree" resultType="String">
