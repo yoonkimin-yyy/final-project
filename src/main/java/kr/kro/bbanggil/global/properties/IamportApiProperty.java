@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.global.config;
+package kr.kro.bbanggil.global.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

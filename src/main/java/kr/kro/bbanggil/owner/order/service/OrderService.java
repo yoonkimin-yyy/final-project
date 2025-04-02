@@ -20,7 +20,6 @@ public interface OrderService {
 
 	public IamportResponse<Payment> validateIamport(String imp_uid, 
 													PaymentRequestDto paymentRequestDto, 
-													OrderRequestDto orderRequestDto,
 													int userNo);
 
 	public boolean saveOrder(PaymentRequestDto paymentRequestDto, int userNo);
