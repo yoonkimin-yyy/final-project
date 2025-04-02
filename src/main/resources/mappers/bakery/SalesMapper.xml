@@ -62,11 +62,10 @@ FROM
 		bi.bakery_no = #{bakeryNo}
 		AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
 		) p
-GROUP BY
-	EXTRACT(MONTH FROM p.pay_request_date)
-ORDER BY
-	MONTH;     
+		GROUP BY EXTRACT(MONTH FROM p.pay_request_date)
+		ORDER BY month
 </select>
+
 
 <select id="getAnnualTotalSales" resultType="int">
 SELECT
