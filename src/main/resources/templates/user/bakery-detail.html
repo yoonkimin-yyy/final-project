@@ -12,6 +12,7 @@
   <script type="text/javascript"
     src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 	
 </head>
 
@@ -42,7 +43,7 @@
           <div class="rating">
             <span th:if="${bakery.response.reviewRating == null}">리뷰 없음</span>
             <span th:if="${bakery.response.reviewRating != null}">
-              ⭐<span th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></span>점
+            <span class="star-rating" th:utext="${@starUtil.getStarHtml(bakery.response.reviewRating)}"></span>
             </span>
           </div>
           <!-- 📍 주소 -->
@@ -173,7 +174,7 @@
               <div class="review-header">
                 <span class="reviewer-name" th:text="${review.userId}"></span>
                 <div class="review-rating">
-                  <i class="fas fa-star" th:each="star : ${#numbers.sequence(1, review.reviewRating)}"></i>
+                 <span class="star-rating" th:utext="${@starUtil.getStarHtml(review.reviewRating)}"></span>
                 </div>
               </div>
               <input type="hidden" id="reviewNo" th:value="${review.reviewNo}">

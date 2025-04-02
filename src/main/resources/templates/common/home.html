@@ -69,10 +69,14 @@
             <div class="rating-container">
               <i class="fas fa-star"></i>
               <span class="rating-text">
-                <th:block th:if="${bakery.response != null}"
-                  th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></th:block>
-                <th:block th:if="${bakery.response == null}"></th:block>
-              </span>
+  <th:block th:if="${bakery.response != null}">
+    <span class="star-rating" th:utext="${@starUtil.getStarHtml(bakery.response.reviewRating)}"></span>
+    <span th:text="${#numbers.formatDecimal(bakery.response.reviewRating, 1, 1)}"></span>점
+  </th:block>
+  <th:block th:if="${bakery.response == null}">
+    리뷰 없음
+  </th:block>
+</span>
             </div>
             <div class="specialty-container">
               <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
