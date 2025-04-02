@@ -31,33 +31,24 @@ public class SalesController {
                            Model model, 
                            HttpSession session) {
         
-        // bakeryNo가 0인 경우 처리
     	int bakeryNo = (int) session.getAttribute("bakeryNo");
-    	
         if (bakeryNo == 0) {
         	throw new BbanggilException("잘못된 접근입니다.","common/error",HttpStatus.BAD_REQUEST);
         }
         
-        
-        
         if (year == null) {
-             
-             year = LocalDate.now().getYear();  // Integer 타입으로도 사용할 수 있습니다.
-            
+             year = LocalDate.now().getYear(); 
         }
-        
-
         // 매출 조회
         List<PickupBakeryInfoResponseDTO> monthlySales = salesService.getMonthlySales(year, bakeryNo);
         int totalSales = salesService.getAnnualTotalSales(year, bakeryNo);
 
         Map<String, Integer> monthlySalesMap = new HashMap<>();
         for (PickupBakeryInfoResponseDTO sales : monthlySales) {
-            String month = sales.getSalesDTO().getMonth();  // String 타입의 키 사용
-            int totalSale = sales.getSalesDTO().getTotalSales();  // int 값
-            monthlySalesMap.put(month, totalSale);  // String을 키로 사용
+            String month = sales.getSalesDTO().getMonth();  
+            int totalSale = sales.getSalesDTO().getTotalSales();  
+            monthlySalesMap.put(month, totalSale);  
         }
-
         // 숫자 형식화
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formattedTotalSales = formatter.format(totalSales);
@@ -65,12 +56,11 @@ public class SalesController {
         // 사용 가능한 연도 목록 조회 (DB에서 가져오기)
         List<Integer> availableYears = salesService.getAvailableYears(bakeryNo);
 
-        // 모델에 데이터 추가
         model.addAttribute("availableYears", availableYears);
         model.addAttribute("monthlySalesMap", monthlySalesMap);
         model.addAttribute("monthlySales", monthlySales);
         model.addAttribute("totalSales", formattedTotalSales);
-        model.addAttribute("year", year);  // 선택한 년도
+        model.addAttribute("year", year); 
 
         return "/owner/sales-by-year";
     }

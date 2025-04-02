@@ -58,7 +58,7 @@ public class BakeryController {
 	@GetMapping("/list")
 	public String list(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
 			@RequestParam(value = "orderType", required = false, defaultValue = "recent") String orderType,
-			@ModelAttribute BakerySearchDTO bakerySearchDTO, BakeryInfoDTO bakeryInfoDTO, Model model,
+			@ModelAttribute BakerySearchDTO bakerySearchDTO, Model model,
 			@SessionAttribute(value="userNum",required = false)Integer userNo) {
 		// 전체 게시물
 		int postCount = bakeryService.totalCount(bakerySearchDTO);
@@ -146,7 +146,9 @@ public class BakeryController {
 			List<BakeryDto> getBakeriesTime = bakeryService.getBakeriesTime(no);
 			model.addAttribute("getBakeriesTime", getBakeriesTime);
 
-			// 빵집 번호로 사장님 답글 가져오기
+			/*
+			 * / 빵집 번호로 사장님 답글 가져오기
+			 */
 			List<ReviewResponseDto> reviewReplies = reviewService.getReviewReplies(no);
 			if (reviewReplies.size() < 10) {
 				ReviewResponseDto dto = new ReviewResponseDto();
@@ -155,7 +157,9 @@ public class BakeryController {
 			}
 			model.addAttribute("reviewReplies", reviewReplies);
 
-			// 로그인 한 사용자가 빵집 가게를 소유하고 있는지
+			/*
+			 * / 로그인 한 사용자가 빵집 가게를 소유하고 있는지
+			 */
 			if (userNum != null) {
 				int userNo = (int) userNum;
 				int resultValue = reviewService.byIdCheck(userNo, no);
@@ -179,7 +183,9 @@ public class BakeryController {
 				}
 			}
 
-			// 리뷰 리스트 pagination
+			/*
+			 * / 리뷰 리스트 pagination
+			 */
 			int pageLimit = 5;
 			int reviewLimit = 10;
 
@@ -263,7 +269,9 @@ public class BakeryController {
 		List<MenuDetailRequestDto> menuDtoList = new ArrayList<>();
 
 		try {
-			// 배열로 먼저 파싱하고 리스트로 변환
+			/*
+			 * / 배열로 먼저 파싱하고 리스트로 변환
+			 */
 			MenuDetailRequestDto[] dtoArray = objectMapper.readValue(orderData, MenuDetailRequestDto[].class);
 			menuDtoList = Arrays.asList(dtoArray);
 
@@ -311,7 +319,7 @@ public class BakeryController {
 	public String bakeryUpdate(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,
 			@SessionAttribute("userNum") int userNo) {
 		bakeryService.bakeryUpdate(bakeryRequestDTO, bakeryImgRequestDTO, userNo);
-		return "redirect:/register/owner/mypage";
+		return "redirect:/mypage/owner";
 	}
 	
 	@GetMapping("/info/form")

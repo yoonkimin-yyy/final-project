@@ -9,8 +9,6 @@
 <body>
     <div class="container">
         <h1>연간 매출</h1>
-        
-        <!-- 연도 선택 드롭다운 -->
         <form action="/sales/annual" method="get">
 		    <label for="year-select">년도 선택:</label>
 		    <select id="year-select" name="year" 
@@ -22,14 +20,9 @@
 		                    th:selected="${availableYear == year}"></option>
 		        </th:block>
 		    </select>
-		    
-		    <!-- bakeryNo 값이 제대로 설정되어야 함 -->
 		    <input type="hidden" name="bakeryNo" th:value="${bakeryNo}"/>
-		    
 		    <button type="submit">확인</button>
 		</form>
-
-
 
         <h2 th:text="${year} + '년 매출'"></h2>
 
@@ -94,7 +87,7 @@
                 <tr>
                     <th class="th-css">총 매출액</th>
                     <th class="th-css">
-                        <span th:text="${totalSales+'원'}"></span>
+                        <span th:text="${totalSales != null ? totalSales + '원' : '0원'}"></span>
                     </th>
                 </tr>
             </tfoot>

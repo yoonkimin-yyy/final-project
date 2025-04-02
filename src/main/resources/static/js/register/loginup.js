@@ -72,7 +72,7 @@
         // 유효성 검사 통과 후 AJAX 실행
         $.ajax({
             type: "GET",
-            url: "/register/checkId/" + getId,
+            url: "/member/checkId/" + getId,
             success: function (res) {
                 console.log("AJAX 응답 결과:", res);
                 if (res) {
@@ -172,7 +172,7 @@
 
 	    try {
 	        // 유효한 이메일이면 AJAX로 중복 체크 실행
-	        const response = await fetch(`/register/checkEmail/${userEmail}`);
+	        const response = await fetch(`/member/checkEmail/${userEmail}`);
 	        const isDuplicate = await response.json(); // JSON 응답 처리
 
 	        if (isDuplicate) {
