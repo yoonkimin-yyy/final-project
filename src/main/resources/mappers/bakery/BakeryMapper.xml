@@ -123,7 +123,7 @@ WHERE
 		bi.bakery_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
 		OR bi.bakery_address LIKE '%' || #{bakerySearchDTO.searchText} || '%'
 		OR mc.category LIKE '%' || #{bakerySearchDTO.searchText} || '%'
-		OR m.menu_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
+		OR m.menu_name LIKE  #{bakerySearchDTO.searchText} 
 		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword1} || '%'
 			AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword2} || '%')
 		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword2} || '%'
