@@ -177,7 +177,7 @@ document.getElementById('openReviewModal')?.addEventListener('click', () => {
     // 🔐 로그인 체크
     if (!userNo || userNo === "null" || userNo === "") {
         alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
-        window.location.href = window.location.origin + "/register/loginin/form";
+        window.location.href = window.location.origin + "/member/loginin/form";
         return;
     }
 
@@ -666,7 +666,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
 	    const userNo = document.getElementById("userNum").value;
 	    if (!userNo || userNo === "null") {
 	        alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-	        window.location.href = window.location.origin + "/register/loginin/form";
+	        window.location.href = window.location.origin + "/member/loginin/form";
 	        return;
 	    }
 
