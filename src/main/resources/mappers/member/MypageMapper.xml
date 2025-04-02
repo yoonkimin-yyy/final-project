@@ -57,116 +57,176 @@
 	</resultMap>
 
 
-	<select id="getTotalCount" resultType="int"> 
-		SELECT count(*) FROM USER_INFO ui 
-		JOIN CART c ON ui.USER_NO = c.USER_NO 
-		JOIN ORDER_INFO oi ON oi.CART_NO =c.CART_NO 
-		WHERE ui.user_no = #{userNo}
-	</select>
+<select id="getTotalCount" resultType="int"> 
+SELECT
+	count(*)
+FROM
+	USER_INFO ui
+JOIN CART c ON
+	ui.USER_NO = c.USER_NO
+JOIN ORDER_INFO oi ON
+	oi.CART_NO = c.CART_NO
+WHERE
+	ui.user_no = #{userNo}
+</select>
 	
-	<select id="getUserInfo" resultMap="myPageDto">
-		SELECT 
-			user_name,
-			user_email,
-			user_phonenum 
-		FROM USER_INFO ui 
-		WHERE USER_NO = #{userNo}
-	</select>
+<select id="getUserInfo" resultMap="myPageDto">
+SELECT
+	user_name,
+	user_email,
+	user_phonenum
+FROM
+	USER_INFO ui
+WHERE
+	USER_NO = #{userNo}
+</select>
 	
-	<select id="getBuyHistory" resultMap="myPageDto">
-		SELECT * FROM (
-        SELECT 
-            OI.order_no,
-            BI.bakery_name,
-            P.amount,
-            PS.pickup_status,
-            R.review_detail,
-            R.review_rating,
-            BI.bakery_no,
-            LISTAGG(M.menu_name || ' x ' || CI.menu_count, ', ') 
-                WITHIN GROUP (ORDER BY M.menu_no) AS menu_list,
-            ROW_NUMBER() OVER (ORDER BY OI.order_no DESC) AS rn
-        FROM ORDER_INFO OI
-        JOIN CART C ON OI.cart_no = C.cart_no
-        JOIN USER_INFO U ON C.user_no = U.user_no
-        JOIN PAYMENT P ON OI.pay_no = P.pay_no
-        JOIN PICKUP_STATUS PS ON P.pay_no = PS.pay_no
-        LEFT JOIN REVIEW R ON OI.order_no = R.order_no
-        JOIN CART_INFO CI ON C.cart_no = CI.cart_no
-        JOIN MENU M ON CI.menu_no = M.menu_no
-        JOIN BAKERY_INFO BI ON M.bakery_no = BI.bakery_no
-        WHERE U.user_no = #{userNo}
-        GROUP BY OI.order_no, BI.bakery_name, P.amount, PS.pickup_status, R.review_detail, R.review_rating, BI.bakery_no
-    ) WHERE rn BETWEEN #{pi.offset} AND #{pi.offset} + #{pi.boardLimit}
-	</select>
+<select id="getBuyHistory" resultMap="myPageDto">
+SELECT
+	*
+FROM
+	(
+	SELECT
+		OI.order_no,
+		BI.bakery_name,
+		P.amount,
+		PS.pickup_status,
+		R.review_detail,
+		R.review_rating,
+		BI.bakery_no,
+		LISTAGG(M.menu_name || ' x ' || CI.menu_count, ', ')
+	WITHIN GROUP (
+		ORDER BY M.menu_no) AS menu_list,
+		ROW_NUMBER() OVER (
+		ORDER BY OI.order_no DESC) AS rn
+	FROM
+		ORDER_INFO OI
+	JOIN CART C ON
+		OI.cart_no = C.cart_no
+	JOIN USER_INFO U ON
+		C.user_no = U.user_no
+	JOIN PAYMENT P ON
+		OI.pay_no = P.pay_no
+	JOIN PICKUP_STATUS PS ON
+		P.pay_no = PS.pay_no
+	LEFT JOIN REVIEW R ON
+		OI.order_no = R.order_no
+	JOIN CART_INFO CI ON
+		C.cart_no = CI.cart_no
+	JOIN MENU M ON
+		CI.menu_no = M.menu_no
+	JOIN BAKERY_INFO BI ON
+		M.bakery_no = BI.bakery_no
+	WHERE
+		U.user_no = #{userNo}
+	GROUP BY
+		OI.order_no,
+		BI.bakery_name,
+		P.amount,
+		PS.pickup_status,
+		R.review_detail,
+		R.review_rating,
+		BI.bakery_no
+	)
+WHERE
+	rn BETWEEN #{pi.offset} AND #{pi.offset} + #{pi.boardLimit}
+</select>
 	
-	<update id="updateUser">
-		UPDATE user_info SET 
+<update id="updateUser">
+UPDATE
+	user_info
+SET 
 				user_name = #{userDto.userName}, 
 				user_email = #{userDto.userEmail}, 
-				user_phonenum =  #{userDto.phoneNum}
-		WHERE user_no = #{userNo}
-	</update>
+				user_phonenum = #{userDto.phoneNum}
+WHERE
+	user_no = #{userNo}
+</update>
 	
-	<select id="getPassword" resultType="String">
-		SELECT user_password
-			FROM user_info ui
-		WHERE user_no = #{userNo}
-	</select>
+<select id="getPassword" resultType="String">
+SELECT
+	user_password
+FROM
+	user_info ui
+WHERE
+	user_no = #{userNo}
+</select>
 	
-	<update id="updatePassword">
-		UPDATE user_info SET 
+<update id="updatePassword">
+UPDATE
+	user_info
+SET 
 			user_password = #{userPassword}
-		WHERE user_no = #{userNo}
-	</update>
+WHERE
+	user_no = #{userNo}
+</update>
 	
-	<update id="updateAddress" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">		
-	UPDATE address SET
+<update id="updateAddress" parameterType="kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto">		
+UPDATE
+	address
+SET
 		user_postcode = #{signupRequestDto.requestAddressDto.userPostcode},
 		user_city = #{signupRequestDto.requestAddressDto.userCity},
 		user_district = #{signupRequestDto.requestAddressDto.userDistrict},
 		user_street = #{signupRequestDto.requestAddressDto.userStreet},
 		user_number = #{signupRequestDto.requestAddressDto.userNumber},
 		user_detailaddress = #{signupRequestDto.requestAddressDto.userDetailaddress}
-	WHERE user_no = #{userNo}
-	</update>
+WHERE
+	user_no = #{userNo}
+</update>
 	
 
-	<insert id="writeReview">
-		INSERT INTO review VALUES( review_seq.nextval,
+<insert id="writeReview">
+INSERT
+	INTO
+	review
+VALUES( review_seq.nextval,
 									 #{mypageListDto.reviewDto.orderNo},
 								     #{userNo},
 									 #{mypageListDto.reviewDto.reviewDetail},
 									 #{mypageListDto.reviewDto.reviewRating},
 									 SYSDATE,
 								     #{mypageListDto.bakeryInfoDto.bakeryNo})
-	</insert>
+</insert>
 	
-	<delete id="deleteReview">
-		DELETE FROM review WHERE order_no = #{mypageListDto.reviewDto.orderNo}
-	</delete>
+<delete id="deleteReview">
+DELETE
+FROM
+	review
+WHERE
+	order_no = #{mypageListDto.reviewDto.orderNo}
+</delete>
 	
-	<select id="ownerMypage" resultMap="ownerResultMap">
-		SELECT bi.BAKERY_NO,
+<select id="ownerMypage" resultMap="ownerResultMap">
+SELECT
+	bi.BAKERY_NO,
 			   bi.BAKERY_NAME,
 			   bi.BAKERY_ADDRESS,
 			   bi.BAKERY_PHONE,
 			   ba.AGREE,
-			   bd.SUBMISSION_DATE 
-		FROM BAKERY_INFO bi 
-		JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO =ba.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO  
-		WHERE USER_NO = #{userNum}
-	</select>
+			   bd.SUBMISSION_DATE
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_ACCESS ba ON
+	bi.BAKERY_NO = ba.BAKERY_NO
+JOIN BAKERY_DETAIL bd ON
+	bi.BAKERY_NO = bd.BAKERY_NO
+WHERE
+	USER_NO = #{userNum}
+</select>
 	
-	<select id="ownerInfo">
-		SELECT user_name AS userName, 
+<select id="ownerInfo">
+SELECT
+	user_name AS userName, 
 			   ui.USER_PHONENUM AS userPhone,
 			   b.USER_BUSINESSNO AS businessNo
-		FROM USER_INFO ui 
-		JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
-		WHERE ui.USER_NO = ${userNum}
-	</select>
+FROM
+	USER_INFO ui
+JOIN BUSINESSNO b ON
+	ui.USER_NO = b.USER_NO
+WHERE
+	ui.USER_NO = ${userNum}
+</select>
 	
 	
 </mapper>

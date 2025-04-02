@@ -3,22 +3,30 @@
 						"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="kr.kro.bbanggil.user.bakery.mapper.MenuMapper">
 
-		<insert id="menuInsert">
-			<selectKey resultType="int" keyProperty="menuRequestDTO.menuNo"
+<insert id="menuInsert">
+<selectKey resultType="int" keyProperty="menuRequestDTO.menuNo"
 				order="BEFORE">
-				SELECT menu_seq.nextval from dual
-			</selectKey>
-			INSERT INTO menu VALUES(#{menuRequestDTO.menuNo},
+SELECT
+	menu_seq.nextval
+FROM
+	dual
+</selectKey>
+INSERT
+	INTO
+	menu
+VALUES(#{menuRequestDTO.menuNo},
 			#{menuRequestDTO.menuName},
 			#{menuRequestDTO.menuPrice},
 			#{menuRequestDTO.menuPopulity},
 			#{bakeryNo},
 			#{menuRequestDTO.menuCategory})
-		</insert>
+</insert>
 		
-		<insert id="menuFileUpload">
-			INSERT INTO menu_imege
-			VALUES(menu_img_seq.nextval,
+<insert id="menuFileUpload">
+INSERT
+	INTO
+	menu_imege
+VALUES(menu_img_seq.nextval,
 			#{fileDTO.changeName},
 			#{fileDTO.originalName},
 			#{fileDTO.extension},
@@ -27,78 +35,110 @@
 			#{fileDTO.localResourcePath},
 			#{fileDTO.folderNamePath},
 			#{menuNo})
-		</insert>
+</insert>
 		
-		<select id="getCategory">
-			SELECT category_no AS categoryNo,
+<select id="getCategory">
+SELECT
+	category_no AS categoryNo,
 			category
-			FROM
+FROM
 			menu_category
-		</select>
+</select>
 		
-		<select id="getMenuList">
-			SELECT m.menu_no AS menuNo,
+<select id="getMenuList">
+SELECT
+	m.menu_no AS menuNo,
 				   menu_name AS menuName,
 				   MENU_PRICE AS menuPrice,
 				   MENU_INFO AS menuInfo,
 				   CATEGORY AS category,
 				   CHANGE_NAME AS changeName,
 	   			   RESOURCES_PATH AS resourcesPath
-			FROM MENU m 
-			JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO
-			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO 
-			WHERE BAKERY_NO = ${bakeryNo}
-			ORDER BY m.menu_no DESC
-		</select>
+FROM
+	MENU m
+JOIN MENU_CATEGORY mc ON
+	m.CATEGORY_NO = mc.CATEGORY_NO
+JOIN MENU_IMEGE mi ON
+	m.MENU_NO = mi.MENU_NO
+WHERE
+	BAKERY_NO = ${bakeryNo}
+ORDER BY
+	m.menu_no DESC
+</select>
 		
-		<select id="getBakeryName">
-			SELECT bakery_Name AS bakeryName 
-			from bakery_Info
-			where bakery_no = ${bakeryNo}
-		</select>
+<select id="getBakeryName">
+SELECT
+	bakery_Name AS bakeryName
+FROM
+	bakery_Info
+WHERE
+	bakery_no = ${bakeryNo}
+</select>
 		
-		<select id="getMenuImgInfo" resultType="String">
-			SELECT change_name FROM menu_imege
-			WHERE menu_no = ${menuNo}
-		</select>
 		
-		<select id="getMenuImg">
-			SELECT change_name AS changeName,
+<select id="getMenuImgInfo" resultType="String">
+SELECT
+	change_name
+FROM
+	menu_imege
+WHERE
+	menu_no = ${menuNo}
+</select>
+		
+<select id="getMenuImg">
+SELECT
+	change_name AS changeName,
 				   resources_path AS resourcesPath
-			FROM menu_imege
-			WHERE menu_no=${menuNo}
-		</select>
+FROM
+	menu_imege
+WHERE
+	menu_no = ${menuNo}
+</select>
 		
-		<update id="menuUpdate">
-			UPDATE menu
-			SET menu_name = #{menuName},
+<update id="menuUpdate">
+UPDATE
+	menu
+SET
+	menu_name = #{menuName},
 				menu_price = #{menuPrice},
 				menu_Info = #{menuPopulity},
 				category_no = #{menuCategory}
-			WHERE menu_no = #{menuNo}
-		</update>
+WHERE
+	menu_no = #{menuNo}
+</update>
 		
-		<delete id="menuDelete">
-			DELETE FROM menu
-			where menu_no = #{menuNo}
-		</delete>
+<delete id="menuDelete">
+DELETE
+FROM
+	menu
+WHERE
+	menu_no = #{menuNo}
+</delete>
 		
-		<delete id="deleteMenuImg">
-			DELETE FROM menu_imege
-			where change_name = #{changeName}
-		</delete>
+<delete id="deleteMenuImg">
+DELETE
+FROM
+	menu_imege
+WHERE
+	change_name = #{changeName}
+</delete>
 		
-		<select id="getMenuUpdate">
-			SELECT menu_name AS menuName,
+<select id="getMenuUpdate">
+SELECT
+	menu_name AS menuName,
 				   menu_price AS menuPrice,
 				   menu_info AS populity,
 				   change_name AS changeName,
 				   resources_path AS resourcesPath,
 				   category
-			FROM MENU m
-			JOIN MENU_IMEGE mi ON m.MENU_NO = mi.MENU_NO
-			JOIN MENU_CATEGORY mc ON mc.CATEGORY_NO = m.CATEGORY_NO
-			WHERE m.menu_no = ${menuNo}
-		</select>
+FROM
+	MENU m
+JOIN MENU_IMEGE mi ON
+	m.MENU_NO = mi.MENU_NO
+JOIN MENU_CATEGORY mc ON
+	mc.CATEGORY_NO = m.CATEGORY_NO
+WHERE
+	m.menu_no = ${menuNo}
+</select>
 
 </mapper>

@@ -53,8 +53,10 @@
 
 <select id="getAllSubscriberEmails" resultType="String">
 
-		SELECT user_email from user_info
-		
+		SELECT
+	user_email
+FROM
+	user_info		
 
 </select>
 
@@ -85,72 +87,119 @@ ORDER BY
 
 
 <select id="checkEmailExists" resultType="int">
-    SELECT COUNT(*) FROM SUBSCRIBER WHERE EMAIL = #{email}
+ SELECT
+	COUNT(*)
+FROM
+	SUBSCRIBER
+WHERE
+	EMAIL = #{email}
+		
 </select>
 
 <update id="reactivateSubscription">
-    UPDATE SUBSCRIBER
-    SET SUBSCRIBE_YN = 'Y',
-        SUBSCRIBE_DATE = SYSDATE
-    WHERE EMAIL = #{email}
+    		
+UPDATE
+	SUBSCRIBER
+SET
+	SUBSCRIBE_YN = 'Y',
+	SUBSCRIBE_DATE = SYSDATE
+WHERE
+	EMAIL = #{email}
+		
 </update>
 
 <insert id="insertSubscriber">
-    INSERT INTO SUBSCRIBER (SUBSCRIBER_NO, EMAIL, SUBSCRIBE_YN, SUBSCRIBE_DATE)
-    VALUES (SUBSCRIBER_SEQ.NEXTVAL, #{email}, 'Y', SYSDATE)
+INSERT
+	INTO
+	SUBSCRIBER (SUBSCRIBER_NO,
+	EMAIL,
+	SUBSCRIBE_YN,
+	SUBSCRIBE_DATE)
+VALUES (SUBSCRIBER_SEQ.NEXTVAL,
+#{email},
+'Y',
+SYSDATE)
 </insert>
 
 
 <select id="selectAllSubscribers" resultMap="subscriberResultMap">
-    SELECT 
-        EMAIL, 
-        TO_CHAR(SUBSCRIBE_DATE, 'YYYY-MM-DD') AS SUBSCRIBE_DATE
-    FROM SUBSCRIBER
-    WHERE SUBSCRIBE_YN = 'Y'
-    ORDER BY SUBSCRIBE_DATE DESC
+  SELECT
+	EMAIL,
+	TO_CHAR(SUBSCRIBE_DATE, 'YYYY-MM-DD') AS SUBSCRIBE_DATE
+FROM
+	SUBSCRIBER
+WHERE
+	SUBSCRIBE_YN = 'Y'
+ORDER BY
+	SUBSCRIBE_DATE DESC
+		
 </select>
 
 <insert id="insertSendLog">
-    INSERT INTO NEWSLETTER_SEND_LOG (LOG_ID, EMAIL, SEND_STATUS)
-    VALUES (NEWSLETTER_SEND_LOG_SEQ.NEXTVAL, #{email}, #{status})
+INSERT
+	INTO
+	NEWSLETTER_SEND_LOG (LOG_ID,
+	EMAIL,
+	SEND_STATUS)
+VALUES (NEWSLETTER_SEND_LOG_SEQ.NEXTVAL,
+#{email},
+#{status})
 </insert>
 
 <select id="countTotalSends" resultType="int">
-    SELECT COUNT(*) FROM NEWSLETTER_SEND_LOG
+SELECT
+	COUNT(*)
+FROM
+	NEWSLETTER_SEND_LOG
 </select>
 
 <select id="countSuccessfulSends" resultType="int">
-    SELECT COUNT(*) FROM NEWSLETTER_SEND_LOG
-    WHERE SEND_STATUS = 'SUCCESS'
+SELECT
+	COUNT(*)
+FROM
+	NEWSLETTER_SEND_LOG
+WHERE
+	SEND_STATUS = 'SUCCESS'
 </select>
 
 <update id="unsubscribeEmail">
-    UPDATE SUBSCRIBER
-    SET SUBSCRIBE_YN = 'N'
-    WHERE EMAIL = #{email}
+UPDATE
+	SUBSCRIBER
+SET
+	SUBSCRIBE_YN = 'N'
+WHERE
+	EMAIL = #{email}
 </update>
 
 
 
 <select id="getImageInfoByImgNo" resultType="map">
-    SELECT CHANGE_NAME, RESOURCES_PATH
-    FROM BAKERY_IMAGE
-    WHERE IMG_NO = #{imgNo}
+SELECT
+	CHANGE_NAME,
+	RESOURCES_PATH
+FROM
+	BAKERY_IMAGE
+WHERE
+	IMG_NO = #{imgNo}
+		
 </select>
 
 
 
 <insert id="insertNewsletterHistory">
-  INSERT INTO NEWSLETTER_HISTORY (
+ INSERT
+	INTO
+	NEWSLETTER_HISTORY (
     HISTORY_NO,
-    BAKERY_NAME,
-    RESOURCES_PATH,
-    CHANGE_NAME,
-    OPEN_TIME,
-    CLOSE_TIME,
-    LOCATION,
-    SENT_DATE
-  ) VALUES (
+	BAKERY_NAME,
+	RESOURCES_PATH,
+	CHANGE_NAME,
+	OPEN_TIME,
+	CLOSE_TIME,
+	LOCATION,
+	SENT_DATE
+  )
+VALUES (
     SEQ_NEWSLETTER_HISTORY.NEXTVAL,
     #{bakeryName},
     #{resourcesPath},

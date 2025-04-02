@@ -1,4 +1,4 @@
-package kr.kro.bbanggil.admin.controller;
+package kr.kro.bbanggil.home.controller;
 
 
 
@@ -107,15 +107,7 @@ public class HomeController {
 		return "common/home";
 	}
 	
-	@GetMapping("by-region")
-	@ResponseBody
-	public List<BakeryDto> getBakeriesByRegion(@RequestParam("region") String region){
-		
-		logger.info("by-region: '{}'", region);
-		
-		return bakeryService.getBakeriesByRegion(region);
-		
-	}
+
 	
 	
 	/*
