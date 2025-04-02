@@ -70,45 +70,34 @@ public class AdminMainController {
 
 	@GetMapping("/newsLetter")
 	public String goNewsLetter(Model model) {
-		
-		/*
-		 * 총 구독자 확인
-		 */
-		List<SubscriptionResponseDto> subscribeList = emailService.getAllSubscribers(); 
-		model.addAttribute("subscribers", subscribeList);
-		
-		
-		/*
-		 * 다음 월요일 오전 9시 계산
-		 */
-		LocalDate today = LocalDate.now();
-	    int daysUntilNextMonday = (DayOfWeek.MONDAY.getValue() - today.getDayOfWeek().getValue() + 7) % 7;
-	    if (daysUntilNextMonday == 0) daysUntilNextMonday = 7; // 오늘이 월요일이면 다음 주
 
-	    LocalDate nextMonday = today.plusDays(daysUntilNextMonday);
-	    LocalDateTime nextNewsletterTime = LocalDateTime.of(nextMonday, LocalTime.of(9, 0));
-	    String formattedDate = nextNewsletterTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-		
-		model.addAttribute("nextSchedule", formattedDate);
-		
-		/*
-		 * 성공률 계산
-		 */
-		
-		int successRate = emailService.getSendSuccessRate();
-	    model.addAttribute("sendSuccessRate", successRate);
-		
 	    /*
-	     * 최근 뉴스레터 1건 조회에서 추가
+	     * /  총 구독자 리스트 조회
+	     */
+	    List<SubscriptionResponseDto> subscribeList = emailService.getAllSubscribers(); 
+	    model.addAttribute("subscribers", subscribeList);
+
+	    /*
+	     * /  다음 뉴스레터 발송 예정 시간 계산 (→ 서비스에서 가져옴)
+	     */
+	    String formattedDate = newsletterService.calculateNextNewsletterSchedule();
+	    model.addAttribute("nextSchedule", formattedDate);
+
+	    /*
+	     * / 뉴스레터 발송 성공률 조회
+	     */
+	    int successRate = emailService.getSendSuccessRate();
+	    model.addAttribute("sendSuccessRate", successRate);
+
+	    /*
+	     * /  최근 뉴스레터 1건 조회
 	     */
 	    NewsletterResponseDto recentNewsletter = newsletterService.getLatestNewsletter();
-	    
 	    model.addAttribute("newsletter", recentNewsletter);
-	    
-	    
-		
-		return "admin/admin-news-letter";
+
+	    return "admin/admin-news-letter";
 	}
+
 	/*
 	 * 구독 해지
 	 */
