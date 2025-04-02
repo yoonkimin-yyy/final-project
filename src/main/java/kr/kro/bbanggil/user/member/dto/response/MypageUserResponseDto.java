@@ -1,10 +1,16 @@
 package kr.kro.bbanggil.user.member.dto.response;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MypageUserResponseDto {
 	
 	/**
@@ -21,11 +27,19 @@ public class MypageUserResponseDto {
 	 * 계정 생성일 sysdate;
 	 */
 	private int userNo;
+	
+	@NotBlank(message = "이름은 필수 입력 값입니다.")
+	@Size(min = 2, max = 10, message = "이름은 2~10자 사이여야 합니다.")
+	@Pattern(regexp = "^[가-힣]+$", message = "이름은 한글만 가능합니다.")
 	private String userName;
-	private String userId;
-	private String userPassword;
+
+	
+	
+	@NotBlank(message = "이메일은 필수 입력 값입니다.")
+	@Email(message = "올바른 이메일 형식이 아닙니다.")
 	private String userEmail;
-	private String birthDate;
+	
+
 	private String phoneNum;
 	private String userType;
 	private String userBan;

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -64,7 +65,11 @@ public class MypageController {
 		model.addAttribute("getBuyHistory",getBuyHistory);
 		 model.addAttribute("userName",userName);
 		 model.addAttribute("userInfo",userInfo);
+
+		 model.addAttribute("historySize",getBuyHistory.size());
+
 		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
+
 		
 		if(session.getAttribute("role").equals("owner"))
 			model.addAttribute("goOwnerPage",true);
@@ -94,7 +99,7 @@ public class MypageController {
 	}
 	
 	@PostMapping("/edit")
-	public String edit(MypageUserResponseDto mypageDto,
+	public String edit(@Valid MypageUserResponseDto mypageDto,
 						@SessionAttribute(value="userNum",required=false)Integer userNo
 					   ) {
 		 mypageService.updateUser(mypageDto,userNo);
