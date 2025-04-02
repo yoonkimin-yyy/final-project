@@ -16,4 +16,6 @@ public interface AdminBakeryService {
 
 	void update(String action, int bakeryNo, String rejectReason);
 
+	void delete(int bakeryNo);
+
 }

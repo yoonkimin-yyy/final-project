@@ -82,182 +82,298 @@
 	
 	
 
-	<select id="subList" resultMap="adminMap">
-		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
-			   ba.AGREE, bi.BAKERY_NAME, bd.SUBMISSION_DATE, 
-			   ba.ACCEPT_DATE, ui.USER_NO
-		FROM BAKERY_ACCESS ba
-		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO 
-		ORDER BY bi.BAKERY_NO DESC
-	</select>
+<select id="subList" resultMap="adminMap">
+SELECT
+	bi.BAKERY_NO,
+	ui.USER_ID,
+	ui.USER_PHONENUM, 
+			   ba.AGREE,
+	bi.BAKERY_NAME,
+	bd.SUBMISSION_DATE, 
+			   ba.ACCEPT_DATE,
+	ui.USER_NO
+FROM
+	BAKERY_ACCESS ba
+JOIN USER_INFO ui ON
+	ba.USER_NO = ui.USER_NO
+JOIN BAKERY_INFO bi ON
+	ba.BAKERY_NO = bi.BAKERY_NO
+JOIN BAKERY_DETAIL bd ON
+	ba.BAKERY_NO = bd.BAKERY_NO
+ORDER BY
+	bi.BAKERY_NO DESC
+</select>
 	
-	<select id="bakeryList" resultMap="adminMap">
-		SELECT bi.BAKERY_NO, ui.USER_ID, ui.USER_PHONENUM, 
-			   bi.BAKERY_NAME, bi.BAKERY_ADDRESS, bi.BAKERY_NO, ui.USER_NO 
-		FROM BAKERY_ACCESS ba
-		JOIN USER_INFO ui ON ba.USER_NO = ui.USER_NO 
-		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
-		WHERE ba.AGREE = '승인' 
-		ORDER BY bi.BAKERY_NO DESC
-	</select>
+<select id="bakeryList" resultMap="adminMap">
+SELECT
+	bi.BAKERY_NO,
+	ui.USER_ID,
+	ui.USER_PHONENUM, 
+			   bi.BAKERY_NAME,
+	bi.BAKERY_ADDRESS,
+	bi.BAKERY_NO,
+	ui.USER_NO
+FROM
+	BAKERY_ACCESS ba
+JOIN USER_INFO ui ON
+	ba.USER_NO = ui.USER_NO
+JOIN BAKERY_INFO bi ON
+	ba.BAKERY_NO = bi.BAKERY_NO
+JOIN BAKERY_DETAIL bd ON
+	ba.BAKERY_NO = bd.BAKERY_NO
+WHERE
+	ba.AGREE = '승인'
+ORDER BY
+	bi.BAKERY_NO DESC
+</select>
 	
-	<select id="userList" resultMap="adminMap">
-		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, 
-			   ui.USER_TYPE, a.AGREE_EMAIL
-		FROM USER_INFO ui 
-		JOIN AGREE a ON ui.USER_NO = a.USER_NO
-		ORDER BY ui.USER_NO DESC
-	</select>
+<select id="userList" resultMap="adminMap">
+SELECT
+	ui.USER_NO,
+	ui.USER_ID,
+	ui.USER_EMAIL,
+	ui.USER_PHONENUM, 
+			   ui.USER_TYPE,
+	a.AGREE_EMAIL
+FROM
+	USER_INFO ui
+JOIN AGREE a ON
+	ui.USER_NO = a.USER_NO
+ORDER BY
+	ui.USER_NO DESC
+</select>
 	
-	<select id="acceptList" resultMap="adminMap">
-		SELECT * FROM USER_INFO ui
-		JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
-		JOIN BAKERY_ACCESS ba ON ui.USER_NO = ba.USER_NO 
-		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
-		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = bi.BAKERY_NO
-		WHERE ui.USER_NO = #{userNo} AND ba.BAKERY_NO = #{bakeryNo}
-	</select>
+<select id="acceptList" resultMap="adminMap">
+SELECT
+	*
+FROM
+	USER_INFO ui
+JOIN BUSINESSNO b ON
+	ui.USER_NO = b.USER_NO
+JOIN BAKERY_ACCESS ba ON
+	ui.USER_NO = ba.USER_NO
+JOIN BAKERY_INFO bi ON
+	ba.BAKERY_NO = bi.BAKERY_NO
+JOIN BAKERY_DETAIL bd ON
+	ba.BAKERY_NO = bd.BAKERY_NO
+JOIN BAKERY_IMAGE bi2 ON
+	bi2.BAKERY_NO = bi.BAKERY_NO
+WHERE
+	ui.USER_NO = #{userNo}
+	AND ba.BAKERY_NO = #{bakeryNo}
+</select>
 	
-	<select id="bakeryDetailList" resultMap="adminMap">
-		SELECT * FROM USER_INFO ui
-		JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
-		JOIN BAKERY_ACCESS ba ON ui.USER_NO = ba.USER_NO 
-		JOIN BAKERY_INFO bi ON ba.BAKERY_NO = bi.BAKERY_NO
-		JOIN BAKERY_DETAIL bd ON ba.BAKERY_NO = bd.BAKERY_NO
-		JOIN BAKERY_IMAGE bi2 ON bi2.BAKERY_NO = bi.BAKERY_NO
-		WHERE ui.USER_NO = #{userNo} AND ba.BAKERY_NO = #{bakeryNo}
-	</select>
+<select id="bakeryDetailList" resultMap="adminMap">
+SELECT
+	*
+FROM
+	USER_INFO ui
+JOIN BUSINESSNO b ON
+	ui.USER_NO = b.USER_NO
+JOIN BAKERY_ACCESS ba ON
+	ui.USER_NO = ba.USER_NO
+JOIN BAKERY_INFO bi ON
+	ba.BAKERY_NO = bi.BAKERY_NO
+JOIN BAKERY_DETAIL bd ON
+	ba.BAKERY_NO = bd.BAKERY_NO
+JOIN BAKERY_IMAGE bi2 ON
+	bi2.BAKERY_NO = bi.BAKERY_NO
+WHERE
+	ui.USER_NO = #{userNo}
+	AND ba.BAKERY_NO = #{bakeryNo}
+</select>
 
-	<select id="userDetailList" resultMap="adminMap">
-		SELECT ui.USER_NO, ui.USER_ID, ui.USER_EMAIL, ui.USER_PHONENUM, ui.USER_TYPE, 
-			   a.AGREE_EMAIL, ui.CREATED_DATE, ui.USER_NAME, ui.USER_BIRTHDATE, b.USER_BUSINESSNO 
-		FROM USER_INFO ui 
-		JOIN AGREE a ON ui.USER_NO = a.USER_NO
-		LEFT OUTER JOIN BUSINESSNO b ON ui.USER_NO = b.USER_NO
-		WHERE ui.USER_NO = #{userNo}
-	</select>
+<select id="userDetailList" resultMap="adminMap">
+SELECT
+	ui.USER_NO,
+	ui.USER_ID,
+	ui.USER_EMAIL,
+	ui.USER_PHONENUM,
+	ui.USER_TYPE, 
+			   a.AGREE_EMAIL,
+	ui.CREATED_DATE,
+	ui.USER_NAME,
+	ui.USER_BIRTHDATE,
+	b.USER_BUSINESSNO
+FROM
+	USER_INFO ui
+JOIN AGREE a ON
+	ui.USER_NO = a.USER_NO
+LEFT OUTER JOIN BUSINESSNO b ON
+	ui.USER_NO = b.USER_NO
+WHERE
+	ui.USER_NO = #{userNo}
+</select>
 
-	<select id="menuList" resultMap="MenuListMap">
-		SELECT m.MENU_NAME, m.MENU_PRICE, mi.CHANGE_NAME, mi.RESOURCES_PATH FROM MENU_IMEGE mi 
-		JOIN MENU m ON mi.MENU_NO = m.MENU_NO
-		WHERE m.BAKERY_NO = #{bakeryNo}
-	</select>
+<select id="menuList" resultMap="MenuListMap">
+SELECT
+	m.MENU_NAME,
+	m.MENU_PRICE,
+	mi.CHANGE_NAME,
+	mi.RESOURCES_PATH
+FROM
+	MENU_IMEGE mi
+JOIN MENU m ON
+	mi.MENU_NO = m.MENU_NO
+WHERE
+	m.BAKERY_NO = #{bakeryNo}
+</select>
 	
-	<update id="update">
-		UPDATE BAKERY_ACCESS SET AGREE = #{action}, REJECT = #{rejectReason}, ACCEPT_DATE = SYSDATE 
-		WHERE BAKERY_NO = #{bakeryNo}
-	</update>
+<update id="update">
+UPDATE
+	BAKERY_ACCESS
+SET
+	AGREE = #{action},
+	REJECT = #{rejectReason},
+	ACCEPT_DATE = SYSDATE
+WHERE
+	BAKERY_NO = #{bakeryNo}
+</update>
 	
-	<select id="categoryList" resultMap="MenuListMap">
-		SELECT CATEGORY FROM MENU_CATEGORY
-		ORDER BY CATEGORY_NO DESC
-	</select>
+<select id="categoryList" resultMap="MenuListMap">
+SELECT
+	CATEGORY
+FROM
+	MENU_CATEGORY
+ORDER BY
+	CATEGORY_NO DESC
+</select>
 	
-	<insert id="addCategory">
-		INSERT INTO  MENU_CATEGORY VALUES(CATEGORY_SEQ.NEXTVAL, #{newCategory})	
-	</insert>
+<insert id="addCategory">
+		INSERT
+	INTO
+	MENU_CATEGORY
+VALUES(CATEGORY_SEQ.NEXTVAL,
+#{newCategory})
+</insert>
 	
-	<delete id="deleteCategory">
-		DELETE FROM MENU_CATEGORY WHERE CATEGORY = #{category}
-	</delete>
+<delete id="deleteCategory">
+DELETE
+FROM
+	MENU_CATEGORY
+WHERE
+	CATEGORY = #{category}
+</delete>
 	
-	<select id="selectOrderCount" resultType="int" parameterType="String">
-		SELECT COUNT(DISTINCT p.MERCHANT_UID || '_' || oi.ORDER_NO)
-	  	FROM PAYMENT p
-	  	JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
-		JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
-		JOIN USER_INFO ui ON r.USER_NO = ui.USER_NO
-		JOIN BAKERY_INFO bi ON bi.BAKERY_NO = r.BAKERY_NO
-		WHERE 1=1
-	  	<if test="keyword != null and keyword != ''">
-		    AND (
+<select id="selectOrderCount" resultType="int" parameterType="String">
+SELECT
+	COUNT(DISTINCT p.MERCHANT_UID || '_' || oi.ORDER_NO)
+FROM
+	PAYMENT p
+JOIN ORDER_INFO oi ON
+	p.PAY_NO = oi.PAY_NO
+JOIN REVIEW r ON
+	r.ORDER_NO = oi.ORDER_NO
+JOIN USER_INFO ui ON
+	r.USER_NO = ui.USER_NO
+JOIN BAKERY_INFO bi ON
+	bi.BAKERY_NO = r.BAKERY_NO
+WHERE
+	1 = 1
+<if test="keyword != null and keyword != ''">
+
+AND (
 		      LOWER(ui.USER_NAME) LIKE '%' || LOWER(#{keyword}) || '%'
-		      OR LOWER(p.MERCHANT_UID) LIKE '%' || LOWER(#{keyword}) || '%'
+OR LOWER(p.MERCHANT_UID) LIKE '%' || LOWER(#{keyword}) || '%'
 		    )
-	  	</if>
-	</select>
+</if>
+</select>
 	
 <select id="selectPagedOrders" resultMap="orderResultMap" parameterType="map">
-  SELECT *
-  FROM (
-    SELECT
-      ROW_NUMBER() OVER (ORDER BY p.PAY_REQUEST_DATE DESC) AS rn,
-      p.PAY_NO,
-      p.MERCHANT_UID,
-      p.AMOUNT,
-      p.STATUS,
-      p.PAY_REQUEST_DATE,
-      ui.USER_NAME,
-      bi.BAKERY_NAME
-    FROM PAYMENT p
-    JOIN ORDER_INFO oi ON p.PAY_NO = oi.PAY_NO
-    JOIN REVIEW r ON r.ORDER_NO = oi.ORDER_NO
-    JOIN USER_INFO ui ON r.USER_NO = ui.USER_NO
-    JOIN BAKERY_INFO bi ON bi.BAKERY_NO = r.BAKERY_NO
-    WHERE 1=1
-    <if test="keyword != null and keyword != ''">
+  SELECT
+	*
+FROM
+	(
+	SELECT
+		ROW_NUMBER() OVER (
+		ORDER BY p.PAY_REQUEST_DATE DESC) AS rn,
+		p.PAY_NO,
+		p.MERCHANT_UID,
+		p.AMOUNT,
+		p.STATUS,
+		p.PAY_REQUEST_DATE,
+		ui.USER_NAME,
+		bi.BAKERY_NAME
+	FROM
+		PAYMENT p
+	JOIN ORDER_INFO oi ON
+		p.PAY_NO = oi.PAY_NO
+	JOIN REVIEW r ON
+		r.ORDER_NO = oi.ORDER_NO
+	JOIN USER_INFO ui ON
+		r.USER_NO = ui.USER_NO
+	JOIN BAKERY_INFO bi ON
+		bi.BAKERY_NO = r.BAKERY_NO
+	WHERE
+		1 = 1
+    
+ <if test="keyword != null and keyword != ''">
       AND (
         LOWER(ui.USER_NAME) LIKE '%' || LOWER(#{keyword}) || '%'
         OR LOWER(p.MERCHANT_UID) LIKE '%' || LOWER(#{keyword}) || '%'
       )
-    </if>
+ </if>
   )
   WHERE rn BETWEEN #{pi.offset} AND #{pi.limit}
 </select>
 	
-<!-- .................................................................................................. -->
   	
-	<select id="getUserType" resultType="String" parameterType="java.lang.Integer">
-		SELECT
+<select id="getUserType" resultType="String" parameterType="java.lang.Integer">
+SELECT
 	USER_TYPE
 FROM
 	USER_INFO
 WHERE
-	USER_NO = #{userNo,jdbcType=INTEGER}
+	USER_NO = #{userNo,
+	jdbcType = INTEGER}
 	
-	</select>
+</select>
 	
-	<insert id="insertInquiry" parameterType="kr.kro.bbanggil.admin.dto.request.InquiryRequestDto">
-	  INSERT INTO INQUIRY (
+<insert id="insertInquiry" parameterType="kr.kro.bbanggil.admin.dto.request.InquiryRequestDto">
+INSERT
+	INTO
+	INQUIRY (
         INQUIRY_NO,
-        USER_NO,
-        INQUIRY_TITLE,
-        INQUIRY_CONTENT,
-        CREATE_DATE,
-        IS_ANSWERED,
-        EMAIL
-    ) VALUES (
+	USER_NO,
+	INQUIRY_TITLE,
+	INQUIRY_CONTENT,
+	CREATE_DATE,
+	IS_ANSWERED,
+	EMAIL
+    )
+VALUES (
         INQUIRY_SEQ.NEXTVAL,
-        #{userNo,jdbcType=INTEGER},
+        #{userNo,
+jdbcType = INTEGER},
         #{inquiryTitle},
         #{inquiryContent},
         SYSDATE,
         'N',
         #{email}
     )
-	</insert>
+</insert>
 	
-	<select id="selectInquiryList" resultMap="InqiuryResultMap">
+<select id="selectInquiryList" resultMap="InqiuryResultMap">
 	
 SELECT
-    i.INQUIRY_NO,
-    i.INQUIRY_TITLE,
-    i.INQUIRY_CONTENT,
-    i.IS_ANSWERED,
-    i.CREATE_DATE,
-    i.email,
-    ui.USER_NAME,
-    ui.USER_NO,
-    ir.REPLY_CONTENT,
-    ir.REPLY_DATE
-FROM INQUIRY i
-LEFT JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
-LEFT JOIN INQUIRY_REPLY ir ON i.INQUIRY_NO = ir.INQUIRY_NO
-ORDER BY i.CREATE_DATE DESC
+	i.INQUIRY_NO,
+	i.INQUIRY_TITLE,
+	i.INQUIRY_CONTENT,
+	i.IS_ANSWERED,
+	i.CREATE_DATE,
+	i.email,
+	ui.USER_NAME,
+	ui.USER_NO,
+	ir.REPLY_CONTENT,
+	ir.REPLY_DATE
+FROM
+	INQUIRY i
+LEFT JOIN USER_INFO ui ON
+	i.USER_NO = ui.USER_NO
+LEFT JOIN INQUIRY_REPLY ir ON
+	i.INQUIRY_NO = ir.INQUIRY_NO
+ORDER BY
+	i.CREATE_DATE DESC
 	</select>
 	
 	
@@ -278,15 +394,17 @@ VALUES(inquiry_reply_seq.nextval,
 sysdate)
 	</insert>
 	
-	<update id="updateInquiryStatusToAnswered">
+<update id="updateInquiryStatusToAnswered">
 	
-	UPDATE INQUIRY
-	SET IS_ANSWERED = 'Y'
-	where inquiry_no = #{inquiryNo}
-	
-	</update>
+UPDATE
+	INQUIRY
+SET
+	IS_ANSWERED = 'Y'
+WHERE
+	inquiry_no = #{inquiryNo}
+</update>
 
-	<select id="getNewlyOrder">
+<select id="getNewlyOrder">
 		WITH LatestOrders AS (
 		    SELECT recipients_name, 
 		           pickup_status,
@@ -306,63 +424,101 @@ sysdate)
 		FROM LatestOrders
 		WHERE row_num &lt;= 3
 		GROUP BY recipients_name, pickup_status
-	</select>
+</select>
 	
-	<select id="getMonthlyOrderCount">
-		SELECT TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM') AS orderMonth, 
-           	   COUNT(*) AS orderCount
-	    FROM PAYMENT p 
-	    GROUP BY TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM')
-	    ORDER BY orderMonth
-	</select>
+<select id="getMonthlyOrderCount">
+SELECT
+	TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM') AS orderMonth,
+	COUNT(*) AS orderCount
+FROM
+	PAYMENT p
+GROUP BY
+	TO_CHAR(p.PAY_REQUEST_DATE , 'YYYY-MM')
+ORDER BY
+	orderMonth
+</select>
 	
-	<select id="getInquiries">
-		SELECT USER_NAME AS userName,
+<select id="getInquiries">
+SELECT
+	USER_NAME AS userName,
 			   INQUIRY_TITLE AS inquiryTitle,
 			   IS_ANSWERED AS isAnswered
-		FROM INQUIRY i 
-		JOIN USER_INFO ui ON ui.USER_NO = i.USER_NO
-		ORDER BY INQUIRY_NO desc
+FROM
+	INQUIRY i
+JOIN USER_INFO ui ON
+	ui.USER_NO = i.USER_NO
+ORDER BY
+	INQUIRY_NO DESC
 		FETCH FIRST 3 ROWS ONLY
-	</select>
+</select>
 	
-	<select id="reportList">
-		SELECT rrui.USER_id AS reporter,
+<select id="reportList">
+SELECT
+	rrui.USER_id AS reporter,
 			   rr.REPORT_DETAIL AS reportDetail,
-			   rui.USER_id  AS  reportedUser,
+			   rui.USER_id AS reportedUser,
 			   r.REVIEW_DETAIL AS reviewDetail,
 			   rr.REPORT_DATE AS reportDate,
 			   rr.REPORT_NO AS reportNo
-		FROM REVIEW_REPORT rr
-		JOIN REVIEW r ON rr.REVIEW_NO = r.REVIEW_NO
-		LEFT JOIN USER_INFO rui ON rui.USER_NO = r.USER_NO 
-		LEFT JOIN USER_INFO rrui ON rrui.USER_NO = rr.USER_NO
-	</select>
-	<insert id="insertReport">
-		INSERT INTO REVIEW_REPORT_RESULT rrr values(#{reportDTO.reportNo},
+FROM
+	REVIEW_REPORT rr
+JOIN REVIEW r ON
+	rr.REVIEW_NO = r.REVIEW_NO
+LEFT JOIN USER_INFO rui ON
+	rui.USER_NO = r.USER_NO
+LEFT JOIN USER_INFO rrui ON
+	rrui.USER_NO = rr.USER_NO
+</select>
+
+<insert id="insertReport">
+INSERT
+	INTO
+	REVIEW_REPORT_RESULT rrr
+VALUES(#{reportDTO.reportNo},
 													#{reportDTO.reportResult},
 													sysdate,
 													NULL,
 													#{reportDTO.unfreezeDetail},
 													#{userId})
-	</insert>
-	<select id="reportDetail">
-		SELECT rrui.USER_id AS reporter,
+</insert>
+
+<select id="reportDetail">
+SELECT
+	rrui.USER_id AS reporter,
 			   rr.REPORT_DETAIL AS reportDetail,
-			   rui.USER_id  AS  reportedUser,
+			   rui.USER_id AS reportedUser,
 			   r.REVIEW_DETAIL AS reviewDetail
-		FROM REVIEW_REPORT rr 
-		JOIN REVIEW r ON rr.REVIEW_NO = r.REVIEW_NO
-		LEFT JOIN USER_INFO rui ON rui.USER_NO = r.USER_NO 
-		LEFT JOIN USER_INFO rrui ON rrui.USER_NO = rr.USER_NO
-		WHERE report_no = #{reportNo}
-	</select>
-	<select id="getReportReplyCount">
-		SELECT count(*) FROM REVIEW_REPORT_RESULT rrr 
-		WHERE REPORT_NO = #{reportNo}
-	</select>
+FROM
+	REVIEW_REPORT rr
+JOIN REVIEW r ON
+	rr.REVIEW_NO = r.REVIEW_NO
+LEFT JOIN USER_INFO rui ON
+	rui.USER_NO = r.USER_NO
+LEFT JOIN USER_INFO rrui ON
+	rrui.USER_NO = rr.USER_NO
+WHERE
+	report_no = #{reportNo}
+</select>
+
+<select id="getReportReplyCount">
+SELECT
+	count(*)
+FROM
+	REVIEW_REPORT_RESULT rrr
+WHERE
+	REPORT_NO = #{reportNo}
+</select>
+
+<update id="deleteBakery">
+UPDATE
+	BAKERY_ACCESS
+SET
+	agree = '거절'
+WHERE
+	bakery_no = ${bakeryNo}
+</update>
 	
-	<select id="getInquiryEmailInfo" resultType="kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto">
+<select id="getInquiryEmailInfo" resultType="kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto">
 
 SELECT
 	i.INQUIRY_TITLE AS title,
@@ -379,24 +535,28 @@ WHERE
 	i.INQUIRY_NO = #{inquiryNo}
 	
 	
-	</select>
+</select>
 	
 	
-	<select id="selectInquiryByNo" resultType="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
-    SELECT
-        i.INQUIRY_NO,
-        i.USER_NO,
-        NVL(ui.USER_NAME, '비회원') AS userName,
-        i.INQUIRY_TITLE,
-        i.INQUIRY_CONTENT,
-        i.IS_ANSWERED,
-        TO_CHAR(i.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS createDate,
-        ir.REPLY_CONTENT,
-        TO_CHAR(ir.REPLY_DATE, 'YYYY-MM-DD HH24:MI:SS') AS replyDate
-    FROM INQUIRY i
-    LEFT JOIN USER_INFO ui ON i.USER_NO = ui.USER_NO
-    LEFT JOIN INQUIRY_REPLY ir ON i.INQUIRY_NO = ir.INQUIRY_NO
-    WHERE i.INQUIRY_NO = #{inquiryNo}
+<select id="selectInquiryByNo" resultType="kr.kro.bbanggil.admin.dto.response.InquiryResponseDto">
+SELECT
+	i.INQUIRY_NO,
+	i.USER_NO,
+	NVL(ui.USER_NAME, '비회원') AS userName,
+	i.INQUIRY_TITLE,
+	i.INQUIRY_CONTENT,
+	i.IS_ANSWERED,
+	TO_CHAR(i.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS createDate,
+	ir.REPLY_CONTENT,
+	TO_CHAR(ir.REPLY_DATE, 'YYYY-MM-DD HH24:MI:SS') AS replyDate
+FROM
+	INQUIRY i
+LEFT JOIN USER_INFO ui ON
+	i.USER_NO = ui.USER_NO
+LEFT JOIN INQUIRY_REPLY ir ON
+	i.INQUIRY_NO = ir.INQUIRY_NO
+WHERE
+	i.INQUIRY_NO = #{inquiryNo}
 </select>
 	
 	
