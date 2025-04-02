@@ -277,7 +277,7 @@
               </li>
 
               <!-- 다음 페이지 버튼 -->
-              <li class="page-item" th:classappend="${pi.currentPage == pi.maxpage} ? 'disabled'">
+              <li class="page-item" th:classappend="${pi.currentPage == pi.maxPage} ? 'disabled'">
                 <a class="page-link"
                   th:href="@{/bakery/detail(currentPage=${pi.currentPage + 1}, bakeryNo=${bakeryNo})}"
                   aria-label="Next">
