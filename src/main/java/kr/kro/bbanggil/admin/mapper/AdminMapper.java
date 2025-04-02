@@ -93,5 +93,7 @@ public interface AdminMapper {
 	List<OrderResponseDto> selectPagedOrders(@Param("pi")PageInfoDTO pi,@Param("keyword") String keyword);
 
 	myBakeryResponseDTO bakeryInfo(int bakeryNo);
+
+	void deleteBakery(int bakeryNo);
 	
 }
