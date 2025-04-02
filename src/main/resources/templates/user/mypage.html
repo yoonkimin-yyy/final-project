@@ -154,7 +154,7 @@
                th:classappend="${pageNum == pi.currentPage} ? 'active' : ''">
             </a>
         </th:block>
-		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/member/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
+		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
     </div>
 				</div>
 			</div>
