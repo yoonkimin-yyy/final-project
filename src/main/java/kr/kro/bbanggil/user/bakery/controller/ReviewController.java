@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import kr.kro.bbanggil.global.exception.BbanggilException;
@@ -67,8 +66,8 @@ public class ReviewController {
 
 	@PostMapping("/edit")
 	public String editReview(@ModelAttribute ReviewRequestDto reviewRequestDto,
-			@RequestParam(value = "reviewImage", required = false) List<MultipartFile> files,
-			RedirectAttributes redirectAttributes) {
+			@RequestParam(value = "reviewImage", required = false) List<MultipartFile> files
+			) {
 
 		int result = reviewService.editReview(reviewRequestDto, files);
 		

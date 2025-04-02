@@ -46,17 +46,29 @@
 	</resultMap>
 
 
-	<insert id="insertBakery"
+<insert id="insertBakery"
 		parameterType="kr.kro.bbanggil.user.bakery.dto.BakeryDto">
+INSERT
+	INTO
+		bakery_info(bakery_no,
+	bakery_name,
+	bakery_address,
+	bakery_phone,
+	latitude,
+	longitude,
+	region)
+VALUES(bakery_seq.nextval,
+#{name},
+#{address},
+#{phone},
+#{latitude},
+#{longitude},
+#{region})
 
-		INSERT INTO
-		bakery_info(bakery_no,bakery_name,bakery_address,bakery_phone,latitude,longitude,region)
-		VALUES(bakery_seq.nextval,#{name},#{address},#{phone},#{latitude},#{longitude},#{region})
-
-	</insert>
+</insert>
 
 
-	<select id="getPopularBakeries" resultMap="BakeryResultMap">
+<select id="getPopularBakeries" resultMap="BakeryResultMap">
 
 	SELECT
 	bi.bakery_no,
@@ -88,9 +100,9 @@ ORDER BY
 	review_rating DESC
 FETCH FIRST 10 ROWS ONLY	
 
-	</select>
+</select>
 
-	<select id="getRecentBakeries" resultMap="BakeryResultMap">
+<select id="getRecentBakeries" resultMap="BakeryResultMap">
 
 	SELECT
 	bi.BAKERY_NO ,
@@ -121,54 +133,54 @@ ORDER BY
 
 
 
-	</select>
+</select>
 
-	<select id="getTopFiveOrders" resultMap="BakeryResultMap">
+<select id="getTopFiveOrders" resultMap="BakeryResultMap">
 
-		SELECT
+SELECT
 		mc.CATEGORY_NO ,
 		SUM(ci.MENU_COUNT) AS totalOrders
-		FROM
+FROM
 		BAKERY_INFO bi
-		JOIN MENU m
+JOIN MENU m
 		ON
 		m.BAKERY_NO = BI.BAKERY_NO
-		JOIN CART_INFO ci
+JOIN CART_INFO ci
 		ON
 		m.MENU_NO = ci.MENU_NO
-		JOIN MENU_CATEGORY mc
+JOIN MENU_CATEGORY mc
 		ON
 		mc.CATEGORY_NO = m.CATEGORY_NO
-		GROUP BY
+GROUP BY
 		mc.CATEGORY_NO
-		ORDER BY
+ORDER BY
 		totalOrders DESC
 		FETCH FIRST 5 ROWS ONLY
 
-	</select>
+</select>
 
 
-	<select id="getCategoryBakeries" resultMap="BakeryResultMap">
-		SELECT
+<select id="getCategoryBakeries" resultMap="BakeryResultMap">
+SELECT
 		mc.CATEGORY,
 		COUNT(DISTINCT bi.BAKERY_NO) AS bakery_count
-		FROM
+FROM
 		MENU_CATEGORY mc
-		JOIN
+JOIN
 		MENU m ON
 		mc.CATEGORY_NO = m.CATEGORY_NO
-		JOIN CART_INFO ci ON
+JOIN CART_INFO ci ON
 		m.MENU_NO =
 		ci.MENU_NO
-		JOIN BAKERY_INFO bi ON
+JOIN BAKERY_INFO bi ON
 		bi.BAKERY_NO = m.BAKERY_NO
-		WHERE
+WHERE
 		mc.CATEGORY IN (MC.CATEGORY)
-		GROUP BY
+GROUP BY
 		mc.CATEGORY
-		ORDER BY
+ORDER BY
 		bakery_count
-		DESC
+		DESC	
 
-	</select>
+</select>
 </mapper>

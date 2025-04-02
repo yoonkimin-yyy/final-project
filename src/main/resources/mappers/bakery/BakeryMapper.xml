@@ -78,11 +78,15 @@
 	
 
 <select id="totalCount">
-	SELECT COUNT(*) FROM bakery_info bi
+SELECT
+	COUNT(*)
+FROM
+	bakery_info bi
 </select>
 <!-- 리스트 정보  -->
 <select id="bakeryList" resultMap="BakeryInfoDTO">
-	SELECT bi.bakery_no,
+SELECT
+	bi.bakery_no,
 		   bi.bakery_name,
 		   bi.bakery_address,
 		   bi.latitude,
@@ -92,30 +96,41 @@
 		   bs."DAY",
 		   bs.open_time,
 		   bs.close_time,
-		   ROUND(AVG(r.review_rating),1) AS review_avg,
+		   ROUND(AVG(r.review_rating), 1) AS review_avg,
 		   COUNT(DISTINCT r.review_no) AS review_count,
-		   LISTAGG(DISTINCT mc.category, ', ') WITHIN GROUP (ORDER BY mc.category) AS category_list,
-		   LISTAGG(DISTINCT m.MENU_NAME, ', ') WITHIN GROUP (ORDER BY m.MENU_NAME) AS menu_list
-	FROM bakery_info bi
-	LEFT JOIN bakery_schedule bs ON bs.bakery_no = bi.bakery_no
-	LEFT JOIN bakery_detail bd ON bd.bakery_no = bi.bakery_no
-	LEFT JOIN review r ON r.bakery_no = bi.bakery_no
-	LEFT JOIN menu m ON m.BAKERY_NO = bi.BAKERY_NO 
-	LEFT JOIN MENU_CATEGORY mc ON m.CATEGORY_NO = mc.CATEGORY_NO 
-	JOIN bakery_access ba ON ba.bakery_no = bi.bakery_no
-	WHERE ba.agree = '승인'
-	AND bs."DAY" = #{day}  <!-- ✅ 요일 필터를 OR 조건 바깥으로 이동 -->
+		   LISTAGG(DISTINCT mc.category, ', ') WITHIN GROUP (
+	ORDER BY mc.category) AS category_list,
+		   LISTAGG(DISTINCT m.MENU_NAME, ', ') WITHIN GROUP (
+	ORDER BY m.MENU_NAME) AS menu_list
+FROM
+	bakery_info bi
+LEFT JOIN bakery_schedule bs ON
+	bs.bakery_no = bi.bakery_no
+LEFT JOIN bakery_detail bd ON
+	bd.bakery_no = bi.bakery_no
+LEFT JOIN review r ON
+	r.bakery_no = bi.bakery_no
+LEFT JOIN menu m ON
+	m.BAKERY_NO = bi.BAKERY_NO
+LEFT JOIN MENU_CATEGORY mc ON
+	m.CATEGORY_NO = mc.CATEGORY_NO
+JOIN bakery_access ba ON
+	ba.bakery_no = bi.bakery_no
+WHERE
+	ba.agree = '승인'
+	AND bs."DAY" = #{day}
 	AND (
 		bi.bakery_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
 		OR bi.bakery_address LIKE '%' || #{bakerySearchDTO.searchText} || '%'
 		OR mc.category LIKE '%' || #{bakerySearchDTO.searchText} || '%'
 		OR m.menu_name LIKE '%' || #{bakerySearchDTO.searchText} || '%'
-		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword1} || '%' 
-		    AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword2} || '%')
-		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword2} || '%' 
-		    AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword1} || '%')
+		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword1} || '%'
+			AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword2} || '%')
+		OR (bi.bakery_address LIKE '%' || #{bakerySearchDTO.keyword2} || '%'
+			AND m.menu_name LIKE '%' || #{bakerySearchDTO.keyword1} || '%')
 	)
-	GROUP BY bi.bakery_no,
+GROUP BY
+	bi.bakery_no,
 		     bi.bakery_name,
 		     bi.bakery_address,
 		     bi.latitude,
@@ -125,26 +140,30 @@
 		     bs."DAY",
 		     bs.open_time,
 		     bs.close_time
-	<choose> 
-		<when test="orderType == 'recent'">
-			ORDER BY bi.bakery_no DESC
-		</when>
-		<when test="orderType == 'popular'">
-			ORDER BY review_count DESC
-		</when>
-		<when test="orderType == 'rating'">
-			ORDER BY review_avg ASC
-		</when>
-		<otherwise>
-			ORDER BY bi.bakery_no DESC
-		</otherwise>
-	</choose>
+<choose> 
+<when test="orderType == 'recent'">
+	ORDER BY bi.bakery_no DESC
+</when>
+<when test="orderType == 'popular'">
+	ORDER BY review_count DESC
+</when>
+<when test="orderType == 'rating'">
+	ORDER BY review_avg ASC
+</when>
+<otherwise>
+	ORDER BY bi.bakery_no DESC
+</otherwise>
+</choose>
 	OFFSET ${pi.offset} ROWS FETCH NEXT ${pi.boardLimit} ROWS ONLY
 </select>
 
 <select id = "getLocationAgree" resultType="String">
-	SELECT agree_location FROM agree 
-		WHERE user_no = #{userNo}
+SELECT
+	agree_location
+FROM
+	agree
+WHERE
+	user_no = #{userNo}
 </select>
 
 <select id="bakeryImage" resultMap="BakeryInfoDTO">
@@ -155,8 +174,9 @@
 	WHERE bi.bakery_no = #{bakeryNo} 
 </select>
 
-		<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
-			SELECT bi.BAKERY_NO,
+<select id="getBakeryInfo" resultMap="bakeryInfoResultMap">
+SELECT
+	bi.BAKERY_NO,
 			bi.BAKERY_NAME,
 			bi.BAKERY_ADDRESS,
 			bi.BAKERY_PHONE,
@@ -164,30 +184,42 @@
 			bd.INSIDE_INFO,
 			bd.OUTSIDE_INFO,
 			bd.CREATED_DATE
-			FROM BAKERY_INFO bi
-			JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
-			WHERE
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_DETAIL bd ON
+	bi.BAKERY_NO = bd.BAKERY_NO
+WHERE
 			bi.bakery_no =
 			${bakeryNo}
-		</select>
+</select>
 		
-		<select id="getBakeryImg" resultMap="bakeryImgResultMap">
-			SELECT CHANGE_NAME,
+<select id="getBakeryImg" resultMap="bakeryImgResultMap">
+SELECT
+	CHANGE_NAME,
 			FOLDER_NAME_PATH
-			FROM BAKERY_IMAGE bi
-			WHERE bakery_no = ${bakeryNo}
-		</select>
+FROM
+	BAKERY_IMAGE bi
+WHERE
+	bakery_no = ${bakeryNo}
+</select>
 
-		<select id="getBakerySchedule"
+<select id="getBakerySchedule"
 			resultMap="bakeryScheduleResultMap">
-			SELECT day,open_time,close_time
-			FROM BAKERY_SCHEDULE bs
-			WHERE bakery_no =${bakeryNo}
-		</select>
+SELECT
+	DAY,
+	open_time,
+	close_time
+FROM
+	BAKERY_SCHEDULE bs
+WHERE
+	bakery_no = ${bakeryNo}			
+</select>
 
-		<insert id="bakeryFileUpload">
-			INSERT INTO bakery_Image
-			VALUES(img_seq.nextval,
+<insert id="bakeryFileUpload">
+INSERT
+	INTO
+	bakery_Image
+VALUES(img_seq.nextval,
 			#{fileDTO.changeName},
 			#{fileDTO.originalName},
 			#{fileDTO.extension},
@@ -198,109 +230,155 @@
 			#{imgLocation},
 			#{bakeryNo},
 			'')
-		</insert>
-		<insert id="bakeryInsert">
-			<selectKey resultType="int" keyProperty="bakeryNo"
+</insert>
+<insert id="bakeryInsert">
+<selectKey resultType="int" keyProperty="bakeryNo"
 				order="BEFORE">
-				SELECT bakery_seq.nextval from dual
-			</selectKey>
-			INSERT INTO bakery_info
-			VALUES(#{bakeryNo},
+SELECT bakery_seq.nextval from dual
+</selectKey>
+INSERT
+	INTO
+	bakery_info
+VALUES(#{bakeryNo},
 			#{bakeryName},
 			#{bakeryAddress},
 			#{bakeryPhone},
 			#{latitude},
 			#{longitude},
 			#{region})
-		</insert>
-		<insert id="bakeryDetailInsert">
-			INSERT INTO bakery_detail
-			VALUES(#{bakeryNo},
+</insert>
+<insert id="bakeryDetailInsert">
+INSERT
+	INTO
+	bakery_detail
+VALUES(#{bakeryNo},
 			#{amenity},
 			#{insideInfo},
 			#{outsideInfo},
 			#{createdDate},
 			sysdate)
-		</insert>
-		<insert id="bakeryScheduleInsert">
-			INSERT INTO bakery_schedule
-			VALUES(schedule_seq.nextval,
+</insert>
+
+<insert id="bakeryScheduleInsert">
+INSERT
+	INTO
+	bakery_schedule
+VALUES(schedule_seq.nextval,
 			#{bakeryNo},
 			#{timeDTO.day},
 			#{timeDTO.start},
 			#{timeDTO.end})
-		</insert>
-		<insert id="setBakery">
-			INSERT INTO bakery_access
-			VALUES(#{bakeryNo},
+</insert>
+
+<insert id="setBakery">
+INSERT
+	INTO
+	bakery_access
+VALUES(#{bakeryNo},
 			'대기',
 			#{userNo},
 			'',
 			'')
-		</insert>
-		<insert id="UserCountInsert">
-			INSERT INTO user_count
-			values(#{bakeryNo},0,0)
-		</insert>
-		<update id="resetDailyVisitCount">
-        UPDATE user_count
-        SET total_visit = total_visit + user_count,
-            user_count = 0
-    	</update>
-		<select id="requestUserNo">
-			SELECT user_no FROM BAKERY_INFO bi
-			JOIN BAKERY_ACCESS
-			ba ON bi.BAKERY_NO = ba.BAKERY_NO
-			WHERE ba.BAKERY_NO = ${bakeryNo}
-		</select>
-		<select id="getFileInfo">
-			SELECT change_name AS changeName,
+</insert>
+		
+<insert id="UserCountInsert">
+INSERT
+	INTO
+	user_count
+VALUES(#{bakeryNo},
+0,
+0)
+</insert>
+
+<update id="resetDailyVisitCount">
+UPDATE
+	user_count
+SET
+	total_visit = total_visit + user_count,
+	user_count = 0
+</update>
+
+<select id="requestUserNo">
+SELECT
+	user_no
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_ACCESS
+			ba ON
+	bi.BAKERY_NO = ba.BAKERY_NO
+WHERE
+	ba.BAKERY_NO = ${bakeryNo}
+</select>
+
+<select id="getFileInfo">
+SELECT
+	change_name AS changeName,
 			local_path AS
 			localPath
-			FROM bakery_image
-			WHERE 'position' = '${imgLocation}'
-		</select>
-		<delete id="deleteFile">
-			DELETE FROM bakery_image
-			where change_name =
-			${fileName}
-		</delete>
+FROM
+	bakery_image
+WHERE
+	'position' = '${imgLocation}'
+</select>
 
-		<update id="bakeryUpdate">
-			UPDATE bakery_info
-			SET bakery_name = #{bakeryName},
+<delete id="deleteFile">
+DELETE
+FROM
+	bakery_image
+WHERE
+	change_name =
+			${fileName}
+</delete>
+
+<update id="bakeryUpdate">
+UPDATE
+	bakery_info
+SET
+	bakery_name = #{bakeryName},
 			bakery_address = #{bakeryAddress},
 			bakery_phone = #{bakeryPhone}
-			WHERE
+WHERE
 			bakery_no = #{bakeryNo}
-		</update>
-		<update id="bakeryDetailUpdate">
-			UPDATE bakery_detail
-			set amenity = #{parkingInfo},
+</update>
+
+<update id="bakeryDetailUpdate">
+UPDATE
+	bakery_detail
+SET
+	amenity = #{parkingInfo},
 			inside_info = #{insideInfo},
 			outside_info = #{outsideInfo}
-			WHERE
+WHERE
 			bakery_no = #{bakeryNo}
-		</update>
-		<update id="bakeryScheduleUpdate">
-			UPDATE bakery_Schedule
-			set open_time =
-			#{timeDTO.start},
-			close_time= #{timeDTO.end}
-			WHERE bakery_no =
-			#{bakeryNo}
-			AND day = #{timeDTO.day}
-		</update>
-		<update id="bakeryAccessUpdate">
-			UPDATE bakery_Access
-			SET agree = '대기',
-				reject = null,
-				Accept_date = null
-			WHERE bakery_no	= #{bakeryNo}
-		</update>
+</update>
 
-		<select id="bakeryInfo" >
-			SELECT bi.BAKERY_NAME AS bakeryName,
+<update id="bakeryScheduleUpdate">
+UPDATE
+	bakery_Schedule
+SET
+	open_time =
+			#{timeDTO.start},
+			close_time = #{timeDTO.end}
+WHERE
+	bakery_no =
+			#{bakeryNo}
+	AND DAY = #{timeDTO.day}
+</update>
+
+<update id="bakeryAccessUpdate">
+UPDATE
+	bakery_Access
+SET
+	agree = '대기',
+				reject = NULL,
+				Accept_date = NULL
+WHERE
+	bakery_no = #{bakeryNo}
+</update>
+
+<select id="bakeryInfo" >
+SELECT
+	bi.BAKERY_NAME AS bakeryName,
 				   bi.BAKERY_ADDRESS AS bakeryAddress,
 				   bi.BAKERY_PHONE AS bakeryPhone,
 				   bd.INSIDE_INFO AS insideInfo,
@@ -308,33 +386,44 @@
 				   bd.AMENITY AS parkingInfo,
 				   ba.AGREE,
 				   ba.reject
-			FROM BAKERY_INFO bi
-			JOIN BAKERY_DETAIL bd ON bi.BAKERY_NO = bd.BAKERY_NO
-			JOIN BAKERY_ACCESS ba ON bi.BAKERY_NO = ba.BAKERY_NO
-			WHERE bi.BAKERY_NO = ${bakeryNo}	
-		</select>
+FROM
+	BAKERY_INFO bi
+JOIN BAKERY_DETAIL bd ON
+	bi.BAKERY_NO = bd.BAKERY_NO
+JOIN BAKERY_ACCESS ba ON
+	bi.BAKERY_NO = ba.BAKERY_NO
+WHERE
+	bi.BAKERY_NO = ${bakeryNo}
+</select>
 
-		<select id="getBakeriesByRegion" resultMap="BakeryInfoDTO">
+<select id="getBakeriesByRegion" resultMap="BakeryInfoDTO">
 
-			SELECT
+SELECT
 			*
-			FROM
+FROM
 			BAKERY_INFO bi
-			WHERE
+WHERE
 			region LIKE '%' ||
 			#{region} || '%'
 
-		</select>
+</select>
 		
-		<select id="getUserCountBybakeryNo" resultType="int">
-			SELECT user_count FROM user_count
-			WHERE bakery_no =${bakeryNo}
-		</select>
+<select id="getUserCountBybakeryNo" resultType="int">
+SELECT
+	user_count
+FROM
+	user_count
+WHERE
+	bakery_no = ${bakeryNo}
+</select>
 		
 		
-		<update id="updateUserCount">
-			UPDATE user_count
-			SET user_count = ${count}
-			where bakery_no = ${bakeryNo}
-		</update>
+<update id="updateUserCount">
+UPDATE
+	user_count
+SET
+	user_count = ${count}
+WHERE
+	bakery_no = ${bakeryNo}
+</update>
 </mapper>

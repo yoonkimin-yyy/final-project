@@ -30,7 +30,6 @@ public class StarUtil {
 	        sb.append("<i class='far fa-star'></i>");
 	    }
 
-	    System.out.println("⭐ 별점 HTML: " + sb); // 👈 로그로 찍기
 	    return sb.toString();
 	}
 
