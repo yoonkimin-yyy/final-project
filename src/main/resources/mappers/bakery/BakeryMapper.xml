@@ -140,21 +140,22 @@ GROUP BY
 		     bs."DAY",
 		     bs.open_time,
 		     bs.close_time
-<choose> 
-<when test="orderType == 'recent'">
-	ORDER BY bi.bakery_no DESC
-</when>
-<when test="orderType == 'popular'">
-	ORDER BY review_count DESC
-</when>
-<when test="orderType == 'rating'">
-	ORDER BY review_avg ASC
-</when>
-<otherwise>
-	ORDER BY bi.bakery_no DESC
-</otherwise>
-</choose>
-	OFFSET ${pi.offset} ROWS FETCH NEXT ${pi.boardLimit} ROWS ONLY
+
+	<choose> 
+		<when test="orderType == 'recent'">
+			ORDER BY bi.bakery_no DESC
+		</when>
+		<when test="orderType == 'popular'">
+			ORDER BY review_count DESC
+		</when>
+		<when test="orderType == 'rating'">
+			ORDER BY review_avg ASC
+		</when>
+		<otherwise>
+			ORDER BY bi.bakery_no DESC
+		</otherwise>
+	</choose>
+	OFFSET ${pi.offset - 1} ROWS FETCH NEXT ${pi.boardLimit} ROWS ONLY
 </select>
 
 <select id = "getLocationAgree" resultType="String">

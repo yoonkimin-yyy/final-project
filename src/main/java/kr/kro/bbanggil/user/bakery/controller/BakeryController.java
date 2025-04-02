@@ -58,7 +58,7 @@ public class BakeryController {
 	@GetMapping("/list")
 	public String list(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
 			@RequestParam(value = "orderType", required = false, defaultValue = "recent") String orderType,
-			@ModelAttribute BakerySearchDTO bakerySearchDTO, BakeryInfoDTO bakeryInfoDTO, Model model,
+			@ModelAttribute BakerySearchDTO bakerySearchDTO, Model model,
 			@SessionAttribute(value="userNum",required = false)Integer userNo) {
 		// 전체 게시물
 		int postCount = bakeryService.totalCount(bakerySearchDTO);
