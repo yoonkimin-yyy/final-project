@@ -53,7 +53,7 @@
 		    AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
 		) p
 		GROUP BY EXTRACT(MONTH FROM p.pay_request_date)
-		ORDER BY month;
+		ORDER BY month
     </select>
 
     <!-- 연간 총 매출 조회 -->

@@ -1,10 +1,4 @@
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
-	
-	
-    
     const popupInfo = document.getElementById("popup-info");
     const closePopup = document.querySelector(".close");
 
@@ -17,20 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const infoDivFourth = document.getElementById("info-div-fourth");
     const infoDivFifth = document.getElementById("info-div-fifth");
 	
-	// 상태 버튼  가져오기
 	const approveBtn = document.getElementById("approve-btn");
 	const rejectBtn = document.getElementById("reject-btn");
 	const completeBtn = document.getElementById("complete-btn");
 	const rejectReasonInput = document.getElementById("rejection-reason");
-	// 여기까지
 	
-	const orderList = document.getElementById("order-list"); // ✅ 이벤트 위임 대상 변경
+	const orderList = document.getElementById("order-list");
 
     function getTodayDate() {
         return new Date().toISOString().split("T")[0];
     }
-	
-	
 	
     function applyRowColors() {
         document.querySelectorAll("#order-list tr").forEach(row => {
@@ -48,27 +38,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		const popup = document.getElementById("popup-" + orderNo);
 		
 		if (popup) {
-		    popup.style.display = "none";  // 팝업 숨기기
+		    popup.style.display = "none";  
 		}
         updateOrderCounts();
         applyRowColors();
 		updateOrderStatus(orderNo, "승인", "");
-
-
-		
     }
 	
 	orderList.addEventListener("click", (event) => {
-	        const row = event.target.closest("tr"); // tr 찾기
+	        const row = event.target.closest("tr"); 
 			if (row) {
-			        const orderNo = row.querySelector("td:first-child").textContent.trim();  // 주문 번호 추출
-			        showOrderPopup(orderNo);  // 주문 번호를 전달하여 팝업을 열기
+			        const orderNo = row.querySelector("td:first-child").textContent.trim(); 
+			        showOrderPopup(orderNo);  
 			}
 	});
 
     function rejectOrder(orderNo) {
 		const popup = document.getElementById("popup-" + orderNo);
-				
         const reasonInput = document.getElementById("rejection-reason-"+orderNo);
         const reason = reasonInput ? reasonInput.value.trim() : "";
 		
@@ -78,30 +64,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 		
 		if (popup) {
-			popup.style.display = "none";  // 팝업 숨기기
+			popup.style.display = "none";  
 		}
         
         updateOrderCounts();
         applyRowColors();
 		updateOrderStatus(orderNo, "거절", reason);
-        
-        
-
-        
-        
     }
 
     function completeOrder(orderNo) {
 		const popup = document.getElementById("popup-" + orderNo);
 		if (popup) {
-			popup.style.display = "none";  // 팝업 숨기기
+			popup.style.display = "none";  
 		}
 		const completeBtn = document.getElementById("complete-btn-"+orderNo);
         updateOrderCounts();
         applyRowColors();
 		updateOrderStatus(orderNo, "완료", "");
-						
-		
     }
 
     function updateOrderCounts() {
@@ -109,8 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let totalSales = 0;
 
         document.querySelectorAll("#order-list tr").forEach(row => {
-			
-			
 			
             if (row.style.display === "none") return;
 
@@ -135,26 +112,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 	function filterOrders(status) {
-	    const selectedDate = datePicker.value; // 선택된 날짜
-	    const selectedDateObj = new Date(selectedDate); // 선택된 날짜를 Date 객체로 변환
+	    const selectedDate = datePicker.value; 
+	    const selectedDateObj = new Date(selectedDate); 
 
 	    document.querySelectorAll("#order-list tr").forEach(row => {
 	        const orderStatus = row.getAttribute("data-status");
 	        const orderDate = row.getAttribute("data-date")?.split(" ")[0]; // 날짜만 추출
-
-	        // 주문 날짜가 "YYYY-MM-DD" 형식으로 정확한지 확인하고, 변환
-			
-			// 주문 날짜가 유효한 경우 연도, 월, 일만 비교
-			
 			
 			const selectedDateObj = new Date(selectedDate);
 			const orderDateObj = new Date(orderDate);
-
-			
-			
-			
-
-	        // 주문 날짜가 유효하고, 선택된 날짜와 비교
+	        
 			row.style.display = (orderDateObj.getMonth() === selectedDateObj.getMonth() && orderDateObj.getDate() === selectedDateObj.getDate()) &&
 			                    (status === "전체" || orderStatus === status) ? "table-row" : "none";
 	    });
@@ -169,40 +136,29 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	setInterval(function() {
 	    $.ajax({
-	        url: location.href,  // 현재 페이지 URL을 통해 데이터를 가져옴
+	        url: location.href,  
 	        type: "GET",
 	        success: function(response) {
-	            // 서버에서 새로운 데이터를 가져온 후, #order-list를 갱신하는 부분
-	            var newContent = $(response).find("#order-list").html(); // 새로 가져온 HTML의 #order-list 부분만 가져옴
 	            
-	            // 기존 #order-list의 데이터와 새 데이터를 비교해서, 테이블을 갱신
+	            var newContent = $(response).find("#order-list").html();  가져옴
+	            
 	            $("#order-list").html(newContent);
-				
-				
-	            // 필터링을 새로 적용하도록
+	           
 	            const activeStatus = document.querySelector(".filter-btn.active")?.getAttribute("data-filter") || "전체";
-	            filterOrders(activeStatus);  // 필터링을 다시 실행
-				applyRowColors();  // 색상도 다시 적용
+	            filterOrders(activeStatus);  
+				applyRowColors(); 
 				
-				
-				// 밑에 완료 버튼 없애는 로직 추가
 				document.querySelectorAll("tr[data-order-no]").forEach(row => {
-				        const orderNo = row.getAttribute("data-order-no");  // 주문 번호
-				        const status = row.getAttribute("data-status");  // 상태 값 가져오기
-
-
-				        // 주문 번호를 기반으로 팝업을 찾음
+				        const orderNo = row.getAttribute("data-order-no"); 
+				        const status = row.getAttribute("data-status"); 
 				        const popup = document.querySelector(`#popup-${orderNo}`);
 				        
-				        // 팝업이 있으면 그 안에서 버튼을 찾음
 				        if (popup) {
 				            const approveBtn = popup.querySelector(`#approve-btn-${orderNo}`);
 				            const rejectBtn = popup.querySelector(`#reject-btn-${orderNo}`);
 				            const completeBtn = popup.querySelector(`#complete-btn-${orderNo}`);
 							const rejectDetail = popup.querySelector(`#rejection-reason-${orderNo}`);
-
-
-				            // 상태에 따라 버튼 보이기/숨기기
+				          
 				            if (approveBtn && rejectBtn && completeBtn) {
 				                if (status === "대기") {
 				                    approveBtn.style.display = "inline-block";
@@ -223,27 +179,12 @@ document.addEventListener("DOMContentLoaded", () => {
 				            }
 				        }
 				    });			
-				
 	        }
 	    });
 	}, 2000);
 	
-	
-	
-	
-	
-	
-	// 여기부터 수정해야 하는 부분
 	function showOrderPopup(orderNo, isReject = false) {
-		
 		const popup = document.getElementById("popup-"+orderNo);
-		
-		
-		
-	    
-
-	    
-		
 		if (popup) {
 		        const row = document.querySelector(`tr[data-order-no='${orderNo}']`); // 이 부분은 `row`를 직접 찾아서 데이터를 추출해도 됩니다.
 				const customerPhone = row.cells[4].textContent; // 고객 전화번호
@@ -254,60 +195,40 @@ document.addEventListener("DOMContentLoaded", () => {
 				document.getElementById("popup-order-time").textContent = orderTime;
 				document.getElementById("popup-total-price").textContent = totalPrice;
 
-		        // 팝업 표시
-		        popup.style.display = "block";  // 동적으로 찾은 팝업 표시
+		        popup.style.display = "block";  
 		}
-
-
-	    
-
-		
-		
-
 	    const approveBtn = document.getElementById("approve-btn-"+orderNo);
 	    const rejectBtn = document.getElementById("reject-btn-"+orderNo);
 		const completeBtn = document.getElementById("complete-btn-"+orderNo);
 
-	    // 이벤트 리스너 추가하기 전에 버튼이 존재하는지 확인
+	    
 	    if (approveBtn) {
 	        approveBtn.addEventListener("click", () => {
-	            approveOrder(orderNo); // 승인 처리
+	            approveOrder(orderNo); 
 				
 	        });
 		}
 		if(rejectBtn){
-			
 	        rejectBtn.addEventListener("click", () => {
-	            
-	            rejectOrder(orderNo); // 거절 처리
-	            
+	            rejectOrder(orderNo); 
 	        });
 		}
 			
 		if(completeBtn){	
 			completeBtn.addEventListener("click", () => {
 				    completeOrder(orderNo);
-			
 			});
 	    }
-
-	    
 		
-		// 팝업 닫기 버튼 클릭 시 팝업을 닫기 위한 이벤트 리스너 추가
-		        popup.querySelector(".close").addEventListener("click", () => {
-		            popup.style.display = "none";  // 팝업 닫기
-		        });
-	} // 여기까지
-	
-	
-
+		popup.querySelector(".close").addEventListener("click", () => {
+		    popup.style.display = "none"; 
+		});
+	} 
 
     datePicker.addEventListener("change", () => {
 		const activeStatus = document.querySelector(".filter-btn.active")?.getAttribute("data-filter") || "전체";
         filterOrders(activeStatus);
     });
-	
-	
 
     filterButtons.forEach(button => {
         button.addEventListener("click", () => {
@@ -318,15 +239,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    
-
-
     datePicker.value = getTodayDate();
     filterOrders("전체");
     applyRowColors();
 	
-	// 버튼에 따른 상태 변경 코드
-	// 상태 업데이트 함수
 	function updateOrderStatus(orderNo, status, rejectionReason) {
 	    const statusUpdateDTO = {
 			payDTO:{
@@ -336,9 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				pickupStatus: status,
 				rejectionReason: rejectionReason || ""
 			}
-			
-		
-	        
 	    };
 
 	    fetch(`/pickup/update-status`, {
@@ -353,16 +266,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			
 		})
 		.catch(error => {
-			   // 에러 처리
+			  
 		});
-		
 	}
 
 	document.addEventListener("click", (event) => {
 	    const target = event.target;
 	    const orderNo = target.dataset.orderNo;
 
-	    if (!orderNo) return; // orderNo가 없으면 실행하지 않음
+	    if (!orderNo) return; 
 
 	    const orderNumberElement = document.getElementById(`popup-order-number-${orderNo}`);
 	    if (!orderNumberElement) {
@@ -371,48 +283,21 @@ document.addEventListener("DOMContentLoaded", () => {
 	    }
 
 	    const orderNumber = orderNumberElement.textContent.trim();
-
-	    // 승인 버튼 클릭 시
+	    
 	    if (target.classList.contains("approve-btn")) {
 	        updateOrderStatus(orderNumber, "승인", "");
 	    }
-
-	    // 거절 버튼 클릭 시
 	    if (target.classList.contains("reject-btn")) {
 	        const rejectionReasonElement = document.querySelector(`textarea[data-order-no='${orderNo}']`);
 	        const rejectionReason = rejectionReasonElement ? rejectionReasonElement.value.trim() : "";
-
-	        
-
 	        updateOrderStatus(orderNumber, "거절", rejectionReason);
 	    }
-
-	    // 완료 버튼 클릭 시
 	    if (target.classList.contains("complete-btn")) {
 	        updateOrderStatus(orderNumber, "완료", "");
 	    }
 	});
 
-
-	
-	
-	
-	
-
     document.getElementById("sales-a").addEventListener("click", () => {
         window.open("연도별매출액.html", "연간매출", "width=600,height=900");
     });
-	
-	
-	
 });
-
-
-
-
-
-
-
-
-
-
