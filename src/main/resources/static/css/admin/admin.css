@@ -666,3 +666,11 @@ tr:hover {
 	color: white;
 	border: solid 1px;
 }
+
+.delete-btn{
+	padding: 10px 20px;
+	background-color: #a18267;
+	color: white;
+	border: none;
+	border-radius: 5px;
+}

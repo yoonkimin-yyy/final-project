@@ -39,4 +39,9 @@ public class AdminBakeryServiceImpl implements AdminBakeryService{
 		adminMapper.update(action, bakeryNo, rejectReason);
 	}
 	
+	@Override
+	public void delete(int bakeryNo) {
+		adminMapper.deleteBakery(bakeryNo);
+	}
+	
 }

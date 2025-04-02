@@ -361,6 +361,11 @@ sysdate)
 		SELECT count(*) FROM REVIEW_REPORT_RESULT rrr 
 		WHERE REPORT_NO = #{reportNo}
 	</select>
+	<update id="deleteBakery">
+		UPDATE BAKERY_ACCESS
+		SET agree = '거절'
+		WHERE bakery_no = ${bakeryNo}
+	</update>
 	
 	<select id="getInquiryEmailInfo" resultType="kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto">
 
