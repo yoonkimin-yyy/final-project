@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import kr.kro.bbanggil.owner.pickup.service.PickupServiceImpl;
 public class PickupListController {
 	
     private final PickupServiceImpl pickupServiceImpl;
+    private final Logger logger = LogManager.getLogger(PickupListController.class);
 
     public PickupListController(PickupServiceImpl pickupServiceImpl) {
         this.pickupServiceImpl = pickupServiceImpl;
@@ -81,7 +84,7 @@ public class PickupListController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-        	e.printStackTrace();
+        	logger.info("/update-status: '{}'", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

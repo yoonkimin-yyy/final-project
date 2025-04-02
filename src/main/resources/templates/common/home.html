@@ -56,11 +56,10 @@
     <!-- Swiper Container -->
     <div class="swiper swiper-popularBakerySwiper">
       <div class="swiper-wrapper">
-        <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card">
-          <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
+        <div th:each="bakery : ${popularBakeries}" class="swiper-slide bakery-card"
+        th:if="${bakery.no != null}" th:onclick="|location.href='/bakery/detail?bakeryNo=${bakery.no}'|">
             <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
               th:alt="${bakery.name}" class="bakery-image">
-          </a>
           <div class="bakery-info">
             <h3 class="bakery-name" th:text="${bakery.name}"></h3>
             <div class="location-container">
@@ -78,8 +77,6 @@
             <div class="specialty-container">
               <span class="specialty-label" th:text="${bakery.response.categoryName}"></span>
               <span class="specialty-text" th:text="${bakery.response.menuName}"></span>
-              <span class="specialty-label" th:text="${bakery.response.categoryName}">인기 메뉴</span>
-              <span class="specialty-text" th:text="${bakery.response.menuName}">소금빵</span>
             </div>
           </div>
         </div>
@@ -143,12 +140,11 @@
     <!-- Swiper 컨테이너 (최근 오픈 빵집) -->
     <div class="swiper recentBakerySwiper">
       <div class="swiper-wrapper">
-        <div th:each="bakery : ${recentBakeries}" class="swiper-slide bakery-card">
+        <div th:each="bakery : ${recentBakeries}" class="swiper-slide bakery-card"
+        th:if="${bakery.no != null}" th:onclick="|location.href='/bakery/detail?bakeryNo=${bakery.no}'|" style="cursor: pointer;">
           <div class="new-badge">NEW</div>
-          <a th:if="${bakery.no != null}" th:href="@{/bakery/detail(bakeryNo=${bakery.no})}">
             <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
               th:alt="${bakery.name}" class="bakery-image">
-          </a>
           <div class="bakery-info">
             <h3 class="bakery-name" th:text="${bakery.name}">브레드랩</h3>
             <div class="location-container">
@@ -182,7 +178,6 @@
       <h2 class="section-title">인기 빵 카테고리</h2>
       <a th:href="@{/bakery/list(searchText='베이직 빵', orderType='recent')}" class="view-all-button">
         
-        <i class="fas fa-chevron-right"></i>
       </a>
     </div>
 

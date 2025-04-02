@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CategoryResponseDTO {
+	
 	private String categoryNo;
 	private String category;
 }

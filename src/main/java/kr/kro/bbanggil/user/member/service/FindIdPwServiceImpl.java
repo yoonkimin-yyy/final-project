@@ -57,13 +57,8 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 	  */
 	 @Override
 	 public String sendTemporaryPassword(MemberRequestSignupDto memberRequestSignupDto) {
-	     System.out.println(memberRequestSignupDto.getUserId());
 	     MemberRequestSignupDto member = memberMapper.findUserPassword(memberRequestSignupDto);
-	     System.out.println("==============================");
-	     System.out.println(member.getUserPassword());
-	     System.out.println("==============================");
 	     if (member.getUserPassword() == null) {
-	    	 System.out.println("==============================asdasdasd");
 	         return "등록된 정보가 아닙니다.";
 	     }
 

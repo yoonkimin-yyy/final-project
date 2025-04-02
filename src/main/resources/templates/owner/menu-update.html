@@ -10,6 +10,7 @@
 <body>
     <form id="insertForm" th:action="@{/bakery/menu/update}" method="post" enctype="multipart/form-data" th:object="${menu}">
     	<input type="hidden" name="menuNo" th:value="${menuNo}">
+    	<input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
         <div id="mainPreviewContainer" class="preview-container main-preview">
 			        <img class="preview-img" id="imagePreview" src="" alt="미리보기 이미지">
 			    </div>
@@ -29,7 +30,6 @@
         <button class="add-to-menu" type="submit">메뉴 수정</button>
         
     </form>
-    <script src="/js/owner/menu/insert/insert.js"></script>
 </body>
 
 </html>

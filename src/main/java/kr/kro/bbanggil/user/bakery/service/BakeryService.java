@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.BakeryImgRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.BakeryRequestDTO;
@@ -21,7 +24,7 @@ import kr.kro.bbanggil.user.bakery.util.ListPageNation;
 
 public interface BakeryService {
 
-	public Map<String, Object> bakeryList(ListPageNation pageNation,
+	public Map<String, Object> bakeryList(PaginationUtil pageNation,
 			  int currentPage,
 			  int postCount,
 			  int pageLimit,
@@ -35,8 +38,6 @@ public interface BakeryService {
 
 	public int bakeryInsert(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO, int userNo,String role) throws Exception;
   
-	public void saveBakery(BakeryDto bakery);
-	
 	List<BakeryDto> getBakeriesByRegion(String region);
 	
 	List<BakeryDto> getPopularBakeries();
@@ -63,27 +64,17 @@ public interface BakeryService {
 
 	void bakeryUpdate(BakeryRequestDTO bakeryRequestDTO, BakeryImgRequestDTO bakeryImgRequestDTO,int userNo);
 
-	void imgInsert(MultipartFile file);
 	
-	List<CategoryResponseDTO> getCategory();
-	
-	
-	Map<String, Object> getMenuList(int bakeryNo);
-	
-	void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file);
-	
-	void menuDelete(int bakeryNo);
-	
-	MenuUpdateResponseDTO getMenuDetail(int menuNo);
-	
-	void updateMenu(MenuRequestDTO menuDTO, MultipartFile file);
 	
 	void updateUserCount(int bakeryNo);
 	
-	List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
-	List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
+	List<BakeryImageDTO> getInsideImages(double bakeryNo);
+	List<BakeryImageDTO> getOutsideImages(double bakeryNo);
+	List<BakeryImageDTO> getParkingImages(double bakeryNo);
 	
-	List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
+	public List<BakeryDto> getBakeryDetail(double no);
+	
+	myBakeryResponseDTO bakeryInfo(int bakeryNo);
 	
 
 	

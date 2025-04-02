@@ -26,7 +26,7 @@
     <script src="/js/mypage/edit.js"></script>
 <main>
 <div class="info-div">   
-	<form class="info-form" method="POST" th:action="@{/register/edit}">
+	<form class="info-form" method="POST" th:action="@{/mypage/edit}">
         <div class="mypageInfo">
             <div class="info-correction" >
                 <div class="info-title">
@@ -58,7 +58,7 @@
                     <h3>개인정보 변경</h3>
                 </div>
                   <div class="info-edit">
-					<form class="info-form" method="POST" action="/register/updatePassword">
+					<form class="info-form" method="POST" action="/mypage/updatePassword">
                         <div class="info-pw-btn-div">
                             <button class="change-pw-btn" type="button" onclick="pwBtn()">비밀번호 변경</button>
 
@@ -79,7 +79,7 @@
                             </div>
                         </div>
 					</form>
-					<form method="POST" action="/register/updateAddress">
+					<form method="POST" action="/mypage/updateAddress">
                         <div class="info-address-btn-div">
                             <button class="change-ar-btn" type="button">주소 변경</button>
                             <div class="postcode-div" id="postcode-div">

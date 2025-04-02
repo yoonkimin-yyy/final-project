@@ -40,17 +40,28 @@ public class ReviewController {
 			@RequestPart(value = "reviewImage", required = false) List<MultipartFile> reviewImage, // 이미지 받기
 	HttpSession session) {
 		
-		String userId =(String) session.getAttribute("userId");
-		Integer userNo = (Integer) session.getAttribute("userNum");
+	
 		
-		reviewDto.setUserNo(userNo);
-		reviewDto.setUserId(userId);
-		
-		reviewDto.setReviewImage(reviewImage);
+		 try {
+		        String userId = (String) session.getAttribute("userId");
+		        Integer userNo = (Integer) session.getAttribute("userNum");
 
-		reviewService.writeReview(reviewDto); // 리뷰 저장
+		        reviewDto.setUserNo(userNo);
+		        reviewDto.setUserId(userId);
+		        reviewDto.setReviewImage(reviewImage);
 
-		return ResponseEntity.ok("리뷰 등록 완료");
+		        reviewService.writeReview(reviewDto); // 리뷰 저장
+
+		        return ResponseEntity.ok("리뷰 등록 완료");
+
+		    } catch (IllegalStateException | IllegalArgumentException e) {
+		        // 
+		        return ResponseEntity.badRequest().body(e.getMessage());
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+		                             .body("리뷰 작성 중 알 수 없는 오류가 발생했습니다.");
+		    }
 
 	}
 
@@ -73,6 +84,7 @@ public class ReviewController {
 			HttpSession session) {
 		
 		Integer userNo = (Integer) session.getAttribute("userNum");
+		System.out.println(fileName);
 		
 	    if (userNo == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
@@ -94,7 +106,7 @@ public class ReviewController {
 	public String reiewReply(@RequestParam("reviewNo") int reviewNo,
 								@RequestParam("bakeryNo") Double bakeryNoDouble,
 								@RequestParam("replyText") String reviewReply,
-								@RequestParam("userNum") int userNo,
+								@SessionAttribute("userNum") int userNo,
 								HttpSession session,
 								Model model) {
 		

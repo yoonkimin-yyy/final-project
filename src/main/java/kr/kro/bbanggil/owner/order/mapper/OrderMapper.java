@@ -11,7 +11,6 @@ import kr.kro.bbanggil.owner.order.dto.request.PaymentRequestDto;
 import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.owner.order.dto.response.PickupCheckResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 
 
 @Mapper
@@ -38,10 +37,6 @@ public interface OrderMapper {
 	String refund(int payNo);
 	
 	Integer countByUserAndOrder(@Param("userNo") Integer userNo, @Param("orderNo") Integer orderNo);
-
-	int selectOrderCount(@Param("keyword")String keyword);
-
-	List<OrderResponseDto> selectPagedOrders(@Param("pi")PageResponseDto pi,@Param("keyword") String keyword);
 
 	BakeryResponseDto findRecentOrder(@Param("userNo")int userNo, @Param("bakeryNo")double bakeryNo);
 

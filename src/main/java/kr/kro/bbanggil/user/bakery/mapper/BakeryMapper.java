@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryTimeSetDTO;
@@ -20,7 +22,6 @@ import kr.kro.bbanggil.user.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.bakeryUpdateResponseDTO;
-import kr.kro.bbanggil.user.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.user.bakery.vo.BakeryDetailVO;
 import kr.kro.bbanggil.user.bakery.vo.BakeryInfoVO;
 
@@ -39,18 +40,6 @@ public interface BakeryMapper {
 	
 	public List<BakeryInfoDTO> bakeryImage(@Param("bakeryNo") int bakeryNo);
 	
-
-	
-
-
-	void menuInsert(@Param("menuRequestDTO")MenuRequestDTO menuRequestDTO, 
-					@Param("bakeryNo")int bakeryNo);
-
-
-	void menuFileUpload(MenuRequestDTO menuRequestDTO);
-
-	List<CategoryResponseDTO> getCategory();
-
 	void bakeryFileUpload(BakeryRequestDTO bakeryRequestDTO);
 
 	void bakeryInsert(BakeryInfoVO bakeryVO);
@@ -76,9 +65,6 @@ public interface BakeryMapper {
 	List<BakeryDto> getBakeryDetail(@Param("no") double No);
 	public List<ReviewResponseDto> getReviewImages(@Param("bakeryNo") double bakeryNo);
 
-	
-	
-	
 	void insertCartInfo(@Param("cartNo") int cartNo,@Param("menuNo") int menuNo, @Param("menuCount") int menuCount);
 	
 	Integer getCartNoByUserNo(int userNo);
@@ -86,20 +72,14 @@ public interface BakeryMapper {
 	void insertCart(int userNo);
 	BakeryDto findBakeryByNo(@Param("no")double bakeryNo);
 	
-	
-	
-
 	int getBakeryNo();
 
 	int getCurrentBakeryNo();
-
-
 
 	void imgInsert(FileRequestDTO fileDTO);
 
 	void setBakery(@Param("bakeryNo")int bakeryNo,
 				   @Param("userNo")int userNo);
-
 
 	bakeryUpdateResponseDTO getBakeryInfo(int bakeryNo);
 
@@ -128,25 +108,6 @@ public interface BakeryMapper {
 
 	void bakeryAccessUpdate(BakeryRequestDTO bakeryRequestDTO);
 
-
-	public List<MenuResponseDto> getMenuList(int bakeryNo);
-
-	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
-
-	public String getBakeryName(int bakeryNo);
-
-	public void menuDelete(int bakeryNo);
-
-	public String getMenuImgInfo(int menuNo);
-
-	public void deleteMenuImg(String changeName);
-
-	public MenuUpdateResponseDTO getMenuUpdate(int menuNo);
-
-	public FileResponseDTO getMenuImg(int menuNo);
-
-	public void menuUpdate(MenuRequestDTO menuDTO);
-
 	public void UserCountInsert(int bakeryNo);
 
 	public int getUserCountBybakeryNo(int bakeryNo);
@@ -156,12 +117,14 @@ public interface BakeryMapper {
 
 	public void resetDailyVisitCount();
 
-	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo);
+	public List<BakeryImageDTO> getInsideImages(@Param("bakeryNo")double bakeryNo);
+	public List<BakeryImageDTO> getOutsideImages(@Param("bakeryNo")double bakeryNo);
+	public List<BakeryImageDTO> getParkingImages(@Param("bakeryNo")double bakeryNo);
 
-	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo);
-	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo);
-
+	
 	public List<BakeryDto> getBakeriesTime(@Param("no")double no);
+
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo);
 	
 
 }

@@ -18,7 +18,6 @@ import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.owner.order.dto.response.PickupCheckResponseDto;
 import kr.kro.bbanggil.owner.order.mapper.OrderMapper;
 import kr.kro.bbanggil.user.bakery.dto.response.BakeryResponseDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -163,16 +162,6 @@ public class OrderServiceImpl implements OrderService {
 		
 		
 		return orderMapper.countByUserAndOrder(userNo, orderNo) > 0;
-	}
-	
-	@Override
-	public int getOrderCount(String keyword) {
-		return orderMapper.selectOrderCount(keyword);
-	}
-	
-	@Override
-	public List<OrderResponseDto> getPagedOrders(PageResponseDto pi, String keyword) {
-	    return orderMapper.selectPagedOrders(pi,keyword);
 	}
 	
 	@Override

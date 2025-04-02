@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.user.member.dto.request.MemberRequestSignupDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageListResponseDto;
-import kr.kro.bbanggil.user.member.dto.response.MypagePageInfoDto;
 import kr.kro.bbanggil.user.member.dto.response.MypageUserResponseDto;
 import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
 import kr.kro.bbanggil.user.member.dto.response.OwnerMypageResponseDTO;
@@ -23,7 +23,7 @@ public interface MypageMapper {
 	
 	//구매내역 정보
 	public List<MypageListResponseDto> getBuyHistory(@Param("userNo")int userNo,
-													@Param("pi")MypagePageInfoDto pageInfoDto);
+													 @Param("pi")PageInfoDTO pi);
 	
 	// 회원정보수정
 	public int updateUser(@Param("userDto")MypageUserResponseDto userDto,

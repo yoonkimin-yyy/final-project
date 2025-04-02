@@ -25,12 +25,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import groovy.transform.Undefined.EXCEPTION;
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.AwsS3Util;
 import kr.kro.bbanggil.common.util.FileUploadUtil;
+import kr.kro.bbanggil.common.util.PaginationUtil;
 import kr.kro.bbanggil.global.exception.BbanggilException;
 import kr.kro.bbanggil.user.bakery.api.KakaoController;
 import kr.kro.bbanggil.user.bakery.dto.BakeryDto;
+import kr.kro.bbanggil.user.bakery.dto.BakeryImageDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakerySearchDTO;
 import kr.kro.bbanggil.user.bakery.dto.BakeryTimeSetDTO;
@@ -46,7 +49,6 @@ import kr.kro.bbanggil.user.bakery.dto.response.FileResponseDTO;
 import kr.kro.bbanggil.user.bakery.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.MenuUpdateResponseDTO;
 import kr.kro.bbanggil.user.bakery.dto.response.bakeryUpdateResponseDTO;
-import kr.kro.bbanggil.user.bakery.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.user.bakery.mapper.BakeryMapper;
 import kr.kro.bbanggil.user.bakery.util.ListPageNation;
 import kr.kro.bbanggil.user.bakery.util.LocationSelectUtil;
@@ -65,7 +67,7 @@ public class BakeryServiceImpl implements BakeryService{
 	private static final Logger logger = LogManager.getLogger(BakeryServiceImpl.class);
 	
 	@Override
-	public Map<String, Object> bakeryList(ListPageNation pageNation,
+	public Map<String, Object> bakeryList(PaginationUtil pageNation,
 											int currentPage,
 											int postCount,
 											int pageLimit,
@@ -90,9 +92,6 @@ public class BakeryServiceImpl implements BakeryService{
 															orderType,
 															bakerySearchDTO);
 		
-		for(BakeryInfoDTO item : posts) {
-		}
- 		
 		List<List<BakeryInfoDTO>> images = new ArrayList<>();
 		
 		for (int i = 0; i < posts.size(); i++) {
@@ -104,7 +103,6 @@ public class BakeryServiceImpl implements BakeryService{
 		result.put("pi", pi);
 		result.put("posts", posts);
 		result.put("images", images);
-//		result.put("today", today);
 		
 		return result;
 	}
@@ -250,11 +248,10 @@ public class BakeryServiceImpl implements BakeryService{
 						for(int i=0;i<fileCheck.size();i++) {
 							String fileName = fileCheck.get(i).getChangeName();
 							String localPath = fileCheck.get(i).getLocalPath();
-							String s3FileName = fileCheck.get(i).getChangeName();
-							bakeryMapper.deleteFile(s3FileName);
+							bakeryMapper.deleteFile(fileName);
 							bakeryMapper.deleteFile(fileName);
 							fileUpload.deleteFile(localPath, imgLocation, fileName);
-							s3Upload.deleteImage(s3FileName);
+							s3Upload.deleteImage(fileName);
 						}
 						
 						for(int i=0;i<files.size();i++) {
@@ -281,21 +278,6 @@ public class BakeryServiceImpl implements BakeryService{
 			logger.error("에러발생! : {}",e.getMessage());
 			throw new BbanggilException("신청작업 오류","common/error",HttpStatus.BAD_REQUEST);
 		}
-	}
-	
-
-	@Override
-	public void saveBakery(BakeryDto bakery) {
-
-		try {
-			bakeryMapper.insertBakery(bakery);
-			logger.info("빵집 정보 저장 성공: {}",bakery.getName());
-		}catch(Exception e) {
-			logger.error("빵집 정보 저장 실패 : {}, 오류 메세지 :{}",bakery.getName(),e.getMessage(),e);
-			throw new RuntimeException("빵집 정보를 저장하는 중 오류 발생");
-		}
-		
-
 	}
 
 	@Override
@@ -352,7 +334,6 @@ public class BakeryServiceImpl implements BakeryService{
 	@Override
 	public void addCart(int userNo, List<MenuDetailRequestDto> menuDto) {
 
-
 		bakeryMapper.insertCart(userNo);
 		Integer cartNo = bakeryMapper.getCartNoByUserNo(userNo);
 		for (MenuDetailRequestDto item : menuDto) {
@@ -370,19 +351,47 @@ public class BakeryServiceImpl implements BakeryService{
 		return bakeryMapper.getBakeryDetail(no);
 	}
 	@Override
-	public List<BakeryDetailResponseDto> getInsideImages(double bakeryNo) {
+	public List<BakeryImageDTO> getInsideImages(double bakeryNo) {
 	    return bakeryMapper.getInsideImages(bakeryNo);
 	}
 
 	@Override
-	public List<BakeryDetailResponseDto> getOutsideImages(double bakeryNo) {
+	public List<BakeryImageDTO> getOutsideImages(double bakeryNo) {
 	    return bakeryMapper.getOutsideImages(bakeryNo);
 	}	
 	
+	private Map<String,List<MultipartFile>> setImg(BakeryImgRequestDTO bakeryImgRequestDTO) {
+		Map<String,List<MultipartFile>> result = new LinkedHashMap<>();
+		result.put("main", bakeryImgRequestDTO.getMain());
+		result.put("inside", bakeryImgRequestDTO.getInside());
+		result.put("outside", bakeryImgRequestDTO.getOutside());
+		result.put("parking", bakeryImgRequestDTO.getParking());
+		return result;
+
+	}
 	
 	
 	
+	@Override
+	public void updateUserCount(int bakeryNo) {
+		int count = bakeryMapper.getUserCountBybakeryNo(bakeryNo);
+		count++;
+		bakeryMapper.updateUserCount(bakeryNo,count);
+	}
+
+	public List<BakeryImageDTO> getParkingImages(double bakeryNo) {
+		return bakeryMapper.getParkingImages(bakeryNo);
+	}
+
+	public List<BakeryDto> getBakeriesTime(double no) {
+		return bakeryMapper.getBakeriesTime(no);
+	}
 	
+	@Override
+	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
+		return bakeryMapper.bakeryInfo(bakeryNo);
+	}
+
 	
 	private void setBakeryOperatingHours(bakeryUpdateResponseDTO bakeryInfo, List<BakeryTimeSetDTO> timeDTO) {
 		BakeryTimeRequestDTO requestDTO =  bakeryInfo.getTimeDTO();
@@ -427,102 +436,4 @@ public class BakeryServiceImpl implements BakeryService{
 	    	 bakeryInfo.setWeekend(checkTimes.iterator().next());
 	    }
 	}
-	private Map<String,List<MultipartFile>> setImg(BakeryImgRequestDTO bakeryImgRequestDTO) {
-		Map<String,List<MultipartFile>> result = new LinkedHashMap<>();
-		result.put("main", bakeryImgRequestDTO.getMain());
-		result.put("inside", bakeryImgRequestDTO.getInside());
-		result.put("outside", bakeryImgRequestDTO.getOutside());
-		result.put("parking", bakeryImgRequestDTO.getParking());
-		return result;
-
-	}
-	
-	@Override
-	public void imgInsert(MultipartFile file) {
-		try {
-			FileRequestDTO fileDTO = new FileRequestDTO();
-			fileUpload.uploadFile(file, fileDTO, "bakery");
-			bakeryMapper.imgInsert(fileDTO);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	@Override
-	public List<CategoryResponseDTO> getCategory() {
-		return bakeryMapper.getCategory();
-	}
-	@Override
-	@Transactional
-	public void menuInsert(MenuRequestDTO menuDTO, int bakeryNo, MultipartFile file) {
-		
-		try {
-			s3Upload.saveFile(file, menuDTO.getFileDTO());
-			bakeryMapper.menuInsert(menuDTO, bakeryNo);
-			bakeryMapper.menuFileUpload(menuDTO);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	@Override
-	public Map<String,Object> getMenuList(int bakeryNo) {
-		List<MenuResponseDto> menuList = bakeryMapper.getMenuList(bakeryNo);
-		String bakery = bakeryMapper.getBakeryName(bakeryNo);
-		Map<String,Object> result = new HashMap<>();
-		result.put("bakery", bakery);
-		result.put("list", menuList);
-			return result;
-	}
-
-	public myBakeryResponseDTO bakeryInfo(int bakeryNo) {
-		return bakeryMapper.bakeryInfo(bakeryNo);
-	}
-	@Override
-	public void menuDelete(int menuNo) {
-		String changeName = bakeryMapper.getMenuImgInfo(menuNo);
-		if(changeName!=null) {
-			bakeryMapper.deleteMenuImg(changeName);
-		}
-		bakeryMapper.menuDelete(menuNo);
-		logger.warn("{}번 메뉴 삭제됨", menuNo);
-	}
-	@Override
-	public MenuUpdateResponseDTO getMenuDetail(int menuNo) {
-		MenuUpdateResponseDTO menuDTO = bakeryMapper.getMenuUpdate(menuNo);
-		menuDTO.getMenuCategory().addAll(bakeryMapper.getCategory());
-		return menuDTO;
-	}
-	@Override
-	public void updateMenu(MenuRequestDTO menuDTO, MultipartFile file) {
-		try {
-			FileResponseDTO fileDTO = bakeryMapper.getMenuImg(menuDTO.getMenuNo());
-			if(file!=null&&!file.isEmpty()) {
-				if(fileDTO!=null) {
-					s3Upload.deleteImage(fileDTO.getChangeName());
-					bakeryMapper.deleteMenuImg(fileDTO.getChangeName());
-				}
-					s3Upload.saveFile(file,menuDTO.getFileDTO());
-					bakeryMapper.menuFileUpload(menuDTO);
-			}
-			bakeryMapper.menuUpdate(menuDTO);
-		
-		} catch (IOException e) {
-			throw new BbanggilException("메뉴 수정 실패","common/error",HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	@Override
-	public void updateUserCount(int bakeryNo) {
-		int count = bakeryMapper.getUserCountBybakeryNo(bakeryNo);
-		count++;
-		bakeryMapper.updateUserCount(bakeryNo,count);
-	}
-
-	public List<BakeryDetailResponseDto> getParkingImages(double bakeryNo) {
-		return bakeryMapper.getParkingImages(bakeryNo);
-	}
-
-	public List<BakeryDto> getBakeriesTime(double no) {
-		return bakeryMapper.getBakeriesTime(no);
-	}
-
 }

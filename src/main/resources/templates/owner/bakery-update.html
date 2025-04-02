@@ -105,7 +105,7 @@
                     </div>
                     <div class="info-item">
                         <i class="fas fa-calendar"></i>
-                        <input type="text" th:field="*{createdDate}" placeholder="창립일or오픈일(선택)">
+                        <input type="date" th:field="*{createdDate}" placeholder="창립일or오픈일(선택)">
                     </div>
                 </div>
             </div>
@@ -139,7 +139,11 @@
 				    </div>
                     <div class="photo-description">
                         <textarea class="description" th:field="*{insideInfo}" id="insideText" oninput="updateCharCount('insideText','insideDisplay')" placeholder="실내 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+<<<<<<< HEAD
+                        <p id="insideDisplay"></p>
+=======
                         <p id="insideDisplay">0/500</p>
+>>>>>>> d43217967eef83b6039b4a93a62f96bf528f343d
                     </div>
                 </div>
                 <!-- 실외 사진 섹션 -->
@@ -156,7 +160,11 @@
 				    </div>
                     <div class="photo-description">
                         <textarea class="description" th:field="*{outsideInfo}" id="outsideText" oninput="updateCharCount('outsideText','outsideDisplay')" placeholder="실외 환경에 대한 설명을 써주세요" maxlength="500"></textarea>
+<<<<<<< HEAD
+                        <p id="outsideDisplay"></p>
+=======
                         <p id="outsideDisplay">0/500</p>
+>>>>>>> d43217967eef83b6039b4a93a62f96bf528f343d
                     </div>
                 </div>
                 <!-- 주차 정보 섹션 -->
@@ -174,7 +182,11 @@
 					    </div>
                         <div class="parking-details">
                             <textarea class="parking-text" th:field="*{parkingInfo}" id="parkingText" oninput="updateCharCount('parkingText','parkingDisplay')" placeholder="주차장 정보를 입력해주세요" maxlength="500"></textarea>
+<<<<<<< HEAD
+                            <p id="parkingDisplay" class="displays"></p>
+=======
                             <p id="parkingDisplay" class="displays">0/500</p>
+>>>>>>> d43217967eef83b6039b4a93a62f96bf528f343d
                         </div>
                     </div>
                 </div>
@@ -182,7 +194,7 @@
             </div>
             <div>
                 <button class="submit-btn edit-btn" type="submit">제출</button>
-                <button class="cancel-btn edit-btn">취소</button>
+                <button class="cancel-btn edit-btn" type="button" onclick="window.history.back()">취소</button>
             </div>
         </div>
             

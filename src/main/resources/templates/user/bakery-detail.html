@@ -11,7 +11,8 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <script type="text/javascript"
     src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=bc4fcfd914b407e2489bf782697d47d4&libraries=services"></script>
-
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+	
 </head>
 
 <body>
@@ -28,27 +29,6 @@
       <button class="slider-button prev"><i class="fas fa-chevron-left"></i></button>
       <button class="slider-button next"><i class="fas fa-chevron-right"></i></button>
     </div>
-
-    <!-- <div class="container">
-      <div class="slider-container" th:each="bakery : ${bakeriesInfo}">
-         <div class="slider">
-            <div class="slide">
-               <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" th:alt="${bakery.name}" class="bakery-image">
-            </div>
-            <div class="slide">
-               <img src="https://api.a0.dev/assets/image?text=fresh%20bread%20display%20in%20bakery" alt="빵집 전경 2">
-            </div>
-            <div class="slide">
-               <img src="https://api.a0.dev/assets/image?text=cozy%20bakery%20cafe%20interior" alt="빵집 전경 3">
-            </div>
-         </div>
-         <button class="slider-button prev">
-            <i class="fas fa-chevron-left"></i>
-         </button>
-         <button class="slider-button next">
-            <i class="fas fa-chevron-right"></i>
-         </button>
-      </div> -->
 
 
     <!-- 헤더 섹션 -->
@@ -218,8 +198,10 @@
                   <span class="tag-label" th:utext="${review.tagFive}"></span>
                 </th:block>
               </div>
-              <img th:if="${review.resourcesPath != null and review.changeName != null}"
-                th:src="@{${review.resourcesPath + '/' + review.changeName}}" class="review-image">
+              <div class="review-images" th:if="${review.reviewImages != null}">
+              <img th:each="img : ${review.reviewImages}"
+                th:src="@{${img.resourcesPath + '/' + img.changeName}}" class="review-image">
+              </div>
               <div class="review-actions">
                 <th:block th:if="${review.userNo == userNum}">
                   <button type="button" onclick="editReview(this)" th:data-content="${review.reviewDetail}"
@@ -306,47 +288,77 @@
 
           </div>
         </div>
+       
         <!-- 실내 사진 섹션 -->
-        <div class="interior-photos" id="interior" style="display: none;">
-          <h3>실내 전경</h3>
-          <div class="photo-grid" th:each="bakery : ${insideImages}">
-            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
-              th:alt="${bakery.name}" class="bakery-image">
-            <div class="photo-description">
-              <ul>
-                <li th:text="${bakery.response.insideInfo}">총 좌석: 30석</li>
-              </ul>
-            </div>
-          </div>
+ <div class="interior-photos" id="interior" style="display:none">
+  <h3 class="inside-img">실내 전경</h3>
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <!-- 반복 슬라이드 -->
+      <div class="swiper-slide" th:each="img,stat : ${insideImages}">
+        <img th:src="@{${img.resourcesPath} + '/' + ${img.changeName}}"
+             th:alt="${img.name}" class="bakery-image" />
+        <div class="photo-description">
+          <ul th:if="${stat.index == 0}">
+            <li th:text="${img.insideInfo}">총 좌석: 30석</li>
+          </ul>
         </div>
+      </div>
+    </div>
 
-        <!-- 실외 사진 섹션 -->
-        <div class="exterior-photos" id="exterior" style="display: none;">
-          <h3>실외 전경</h3>
-          <div class="photo-grid" th:each="bakery : ${outsideImages}">
-            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}"
-              th:alt="${bakery.name}" class="bakery-image">
-            <div class="photo-description">
-              <ul>
-                <li th:text="${bakery.response.outsideInfo}"></li>
-              </ul>
-            </div>
-          </div>
-        </div>
+    <div class="swiper-button-next interior-next" ></div>
+  <div class="swiper-button-prev interior-prev"></div>
+  <div class="swiper-pagination interior-pagination"></div>
+   
+  </div>
+</div>
 
-        <!-- 주차 정보 섹션 -->
-        <div class="parking-info" id="parking" style="display: none;">
-          <h3>주차 안내</h3>
-          <div class="parking-content" th:each="bakery : ${parkingImages}">
-            <img th:src="@{${bakery.response.resourcesPath} + '/' + ${bakery.response.changeName}}" alt="주차장">
-            <div class="parking-details">
-              <h4>주차 정보</h4>
-              <ul>
-                <li th:text="${bakery.response.amenity}"></li>
-              </ul>
-            </div>
-          </div>
+     <div class="exterior-photos" id="exterior" style="display: none;">
+  <h3 class="outSide-img">실외 전경</h3>
+  <div class="swiper exteriorSwiper">
+    <div class="swiper-wrapper">
+      <!-- 반복 슬라이드 -->
+      <div class="swiper-slide" th:each="img,stat : ${outsideImages}">
+        <img th:src="@{${img.resourcesPath} + '/' + ${img.changeName}}"
+             th:alt="${img.name}" class="bakery-image"
+             style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;" />
+        <div class="photo-description">
+          <ul th:if="${stat.index == 0}">
+            <li th:text="${img.outsideInfo}">실외 정보</li>
+          </ul>
         </div>
+      </div>
+    </div>
+    <!-- 네비게이션 & 페이지네이션 -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+     <div class="parking-info" id="parking" style="display: none;">
+  <h3 class="park-img">주차 안내</h3>
+  <div class="swiper parkingSwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" th:each="img,stat : ${parkingImages}">
+        <img th:src="@{${img.resourcesPath} + '/' + ${img.changeName}}"
+             alt="주차장" class="bakery-image"
+             style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;" />
+        <div class="parking-details">
+          <h4>주차 정보</h4>
+          <ul th:if="${stat.index == 0}">
+            <li th:text="${img.amenity}">주차 가능</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 슬라이드 네비게이션 -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
       </div>
 
       <!-- 오른쪽 사이드바 -->
@@ -394,10 +406,6 @@
           <input type="hidden" th:if="${recentOrder.orderNo != null}" th:value="${recentOrder.orderNo}" name="orderNo"
             id="orderNo" />
         </th:block>
-        <div class="form-group">
-          <label for="name">이름</label>
-          <input type="text" id="name" required>
-        </div>
         <div class="form-group">
           <label>평점</label>
           <div class="star-rating">
@@ -470,6 +478,7 @@
   <footer th:replace="~{fragments/footer :: FooterFragment}"></footer>
   <script src="/js/bakery/detail/detail.js"></script>
   <script src="/js/bakery/detail/detailAjax.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 </body>
 

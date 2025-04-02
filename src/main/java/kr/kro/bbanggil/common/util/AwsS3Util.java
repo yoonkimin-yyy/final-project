@@ -19,9 +19,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AwsS3Util {
 	private final AmazonS3 amazonS3;
-
+	private final String CLOUDFRONT_DOMAIN = "https://d2cbn2na1idn6c.cloudfront.net";
+	
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    
+    
 
     public void saveFile(MultipartFile multipartFile,FileRequestDTO fileDTO) throws IOException {
     	try {
@@ -43,7 +46,7 @@ public class AwsS3Util {
     		fileDTO.setSize(multipartFile.getSize());
     		fileDTO.setLocalPath("성공!!!");
     		fileDTO.setFolderNamePath("성공?");
-    		fileDTO.setLocalResourcePath(amazonS3.getUrl(bucket, changeName).toString().substring(0, result));
+    		fileDTO.setLocalResourcePath(CLOUDFRONT_DOMAIN);
     	} catch(Exception e) {
     		throw new BbanggilException("S3 업로드 실패","common/error",HttpStatus.METHOD_NOT_ALLOWED);
     	}

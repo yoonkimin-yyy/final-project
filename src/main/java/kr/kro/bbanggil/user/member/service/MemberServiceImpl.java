@@ -99,7 +99,7 @@ public class MemberServiceImpl implements MemberService{
              if (passwordEncoder.matches(memberRequestSignupDto.getUserPassword(),loginUser.getUserPassword())) {
             	 String isBanned = registerMapper.isBanned(memberRequestSignupDto);
             	 if(isBanned.equals("N"))
-                 return loginUser; // 로그인 성공
+            	 return loginUser; // 로그인 성공            			 
             	 else throw new BbanggilException("계정 정지 상태 입니다","common/error",HttpStatus.LOCKED);
              }
          }

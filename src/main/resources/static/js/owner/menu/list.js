@@ -21,8 +21,8 @@ function openInsertMenu(bakeryNo) {
 	const url = `/bakery/menu/insert/form?bakeryNo=${bakeryNo}`;
 	    window.open(url, "_blank", "width=600, height=400, top=100, left=100");
 }
-function openUpdateMenu(menuNo) {
-	const url = `/bakery/menu/update/form?menuNo=${menuNo}`;
+function openUpdateMenu(menuNo,bakeryNo) {
+	const url = `/bakery/menu/update/form?menuNo=${menuNo}&bakeryNo=${bakeryNo}`;
 	    window.open(url, "_blank", "width=600, height=400, top=100, left=100");
 }
 function confirmDelete(button) {

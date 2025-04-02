@@ -12,7 +12,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 
-public interface AdminService {
+public interface AdminMainService {
 
 	List<AdminResponseDto> subList();
 
@@ -20,24 +20,7 @@ public interface AdminService {
 
 	List<AdminResponseDto> userList();
 
-	AdminResponseDto bakeryDetailList(int bakeryNo, int userNo);
-
-	AdminResponseDto userDetailList(int userNo);
-
-	AdminResponseDto acceptList(int bakeryNo, int userNo);
-
-	List<MenuResponseDto> menuList(int bakeryNo);
-	
-	void update(String action, int bakeryNo, String rejectReason);
-
 	void sendEmail(AdminEmailRequestDto adminReqeustDto);
-
-
-	void saveInquiry(InquiryRequestDto inquiryRequestDto);
-
-	List<InquiryResponseDto> getInquiryList();
-
-	void saveAnswer(InquiryReplyRequestDto inquiryReplyDto);
 
 	Map<String, Object> trafficMonitoring();
 
@@ -53,10 +36,6 @@ public interface AdminService {
 
 	List<AdminResponseDto> reportList();
 
-	AdminResponseDto reportDetail(int reportNo);
-
-	void insertReport(ReportRequestDTO reportDTO, String userId, int reportNo);
-
-	InquiryResponseDto getInquiryByNo(int inquiryNo);
+	void saveInquiry(InquiryRequestDto inquiryRequestDto);
 
 }

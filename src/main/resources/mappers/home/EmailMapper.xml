@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="kr.kro.bbanggil.common.email.mapper.EmailMapper">
+<mapper namespace="kr.kro.bbanggil.common.mapper.EmailMapper">
 
 <resultMap id="EmailResultMap"
 	type="kr.kro.bbanggil.user.bakery.dto.BakeryDto">
@@ -132,25 +132,43 @@ ORDER BY
 
 
 
-<insert id="insertNewsletterHistory">
-    INSERT INTO NEWSLETTER_HISTORY (
-        HISTORY_NO, BAKERY_NAME, RESOURCES_PATH, CHANGE_NAME, OPEN_TIME, CLOSE_TIME
-    ) VALUES (
-        NEWSLETTER_HISTORY_SEQ.NEXTVAL,
-        #{bakeryName},
-        #{resourcesPath},
-        #{changeName},
-        #{openTime},
-        #{closeTime}
-    )
-</insert>
-
-
 <select id="getImageInfoByImgNo" resultType="map">
     SELECT CHANGE_NAME, RESOURCES_PATH
     FROM BAKERY_IMAGE
     WHERE IMG_NO = #{imgNo}
 </select>
+
+
+
+<insert id="insertNewsletterHistory">
+  INSERT INTO NEWSLETTER_HISTORY (
+    HISTORY_NO,
+    BAKERY_NAME,
+    RESOURCES_PATH,
+    CHANGE_NAME,
+    OPEN_TIME,
+    CLOSE_TIME,
+    LOCATION,
+    SENT_DATE
+  ) VALUES (
+    SEQ_NEWSLETTER_HISTORY.NEXTVAL,
+    #{bakeryName},
+    #{resourcesPath},
+    #{changeName},
+    #{openTime},
+    #{closeTime},
+    #{location},
+    SYSDATE
+  )
+</insert>
+
+
+
+
+
+
+
+
 
 
 </mapper>

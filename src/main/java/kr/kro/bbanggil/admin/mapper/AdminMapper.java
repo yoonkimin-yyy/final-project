@@ -15,6 +15,9 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
+import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
+import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto;
 
 @Mapper
@@ -26,20 +29,8 @@ public interface AdminMapper {
 
 	List<AdminResponseDto> userList();
 	
-	AdminResponseDto bakeryDetailList(@Param("bakeryNo") int bakeryNo, 
-		    						  @Param("userNo") int userNo);
-	
 	AdminResponseDto userDetailList(int userNo);
 	
-	AdminResponseDto acceptList(@Param("bakeryNo") int bakeryNo, 
-							    @Param("userNo") int userNo);
-
-	List<MenuResponseDto> menuList(int bakeryNo);
-	
-	void update(@Param("action") String action,
-				@Param("bakeryNo") int listNum,
-				@Param("rejectReason") String rejectReason);
-
 	void insertInquiry(InquiryRequestDto inquiryRequestDto);
 	
 	public String getUserType(int userNo);
@@ -84,5 +75,23 @@ public interface AdminMapper {
 					  @Param("userId")String userId);
 
 	AdminResponseDto reportDetail(int reportNo);
+	
+	AdminResponseDto bakeryDetailList(@Param("bakeryNo") int bakeryNo, 
+			  						  @Param("userNo") int userNo);
+
+	AdminResponseDto acceptList(@Param("bakeryNo") int bakeryNo, 
+		    					@Param("userNo") int userNo);
+	
+	List<MenuResponseDto> menuList(int bakeryNo);
+	
+	void update(@Param("action") String action,
+				@Param("bakeryNo") int listNum,
+				@Param("rejectReason") String rejectReason);
+	
+	int selectOrderCount(@Param("keyword")String keyword);
+
+	List<OrderResponseDto> selectPagedOrders(@Param("pi")PageInfoDTO pi,@Param("keyword") String keyword);
+
+	myBakeryResponseDTO bakeryInfo(int bakeryNo);
 	
 }

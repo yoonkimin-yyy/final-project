@@ -73,6 +73,7 @@ public class EmailServiceImpl implements EmailService {
 	/**
 	 * 이메일만 보내는 기능
 	 */
+	@Override
 	public void sendEmail(String toEmail, String subject, String body) {
 
 		try {
@@ -85,7 +86,7 @@ public class EmailServiceImpl implements EmailService {
 			helper.setText(body, true);
 
 			mailSender.send(message);
-			System.out.println(" 이메일 발송 성공: " + toEmail);
+			logger.info("이메일 전송 완료");
 		} catch (MessagingException e) {
 			throw new RuntimeException("이메일 전송 실패", e);
 		}

@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.FileRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.request.ReviewRequestDto;
-import kr.kro.bbanggil.user.bakery.dto.response.PageResponseDto;
 import kr.kro.bbanggil.user.bakery.dto.response.ReviewResponseDto;
 
 @Mapper
@@ -25,17 +25,10 @@ public interface ReviewMapper {
 	
 	public int getTotalCount(double no);
 	
-	List<ReviewResponseDto> list(@Param("pi") PageResponseDto pageInfo ,
+	List<ReviewResponseDto> list(@Param("pi") PageInfoDTO pageInfo ,
 								@Param("bakeryNo")double bakeryNo,
 								@Param("orderBy") String orderBy);
 	public List<ReviewResponseDto> getReviewImages(double bakeryNo);
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -86,4 +79,5 @@ public interface ReviewMapper {
     	    @Param("tagForth") String tagForth,
     	    @Param("tagFive") String tagFive
     	);
+	public int checkReviewExistsByOrderNo(@Param("orderNo") int orderNo);
 }
