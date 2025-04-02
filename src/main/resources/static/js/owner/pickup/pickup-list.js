@@ -134,6 +134,38 @@ document.addEventListener("DOMContentLoaded", () => {
 	    return !isNaN(date.getTime());
 	}
 	
+	document.querySelectorAll("tr[data-order-no]").forEach(row => {
+			const orderNo = row.getAttribute("data-order-no"); 
+			const status = row.getAttribute("data-status"); 
+			const popup = document.querySelector(`#popup-${orderNo}`);
+					        
+			if (popup) {
+					  const approveBtn = popup.querySelector(`#approve-btn-${orderNo}`);
+					  const rejectBtn = popup.querySelector(`#reject-btn-${orderNo}`);
+					  const completeBtn = popup.querySelector(`#complete-btn-${orderNo}`);
+					  const rejectDetail = popup.querySelector(`#rejection-reason-${orderNo}`);
+					          
+					  if (approveBtn && rejectBtn && completeBtn) {
+					      if (status === "대기중") {
+					          approveBtn.style.display = "inline-block";
+					          rejectBtn.style.display = "inline-block";
+					          completeBtn.style.display = "none";
+								rejectDetail.style.display = "inline-block";
+					      } else if (status === "승인") {
+					          approveBtn.style.display = "none";
+					          rejectBtn.style.display = "none";
+					          completeBtn.style.display = "inline-block";
+							  rejectDetail.style.display = "none";
+					      } else if (status === "거절" || status === "완료") {
+					          approveBtn.style.display = "none";
+					          rejectBtn.style.display = "none";
+					          completeBtn.style.display = "none";
+							  rejectDetail.style.display = "none";
+					      }
+					  }
+			}
+	});	
+	
 	setInterval(function() {
 	    $.ajax({
 	        url: location.href,  
@@ -178,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				                }
 				            }
 				        }
-				    });			
+				});			
 	        }
 	    });
 	}, 2000);
