@@ -17,18 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.service.AdminMainService;
+import kr.kro.bbanggil.admin.service.AdminMainServiceImpl;
+import kr.kro.bbanggil.common.scheduler.NewsletterScheduler;
+import kr.kro.bbanggil.common.service.EmailServiceImpl;
+import kr.kro.bbanggil.user.bakery.service.BakeryServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/admin")
-@AllArgsConstructor
-public class APiAdminController {
+@RequiredArgsConstructor
+public class ApiAdminController {
 	
 	private final AdminMainService adminMainService;
-	private final Logger logger = LogManager.getLogger(APiAdminController.class);
+	private final Logger logger = LogManager.getLogger(ApiAdminController.class);
 	
 	@PostMapping("/sendEmail")
-	@ResponseBody
 	public String sendEmail(@RequestBody AdminEmailRequestDto adminReqeustDto) {
 		
 		adminMainService.sendEmail(adminReqeustDto);

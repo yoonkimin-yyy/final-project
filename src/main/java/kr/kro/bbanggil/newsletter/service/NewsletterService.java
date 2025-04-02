@@ -7,4 +7,5 @@ public interface NewsletterService {
 	
 	
 	NewsletterResponseDto getLatestNewsletter();
+	 public String calculateNextNewsletterSchedule();
 }

@@ -1,4 +1,4 @@
-
+const locationAgree= document.getElementById('location-agree').value
    
 
 var regionCenters = {
@@ -33,8 +33,14 @@ var locPosition;
 
 document.addEventListener("DOMContentLoaded", function () {
 	mapContainer = document.getElementById('map'); 
-	lat = 37.3987043; // 위도
-	lng = 126.9207107; // 경도
+	
+	if(locationAgree === 'Y'){
+		lat = 37.3987043; // 위도
+		lng = 126.9207107; // 경도
+	}else{
+		lat = 37.5665;
+		lng = 126.9780;
+	}
 	region = document.getElementById('searchText').value.split(" ")[0];
 	myPosition = new kakao.maps.LatLng(lat,lng);
 	center = regionCenters[region]; 
@@ -69,26 +75,29 @@ function displayCurrentLocation(locPosition) {
 	    };
 	map = new kakao.maps.Map(mapContainer, mapOption);
 
-    
-	// 야구공모양 마커주소
-	var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
-	var imageSize = new kakao.maps.Size(30, 34); // 마커이미지의 크기
-	var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션.
-	// 내위치 야구공모양 마커주소
-	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-    // 내현재 위치를 표시할 마커 야구공 모양으로 생성
-    var marker = new kakao.maps.Marker({
-        map: map,
-        position: myPosition,
-        title: '내 위치',
-		image : markerImage
-    });
+	if(locationAgree === 'Y'){
+		// 야구공모양 마커주소
+			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+			var imageSize = new kakao.maps.Size(30, 34); // 마커이미지의 크기
+			var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션.
+			// 내위치 야구공모양 마커주소
+			var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+		    // 내현재 위치를 표시할 마커 야구공 모양으로 생성
+		    var marker = new kakao.maps.Marker({
+		        map: map,
+		        position: myPosition,
+		        title: '내 위치',
+				image : markerImage
+		    });
 
-    // 내 현재 위치에 '내 위치'라는 인포윈도우 생성
-    var infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;">내 위치</div>',
-        removable: true
-    });
+		    // 내 현재 위치에 '내 위치'라는 인포윈도우 생성
+		    var infowindow = new kakao.maps.InfoWindow({
+		        content: '<div style="padding:5px;">내 위치</div>',
+		        removable: true
+		    });
+	}
+    
+	
 	
     infowindow.open(map, marker);
 	map.setCenter(locPosition);

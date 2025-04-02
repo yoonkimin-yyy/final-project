@@ -62,5 +62,13 @@ public class AdminBakeryController {
 		return "redirect:/admin/form";
 	}
 	
+	@GetMapping("/delete")
+	public String bakeryDelete(@RequestParam("bakeryNo") int bakeryNo) {
+		adminBakeryService.delete(bakeryNo);
+		
+		return "redirect:/admin/form";
+		
+	}
+	
 	
 }

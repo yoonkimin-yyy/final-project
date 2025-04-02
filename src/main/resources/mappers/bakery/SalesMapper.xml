@@ -36,50 +36,77 @@
 		</association>
 	</resultMap>
 
-	<!-- 월별 매출 조회 -->
-    <select id="getMonthlySales" resultMap="pickupResultMap">
-        SELECT 
-		    EXTRACT(MONTH FROM p.pay_request_date) AS month,
+<select id="getMonthlySales" resultMap="pickupResultMap">
+SELECT 
+		    EXTRACT(MONTH FROM p.pay_request_date) AS MONTH,
 		    SUM(p.amount) AS total_sales
-		FROM (
-		    SELECT DISTINCT p.pay_no, p.amount, p.pay_request_date
-		    FROM PAYMENT p
-		    JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
-		    JOIN cart c ON c.cart_no = oi.cart_no
-		    JOIN cart_info ci ON ci.cart_no = c.cart_no
-		    JOIN menu m ON ci.menu_no = m.menu_no
-		    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
-		    WHERE bi.bakery_no = #{bakeryNo}
-		    AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
+FROM
+	(
+	SELECT
+		DISTINCT p.pay_no,
+		p.amount,
+		p.pay_request_date
+	FROM
+		PAYMENT p
+	JOIN ORDER_INFO oi ON
+		p.pay_no = oi.pay_no
+	JOIN cart c ON
+		c.cart_no = oi.cart_no
+	JOIN cart_info ci ON
+		ci.cart_no = c.cart_no
+	JOIN menu m ON
+		ci.menu_no = m.menu_no
+	JOIN bakery_info bi ON
+		bi.bakery_no = m.bakery_no
+	WHERE
+		bi.bakery_no = #{bakeryNo}
+		AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
 		) p
 		GROUP BY EXTRACT(MONTH FROM p.pay_request_date)
 		ORDER BY month
-    </select>
+</select>
 
-    <!-- 연간 총 매출 조회 -->
-    <select id="getAnnualTotalSales" resultType="int">
-        SELECT SUM(p.amount)
-	    FROM PAYMENT p
-	    JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
-	    JOIN cart c ON c.cart_no = oi.cart_no
-	    JOIN cart_info ci ON ci.cart_no = c.cart_no
-	    JOIN menu m ON ci.menu_no = m.menu_no
-	    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
-	    WHERE bi.bakery_no = #{bakeryNo}
-	    AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
-    </select>
 
-    <!-- 사용 가능한 연도 목록 조회 -->
-    <select id="getAvailableYears" resultType="int">
-        SELECT EXTRACT(YEAR FROM p.pay_request_date) AS year
-		FROM PAYMENT p
-		JOIN ORDER_INFO oi ON p.pay_no = oi.pay_no
-		JOIN cart c ON c.cart_no = oi.cart_no
-		JOIN cart_info ci ON ci.cart_no = c.cart_no
-		JOIN menu m ON ci.menu_no = m.menu_no
-		JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
-		WHERE bi.bakery_no = #{bakeryNo}
-		GROUP BY EXTRACT(YEAR FROM p.pay_request_date)
-		ORDER BY year DESC
-    </select>
+<select id="getAnnualTotalSales" resultType="int">
+SELECT
+	SUM(p.amount)
+FROM
+	PAYMENT p
+JOIN ORDER_INFO oi ON
+	p.pay_no = oi.pay_no
+JOIN cart c ON
+	c.cart_no = oi.cart_no
+JOIN cart_info ci ON
+	ci.cart_no = c.cart_no
+JOIN menu m ON
+	ci.menu_no = m.menu_no
+JOIN bakery_info bi ON
+	bi.bakery_no = m.bakery_no
+WHERE
+	bi.bakery_no = #{bakeryNo}
+	AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
+</select>
+
+<select id="getAvailableYears" resultType="int">
+SELECT
+	EXTRACT(YEAR FROM p.pay_request_date) AS YEAR
+FROM
+	PAYMENT p
+JOIN ORDER_INFO oi ON
+	p.pay_no = oi.pay_no
+JOIN cart c ON
+	c.cart_no = oi.cart_no
+JOIN cart_info ci ON
+	ci.cart_no = c.cart_no
+JOIN menu m ON
+	ci.menu_no = m.menu_no
+JOIN bakery_info bi ON
+	bi.bakery_no = m.bakery_no
+WHERE
+	bi.bakery_no = #{bakeryNo}
+GROUP BY
+	EXTRACT(YEAR FROM p.pay_request_date)
+ORDER BY
+	YEAR DESC
+</select>
 </mapper>

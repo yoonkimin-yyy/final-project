@@ -73,7 +73,8 @@ public class BakeryServiceImpl implements BakeryService{
 											int pageLimit,
 											int boardLimit,
 											String orderType,
-											BakerySearchDTO bakerySearchDTO){
+											BakerySearchDTO bakerySearchDTO,
+											int userNo){
 		String searchText = bakerySearchDTO.getSearchText();
         String[] keywords = searchText.split("\\s+"); // 공백 기준으로 분리
 
@@ -85,6 +86,8 @@ public class BakeryServiceImpl implements BakeryService{
             bakerySearchDTO.setKeyword2(searchText);
         }
 		
+        String locationAgree = bakeryMapper.getLocationAgree(userNo);
+        System.out.println(locationAgree);
 		PageInfoDTO pi = pageNation.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
 		
 		List<BakeryInfoDTO> posts = bakeryMapper.bakeryList(pi, 
@@ -103,6 +106,7 @@ public class BakeryServiceImpl implements BakeryService{
 		result.put("pi", pi);
 		result.put("posts", posts);
 		result.put("images", images);
+		result.put("locationAgree", locationAgree);
 		
 		return result;
 	}
