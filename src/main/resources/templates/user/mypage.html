@@ -67,7 +67,7 @@
 						<tbody class="mypage-table-body" >
  							<th:block th:each="getBuyHistory, stat : ${getBuyHistory}">
  							<tr class="tbody-tr"  onclick="toggleDetail(this)">
-								<td th:text="${stat.count}"></td>
+								<td th:text="${historySize - stat.index}"></td>
 								<td th:text="${getBuyHistory.bakeryInfoDto.bakeryName}"></td>
 								<td th:text="${getBuyHistory.paymentDto.amount}"></td>
 								<td th:text="${getBuyHistory.pickupDto.pickupStatus}"></td>
@@ -89,13 +89,13 @@
 												<p>내 리뷰 ✎</p>
 												<div class="stars">
 													<p>
-														평점 : <span id="rating-value"
+														평점 : <span th:id="'rating-value-'+ ${stat.index}"
 															th:each="getBuyHistory : ${getBuyHistory}"
 															th:text="${getBuyHistory.reviewDto.reviewRating}" hidden></span>
 													</p>
 													<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-														class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-														class="fas fa-star"></i>
+														id="star" class="fas fa-star"></i> <i class="fas fa-star"></i> <i
+													 class="fas fa-star"></i>
 												</div>
 												<div class="review-text">
 													<p th:each="getBuyHistory : ${getBuyHistory}"
@@ -155,11 +155,6 @@
             </a>
         </th:block>
 		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/register/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
-    </div>
-
-    <!-- 점주 페이지로 이동 (점주일 경우) -->
-    <div th:if="${goOwnerPage}">
-        <a href="/register/owner/mypage">점주 페이지로 이동</a>
     </div>
 				</div>
 			</div>
