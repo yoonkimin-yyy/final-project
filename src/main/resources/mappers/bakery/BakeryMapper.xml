@@ -75,6 +75,7 @@
 		<result property="start" column="open_time"></result>
 		<result property="end" column="close_time"></result>
 	</resultMap>
+	
 
 <select id="totalCount">
 	SELECT COUNT(*) FROM bakery_info bi
@@ -141,6 +142,10 @@
 	OFFSET ${pi.offset} ROWS FETCH NEXT ${pi.boardLimit} ROWS ONLY
 </select>
 
+<select id = "getLocationAgree" resultType="String">
+	SELECT agree_location FROM agree 
+		WHERE user_no = #{userNo}
+</select>
 
 <select id="bakeryImage" resultMap="BakeryInfoDTO">
 	SELECT 

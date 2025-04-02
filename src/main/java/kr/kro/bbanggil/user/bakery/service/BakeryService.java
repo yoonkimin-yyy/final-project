@@ -30,7 +30,8 @@ public interface BakeryService {
 			  int pageLimit,
 			  int boardLimit,
 			  String orderType,
-			  BakerySearchDTO bakerySearchDTO);
+			  BakerySearchDTO bakerySearchDTO,
+			  int userNo);
 	// 빵집 수
 	public int totalCount(BakerySearchDTO bakerySearchDTO);
 	

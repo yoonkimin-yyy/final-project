@@ -58,14 +58,18 @@ public class BakeryController {
 	@GetMapping("/list")
 	public String list(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
 			@RequestParam(value = "orderType", required = false, defaultValue = "recent") String orderType,
-			@ModelAttribute BakerySearchDTO bakerySearchDTO, BakeryInfoDTO bakeryInfoDTO, Model model) {
+			@ModelAttribute BakerySearchDTO bakerySearchDTO, BakeryInfoDTO bakeryInfoDTO, Model model,
+			@SessionAttribute(value="userNum",required = false)Integer userNo) {
 		// 전체 게시물
 		int postCount = bakeryService.totalCount(bakerySearchDTO);
 		int pageLimit = 5;
 		int boardLimit = 10;
 
+		if(userNo == null) {
+			userNo = 0;
+		}
 		Map<String, Object> result = bakeryService.bakeryList(pageNation, currentPage, postCount, pageLimit, boardLimit,
-				orderType, bakerySearchDTO);
+				orderType, bakerySearchDTO,userNo);
 
 		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
 
@@ -73,6 +77,7 @@ public class BakeryController {
 		List<List<BakeryInfoDTO>> imagesResult = (List<List<BakeryInfoDTO>>) result.get("images");
 		String todayDayOfWeek = (String) result.get("today");
 		List<BakeryInfoDTO> bakeryInfo = new ArrayList<>();
+		String locationAgree = (String) result.get("locationAgree");
 
 		for (int i = 0; i < postsResult.size(); i++) {
 			BakeryInfoDTO post = postsResult.get(i);
@@ -88,6 +93,7 @@ public class BakeryController {
 		model.addAttribute("today", todayDayOfWeek);
 		model.addAttribute("bakerySearchDTO", bakerySearchDTO);
 		model.addAttribute("searchText", bakerySearchDTO.getSearchText());
+		model.addAttribute("locationAgree", locationAgree);
 
 		return "user/bakery-list";
 	}
