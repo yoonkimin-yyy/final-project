@@ -59,28 +59,44 @@
 
 
 <select id="getLatestBakeryNo" resultType="int">
-    SELECT BAKERY_NO 
-    FROM BAKERY 
-    ORDER BY BAKERY_NO DESC 
+SELECT
+	BAKERY_NO
+FROM
+	BAKERY
+ORDER BY
+	BAKERY_NO DESC 
     FETCH FIRST 1 ROW ONLY
 </select>
 
 
 <select id="checkOrderExists" resultType="int">
-    SELECT COUNT(*) FROM ORDER_INFO WHERE ORDER_NO = #{orderNo}
+SELECT
+	COUNT(*)
+FROM
+	ORDER_INFO
+WHERE
+	ORDER_NO = #{orderNo}
 </select>
 
 <select id="checkReviewExistsByOrderNo" resultType="int">
 
- SELECT COUNT(*) FROM REVIEW WHERE ORDER_NO = #{orderNo}
+SELECT
+	COUNT(*)
+FROM
+	REVIEW
+WHERE
+	ORDER_NO = #{orderNo}
 
 </select>
 
 
 <insert id="insertReview" parameterType="kr.kro.bbanggil.user.bakery.dto.request.ReviewRequestDto" useGeneratedKeys="true" keyProperty="reviewNo">
-    <selectKey keyProperty="reviewNo" resultType="int" order="BEFORE">
-        SELECT review_seq.nextval FROM DUAL
-    </selectKey>
+<selectKey keyProperty="reviewNo" resultType="int" order="BEFORE">
+     SELECT
+	review_seq.nextval
+FROM
+	DUAL
+</selectKey>
 
 INSERT
 	INTO
@@ -120,7 +136,7 @@ WHERE
 
 <insert id="insertReviewImage">
 
-   INSERT
+INSERT
 	INTO
 	REVIEW_IMG (img_no,
 	review_no,
@@ -158,19 +174,28 @@ INSERT
 	tag_five)
 VALUES (review_tag_seq.nextval,
 #{reviewNo},
-#{tagFirst, jdbcType=VARCHAR},
-#{tagSecond, jdbcType=VARCHAR},
-#{tagThird, jdbcType=VARCHAR},
-#{tagForth, jdbcType=VARCHAR},
-#{tagFive,jdbcType=VARCHAR })
+#{tagFirst,
+jdbcType = VARCHAR},
+#{tagSecond,
+jdbcType = VARCHAR},
+#{tagThird,
+jdbcType = VARCHAR},
+#{tagForth,
+jdbcType = VARCHAR},
+#{tagFive,
+jdbcType = VARCHAR })
 
 </insert>
 
 
 <select id="getTotalCount" resultType="int">
 
-SELECT COUNT(*) FROM REVIEW 
-WHERE bakery_no = #{bakeryNo}
+SELECT
+	COUNT(*)
+FROM
+	REVIEW
+WHERE
+	bakery_no = #{bakeryNo}
 
 </select>
 
@@ -196,7 +221,8 @@ FROM
 		MAX(rtn.tag_forth) AS tag_forth,
 		MAX(rtn.tag_five) AS tag_five,
 		ROW_NUMBER() OVER (
-		ORDER BY ${orderBy}) AS rn
+	ORDER BY
+		${orderBy}) AS rn
 	FROM
 		REVIEW r
 	JOIN USER_INFO ui ON
@@ -204,17 +230,25 @@ FROM
 	JOIN BAKERY_INFO bi ON
 		bi.bakery_no = r.bakery_no
 	LEFT JOIN REVIEW_IMG ri ON
-		r.REVIEW_NO = ri.REVIEW_NO  
+		r.REVIEW_NO = ri.REVIEW_NO
 	LEFT JOIN REVIEW_TAG_NAME rtn ON
-		r.REVIEW_NO = rtn.REVIEW_NO 
+		r.REVIEW_NO = rtn.REVIEW_NO
 	WHERE
 		bi.bakery_no = #{bakeryNo}
 	GROUP BY
-		ui.user_no, ui.user_id, r.review_no, r.review_detail, r.review_rating, r.review_date,
-		ri.img_no, ri.RESOURCES_PATH, ri.CHANGE_NAME
+		ui.user_no,
+		ui.user_id,
+		r.review_no,
+		r.review_detail,
+		r.review_rating,
+		r.review_date,
+		ri.img_no,
+		ri.RESOURCES_PATH,
+		ri.CHANGE_NAME
 )
 WHERE
 	rn BETWEEN #{pi.offset} AND #{pi.limit}
+
 
 </select>
 
@@ -222,25 +256,28 @@ WHERE
 
 <select id="getReviewImages" resultMap="ReviewResultMap">
 
-
-	SELECT
+SELECT
 	ri.IMG_NO ,
 	ri.CHANGE_NAME ,
 	ri.RESOURCES_PATH
-	FROM REVIEW_IMG ri
-	JOIN REVIEW r
-	ON ri.REVIEW_NO = r.REVIEW_NO
-	JOIN BAKERY_INFO bi
-	ON bi.BAKERY_NO = r.BAKERY_NO
-	WHERE bi.BAKERY_NO = #{bakeryNo}
+FROM
+	REVIEW_IMG ri
+JOIN REVIEW r
+	ON
+	ri.REVIEW_NO = r.REVIEW_NO
+JOIN BAKERY_INFO bi
+	ON
+	bi.BAKERY_NO = r.BAKERY_NO
+WHERE
+	bi.BAKERY_NO = #{bakeryNo}
 
 
 </select>
 
 <select id="getReviewById" resultMap="ReviewWithImagesResultMap">
 
-  SELECT
-  	r.review_no,
+SELECT
+	r.review_no,
 	r.USER_NO ,
 	r.REVIEW_DETAIL ,
 	r.REVIEW_RATING ,
@@ -265,21 +302,40 @@ ORDER BY
 
 
 <update id= "updateReview">
-	UPDATE review
-	SET
+UPDATE
+	review
+SET
 	review_detail = #{reviewDetail},
 	review_rating = #{reviewRating},
 	review_date = sysdate
-	WHERE review_no = #{reviewNo}
+WHERE
+	review_no = #{reviewNo}
 </update>
 
 
 <insert id="insertReviewImages">
-    INSERT INTO review_img (img_no, review_no, change_name, original_name, extension, file_size, local_path, resources_path, folder_name_path)
-    VALUES 
+INSERT
+	INTO
+	review_img (img_no,
+	review_no,
+	change_name,
+	original_name,
+	extension,
+	file_size,
+	local_path,
+	resources_path,
+	folder_name_path)
+VALUES
     <foreach collection="reviewImages" item="image" separator=",">
-        (REVIEW_IMAGE_SEQ.NEXTVAL, #{reviewNo}, #{image.changeName}, #{image.originalName}, #{image.extension}, #{image.size}, 
-        #{image.localPath}, #{image.localResourcePath}, #{image.folderNamePath})
+(REVIEW_IMAGE_SEQ.NEXTVAL,
+#{reviewNo},
+#{image.changeName},
+#{image.originalName},
+#{image.extension},
+#{image.size}, 
+        #{image.localPath},
+#{image.localResourcePath},
+#{image.folderNamePath})
     </foreach>
 </insert>
 
@@ -295,8 +351,7 @@ SELECT
 FROM
 	REVIEW_IMG
 WHERE
-REVIEW_NO = #{reviewNo}
-	
+	REVIEW_NO = #{reviewNo}
 
 
 </select>
@@ -345,57 +400,90 @@ DELETE FROM REVIEW WHERE review_no = #{reviewNo}
 	        resultType="java.lang.Integer"
 	        parameterType="int" 
 	        >
-	    SELECT bakery_no 
-	    FROM bakery_access 
-	    WHERE user_no = #{userNo}
+SELECT
+	bakery_no
+FROM
+	bakery_access
+WHERE
+	user_no = #{userNo}
 </select>
 
 <insert id="insertReviewReply">
 
-   INSERT 
-   		INTO
-   		review_reply (review_reply_no, review_no, user_no, review_reply, review_reply_date)
-   		VALUES (review_reply_seq.nextval, #{reviewNo}, #{userNo}, #{reviewReply}, sysdate)
+INSERT
+	INTO
+	review_reply (review_reply_no,
+	review_no,
+	user_no,
+	review_reply,
+	review_reply_date)
+VALUES (review_reply_seq.nextval,
+#{reviewNo},
+#{userNo},
+#{reviewReply},
+sysdate)
 </insert>
 
 <!-- bakeryNo에 해당하는 리뷰 답글 조회 -->
     <select id="selectReviewRepliesByBakeryNo" resultMap="ReviewResultMap">
-        SELECT 
-        	r.review_no,
-        	rr.review_reply,
-        	rr.review_reply_date
-        FROM review r
-        JOIN review_reply rr ON r.review_no = rr.review_no
-        WHERE bakery_no = #{bakeryNo}
+SELECT
+	r.review_no,
+	rr.review_reply,
+	rr.review_reply_date
+FROM
+	review r
+JOIN review_reply rr ON
+	r.review_no = rr.review_no
+WHERE
+	bakery_no = #{bakeryNo}
     </select>
     
-    <select id="reviewCheck" resultMap="ReviewResultMap">
-        SELECT 
-        	r.review_no
-        FROM review r
-        JOIN review_reply rr ON r.review_no = rr.review_no
-        WHERE bakery_no = #{bakeryNo}
-        AND rr.review_reply IS not NULL
-    </select>
+<select id="reviewCheck" resultMap="ReviewResultMap">
+SELECT
+	r.review_no
+FROM
+	review r
+JOIN review_reply rr ON
+	r.review_no = rr.review_no
+WHERE
+	bakery_no = #{bakeryNo}
+	AND rr.review_reply IS NOT NULL
+</select>
     
-    <insert id="reviewReport">
+<insert id="reviewReport">
 
-	   INSERT 
+INSERT 
 	   		INTO
-	   		review_report (report_no, user_no, review_no, report_detail, report_date)
-	   		VALUES (review_report_seq.nextval, #{userNo}, #{reviewNo}, #{reviewReportDetail}, sysdate)
-	</insert>
+	   		review_report (report_no,
+	user_no,
+	review_no,
+	report_detail,
+	report_date)
+VALUES (review_report_seq.nextval,
+#{userNo},
+#{reviewNo},
+#{reviewReportDetail},
+sysdate)
+
+</insert>
     
     
-   <update id="updateReviewTags">
-    UPDATE REVIEW_TAG_NAME
-    SET
-        TAG_FIRST = #{tagFirst,jdbcType=VARCHAR},
-        TAG_SECOND = #{tagSecond,jdbcType=VARCHAR},
-        TAG_THIRD = #{tagThird,jdbcType=VARCHAR},
-        TAG_FORTH = #{tagForth,jdbcType=VARCHAR},
-        TAG_FIVE = #{tagFive,jdbcType=VARCHAR}
-    WHERE REVIEW_NO = #{reviewNo}
+<update id="updateReviewTags">
+UPDATE
+	REVIEW_TAG_NAME
+SET
+	TAG_FIRST = #{tagFirst,
+	jdbcType = VARCHAR},
+	TAG_SECOND = #{tagSecond,
+	jdbcType = VARCHAR},
+	TAG_THIRD = #{tagThird,
+	jdbcType = VARCHAR},
+	TAG_FORTH = #{tagForth,
+	jdbcType = VARCHAR},
+	TAG_FIVE = #{tagFive,
+	jdbcType = VARCHAR}
+WHERE
+	REVIEW_NO = #{reviewNo}
 </update>
     
     
