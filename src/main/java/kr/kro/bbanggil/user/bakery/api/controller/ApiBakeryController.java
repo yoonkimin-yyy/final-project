@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.common.util.PaginationUtil;
@@ -29,11 +30,12 @@ public class ApiBakeryController {
 		@GetMapping("/list")
 		public ResponseEntity<Map<String, Object>> apiList(@RequestParam(value="currentPage",defaultValue="1")int currentPage,
 														@RequestParam(value="orderType", required=false,defaultValue="recent")String orderType,
-														@ModelAttribute BakerySearchDTO bakerySearchDTO) {
+														@ModelAttribute BakerySearchDTO bakerySearchDTO,
+														@SessionAttribute (value="userNum",required=false)Integer userNo) {
 			int postCount = bakeryService.totalCount(bakerySearchDTO);
 			int pageLimit = 5;
 			int boardLimit = 10;
-			Map<String, Object> result = bakeryService.bakeryList(pageNation,currentPage,postCount,pageLimit,boardLimit,orderType,bakerySearchDTO);
+			Map<String, Object> result = bakeryService.bakeryList(pageNation,currentPage,postCount,pageLimit,boardLimit,orderType,bakerySearchDTO,userNo);
 			PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
 			
 			List<BakeryInfoDTO> postsResult = (List<BakeryInfoDTO>) result.get("posts");
