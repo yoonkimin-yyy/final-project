@@ -920,11 +920,19 @@ function editReview(ele) {
   });
 }
 
-
-
 function sortReviews() {
-      document.getElementById('reviewSortForm').submit();
-  }
+    const form = document.getElementById('reviewSortForm');
+    const selectedSort = document.getElementById('reviewSort').value;
+    const bakeryNo = form.querySelector('[name="bakeryNo"]').value;
+
+    // 탭 고정 플래그 + scroll 위치 유지
+    sessionStorage.setItem("goToReviewTab", "true");
+    sessionStorage.setItem("scrollToReviews", "true");
+
+    // 폼 서밋으로 요청
+    form.submit();
+}
+
 
 
 
@@ -970,7 +978,26 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+window.onload = function () {
+    const scrollToReviews = sessionStorage.getItem("scrollToReviews");
 
+    if (scrollToReviews === "true") {
+        const reviewSection = document.getElementById("reviews");
+        if (reviewSection) {
+            window.scrollTo({
+                top: reviewSection.offsetTop - 80,
+                behavior: "smooth"
+            });
+        }
+        sessionStorage.removeItem("scrollToReviews");
+    }
+
+    const goToReviewTab = sessionStorage.getItem("goToReviewTab");
+    if (goToReviewTab === "true") {
+        document.querySelector(`.tab-button[data-tab="reviews"]`)?.click();
+        sessionStorage.removeItem("goToReviewTab");
+    }
+};
 
 
 

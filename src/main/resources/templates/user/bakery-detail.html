@@ -137,7 +137,7 @@
                             <form id="reviewSortForm" method="GET" th:action="@{/bakery/detail}">
                                 <input type="hidden" name="bakeryNo" th:value="${bakeryNo}">
                                 <div class="review-sort">
-                                    <select id="reviewSort" onchange="sortReviews()">
+                                    <select id="reviewSort" onchange="sortReviews()" name="sort">
                                         <option value="latest" th:selected="${sort == 'latest'}">최신순</option>
                                         <option value="highest" th:selected="${sort == 'highest'}">평점 높은순</option>
                                         <option value="lowest" th:selected="${sort == 'lowest'}"> 평점 낮은순</option>

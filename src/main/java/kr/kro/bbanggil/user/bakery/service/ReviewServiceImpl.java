@@ -183,6 +183,7 @@ public class ReviewServiceImpl implements ReviewService {
 		reviewMapper.updateReview(reviewRequestDto);
 
 		List<String> tagList = reviewRequestDto.getReviewTag();
+		System.out.println(" [태그 수정] 넘어온 태그 리스트: " + reviewRequestDto.getReviewTag());
 
 		String tagFirst = null, tagSecond = null, tagThird = null, tagForth = null, tagFive = null;
 
@@ -199,7 +200,7 @@ public class ReviewServiceImpl implements ReviewService {
 				tagFive = tagList.get(4);
 		}
 
-
+		System.out.println("넘어온 태그들: " + reviewRequestDto.getReviewTag());
 		reviewMapper.updateReviewTags(reviewRequestDto.getReviewNo(), tagFirst, tagSecond, tagThird, tagForth, tagFive);
 
 		// 2. 새로운 이미지 업로드 처리 (추가된 이미지만 `review_img` 테이블에 저장)
@@ -223,7 +224,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 
 		return 1; // 성공적으로 리뷰 수정됨
-
+		
 	}
 
 	@Override
