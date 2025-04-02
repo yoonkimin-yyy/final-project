@@ -180,23 +180,24 @@ public class MemberController {
         
         // 로그인 검증
     	MemberRequestSignupDto loginUser = memberService.loginIn(memberRequestSignupDto);
-
     	
-    	 if (loginUser != null && !loginUser.getUserType().equals("admin")) {
-    	        // 로그인 성공 → 세션에 사용자 정보 저장
-    	        session.setAttribute("userNum", loginUser.getUserNo());
-    	        session.setAttribute("userId", loginUser.getUserId());
-    	        session.setAttribute("userName", loginUser.getUserName());
-    	        session.setAttribute("role", loginUser.getUserType());
-    	        
-    	        return "redirect:/"; // 일반 사용자 메인
-    	    } else {
-    	        // 로그인 실패 → 에러 메시지 세팅 후 로그인 페이지로
-    	    	loginAttemptUtil.incrementFailedAttempts(request);  // 실패 횟수 증가  // 실패 횟수 증가
-    	        redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
-    	        return "redirect:/member/loginin/form";
-    	    }
-    	}
+	    	if (loginUser != null) {
+	    		 if(!loginUser.getUserType().equals("admin")) {
+	    	        // 로그인 성공 → 세션에 사용자 정보 저장
+	    	        session.setAttribute("userNum", loginUser.getUserNo());
+	    	        session.setAttribute("userId", loginUser.getUserId());
+	    	        session.setAttribute("userName", loginUser.getUserName());
+	    	        session.setAttribute("role", loginUser.getUserType());
+	    	        
+	    	        return "redirect:/"; // 일반 사용자 메인
+	    		 } else redirectAttributes.addFlashAttribute("adminBtn",true);
+		    } else {
+		        // 로그인 실패 → 에러 메시지 세팅 후 로그인 페이지로
+		    }
+		    loginAttemptUtil.incrementFailedAttempts(request);  // 실패 횟수 증가  // 실패 횟수 증가
+		    redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 틀렸습니다.");
+		    return "redirect:/member/loginin/form";
+    }
     
     
     @PostMapping("/logininAdmin")

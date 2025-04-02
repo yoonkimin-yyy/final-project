@@ -69,7 +69,7 @@
         // 유효성 검사 통과 후 AJAX 실행
         $.ajax({
             type: "GET",
-            url: "/register/checkId/" + getId,
+            url: "/member/checkId/" + getId,
             success: function (res) {
                 console.log("AJAX 응답 결과:", res);
                 if (res) {
@@ -169,7 +169,7 @@
 
 		    try {
 		        // 유효한 이메일이면 AJAX로 중복 체크 실행
-		        const response = await fetch(`/register/checkEmail/${userEmail}`);
+		        const response = await fetch(`/member/checkEmail/${userEmail}`);
 		        const isDuplicate = await response.json(); // JSON 응답 처리
 
 		        if (isDuplicate) {
@@ -496,7 +496,7 @@ function corp_chk() {
 			// 사업자번호 중복 체크 (서버 API 호출)
 			function checkBusinessNumberDuplicate(reg_num, businessMsg, authButton) {
 			    $.ajax({
-			        url: "/register/checkBusinessNo/" + reg_num, // 중복 확인 
+			        url: "/member/checkBusinessNo/" + reg_num, // 중복 확인 
 			        type: "GET",
 			        success: function (response) {
 			            if (response) {

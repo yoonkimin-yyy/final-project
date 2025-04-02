@@ -38,6 +38,8 @@ public interface BakeryMapper {
 	
 	public int totalCount(BakerySearchDTO bakerySearchDTO);
 	
+	public String getLocationAgree(int userNo);
+	
 	public List<BakeryInfoDTO> bakeryImage(@Param("bakeryNo") int bakeryNo);
 	
 	void bakeryFileUpload(BakeryRequestDTO bakeryRequestDTO);

@@ -37,16 +37,19 @@
 	    
 	</resultMap>
 	
-	<select id="getBakeryNoByUserNo" 
+<select id="getBakeryNoByUserNo" 
 	        resultType="java.lang.Integer" 
 	        parameterType="int">
-	    SELECT bakery_no 
-	    FROM bakery_access 
-	    WHERE user_no = #{userNo}
-	</select>
+SELECT
+	bakery_no
+FROM
+	bakery_access
+WHERE
+	user_no = #{userNo}
+</select>
 	
-	<select id="findAllOrders" resultMap="pickupResultMap" parameterType="int">
-		SELECT
+<select id="findAllOrders" resultMap="pickupResultMap" parameterType="int">
+SELECT
 	        oi.order_no,
 	        ps.pickup_status,
 	        p.pay_request_date,
@@ -57,56 +60,85 @@
 	        c.cart_no,
 	        ba.bakery_no,
 	        ba.user_no
-	    FROM ORDER_INFO oi
-	    JOIN PAYMENT p ON oi.pay_no = p.pay_no
-	    JOIN PICKUP_STATUS ps ON p.pay_no = ps.pay_no
-	    JOIN CART c ON oi.cart_no = c.cart_no
-	    JOIN cart_info ci ON c.cart_no = ci.cart_no
-	    JOIN menu m ON ci.menu_no = m.menu_no
-	    JOIN bakery_info bi ON bi.bakery_no = m.bakery_no
-	    JOIN bakery_access ba ON bi.bakery_no = ba.bakery_no
-	    WHERE bi.bakery_no = #{bakeryNo}
-	    ORDER BY p.pay_request_date DESC
-	</select>
+FROM
+	ORDER_INFO oi
+JOIN PAYMENT p ON
+	oi.pay_no = p.pay_no
+JOIN PICKUP_STATUS ps ON
+	p.pay_no = ps.pay_no
+JOIN CART c ON
+	oi.cart_no = c.cart_no
+JOIN cart_info ci ON
+	c.cart_no = ci.cart_no
+JOIN menu m ON
+	ci.menu_no = m.menu_no
+JOIN bakery_info bi ON
+	bi.bakery_no = m.bakery_no
+JOIN bakery_access ba ON
+	bi.bakery_no = ba.bakery_no
+WHERE
+	bi.bakery_no = #{bakeryNo}
+ORDER BY
+	p.pay_request_date DESC
+</select>
 	
 	<!-- 메뉴 목록 가져오는 쿼리 -->
-	<select id="selectMenusByOrderNo" resultMap="menuResultMap">
-	    SELECT 
+<select id="selectMenusByOrderNo" resultMap="menuResultMap">
+SELECT 
 	    	oi.order_no,
 	        m.menu_name, 
 	        ci.menu_no, 
 	        ci.menu_count
-	    FROM CART_INFO ci
-	    JOIN MENU m ON ci.menu_no = m.menu_no
-	    JOIN CART c ON ci.cart_no = c.cart_no
-	    JOIN ORDER_INFO oi ON c.cart_no = oi.cart_no
-	    WHERE oi.order_no = #{orderNo}
-	</select>
+FROM
+	CART_INFO ci
+JOIN MENU m ON
+	ci.menu_no = m.menu_no
+JOIN CART c ON
+	ci.cart_no = c.cart_no
+JOIN ORDER_INFO oi ON
+	c.cart_no = oi.cart_no
+WHERE
+	oi.order_no = #{orderNo}
+</select>
 	
 	<!-- 상태와 거절 사유를 업데이트 -->
-    <update id="updateStatusAndRejectionReason">
-        UPDATE pickup_status ps
-		SET ps.pickup_status = #{status},
+ <update id="updateStatusAndRejectionReason">
+UPDATE
+	pickup_status ps
+SET
+	ps.pickup_status = #{status},
 		    ps.refusal_detail = #{rejectionReason}
-		WHERE ps.pay_no IN (
-		    SELECT p.pay_no
-		    FROM payment p
-		    JOIN order_info oi ON p.pay_no = oi.pay_no
-		    WHERE oi.order_no = #{orderNo}
+WHERE
+	ps.pay_no IN (
+	SELECT
+		p.pay_no
+	FROM
+		payment p
+	JOIN order_info oi ON
+		p.pay_no = oi.pay_no
+	WHERE
+		oi.order_no = #{orderNo}
 		)
-    </update>
+</update>
 
     <!-- 상태만 업데이트 -->
-    <update id="updateStatus">
-        UPDATE pickup_status ps
-		SET ps.pickup_status = #{status}
-		WHERE ps.pay_no IN (
-		    SELECT p.pay_no
-		    FROM payment p
-		    JOIN order_info oi ON p.pay_no = oi.pay_no
-		    WHERE oi.order_no = #{orderNo}
+<update id="updateStatus">
+UPDATE
+	pickup_status ps
+SET
+	ps.pickup_status = #{status}
+WHERE
+	ps.pay_no IN (
+	SELECT
+		p.pay_no
+	FROM
+		payment p
+	JOIN order_info oi ON
+		p.pay_no = oi.pay_no
+	WHERE
+		oi.order_no = #{orderNo}
 		)
-    </update>
+</update>
 	
 
 	

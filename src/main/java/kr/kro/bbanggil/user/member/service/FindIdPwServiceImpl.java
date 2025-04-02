@@ -18,6 +18,7 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 	 private final FindIdConfig findIdConfig;
 	 private final EmailServiceImpl emailService;
 	 private final MemberMapper memberMapper;
+	 private final PasswordUtil passwordUtil;
 
 	 /**
 	  * 이메일을 기반으로 아이디 찾기
@@ -58,11 +59,12 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 	 @Override
 	 public String sendTemporaryPassword(MemberRequestSignupDto memberRequestSignupDto) {
 	     MemberRequestSignupDto member = memberMapper.findUserPassword(memberRequestSignupDto);
+	     
 	     if (member.getUserPassword() == null) {
 	         return "등록된 정보가 아닙니다.";
 	     }
 
-	     String tempPassword = PasswordUtil.generateTempPassword();
+	     String tempPassword = passwordUtil.generateTempPassword();
 
 	     // 비밀번호 암호화 후 저장
 	     String encryptedPassword = passwordEncoder.encode(tempPassword);

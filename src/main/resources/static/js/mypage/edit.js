@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const postcoderDiv = document.getElementById('postcode-div');
     const addrDiv = document.getElementById('addr-div');
     const addrBtn = document.getElementById('addr-btn');
+	const addressInput = document.getElementById('sample6_address');
+	const postcodeInput = document.getElementById('sample6_postcode');
 
     // 버튼
     const changePwBtn = document.querySelector('.change-pw-btn');
@@ -40,44 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // 유효성 검사
-    function updateForm() {
-        let isUpdate = true;
-
-        nameMsg.textContent = '';
-        emailMsg.textContent = '';
-        phoneMsg.textContent = '';
-
-        if (nameInput.value.trim() === '') {
-            nameMsg.textContent = '이름을 입력해 주세요';
-            isUpdate = false;
-        }else if (!/^[가-힣]{2,10}$/.test(nameInput.value)) {
-            nameMsg.textContent = '이름은 한글만 가능합니다.';
-            isUpdate = false;
-        } else {
-            nameMsg.textContent = '';
-        }
-
-        if (emailInput.value.trim() === '') {
-            emailMsg.textContent = '이메일을 입력해 주세요';
-            isUpdate = false;
-        }else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)) {
-            emailMsg.textContent = '올바른 이메일 형식을 입력해주세요.';
-            isUpdate = false;
-        }
-
-        if (phoneInput.value.trim() === '') {
-            phoneMsg.textContent = '번호를 -없이 입력해 주세요';
-            isUpdate = false;
-        }else if (!/^010\d{4}\d{4}$/.test(phoneInput.value)) {
-            phoneMsg.textContent = '휴대폰 번호는 숫자만 입력 가능합니다.';
-            isUpdate = false;
-        } else {
-            phoneMsg.textContent = '';
-        }
-
-        return isUpdate;
-    }
+    
 
     // 비밀번호 버튼
     
@@ -121,7 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     addrBtn.addEventListener('click', () =>{
-        alert('변경되었습니다.')
+		
+        if(addressInput.value ===  '' || postcodeInput.value === ''){
+			alert("주소를 입력해주세요.")
+		}else{
+			alert("변경되었습니다.")
+		}
     });
 
 
@@ -167,8 +137,48 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
-const addressInput = document.getElementById('sample6_address');
-const postcodeInput = document.getElementById('sample6_postcode');
+// 유효성 검사
+    function updateForm() {
+        let isUpdate = true;
+
+        nameMsg.textContent = '';
+        emailMsg.textContent = '';
+        phoneMsg.textContent = '';
+
+        if (nameInput.value.trim() === '') {
+            nameMsg.textContent = '이름을 입력해 주세요';
+            isUpdate = false;
+        }else if (!/^[가-힣]{2,10}$/.test(nameInput.value)) {
+            nameMsg.textContent = '이름은 한글만 가능합니다.';
+            isUpdate = false;
+        } else {
+            nameMsg.textContent = '';
+        }
+
+        if (emailInput.value.trim() === '') {
+            emailMsg.textContent = '이메일을 입력해 주세요';
+            isUpdate = false;
+        }else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)) {
+            emailMsg.textContent = '올바른 이메일 형식을 입력해주세요.';
+            isUpdate = false;
+        }
+
+        if (phoneInput.value.trim() === '') {
+            phoneMsg.textContent = '번호를 -없이 입력해 주세요';
+            isUpdate = false;
+        }else if (!/^010\d{4}\d{4}$/.test(phoneInput.value)) {
+            phoneMsg.textContent = '휴대폰 번호는 숫자만 입력 가능합니다.';
+            isUpdate = false;
+        } else {
+            phoneMsg.textContent = '';
+        }
+
+        return isUpdate;
+    }
+	
+	
+
+
 
 window.sample6_execDaumPostcode = function () {
     const width = 500;  // 팝업창 너비

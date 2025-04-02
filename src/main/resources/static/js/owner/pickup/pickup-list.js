@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const status = row.getAttribute("data-status");
             row.classList.remove("pending", "approved", "rejected", "completed");
 
-            if (status === "대기") row.classList.add("pending");
+            if (status === "대기중") row.classList.add("pending");
             else if (status === "승인") row.classList.add("approved");
             else if (status === "거절") row.classList.add("rejected");
             else if (status === "완료") row.classList.add("completed");
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const priceText = row.cells[3]?.textContent || "0원";
             const price = parseInt(priceText.replace(/[^0-9]/g, ""), 10) || 0;
 
-            if (status === "대기") pending++;
+            if (status === "대기중") pending++;
             else if (status === "승인") approved++;
             else if (status === "거절") rejected++;
             else if (status === "완료") {
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        infoDivFirst.textContent = `대기 : ${pending}개`;
+        infoDivFirst.textContent = `대기중 : ${pending}개`;
         infoDivSecond.textContent = `승인 : ${approved}개`;
         infoDivThird.textContent = `거절 : ${rejected}개`;
         infoDivFourth.textContent = `완료 : ${completed}개`;
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							const rejectDetail = popup.querySelector(`#rejection-reason-${orderNo}`);
 				          
 				            if (approveBtn && rejectBtn && completeBtn) {
-				                if (status === "대기") {
+				                if (status === "대기중") {
 				                    approveBtn.style.display = "inline-block";
 				                    rejectBtn.style.display = "inline-block";
 				                    completeBtn.style.display = "none";
