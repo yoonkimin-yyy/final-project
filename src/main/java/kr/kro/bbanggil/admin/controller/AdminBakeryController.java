@@ -1,6 +1,7 @@
 package kr.kro.bbanggil.admin.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,14 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
-import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.admin.service.AdminBakeryService;
-import kr.kro.bbanggil.user.member.dto.response.OwnerInfoResponseDTO;
-import kr.kro.bbanggil.user.member.service.MypageService;
+import kr.kro.bbanggil.global.exception.NoMenuFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -43,11 +41,20 @@ public class AdminBakeryController {
 								   Model model) {
 		
 		AdminResponseDto result = adminBakeryService.acceptList(bakeryNo, userNo);
-		List<MenuResponseDto> menuList = adminBakeryService.menuList(bakeryNo);
+		List<MenuResponseDto> menuList = null;
+		
+		try {
+			 menuList = adminBakeryService.menuList(bakeryNo);
+
+			 model.addAttribute("menuList", menuList);
+			
+		} catch (NoMenuFoundException e) {
+
+			model.addAttribute("errorMessage", e.getMessage());
+	    }
 		
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
-		model.addAttribute("menuList", menuList);
 
 		return "admin/bakery-accept";
 	}

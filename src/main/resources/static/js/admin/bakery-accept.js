@@ -1,6 +1,14 @@
+
 function handleAction(action) {
 	document.getElementById("actionInput").value = action;
+	const errorMessage = document.getElementById('errorMessage').textContent;
 	
+	if(errorMessage) {
+		alert("등록된 메뉴가 있어야 승인이 가능합니다.");
+		event.preventDefault();
+    	return false;
+	}
+		
     if (action === '거절') {
         const rejectReason = document.getElementById('reason').value;
         if (!rejectReason) {
