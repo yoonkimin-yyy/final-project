@@ -305,7 +305,7 @@
                             <div class="swiper-slide" th:each="img,stat : ${insideImages}">
                                 <img th:src="@{${img.resourcesPath} + '/' + ${img.changeName}}" th:alt="${img.name}"
                                     class="bakery-image" />
-                                <div class="photo-description">
+                                <div class="photo-description" >
                                     <ul th:if="${stat.index == 0}">
                                         <li th:text="${img.insideInfo}">총 좌석: 30석</li>
                                     </ul>

@@ -526,13 +526,15 @@
             border-radius: 8px;
         }
 
-        .photo-description {
-            grid-column: 1 / -1;
-            background: #f8f8f8;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
+       .photo-description {
+  margin-top: 30px;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 15px;
+  color: #333;
+  background-color: #f9f9f9; /* 살짝 분리되는 느낌 */
+  border-radius: 10px;
+}
         .parking-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
