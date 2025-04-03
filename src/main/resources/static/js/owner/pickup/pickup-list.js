@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	        type: "GET",
 	        success: function(response) {
 	            
-	            var newContent = $(response).find("#order-list").html();  가져옴
+	            var newContent = $(response).find("#order-list").html();  
 	            
 	            $("#order-list").html(newContent);
 	           
@@ -233,7 +233,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	    const rejectBtn = document.getElementById("reject-btn-"+orderNo);
 		const completeBtn = document.getElementById("complete-btn-"+orderNo);
 
-	    
 	    if (approveBtn) {
 	        approveBtn.addEventListener("click", () => {
 	            approveOrder(orderNo); 
