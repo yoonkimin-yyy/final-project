@@ -14,10 +14,16 @@
 <body>
 <header th:replace="~{fragments/header :: HeaderFragment}"></header>
 	<nav th:replace="~{fragments/nav :: NavFragment}"></nav>
-
+	
+<div class="admin-button-group">
+  <button class="admin-button main-button" onclick="location.href='/admin/form'">관리자 메인</button>
+  <button class="admin-button outline-button" onclick="location.href='/admin/inquiry/list'">문의 리스트</button>
+</div>
+	
   <div class="container">
   <img th:src="@{/img/common/이빵이오 로고.png}" class="logo" />
     <h1 class="title">주문 관리</h1>
+    
 
     <div class="search-container">
       <i class="fas fa-search search-icon"></i>
@@ -76,9 +82,9 @@
 
     <!-- 다음 페이지 버튼 -->
     <li class="page-item"
-        th:classappend="${pi == null or pi.currentPage >= pi.maxpage} ? 'disabled'">
+        th:classappend="${pi == null or pi.currentPage >= pi.maxPage} ? 'disabled'">
         <a class="page-link"
-           th:href="${pi != null and pi.currentPage < pi.maxpage} ? @{/admin/order/list(currentPage=${pi.currentPage + 1})} : '#'"
+           th:href="${pi != null and pi.currentPage < pi.maxPage} ? @{/admin/order/list(currentPage=${pi.currentPage + 1})} : '#'"
            aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
         </a>
