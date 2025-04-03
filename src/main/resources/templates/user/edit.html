@@ -46,7 +46,7 @@
                     <div class="error-text" id="email-msg"></div>
                     <div class="error-text" id="phone-msg"></div>
                 <div class="info-btn-div">
-                    <button class="edit-btn"  type="submit">수정</button>
+                    <button class="edit-btn" type="button">수정</button>
                 </div>
             </div>
         </div>
@@ -58,11 +58,12 @@
                     <h3>개인정보 변경</h3>
                 </div>
                   <div class="info-edit">
-					<form class="info-form" method="POST" action="/mypage/updatePassword">
+					<form class="info-form" method="POST" th:action="@{/mypage/updatePassword}">
                         <div class="info-pw-btn-div">
                             <button class="change-pw-btn" type="button" onclick="pwBtn()">비밀번호 변경</button>
 
                             <div class="pass-div" id="pass-div">
+                            	<input type="hidden" id="current-password" th:value = "userInfo.userDto.userPassword">
                                 <input class="change-password" type="password" id="password-now" name="currentPassword"
                                         placeholder="현재 비밀번호">
                                         <div class="error-text" id="passwordNow-msg"></div>
@@ -75,11 +76,11 @@
                                         placeholder="새 비밀번호 확인">
                                         <div class="error-text" id="password-confirm-msg"></div>
 
-                                <button class="pass-btn" id="pass-btn" type="submit">변경하기</button>
+                                <button class="pass-btn" id="pass-btn" type="button">변경하기</button>
                             </div>
                         </div>
 					</form>
-					<form method="POST" action="/mypage/updateAddress">
+					<form method="POST" th:action="@{/mypage/updateAddress}">
                         <div class="info-address-btn-div">
                             <button class="change-ar-btn" type="button">주소 변경</button>
                             <div class="postcode-div" id="postcode-div">
