@@ -70,6 +70,7 @@ public class ReviewController {
 			) {
 
 		int result = reviewService.editReview(reviewRequestDto, files);
+		System.out.println(result);
 		
 
 		// bakeryNo

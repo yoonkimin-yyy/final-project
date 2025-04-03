@@ -1,19 +1,17 @@
-function submitReview() {
     function getSelectedTags() {
         return Array.from(document.querySelectorAll(".tag-checkbox:checked")).map(tag => {
             const label = document.querySelector(`label[for="${tag.id}"]`);
             return label ? label.outerHTML.trim() : "";
         });
     }
+function submitReview() {
 	const userNo = document.getElementById("userNum").value; 
 	
-	console.log(userNo);
 	const orderNo = parseInt(document.getElementById("orderNo").value);
-	console.log(orderNo);
 	
 	if (!userNo || userNo === "null") {
 	       alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
-		   window.location.href = window.location.origin + "/register/loginin/form";
+		   window.location.href = window.location.origin + "/member/loginin/form";
 	       return;
 	   }
 	
@@ -87,7 +85,7 @@ function submitReview() {
 		let displayMessage = errorMessage;
 	    
 		if (errorMessage.includes("이미 이 주문에 대한 리뷰가 존재합니다")) {
-		        displayMessage = "📝 주문 후 리뷰는 1개만 등록할 수 있습니다.";
+		        displayMessage = " 주문 후 리뷰는 1개만 등록할 수 있습니다.";
 		    }
 	});
 
@@ -133,13 +131,9 @@ function submitReviewEdit() {
      formData.append("reviewRating", document.getElementById("rating").value);
 	 formData.append("bakeryNo", document.getElementById("bakeryNo").value);
  
- 
-     //  선택된 태그 추가
-     const selectedTags = [];
-     document.querySelectorAll(".tag-checkbox:checked").forEach(tag => {
-         selectedTags.push(tag.id);
-     });
-     formData.append("tags", selectedTags.join(","));
+	 const selectedTags = getSelectedTags();
+
+     formData.append("reviewTag", selectedTags.join(","));
  
      //  이미지 추가 (파일 업로드)
      const imageInput = document.getElementById("imageInput");

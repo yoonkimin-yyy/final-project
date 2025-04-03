@@ -424,7 +424,6 @@ VALUES (review_reply_seq.nextval,
 sysdate)
 </insert>
 
-<!-- bakeryNo에 해당하는 리뷰 답글 조회 -->
     <select id="selectReviewRepliesByBakeryNo" resultMap="ReviewResultMap">
 SELECT
 	r.review_no,
@@ -469,21 +468,14 @@ sysdate)
     
     
 <update id="updateReviewTags">
-UPDATE
-	REVIEW_TAG_NAME
-SET
-	TAG_FIRST = #{tagFirst,
-	jdbcType = VARCHAR},
-	TAG_SECOND = #{tagSecond,
-	jdbcType = VARCHAR},
-	TAG_THIRD = #{tagThird,
-	jdbcType = VARCHAR},
-	TAG_FORTH = #{tagForth,
-	jdbcType = VARCHAR},
-	TAG_FIVE = #{tagFive,
-	jdbcType = VARCHAR}
-WHERE
-	REVIEW_NO = #{reviewNo}
+ UPDATE REVIEW_TAG_NAME
+     SET
+         TAG_FIRST = #{tagFirst,jdbcType=VARCHAR},
+         TAG_SECOND = #{tagSecond,jdbcType=VARCHAR},
+         TAG_THIRD = #{tagThird,jdbcType=VARCHAR},
+         TAG_FORTH = #{tagForth,jdbcType=VARCHAR},
+         TAG_FIVE = #{tagFive,jdbcType=VARCHAR}
+     WHERE REVIEW_NO = #{reviewNo}
 </update>
     
     

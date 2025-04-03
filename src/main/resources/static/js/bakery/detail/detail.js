@@ -177,7 +177,7 @@ document.getElementById('openReviewModal')?.addEventListener('click', () => {
     // 🔐 로그인 체크
     if (!userNo || userNo === "null" || userNo === "") {
         alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요.");
-        window.location.href = window.location.origin + "/register/loginin/form";
+        window.location.href = window.location.origin + "/member/loginin/form";
         return;
     }
 
@@ -666,7 +666,7 @@ function updateTagCountsOnEdit(prevTags, newTags) {
 	    const userNo = document.getElementById("userNum").value;
 	    if (!userNo || userNo === "null") {
 	        alert("로그인이 필요합니다. 로그인 후 주문해주세요.");
-	        window.location.href = window.location.origin + "/register/loginin/form";
+	        window.location.href = window.location.origin + "/member/loginin/form";
 	        return;
 	    }
 
@@ -920,11 +920,19 @@ function editReview(ele) {
   });
 }
 
-
-
 function sortReviews() {
-      document.getElementById('reviewSortForm').submit();
-  }
+    const form = document.getElementById('reviewSortForm');
+    const selectedSort = document.getElementById('reviewSort').value;
+    const bakeryNo = form.querySelector('[name="bakeryNo"]').value;
+
+    // 탭 고정 플래그 + scroll 위치 유지
+    sessionStorage.setItem("goToReviewTab", "true");
+    sessionStorage.setItem("scrollToReviews", "true");
+
+    // 폼 서밋으로 요청
+    form.submit();
+}
+
 
 
 
@@ -970,7 +978,26 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+window.onload = function () {
+    const scrollToReviews = sessionStorage.getItem("scrollToReviews");
 
+    if (scrollToReviews === "true") {
+        const reviewSection = document.getElementById("reviews");
+        if (reviewSection) {
+            window.scrollTo({
+                top: reviewSection.offsetTop - 80,
+                behavior: "smooth"
+            });
+        }
+        sessionStorage.removeItem("scrollToReviews");
+    }
+
+    const goToReviewTab = sessionStorage.getItem("goToReviewTab");
+    if (goToReviewTab === "true") {
+        document.querySelector(`.tab-button[data-tab="reviews"]`)?.click();
+        sessionStorage.removeItem("goToReviewTab");
+    }
+};
 
 
 
