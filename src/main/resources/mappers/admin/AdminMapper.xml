@@ -206,17 +206,17 @@ WHERE
 </select>
 
 <select id="menuList" resultMap="MenuListMap">
-SELECT
-	m.MENU_NAME,
-	m.MENU_PRICE,
-	mi.CHANGE_NAME,
-	mi.RESOURCES_PATH
-FROM
-	MENU_IMEGE mi
-JOIN MENU m ON
-	mi.MENU_NO = m.MENU_NO
-WHERE
-	m.BAKERY_NO = #{bakeryNo}
+	SELECT
+		m.MENU_NAME,
+		m.MENU_PRICE,
+		mi.CHANGE_NAME,
+		mi.RESOURCES_PATH
+	FROM
+		MENU_IMEGE mi
+	JOIN MENU m ON
+		mi.MENU_NO = m.MENU_NO
+	WHERE
+		m.BAKERY_NO = #{bakeryNo}
 </select>
 	
 <update id="update">

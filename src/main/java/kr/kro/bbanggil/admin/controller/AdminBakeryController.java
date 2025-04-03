@@ -40,19 +40,11 @@ public class AdminBakeryController {
 								   Model model) {
 		
 		AdminResponseDto result = adminBakeryService.acceptList(bakeryNo, userNo);
-		
-		try {
-			List<MenuResponseDto> menuList = adminBakeryService.menuList(bakeryNo);
+		List<MenuResponseDto> menuList = adminBakeryService.menuList(bakeryNo);
 
-			 model.addAttribute("menuList", menuList);
-			
-		} catch (NoMenuFoundException e) {
-
-			model.addAttribute("errorMessage", e.getMessage());
-	    }
-		
 		model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
+		model.addAttribute("menuList", menuList);
 
 		return "admin/bakery-accept";
 	}

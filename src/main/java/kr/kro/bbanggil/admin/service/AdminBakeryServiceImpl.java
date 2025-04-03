@@ -28,8 +28,7 @@ public class AdminBakeryServiceImpl implements AdminBakeryService{
 
 	@Override
 	public List<MenuResponseDto> menuList(int bakeryNo) {
-		return adminMapper.menuList(bakeryNo)
-				.orElseThrow(()-> new NoMenuFoundException("등록된 메뉴가 없습니다."));
+		return adminMapper.menuList(bakeryNo);
 	}
 	
 	@Override
