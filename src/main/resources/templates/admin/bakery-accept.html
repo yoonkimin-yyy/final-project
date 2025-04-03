@@ -70,7 +70,11 @@
 				</tr>
 				<tr>
 					<th>메뉴</th>
-					<td><button id="openModalBtn">메뉴보기</button></td>
+					<td th:if="${errorMessage}"><p th:text="${errorMessage}"
+							id="errorMessage"></p></td>
+					<td th:if="${not #lists.isEmpty(menuList)}">
+						<button id="openModalBtn">메뉴보기</button>
+					</td>
 				</tr>
 				<tr>
 					<th>실내정보</th>
@@ -107,7 +111,8 @@
 			<div class="menu-container">
 				<div th:each="list, iterStat : ${menuList}" class="menu-item">
 					<div class="bread-info">
-						<img th:src="@{${list.resourcesPath} + '/' + ${list.changeName}}" class="bread-image">
+						<img th:src="@{${list.resourcesPath} + '/' + ${list.changeName}}"
+							class="bread-image">
 						<h3 th:text="${list.menuName}"></h3>
 						<p th:text="${list.menuPrice} + '원'"></p>
 					</div>
