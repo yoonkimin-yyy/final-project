@@ -56,6 +56,7 @@
 <section class="post-section">
     <div class="list-box">
         <div class="list-item" th:each ="post,iterStat : ${posts}">
+        	<a th:href="@{/bakery/detail(bakeryNo=${post.bakeryNo})}">
             <div  class="slider" th:id="slider+${iterStat.index+1}">
                 <div  class="slides">
                     <div th:each="bakery : ${post.bakeryImageDTO}"  class="hotel-slide">
@@ -74,16 +75,15 @@
                 </div>
                 <div class="slide-indicators" th:id="indicators + ${iterStat.index+1}"></div>
             </div>
-            <div class="list-item-info">
-                <a th:href="@{/bakery/detail(bakeryNo=${post.bakeryNo})}">
-                    <h2 class="list-item-title" th:text="${post.bakeryName}"></h2>
-                </a>
+            <div class="list-item-info">              
+                    <h2 class="list-item-title" th:text="${post.bakeryName}"></h2>               
                 <p class="list-item-address">📍<span th:text="${post.bakeryAddress}"></span></p>
                 <p class="list-item-score">⭐️평점: <span th:text="${post.bakeryReviewDTO.reviewRating}"></span></p>
                 <p class="list-item-time">🕒영업시간: <span th:text="${post.bakeryScheduleDTO.bakeryOpenTime}"></span><span>~</span><span th:text="${post.bakeryScheduleDTO.bakeryCloseTime}"></span></p>
                 <p class="list-item-review">📝리뷰: <span th:text="${post.reviewCount}"></span></p>
                 <p class="list-item-parking">🚗: <span th:text="${post.bakeryDetailDTO.bakeryAmenity}"></span></p>
             </div>
+            </a>
         </div>
      </div>
      <h1 th:if="${posts == null}">일치하는 빵집이 없습니다</h1>
