@@ -453,7 +453,7 @@ ORDER BY
 </select>
 	
 <select id="reportList">
-SELECT
+SELECT DISTINCT
 	rrui.USER_id AS reporter,
 			   rr.REPORT_DETAIL AS reportDetail,
 			   rui.USER_id AS reportedUser,

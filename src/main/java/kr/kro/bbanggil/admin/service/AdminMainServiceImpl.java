@@ -136,7 +136,7 @@ public class AdminMainServiceImpl implements AdminMainService {
 		List<ReportResponseDTO> report = adminMapper.getReport();
 		for(ReportResponseDTO item : report) {
 			
-			String result = adminMapper.answer(item.getReportNo());
+			List<String> result = adminMapper.answer(item.getReportNo());
 				item.setResult(result==null || result.isEmpty()?"답변대기":"답변완료");
 		}
 
