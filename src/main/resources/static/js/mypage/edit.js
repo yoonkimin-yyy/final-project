@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('수정되었습니다.');
             infoForm.submit();
         } else {
-            alert('수정하려는 내용을 입력해주세요.');
+            alert('입력하신 정보를 확인해주세요.');
         }
     });
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("변경되었습니다!");
             infoForm.submit();
         }else {
-            alert("변경 사항을 입력해 주세요.")
+            alert("변경 사항을 확인해주세요.")
         }
     });
 
