@@ -15,7 +15,7 @@ public class PaginationUtil {
 
 		int endPage = startPage + pageLimit - 1;
 
-		int row = listCount - (currentPage - 1) * boardLimit;
+		int row = listCount - (currentPage -1) * boardLimit;
 
 		int offset = (currentPage - 1) * boardLimit + 1;
 		int limit = offset + boardLimit - 1;

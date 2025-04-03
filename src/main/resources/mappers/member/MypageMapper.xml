@@ -119,7 +119,6 @@ FROM
 		M.bakery_no = BI.bakery_no
 	WHERE
 		U.user_no = #{userNo}
-	AND	ps.pickup_status ='승인'
 	GROUP BY
 		OI.order_no,
 		BI.bakery_name,

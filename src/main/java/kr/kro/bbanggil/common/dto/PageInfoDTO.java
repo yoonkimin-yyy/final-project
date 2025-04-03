@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PageInfoDTO {
 	// 전체 게시글 수 
-		private int postCount;
+		private int listCount;
 		
 		// 현재 페이지
 		private int currentPage = 1;

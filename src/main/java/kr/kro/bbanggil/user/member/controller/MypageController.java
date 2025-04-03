@@ -48,7 +48,7 @@ public class MypageController {
 		int pageLimit = 5;
 		int boardLimit = 5;
 		
-		
+		System.out.println(listCount);
 		Map<String, Object> result = mypageService.getMyList(mypagePagination, 
 															currentPage,
 															listCount,
@@ -71,6 +71,8 @@ public class MypageController {
 		
 		System.out.println(piResult.getMaxPage());
 		System.out.println(piResult.getOffset());
+		System.out.println(piResult.getBoardLimit());
+		System.out.println(piResult.getRow());
 
 		
 		if(session.getAttribute("role").equals("owner"))
