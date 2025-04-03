@@ -76,9 +76,9 @@
 
     <!-- 다음 페이지 버튼 -->
     <li class="page-item"
-        th:classappend="${pi == null or pi.currentPage >= pi.maxpage} ? 'disabled'">
+        th:classappend="${pi == null or pi.currentPage >= pi.maxPage} ? 'disabled'">
         <a class="page-link"
-           th:href="${pi != null and pi.currentPage < pi.maxpage} ? @{/admin/order/list(currentPage=${pi.currentPage + 1})} : '#'"
+           th:href="${pi != null and pi.currentPage < pi.maxPage} ? @{/admin/order/list(currentPage=${pi.currentPage + 1})} : '#'"
            aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
         </a>

@@ -100,5 +100,9 @@ public interface AdminMapper {
 	String answer(int reportNo);
   
 	void deleteBakery(int bakeryNo);
+
+	int warningCount(int criminalNo);
+
+	int searchCriminal(ReportRequestDTO reportDTO);
 	
 }
