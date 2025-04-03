@@ -236,7 +236,7 @@
 				<tbody>
 					<tr id="user1" th:each="list, iterStat : ${reportLists}"
 						th:attr="onclick=|location.href='/admin/report/form?reportNo=${list.reportNo}'|">
-						<td th:text="${iterStat.index+1}"></td>
+						<td th:text="${reportLists.size() - iterStat.index}"></td>
 						<td th:text="${list.reporter}"></td>
 						<td th:text="${list.reportDetail}"></td>
 						<td th:text="${list.reportedUser}"></td>

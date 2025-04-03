@@ -3,6 +3,7 @@ package kr.kro.bbanggil.user.bakery.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.kro.bbanggil.user.bakery.dto.request.MenuRequestDTO;
 import kr.kro.bbanggil.user.bakery.dto.response.CategoryResponseDTO;
@@ -15,7 +16,8 @@ public interface MenuMapper {
 
 	public List<CategoryResponseDTO> getCategory();
 
-	public void menuInsert(MenuRequestDTO menuDTO, int bakeryNo);
+	public void menuInsert(@Param("menuRequestDTO")MenuRequestDTO menuDTO, 
+						   @Param("bakeryNo")int bakeryNo);
 
 	public void menuFileUpload(MenuRequestDTO menuDTO);
 

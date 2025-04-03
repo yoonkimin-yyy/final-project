@@ -97,8 +97,12 @@ public interface AdminMapper {
 
 	List<ReportResponseDTO> getReport();
 
-	String answer(int reportNo);
+	List<String> answer(int reportNo);
   
 	void deleteBakery(int bakeryNo);
+
+	int warningCount(int criminalNo);
+
+	int searchCriminal(ReportRequestDTO reportDTO);
 	
 }

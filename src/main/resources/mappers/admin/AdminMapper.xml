@@ -453,7 +453,7 @@ ORDER BY
 </select>
 	
 <select id="reportList">
-SELECT
+SELECT DISTINCT
 	rrui.USER_id AS reporter,
 			   rr.REPORT_DETAIL AS reportDetail,
 			   rui.USER_id AS reportedUser,
@@ -484,12 +484,13 @@ SELECT
 INSERT
 	INTO
 	REVIEW_REPORT_RESULT rrr
-VALUES(#{reportDTO.reportNo},
-													#{reportDTO.reportResult},
-													sysdate,
-													NULL,
-													#{reportDTO.unfreezeDetail},
-													#{userId})
+VALUES( REVIEW_REPORT_RESULT_SEQ.NEXTVAL,
+		#{reportDTO.reportNo},
+		#{reportDTO.reportResult},
+		sysdate,
+		NULL,
+		#{reportDTO.unfreezeDetail},
+		#{userId})
 </insert>
 
 <select id="reportDetail">
@@ -568,8 +569,19 @@ LEFT JOIN INQUIRY_REPLY ir ON
 WHERE
 	i.INQUIRY_NO = #{inquiryNo}
 </select>
-	
-	
+<select id="warningCount">
+	SELECT count(*) FROM REVIEW_REPORT_RESULT rrr
+		JOIN REVIEW_REPORT rr ON rrr.REPORT_NO = rr.REPORT_NO 
+		JOIN REVIEW r ON rr.REVIEW_NO =r.REVIEW_NO
+		JOIN USER_INFO ui ON ui.USER_NO = r.USER_NO
+		WHERE rrr.REPORT_RESULT ='경고'
+		AND r.user_no = #{criminalNo}
+</select>
+<select id="searchCriminal">
+	SELECT r.USER_NO FROM REVIEW_REPORT rr 
+	JOIN REVIEW r ON rr.REVIEW_NO =r.REVIEW_NO
+	WHERE REport_NO = #{reportNo}
+</select>
 	
 	
 
