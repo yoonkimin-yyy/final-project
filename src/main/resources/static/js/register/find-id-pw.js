@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		                alert('등록된 정보가 아닙니다.');
 		            } else {
 		                alert('아이디 찾기 요청이 완료되었습니다. 로그인 페이지로 이동합니다.');
-		                window.location.href = '/register/loginin/form';
+		                window.location.href = '/member/loginin/form';
 		            }
 		        },
 		        error: function(xhr, status, error) {
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				                alert('등록된 정보가 아닙니다.');
 				            } else {
 				                alert('비밀번호 찾기 요청이 완료되었습니다. 로그인 페이지로 이동합니다.');
-				                window.location.href = '/register/loginin/form';
+				                window.location.href = '/member/loginin/form';
 				            }
 				        },
 				        error: function(xhr, status, error) {
