@@ -50,8 +50,7 @@ public class OrderServiceImpl implements OrderService {
 	 * 사후검증 & 취소처리
 	 */
 	@Override
-	public IamportResponse<Payment> validateIamport(String imp_uid, PaymentRequestDto paymentRequestDto,
-													OrderRequestDto orderRequestDto, int userNo) {
+	public IamportResponse<Payment> validateIamport(String imp_uid, PaymentRequestDto paymentRequestDto, int userNo) {
 		
 		int dbTotalPrice = orderMapper.calculate(userNo);
 		
