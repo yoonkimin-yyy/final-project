@@ -1,14 +1,8 @@
-
 function handleAction(action) {
-	document.getElementById("actionInput").value = action;
-	const errorMessage = document.getElementById('errorMessage').textContent;
+	const errorMessage = document.getElementById('errorMessage') ? document.getElementById('errorMessage').textContent.trim() : '';
 	
-	if(errorMessage) {
-		alert("등록된 메뉴가 있어야 승인이 가능합니다.");
-		event.preventDefault();
-    	return false;
-	}
-		
+	document.getElementById("actionInput").value = action;
+	
     if (action === '거절') {
         const rejectReason = document.getElementById('reason').value;
         if (!rejectReason) {
@@ -18,6 +12,11 @@ function handleAction(action) {
         }
 		alert('거절완료되었습니다.');
     } else {
+		if (errorMessage) {
+	        alert("등록된 메뉴가 있어야 승인이 가능합니다.");
+	        event.preventDefault();
+	        return false;
+	    }
 		alert('승인되었습니다.');
 	}
 
