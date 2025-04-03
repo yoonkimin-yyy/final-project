@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewInfoDiv.style.display = 'none';
             reviewWriteDiv.style.display = 'block';
             alert("삭제 되었습니다.")
+			
 
             // 리뷰 작성 화면 초기화
             resetReviewForm();

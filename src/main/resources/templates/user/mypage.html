@@ -46,7 +46,7 @@
 							th:text="${userInfo.userDto.userEmail}"></span>
 					</p>
 					<p>
-						핸드폰 <br> &nbsp; 🥐 &nbsp;<span
+						연락처 <br> &nbsp; 🥐 &nbsp;<span
 							th:text="${userInfo.userDto.phoneNum}"></span>
 					</p>
 					<div class="mypage-menu">
@@ -154,7 +154,7 @@
                th:classappend="${pageNum == pi.currentPage} ? 'active' : ''">
             </a>
         </th:block>
-		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/member/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
+		 <a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/mypage(currentPage=${pi.currentPage + 1})}">다음</a>
     </div>
 				</div>
 			</div>
