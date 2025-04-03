@@ -129,6 +129,7 @@ body {
 .info-form {
     width: 100%;
     display: flex;
+    justify-content: center;
 }
 
 .info-correction {

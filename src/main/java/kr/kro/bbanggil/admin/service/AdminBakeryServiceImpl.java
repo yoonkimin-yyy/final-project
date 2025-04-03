@@ -1,23 +1,20 @@
 package kr.kro.bbanggil.admin.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
-import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
+import kr.kro.bbanggil.global.exception.NoMenuFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class AdminBakeryServiceImpl implements AdminBakeryService{
 	private final AdminMapper adminMapper;
-	private final Logger logger = LogManager.getLogger(AdminMainServiceImpl.class);
-	
 	
 	@Override
 	public AdminResponseDto bakeryDetailList(int bakeryNo, int userNo) {
@@ -30,8 +27,9 @@ public class AdminBakeryServiceImpl implements AdminBakeryService{
 	}
 
 	@Override
-	public List<MenuResponseDto> menuList(int bakeryNo) {
-		return adminMapper.menuList(bakeryNo);
+	public List<MenuResponseDto>menuList(int bakeryNo) {
+		return adminMapper.menuList(bakeryNo)
+				.orElseThrow(()-> new NoMenuFoundException("등록된 메뉴가 없습니다."));
 	}
 	
 	@Override

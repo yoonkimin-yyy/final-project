@@ -31,13 +31,15 @@ public class MypageServiceImpl implements MypageService {
     @Override
 	public Map<String, Object> getMyList(PaginationUtil mypagePagination, 
 										   int currentPage,
-										   int postCount,
+										   int listCount,
 										   int pageLimit,
 										   int boardLimit,
 										   int userNo) {
 		// 페이징 처리
-		PageInfoDTO pi = mypagePagination.getPageInfo(postCount, currentPage, pageLimit, boardLimit);
+		PageInfoDTO pi = mypagePagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		List<MypageListResponseDto> getBuyHistory = mypageMapper.getBuyHistory(userNo,pi);
+		
+		
 		
 
 		
@@ -60,6 +62,11 @@ public class MypageServiceImpl implements MypageService {
     public MypageListResponseDto getMyInfo(int userNo) {
     	List<MypageListResponseDto> userInfo =  mypageMapper.getUserInfo(userNo);
     	
+    	for(MypageListResponseDto item : userInfo) {
+			if(item.getUserDto().getPhoneNum().length() == 11) {
+				item.getUserDto().setPhoneNum(item.getUserDto().getPhoneNum().replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3"));
+			}
+		}
 
     	
 		return userInfo.get(0);

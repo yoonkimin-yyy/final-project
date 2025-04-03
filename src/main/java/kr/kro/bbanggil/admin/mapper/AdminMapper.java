@@ -1,7 +1,7 @@
 package kr.kro.bbanggil.admin.mapper;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,6 +15,7 @@ import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
+import kr.kro.bbanggil.admin.dto.response.ReportResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.myBakeryResponseDTO;
 import kr.kro.bbanggil.common.dto.PageInfoDTO;
 import kr.kro.bbanggil.owner.order.dto.response.OrderResponseDto;
@@ -82,7 +83,7 @@ public interface AdminMapper {
 	AdminResponseDto acceptList(@Param("bakeryNo") int bakeryNo, 
 		    					@Param("userNo") int userNo);
 	
-	List<MenuResponseDto> menuList(int bakeryNo);
+	Optional<List<MenuResponseDto>>menuList(@Param("bakeryNo")int bakeryNo);
 	
 	void update(@Param("action") String action,
 				@Param("bakeryNo") int listNum,
@@ -94,6 +95,14 @@ public interface AdminMapper {
 
 	myBakeryResponseDTO bakeryInfo(int bakeryNo);
 
+	List<ReportResponseDTO> getReport();
+
+	List<String> answer(int reportNo);
+  
 	void deleteBakery(int bakeryNo);
+
+	int warningCount(int criminalNo);
+
+	int searchCriminal(ReportRequestDTO reportDTO);
 	
 }

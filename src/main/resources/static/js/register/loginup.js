@@ -41,14 +41,14 @@
     function validateId() {
         const getId = $("#userid").val().trim(); // 공백 제거
 
-        // 아이디 유효성 검사 (5~20자 & 영문자+숫자 조합)
+        // 아이디 유효성 검사 (5~20자 & 영문 소문자)
         if (getId === "") {
             $("#id-msg").css("color", "red").text("* 아이디는 필수 입력 항목입니다.");
             isIdValid = false;
             return false;
         }
-		if (!/^(?=.*[a-z])(?=.*\d)[a-z0-9]{5,20}$/.test(getId)) {
-		    $("#id-msg").css("color", "red").text("아이디는 영문 소문자와 숫자, 5~20자로 입력해야 합니다.");
+		if (!/^(?=.*[a-z])[a-z0-9]{5,20}$/.test(getId)) {
+		    $("#id-msg").css("color", "red").text("아이디는 영문 소문자 5~20자로 입력해야 합니다.");
 		    isIdValid = false;
 		    return false;
 		}
@@ -263,8 +263,8 @@
         if (idInput.value.trim() === '') {
             idMsg.textContent = '* 아이디는 필수 입력 항목입니다.';
             isValid = false;
-        } else if (!/^(?=.*[a-z])(?=.*\d)[a-z0-9]{5,20}$/.test(idInput.value)) {
-            idMsg.textContent = '아이디는 영문자와 숫자 조합으로 5~20자여야 합니다.';
+        } else if (!/^(?=.*[a-z])[a-z0-9]{5,20}$/.test(idInput.value)) {
+            idMsg.textContent = '아이디는 영문 소문자 5~20자여야 합니다.';
             isValid = false;
         } else {
             idMsg.textContent = '';

@@ -179,7 +179,6 @@ public class BakeryController {
 					model.addAttribute("bakeryNoUrlValue", bakeryNoInt);
 					model.addAttribute("bakeryNoValue", resultValue);
 					model.addAttribute("reviewCheck", reviewCheck);
-
 				}
 			}
 

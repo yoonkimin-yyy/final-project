@@ -129,16 +129,16 @@ FROM
 		BI.bakery_no
 	)
 WHERE
-	rn BETWEEN #{pi.offset} AND #{pi.offset} + #{pi.boardLimit}
+	rn BETWEEN #{pi.offset} AND #{pi.offset} -1 + #{pi.boardLimit}
 </select>
 	
 <update id="updateUser">
 UPDATE
 	user_info
 SET 
-				user_name = #{userDto.userName}, 
-				user_email = #{userDto.userEmail}, 
-				user_phonenum = #{userDto.phoneNum}
+	user_name = #{userDto.userName}, 
+	user_email = #{userDto.userEmail}, 
+	user_phonenum = #{userDto.phoneNum}
 WHERE
 	user_no = #{userNo}
 </update>
@@ -181,12 +181,12 @@ INSERT
 	INTO
 	review
 VALUES( review_seq.nextval,
-									 #{mypageListDto.reviewDto.orderNo},
-								     #{userNo},
-									 #{mypageListDto.reviewDto.reviewDetail},
-									 #{mypageListDto.reviewDto.reviewRating},
-									 SYSDATE,
-								     #{mypageListDto.bakeryInfoDto.bakeryNo})
+		 #{mypageListDto.reviewDto.orderNo},
+		 #{userNo},
+		 #{mypageListDto.reviewDto.reviewDetail},
+		 #{mypageListDto.reviewDto.reviewRating},
+		 SYSDATE,
+		 #{mypageListDto.bakeryInfoDto.bakeryNo})
 </insert>
 	
 <delete id="deleteReview">
@@ -200,11 +200,11 @@ WHERE
 <select id="ownerMypage" resultMap="ownerResultMap">
 SELECT
 	bi.BAKERY_NO,
-			   bi.BAKERY_NAME,
-			   bi.BAKERY_ADDRESS,
-			   bi.BAKERY_PHONE,
-			   ba.AGREE,
-			   bd.SUBMISSION_DATE
+    bi.BAKERY_NAME,
+    bi.BAKERY_ADDRESS,
+    bi.BAKERY_PHONE,
+    ba.AGREE,
+    bd.SUBMISSION_DATE
 FROM
 	BAKERY_INFO bi
 JOIN BAKERY_ACCESS ba ON

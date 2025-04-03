@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.siot.IamportRestClient.IamportClient;
 
+import kr.kro.bbanggil.global.properties.IamportApiProperty;
 import lombok.RequiredArgsConstructor;
 
 @Configuration

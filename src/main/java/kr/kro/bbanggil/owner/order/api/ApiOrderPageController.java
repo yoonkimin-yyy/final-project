@@ -79,13 +79,12 @@ public class ApiOrderPageController {
 	@ResponseBody
 	public IamportResponse<Payment> validateIamport(@PathVariable("imp_uid") String imp_uid,
 													@RequestBody PaymentRequestDto paymentRequestDto,
-													OrderRequestDto orderRequestDto,
 													@SessionAttribute("userNum") int userNo) 
 	throws IamportResponseException, IOException {
 		
 		logger.info("/validation/{imp_uid}: '{}', '{}'", imp_uid, userNo);
 		
-		return orderService.validateIamport(imp_uid, paymentRequestDto, orderRequestDto, userNo);
+		return orderService.validateIamport(imp_uid, paymentRequestDto, userNo);
 	}
 	
 	/**

@@ -20,10 +20,21 @@ public class AdminReportServiceImpl implements AdminReportService{
 
 	@Override
 	public void insertReport(ReportRequestDTO reportDTO, String userId, int reportNo) {
-		String time = reportDTO.getReportResult();
 		reportDTO.setReportNo(reportNo);
-		if (time != "경고") {
 			adminMapper.insertReport(reportDTO, userId);
-		}
+			int criminalNo = adminMapper.searchCriminal(reportDTO);
+			int warningCount = adminMapper.warningCount(criminalNo);
+			if(warningCount==3) {
+				adminMapper.insertReport(reportDTO, userId);
+				reportDTO.setReportResult("3일정지");
+				adminMapper.insertReport(reportDTO, userId);
+			} else if(warningCount==8) {
+				adminMapper.insertReport(reportDTO, userId);
+				reportDTO.setReportResult("7일정지");
+				adminMapper.insertReport(reportDTO, userId);
+			} else if(warningCount> 12) {
+				reportDTO.setReportResult("영구정지");
+				adminMapper.insertReport(reportDTO, userId);
+			}
 	}
 }

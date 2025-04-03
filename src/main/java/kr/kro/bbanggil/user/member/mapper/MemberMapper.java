@@ -35,6 +35,8 @@ public interface MemberMapper {
 	int updatePassword(MemberRequestSignupDto userNo);
 
 	String isBanned(MemberRequestSignupDto memberRequestSignupDto);
+
+	String alert(int userNo);
 	
 
 }

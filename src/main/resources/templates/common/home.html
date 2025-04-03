@@ -225,6 +225,9 @@
 
 
 </body>
+<script th:if="${session.alertMessage}">
+    alert("[[${session.alertMessage}]]");
+</script>
 <script src="/js/home/home.js"></script>
 <script src="/js/home/kakaoMap.js"></script>
 <script src="/js/home/subscribe.js"></script>

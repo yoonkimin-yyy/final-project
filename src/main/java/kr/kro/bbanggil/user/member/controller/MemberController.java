@@ -188,6 +188,8 @@ public class MemberController {
 	    	        session.setAttribute("userId", loginUser.getUserId());
 	    	        session.setAttribute("userName", loginUser.getUserName());
 	    	        session.setAttribute("role", loginUser.getUserType());
+	    	        if(loginUser.isAlert())
+	    	        session.setAttribute("alertMessage","리뷰 작성 시 주의해주세요 경고입니다.");
 	    	        
 	    	        return "redirect:/"; // 일반 사용자 메인
 	    		 } else redirectAttributes.addFlashAttribute("adminBtn",true);

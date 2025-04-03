@@ -50,6 +50,8 @@ FROM
 		PAYMENT p
 	JOIN ORDER_INFO oi ON
 		p.pay_no = oi.pay_no
+	JOIN pickup_status ps ON
+		p.pay_no = ps.pay_no
 	JOIN cart c ON
 		c.cart_no = oi.cart_no
 	JOIN cart_info ci ON
@@ -60,10 +62,11 @@ FROM
 		bi.bakery_no = m.bakery_no
 	WHERE
 		bi.bakery_no = #{bakeryNo}
+		AND ps.pickup_status = '완료'
 		AND EXTRACT(YEAR FROM p.pay_request_date) = #{year}
 		) p
 		GROUP BY EXTRACT(MONTH FROM p.pay_request_date)
-		ORDER BY month
+		ORDER BY MONTH
 </select>
 
 

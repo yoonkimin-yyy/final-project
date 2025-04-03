@@ -38,21 +38,20 @@ public class MypageController {
 	@GetMapping("") 
 	public String myPage(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 						 @SessionAttribute(value="userNum",required=false)Integer userNo,
-				//		 @RequestParam(value="userNo",defaultValue="1") int userNo,
 							@SessionAttribute(value="userName",required=false)String userName,
 							MypageListResponseDto mypageDto,
 							 HttpSession session,
 							 Model model) {
 
 		
-		int postCount = mypageService.getTotalCount(userNo);
+		int listCount = mypageService.getTotalCount(userNo);
 		int pageLimit = 5;
-		int boardLimit = 10;
+		int boardLimit = 5;
 		
-		
+		System.out.println(listCount);
 		Map<String, Object> result = mypageService.getMyList(mypagePagination, 
 															currentPage,
-															currentPage,
+															listCount,
 															pageLimit,
 															boardLimit,
 															userNo);
@@ -69,6 +68,11 @@ public class MypageController {
 		 model.addAttribute("historySize",getBuyHistory.size());
 
 		PageInfoDTO piResult = (PageInfoDTO) result.get("pi");
+		
+		System.out.println(piResult.getMaxPage());
+		System.out.println(piResult.getOffset());
+		System.out.println(piResult.getBoardLimit());
+		System.out.println(piResult.getRow());
 
 		
 		if(session.getAttribute("role").equals("owner"))

@@ -1,7 +1,5 @@
 package kr.kro.bbanggil.admin.service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,17 +9,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import kr.kro.bbanggil.admin.dto.request.AdminEmailRequestDto;
-import kr.kro.bbanggil.admin.dto.request.InquiryReplyRequestDto;
 import kr.kro.bbanggil.admin.dto.request.InquiryRequestDto;
-import kr.kro.bbanggil.admin.dto.request.ReportRequestDTO;
 import kr.kro.bbanggil.admin.dto.response.AdminResponseDto;
 import kr.kro.bbanggil.admin.dto.response.InquiryResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MenuResponseDto;
 import kr.kro.bbanggil.admin.dto.response.MonthlyOrderResponseDTO;
 import kr.kro.bbanggil.admin.dto.response.NewlyResponseDTO;
+import kr.kro.bbanggil.admin.dto.response.ReportResponseDTO;
 import kr.kro.bbanggil.admin.mapper.AdminMapper;
 import kr.kro.bbanggil.common.service.EmailServiceImpl;
-import kr.kro.bbanggil.user.bakery.dto.InquiryEmailInfoDto;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -43,7 +39,6 @@ public class AdminMainServiceImpl implements AdminMainService {
 		for (AdminResponseDto item : result) {
 			int answer = adminMapper.getReportReplyCount(item.getReportNo());
 			item.setAnswer(answer > 0 ? "Y" : "N");
-			item.setAdminId(answer == 0 ? "없음" : "없음");
 		}
 		return result;
 	}
@@ -137,10 +132,18 @@ public class AdminMainServiceImpl implements AdminMainService {
 
 		// 1:1 문의
 		List<InquiryResponseDto> inquiry = adminMapper.getInquiries();
+		
+		List<ReportResponseDTO> report = adminMapper.getReport();
+		for(ReportResponseDTO item : report) {
+			
+			List<String> result = adminMapper.answer(item.getReportNo());
+				item.setResult(result==null || result.isEmpty()?"답변대기":"답변완료");
+		}
 
 		Map<String, Object> result = new HashMap<>();
 		result.put("new", newlyOrder);
 		result.put("inquiry", inquiry);
+		result.put("report",report);
 
 		return result;
 

@@ -59,31 +59,23 @@
 						<div class="list-item-subtitle" th:text="${order.menuList}"></div>
 						<span class="status-badge status" th:text="${order.pickupStatus}"
 							th:classappend="${order.pickupStatus == '대기중' ? 'status-pending' : 
-						                       (order.pickupStatus == '승인' ? 'status-complete' : 
-						                       (order.pickupStatus == '거절' ? 'status-denied' : 
-						                       (order.pickupStatus == '완료' ? 'status-done' : '')))}"></span>
+						                     (order.pickupStatus == '승인' ? 'status-complete' : 
+						                     (order.pickupStatus == '거절' ? 'status-denied' : 
+						                     (order.pickupStatus == '완료' ? 'status-done' : '')))}"></span>
 					</div>
 				</div>
 
 				<div class="list-section">
 					<div class="section-title">
 						신고 내역
-						<div class="inline" onclick="showTab('user')">more</div>
+						<div class="inline" onclick="showTab('report')">more</div>
 					</div>
-					<div class="list-item">
-						<div class="list-item-title">상품하자</div>
-						<div class="list-item-subtitle">신고 ID: 1</div>
-						<span class="status-badge status-pending">처리중</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">배송지연</div>
-						<div class="list-item-subtitle">신고 ID: 2</div>
-						<span class="status-badge status-completed">완료</span>
-					</div>
-					<div class="list-item">
-						<div class="list-item-title">환불요청</div>
-						<div class="list-item-subtitle">신고 ID: 3</div>
-						<span class="status-badge status-pending">검토중</span>
+					<div class="list-item" th:each="report : ${report}">
+						<div class="list-item-title" th:text="${report.reportDetail}">상품하자</div>
+						<div class="list-item-subtitle" th:text="${report.userId}"></div>
+						<span class="status-badge status" th:text="${report.result}"
+							th:classappend="${report.result == '답변대기' ? 'status-pending' : 
+											 (report.result == '답변완료' ? 'status-complete' :'')}"></span>
 					</div>
 				</div>
 
@@ -244,14 +236,14 @@
 				<tbody>
 					<tr id="user1" th:each="list, iterStat : ${reportLists}"
 						th:attr="onclick=|location.href='/admin/report/form?reportNo=${list.reportNo}'|">
-						<td th:text="${iterStat.index+1}"></td>
+						<td th:text="${reportLists.size() - iterStat.index}"></td>
 						<td th:text="${list.reporter}"></td>
 						<td th:text="${list.reportDetail}"></td>
 						<td th:text="${list.reportedUser}"></td>
 						<td th:text="${list.reviewDetail}"></td>
 						<td th:text="${list.reportDate}"></td>
 						<td th:text="${list.adminId}"></td>
-						<td th:text="${list.acceptDate}"></td>
+						<td th:text="${list.answer}"></td>
 					</tr>
 				</tbody>
 			</table>

@@ -12,7 +12,7 @@ public interface AdminBakeryService {
 
 	AdminResponseDto acceptList(int bakeryNo, int userNo);
 
-	List<MenuResponseDto> menuList(int bakeryNo);
+	List<MenuResponseDto>menuList(int bakeryNo);
 
 	void update(String action, int bakeryNo, String rejectReason);
 
