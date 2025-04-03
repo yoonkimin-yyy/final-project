@@ -1,7 +1,7 @@
 package kr.kro.bbanggil.admin.mapper;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -83,7 +83,7 @@ public interface AdminMapper {
 	AdminResponseDto acceptList(@Param("bakeryNo") int bakeryNo, 
 		    					@Param("userNo") int userNo);
 	
-	List<MenuResponseDto> menuList(int bakeryNo);
+	Optional<List<MenuResponseDto>> menuList(int bakeryNo);
 	
 	void update(@Param("action") String action,
 				@Param("bakeryNo") int listNum,

@@ -28,15 +28,8 @@ public class AdminBakeryServiceImpl implements AdminBakeryService{
 
 	@Override
 	public List<MenuResponseDto> menuList(int bakeryNo) {
-		
-		List<MenuResponseDto> menuList = adminMapper.menuList(bakeryNo);
-		
-		Optional<List<MenuResponseDto>> optionalMenuList = Optional.ofNullable(menuList);
-		
-		optionalMenuList.filter(list -> !list.isEmpty())
-        				.orElseThrow(() -> new NoMenuFoundException("등록된 메뉴가 없습니다."));
-		
-		return menuList;
+		return adminMapper.menuList(bakeryNo)
+				.orElseThrow(()-> new NoMenuFoundException("등록된 메뉴가 없습니다."));
 	}
 	
 	@Override

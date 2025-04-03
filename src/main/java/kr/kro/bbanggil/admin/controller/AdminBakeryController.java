@@ -1,7 +1,6 @@
 package kr.kro.bbanggil.admin.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,10 +40,9 @@ public class AdminBakeryController {
 								   Model model) {
 		
 		AdminResponseDto result = adminBakeryService.acceptList(bakeryNo, userNo);
-		List<MenuResponseDto> menuList = null;
 		
 		try {
-			 menuList = adminBakeryService.menuList(bakeryNo);
+			List<MenuResponseDto> menuList = adminBakeryService.menuList(bakeryNo);
 
 			 model.addAttribute("menuList", menuList);
 			
