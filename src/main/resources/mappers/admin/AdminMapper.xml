@@ -459,17 +459,27 @@ SELECT
 			   rui.USER_id AS reportedUser,
 			   r.REVIEW_DETAIL AS reviewDetail,
 			   rr.REPORT_DATE AS reportDate,
-			   rr.REPORT_NO AS reportNo
-FROM
-	REVIEW_REPORT rr
-JOIN REVIEW r ON
-	rr.REVIEW_NO = r.REVIEW_NO
-LEFT JOIN USER_INFO rui ON
-	rui.USER_NO = r.USER_NO
-LEFT JOIN USER_INFO rrui ON
-	rrui.USER_NO = rr.USER_NO
-</select>
-
+			   rr.REPORT_NO AS reportNo,
+			   rrr.ADMIN_ID AS adminId
+		FROM REVIEW_REPORT rr
+		JOIN REVIEW r ON rr.REVIEW_NO = r.REVIEW_NO
+		LEFT JOIN REVIEW_REPORT_RESULT rrr ON rrr.REPORT_NO = rr.REPORT_NO
+		LEFT JOIN USER_INFO rui ON rui.USER_NO = r.USER_NO 
+		LEFT JOIN USER_INFO rrui ON rrui.USER_NO = rr.USER_NO
+	</select>
+	<select id="getReport">
+		SELECT report_no AS reportNo,
+			   REPORT_DETAIL AS reportDetail,
+			   ui.USER_ID as userId
+			   FROM REVIEW_REPORT rr 
+		JOIN USER_INFO ui ON rr.USER_NO = ui.USER_NO 
+		ORDER BY REPORT_NO desc
+		FETCH FIRST 3 ROWS ONLY
+	</select>
+	<select id="answer">
+		SELECT report_result from REVIEW_REPORT_RESULT
+		WHERE report_no = #{reportNo}
+	</select>
 <insert id="insertReport">
 INSERT
 	INTO

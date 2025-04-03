@@ -20,10 +20,7 @@ public class AdminReportServiceImpl implements AdminReportService{
 
 	@Override
 	public void insertReport(ReportRequestDTO reportDTO, String userId, int reportNo) {
-		String time = reportDTO.getReportResult();
 		reportDTO.setReportNo(reportNo);
-		if (time != "경고") {
 			adminMapper.insertReport(reportDTO, userId);
-		}
 	}
 }

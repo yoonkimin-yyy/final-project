@@ -57,6 +57,9 @@ public class MemberRequestSignupDto {
 	// 계정 생성일
 	private String createdDate; 
 	
+	// 경고 여부
+	private boolean alert; 
+	
 	
 	
 	// 주소테이블 Dto

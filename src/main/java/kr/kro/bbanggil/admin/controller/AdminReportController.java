@@ -30,8 +30,10 @@ public class AdminReportController {
 	@PostMapping("")
 	public String report(ReportRequestDTO reportDTO,
 						 @SessionAttribute("userId")String userId,
-						 @RequestParam("reportNo")int reportNo) {
+						 @RequestParam("reportNo")int reportNo,
+						 Model model) {
 		adminReportService.insertReport(reportDTO,userId,reportNo);
+			
 		return "redirect:/admin/form";
 	}
 	
