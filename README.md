@@ -25,13 +25,13 @@
 - **Java 17**, **Spring MVC**, **Oracle**, **MyBatis**, **Thymeleaf**
 
 ### 🎨 Front-end
-- **HTML**, **CSS**, **JavaScript**
+- **HTML**, **CSS**, **JavaScript** , **Ajax**
 
 ### ⚙️ DevOps & Tools
 - **Git**, **GitHub**, **STS4**
 
 ### 🌐 External API
-- **Kakao Map API**, **PortOne Payment API**, **사업자 API**, **문자 API**, **주소 API**
+- **Kakao Map API**, **PortOne Payment API**, **사업자 API**, **문자 API**, **주소 API** , **이메일 발송 API**
 
 ## 📂 폴더 구조
 
