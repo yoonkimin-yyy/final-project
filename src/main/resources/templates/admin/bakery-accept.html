@@ -70,8 +70,7 @@
 				</tr>
 				<tr>
 					<th>메뉴</th>
-					<td th:if="${errorMessage}"><p th:text="${errorMessage}"
-							id="errorMessage"></p></td>
+					<td th:if="${#lists.isEmpty(menuList)}"><p id="errorMessage">등록된 메뉴가 없습니다.</p></td>
 					<td th:if="${not #lists.isEmpty(menuList)}">
 						<button id="openModalBtn">메뉴보기</button>
 					</td>
