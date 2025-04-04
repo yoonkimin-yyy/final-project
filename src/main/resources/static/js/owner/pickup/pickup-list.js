@@ -166,96 +166,115 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 	});	
 	
+	function showOrderPopup(orderNo) {
+		const popup = document.getElementById("popup-"+orderNo);
+			
+			if (popup) {
+			        const row = document.querySelector(`tr[data-order-no='${orderNo}']`); // 이 부분은 `row`를 직접 찾아서 데이터를 추출해도 됩니다.
+					const customerPhone = row.cells[4].textContent; // 고객 전화번호
+					const orderTime = row.cells[2].textContent; // 주문 시간
+					const totalPrice = row.cells[3].textContent || "0원";  // 주문 금액
+
+					document.getElementById("popup-customer-phone").textContent = customerPhone;
+					document.getElementById("popup-order-time").textContent = orderTime;
+					document.getElementById("popup-total-price").textContent = totalPrice;
+
+			        popup.style.display = "block";  
+			}
+		    const approveBtn = document.getElementById("approve-btn-"+orderNo);
+		    const rejectBtn = document.getElementById("reject-btn-"+orderNo);
+			const completeBtn = document.getElementById("complete-btn-"+orderNo);
+
+		    if (approveBtn) {
+		        approveBtn.addEventListener("click", () => {
+		            approveOrder(orderNo); 
+					
+		        });
+			}
+			if(rejectBtn){
+		        rejectBtn.addEventListener("click", () => {
+		            rejectOrder(orderNo); 
+		        });
+			}
+				
+			if(completeBtn){	
+				completeBtn.addEventListener("click", () => {
+					completeOrder(orderNo);
+				});
+		    }
+			
+			popup.querySelector(".close").addEventListener("click", () => {
+				  popup.style.display = "none"; 
+			});
+	}
+	
 	setInterval(function() {
 	    $.ajax({
 	        url: location.href,  
 	        type: "GET",
 	        success: function(response) {
 	            
-	            var newContent = $(response).find("#order-list").html();  가져옴
-	            
-	            $("#order-list").html(newContent);
-	           
+	            var newContent = $(response).find("#order-list").html();  
+	            $("#order-list").html(newContent);  
+
+	            document.getElementById("order-list").addEventListener("click", function(event) {
+	                const row = event.target.closest("tr[data-order-no]"); 
+	                if (row) {
+	                    const orderNo = row.getAttribute("data-order-no");
+	                    showOrderPopup(orderNo);
+	                }
+	            });
+
+	            document.querySelectorAll(".popup").forEach(popup => {
+	                const closeButton = popup.querySelector(".close");
+	                if (closeButton) {
+	                    closeButton.addEventListener("click", () => {
+	                        popup.style.display = "none";
+	                    });
+	                }
+	            });
+
 	            const activeStatus = document.querySelector(".filter-btn.active")?.getAttribute("data-filter") || "전체";
 	            filterOrders(activeStatus);  
-				applyRowColors(); 
-				
-				document.querySelectorAll("tr[data-order-no]").forEach(row => {
-				        const orderNo = row.getAttribute("data-order-no"); 
-				        const status = row.getAttribute("data-status"); 
-				        const popup = document.querySelector(`#popup-${orderNo}`);
-				        
-				        if (popup) {
-				            const approveBtn = popup.querySelector(`#approve-btn-${orderNo}`);
-				            const rejectBtn = popup.querySelector(`#reject-btn-${orderNo}`);
-				            const completeBtn = popup.querySelector(`#complete-btn-${orderNo}`);
-							const rejectDetail = popup.querySelector(`#rejection-reason-${orderNo}`);
-				          
-				            if (approveBtn && rejectBtn && completeBtn) {
-				                if (status === "대기중") {
-				                    approveBtn.style.display = "inline-block";
-				                    rejectBtn.style.display = "inline-block";
-				                    completeBtn.style.display = "none";
-									rejectDetail.style.display = "inline-block";
-				                } else if (status === "승인") {
-				                    approveBtn.style.display = "none";
-				                    rejectBtn.style.display = "none";
-				                    completeBtn.style.display = "inline-block";
-									rejectDetail.style.display = "none";
-				                } else if (status === "거절" || status === "완료") {
-				                    approveBtn.style.display = "none";
-				                    rejectBtn.style.display = "none";
-				                    completeBtn.style.display = "none";
-									rejectDetail.style.display = "none";
-				                }
-				            }
-				        }
-				});			
+	            applyRowColors(); 
+
+	            document.querySelectorAll("tr[data-order-no]").forEach(row => {
+	                const orderNo = row.getAttribute("data-order-no"); 
+	                const status = row.getAttribute("data-status"); 
+	                const popup = document.getElementById("popup-"+orderNo);
+	                
+	                if (popup) {
+	                    const approveBtn = popup.querySelector(`#approve-btn-${orderNo}`);
+	                    const rejectBtn = popup.querySelector(`#reject-btn-${orderNo}`);
+	                    const completeBtn = popup.querySelector(`#complete-btn-${orderNo}`);
+	                    const rejectDetail = popup.querySelector(`#rejection-reason-${orderNo}`);
+
+	                    if (approveBtn && rejectBtn && completeBtn) {
+	                        if (status === "대기중") {
+	                            approveBtn.style.display = "inline-block";
+	                            rejectBtn.style.display = "inline-block";
+	                            completeBtn.style.display = "none";
+	                            rejectDetail.style.display = "inline-block";
+	                        } else if (status === "승인") {
+	                            approveBtn.style.display = "none";
+	                            rejectBtn.style.display = "none";
+	                            completeBtn.style.display = "inline-block";
+	                            rejectDetail.style.display = "none";
+	                        } else if (status === "거절" || status === "완료") {
+	                            approveBtn.style.display = "none";
+	                            rejectBtn.style.display = "none";
+	                            completeBtn.style.display = "none";
+	                            rejectDetail.style.display = "none";
+	                        }
+	                    }
+	                }
+	            });
 	        }
 	    });
 	}, 2000);
+
 	
-	function showOrderPopup(orderNo, isReject = false) {
-		const popup = document.getElementById("popup-"+orderNo);
-		if (popup) {
-		        const row = document.querySelector(`tr[data-order-no='${orderNo}']`); // 이 부분은 `row`를 직접 찾아서 데이터를 추출해도 됩니다.
-				const customerPhone = row.cells[4].textContent; // 고객 전화번호
-				const orderTime = row.cells[2].textContent; // 주문 시간
-				const totalPrice = row.cells[3].textContent || "0원";  // 주문 금액
-
-				document.getElementById("popup-customer-phone").textContent = customerPhone;
-				document.getElementById("popup-order-time").textContent = orderTime;
-				document.getElementById("popup-total-price").textContent = totalPrice;
-
-		        popup.style.display = "block";  
-		}
-	    const approveBtn = document.getElementById("approve-btn-"+orderNo);
-	    const rejectBtn = document.getElementById("reject-btn-"+orderNo);
-		const completeBtn = document.getElementById("complete-btn-"+orderNo);
-
-	    
-	    if (approveBtn) {
-	        approveBtn.addEventListener("click", () => {
-	            approveOrder(orderNo); 
-				
-	        });
-		}
-		if(rejectBtn){
-	        rejectBtn.addEventListener("click", () => {
-	            rejectOrder(orderNo); 
-	        });
-		}
-			
-		if(completeBtn){	
-			completeBtn.addEventListener("click", () => {
-				    completeOrder(orderNo);
-			});
-	    }
-		
-		popup.querySelector(".close").addEventListener("click", () => {
-		    popup.style.display = "none"; 
-		});
-	} 
+	 
 
     datePicker.addEventListener("change", () => {
 		const activeStatus = document.querySelector(".filter-btn.active")?.getAttribute("data-filter") || "전체";

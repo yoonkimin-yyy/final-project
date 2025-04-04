@@ -87,7 +87,7 @@
                 <tr>
                     <th class="th-css">총 매출액</th>
                     <th class="th-css">
-                        <span th:text="${totalSales != null ? totalSales + '원' : '0원'}"></span>
+                        <span th:text="${#aggregates.sum(monthlySalesMap.values()) != null ? #numbers.formatInteger(#aggregates.sum(monthlySalesMap.values()), 3, 'COMMA') + '원' : '0원'}"></span>
                     </th>
                 </tr>
             </tfoot>

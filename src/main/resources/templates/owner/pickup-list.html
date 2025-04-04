@@ -46,6 +46,7 @@
             
 
             <!-- 주문 정보 -->
+            <h6>주문이 들어오면 새로고침을 해주세요</h6>
             <div class="table-container">
                 <h4 style="text-align: right;">
                     <div class="info-div" id="info-div-first"></div>
@@ -68,7 +69,10 @@
                         </tr>
                     </thead>
                     <tbody id="order-list">
-                        <tr class="pending" th:each="order : ${orders}" th:attr="data-order-no=${order.orderNo},data-status=${order.statusDTO.pickupStatus}, data-date=${order.payDTO.paymentDate}">
+                        <tr class="pending" th:each="order : ${orders}" 
+                        	th:data-order-no="${order.orderNo}" 
+						    th:data-status="${order.statusDTO.pickupStatus}" 
+						    th:data-date="${order.payDTO.paymentDate}">
                             <td th:text="${order.orderNo}"></td>
                             <td th:text="${order.statusDTO.pickupStatus}"></td>
                             <td th:text="${order.payDTO.paymentDate}"></td>
