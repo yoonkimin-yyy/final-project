@@ -187,7 +187,43 @@
 .search-btn:hover {
   background-color: var(--accent-color);
 }
-    
-    
-    
+
+.admin-button-group {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  margin-left : 300px;
+}
+
+/* 공통 버튼 스타일 */
+.admin-button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+/* 관리자 메인 버튼 - 브라운 배경 */
+.main-button {
+  background-color: #a18267;
+  color: white;
+}
+
+.main-button:hover {
+  background-color: #8b6d54;
+}
+
+/* 사용자 목록 버튼 - 테두리만 있는 스타일 */
+.outline-button {
+  background-color: white;
+  color: #a18267;
+  border: 2px solid #a18267;
+}
+
+.outline-button:hover {
+  background-color: #f3ebe5;
+}
     

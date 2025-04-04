@@ -112,7 +112,7 @@ public interface BakeryMapper {
 
 	public void UserCountInsert(int bakeryNo);
 
-	public int getUserCountBybakeryNo(int bakeryNo);
+	public int getUserCountBybakeryNo(@Param("bakeryNo")int bakeryNo);
 
 	public void updateUserCount(@Param("bakeryNo")int bakeryNo,
 								@Param("count")int count);

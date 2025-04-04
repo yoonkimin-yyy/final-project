@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 <head th:replace="~{fragments/head :: HeadFragment}"></head>
 <link rel="stylesheet" th:href="@{/css/admin/admin.inquiry-list.css}">
 <body>
 <header th:replace="~{fragments/header :: HeaderFragment}"></header>
 <nav th:replace="~{fragments/nav :: NavFragment}"></nav>
+	<div class="admin-button-group">
+  <button class="admin-button main-button" onclick="location.href='/admin/form'">관리자 메인</button>
+  <button class="admin-button outline-button" onclick="location.href='/admin/order/list'">주문 내역</button>
+</div>
 
 <div class="admin-inquiry-list-panel">
     <h2 class="admin-inquiry-title">문의 내역</h2>

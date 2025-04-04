@@ -83,7 +83,7 @@ public interface AdminMapper {
 	AdminResponseDto acceptList(@Param("bakeryNo") int bakeryNo, 
 		    					@Param("userNo") int userNo);
 	
-	Optional<List<MenuResponseDto>> menuList(int bakeryNo);
+	Optional<List<MenuResponseDto>>menuList(@Param("bakeryNo")int bakeryNo);
 	
 	void update(@Param("action") String action,
 				@Param("bakeryNo") int listNum,
