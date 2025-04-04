@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordNow = document.getElementById('password-now');
     const passwordChange = document.getElementById('password-new');
     const passwordConfirm = document.getElementById('password-new-confirm');
+	const currentPassword = document.getElementById('current-password');
 
     // 비밀번호 변경 
     const passDiv = document.getElementById('pass-div');
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('수정되었습니다.');
             infoForm.submit();
         } else {
-            alert('수정하려는 내용을 입력해주세요.');
+            alert('입력하신 정보를 확인해주세요.');
         }
     });
 
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("변경되었습니다!");
             infoForm.submit();
         }else {
-            alert("변경 사항을 입력해 주세요.")
+            alert("변경 사항을 확인해주세요.")
         }
     });
 
@@ -110,7 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(passwordNow.value)) {
         nowMsg.textContent = '비밀번호는 영문자, 숫자, \n 특수문자를 포함해 8~20자여야 합니다.';
         isPass = false;
-    } else {
+    }else if(currentPassword.value != passwordNow.value){
+		nowMsg.textContent = '비밀번호가 일치하지 않습니다';
+		isPass = false;
+	} else {
         nowMsg.textContent = '';
     }
 
@@ -126,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // 새 비밀번호 확인
-    if (passwordConfirm.value !== passwordConfirm.value) {
+    if (passwordConfirm.value !== passwordChange.value) {
         confirmMsg.textContent = '비밀번호가 일치하지 않습니다.';
         isPass = false;
     } else {
@@ -135,46 +139,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     return isPass;
     };
+	
+	// 유효성 검사
+	    function updateForm() {
+	        let isUpdate = true;
+
+	        nameMsg.textContent = '';
+	        emailMsg.textContent = '';
+	        phoneMsg.textContent = '';
+
+	        if (nameInput.value.trim() === '') {
+	            nameMsg.textContent = '이름을 입력해 주세요';
+	            isUpdate = false;
+	        }else if (!/^[가-힣]{2,10}$/.test(nameInput.value)) {
+	            nameMsg.textContent = '이름은 한글만 가능합니다.';
+	            isUpdate = false;
+	        } else {
+	            nameMsg.textContent = '';
+	        }
+
+	        if (emailInput.value.trim() === '') {
+	            emailMsg.textContent = '이메일을 입력해 주세요';
+	            isUpdate = false;
+	        }else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)) {
+	            emailMsg.textContent = '올바른 이메일 형식을 입력해주세요.';
+	            isUpdate = false;
+	        }
+
+	        if (phoneInput.value.trim() === '') {
+	            phoneMsg.textContent = '번호를 -없이 입력해 주세요';
+	            isUpdate = false;
+	        }else if (!/^010\d{4}\d{4}$/.test(phoneInput.value)) {
+	            phoneMsg.textContent = '휴대폰 번호는 숫자만 입력 가능합니다.';
+	            isUpdate = false;
+	        } else {
+	            phoneMsg.textContent = '';
+	        }
+
+	        return isUpdate;
+	    }
 });
 
-// 유효성 검사
-    function updateForm() {
-        let isUpdate = true;
 
-        nameMsg.textContent = '';
-        emailMsg.textContent = '';
-        phoneMsg.textContent = '';
-
-        if (nameInput.value.trim() === '') {
-            nameMsg.textContent = '이름을 입력해 주세요';
-            isUpdate = false;
-        }else if (!/^[가-힣]{2,10}$/.test(nameInput.value)) {
-            nameMsg.textContent = '이름은 한글만 가능합니다.';
-            isUpdate = false;
-        } else {
-            nameMsg.textContent = '';
-        }
-
-        if (emailInput.value.trim() === '') {
-            emailMsg.textContent = '이메일을 입력해 주세요';
-            isUpdate = false;
-        }else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)) {
-            emailMsg.textContent = '올바른 이메일 형식을 입력해주세요.';
-            isUpdate = false;
-        }
-
-        if (phoneInput.value.trim() === '') {
-            phoneMsg.textContent = '번호를 -없이 입력해 주세요';
-            isUpdate = false;
-        }else if (!/^010\d{4}\d{4}$/.test(phoneInput.value)) {
-            phoneMsg.textContent = '휴대폰 번호는 숫자만 입력 가능합니다.';
-            isUpdate = false;
-        } else {
-            phoneMsg.textContent = '';
-        }
-
-        return isUpdate;
-    }
 	
 	
 

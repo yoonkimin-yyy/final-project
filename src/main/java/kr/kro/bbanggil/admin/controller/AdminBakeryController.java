@@ -42,12 +42,13 @@ public class AdminBakeryController {
 		AdminResponseDto result = adminBakeryService.acceptList(bakeryNo, userNo);
 		List<MenuResponseDto> menuList = adminBakeryService.menuList(bakeryNo);
 
-		model.addAttribute("result", result);
+    model.addAttribute("result", result);
 		model.addAttribute("listNum", listNum);
 		model.addAttribute("menuList", menuList);
 
 		return "admin/bakery-accept";
 	}
+	
 
 	@PostMapping("/update")
 	public String bakeryUpdateForm(@RequestParam("action") String action,

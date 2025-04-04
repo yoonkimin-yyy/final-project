@@ -33,3 +33,11 @@ function handleSearch() {
 
 document.getElementById('searchInput').addEventListener('input', handleSearch);
 document.getElementById('searchType').addEventListener('change', handleSearch);
+
+
+
+
+
+
+
+
