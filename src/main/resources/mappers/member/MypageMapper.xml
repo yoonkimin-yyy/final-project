@@ -74,7 +74,8 @@ WHERE
 SELECT
 	user_name,
 	user_email,
-	user_phonenum
+	user_phonenum,
+	user_password
 FROM
 	USER_INFO ui
 WHERE
